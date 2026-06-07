@@ -1,0 +1,35 @@
+{
+  "__comment": "Lumen Glade — the baseline arrival biome (Phase 5a). Blue grass + blue-green fog palette per the bible; vegetation and native mobs come in later 5x passes (features/spawners are empty for now).",
+  "has_precipitation": false,
+  "temperature": 0.7,
+  "downfall": 0.5,
+  "effects": {
+    "fog_color": 3502202,
+    "sky_color": 3829386,
+    "water_color": 1994360,
+    "water_fog_color": 997952,
+    "grass_color": 5940926,
+    "foliage_color": 4825262,
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    }
+  },
+  "carvers": {
+    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+  },
+  "features": [[], [], [], [], [], [], [], [], [], [], []],
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "spawn_costs": {}
+}

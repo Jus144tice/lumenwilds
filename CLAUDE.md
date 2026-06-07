@@ -15,7 +15,7 @@ The portal's defining rule: the frame is a **custom block, Lumenbound Stone** (`
 The portal is lit with the **Lumen Striker** (`lumenwilds:lumen_striker`), its interior is the **Lumen
 Portal** block (`lumenwilds:lumen_portal`), and the destination is **`lumenwilds:lumenwilds`**.
 
-**Current state = Phases 2–3 working on Phase 1 scaffolding.** It compiles, loads on client/server,
+**Current state = Phases 2–4 done; Phase 5 in progress.** It compiles, loads on client/server,
 registers all content, and shows the creative tab. **The portal works end-to-end** (Phase 2): the Lumen
 Striker ignites a Lumenbound Stone frame (real frame detection + interior fill), and stepping through
 teleports the player to `lumenwilds:lumenwilds` and back, find-or-building a return portal at 1:1-scaled
@@ -24,10 +24,11 @@ reduced gravity, higher jumps, later + halved fall damage, and flatter projectil
 attribute modifiers applied on dimension entry. **The building-block sets are complete** (Phase 4): full
 Glowwood wood set (incl. signs, hanging signs, boats + chest boats, and axe-stripping), Moonstone + Deep
 Moonstone stone sets, Shimmerstone set, and Sporeglass — ~81 blocks with placeholder assets, recipes
-(incl. stonecutter), loot, and tags. The destination still uses **placeholder terrain**
-(vanilla overworld noise + a fixed `minecraft:plains` biome) — solid ground to arrive on, but the 7
-custom biomes/terrain are Phase 5. What is deliberately *not* built yet: custom terrain/biomes, mobs,
-structures, fluids, custom sky/fog. Those are stubbed with TODOs. Roadmap:
+(incl. stonecutter), loot, and tags. **Bespoke terrain is in** (Phase 5a): the dimension now uses a
+custom `noise_settings/lumenwilds.json` (moonstone default, hilly/cliffy terrain, ponds) with surface
+rules layering lumen grass → moonloam → moonstone → deep moonstone, under a single real biome (**Lumen
+Glade**, blue-green palette). What is deliberately *not* built yet: plants/trees/ores (5b/5c), the other
+6 biomes (5d), Lumenwater (5e), mobs, structures, custom sky/fog. Those are stubbed with TODOs. Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -164,9 +165,11 @@ as `File#member`.
 ### world/ — dimension & worldgen keys (datapack-driven)
 - [LumenDimensionConstants.java](src/main/java/com/jus144tice/lumenwilds/world/LumenDimensionConstants.java)
   — **canonical** keys. `#DIMENSION_PATH` (`"lumenwilds"`), `#LUMENWILDS_LEVEL` (`ResourceKey<Level>`),
-  `#LUMENWILDS_STEM` (`LevelStem`), `#LUMENWILDS_DIM_TYPE` (`DimensionType`).
+  `#LUMENWILDS_STEM` (`LevelStem`), `#LUMENWILDS_DIM_TYPE` (`DimensionType`), `#LUMENWILDS_NOISE`
+  (`NoiseGeneratorSettings` — the bespoke terrain, Phase 5a).
 - [LumenBiomeBootstrap.java](src/main/java/com/jus144tice/lumenwilds/world/LumenBiomeBootstrap.java) —
-  biome keys `#LUMEN_MEADOW`, `#GLOWING_GROVE`, `#MOONLIT_BARRENS`.
+  the bible's 7 biome keys: `#LUMEN_GLADE` (live, Phase 5a), `#GLOWROOT_FOREST`, `#MOONMIRE`,
+  `#SPOREFALL_JUNGLE`, `#GLASSPETAL_CRAGS`, `#UNDERCROWN_CAVERNS`, `#STILLBLOOM_BASIN` (defined in 5d).
 - [LumenConfiguredFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenConfiguredFeatures.java)
   — `#GLOWWOOD_TREE`, `#MOONBLOSSOM_PATCH`, `#LUMEN_CRYSTAL_ORE`.
 - [LumenPlacedFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenPlacedFeatures.java) —
@@ -250,9 +253,10 @@ as `File#member`.
   placeholders), `textures/entity/{signs,signs/hanging,boat,chest_boat}/glowwood.png` + `textures/gui/
   hanging_signs/glowwood.png` (sign/boat placeholders), `lang/en_us.json` (display names +
   `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}`).
-- `data/lumenwilds/`: `recipe/*`, `loot_table/blocks/*`, `dimension/lumenwilds.json` +
-  `dimension_type/lumenwilds.json` (placeholder — reuses overworld noise + fixed plains biome; valid &
-  loads), `worldgen/README.md`.
+- `data/lumenwilds/`: `recipe/*`, `loot_table/blocks/*`, `dimension/lumenwilds.json` (custom noise gen +
+  fixed Lumen Glade biome) + `dimension_type/lumenwilds.json`, and `worldgen/` — `noise_settings/
+  lumenwilds.json` (bespoke terrain + surface rules), `biome/lumen_glade.json`, `noise/hills.json`.
+  Hand-authored (not datagen); the other 6 biomes + features arrive in later 5x passes.
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`.
 

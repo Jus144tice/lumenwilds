@@ -24,9 +24,15 @@ public final class LumenBiomeBootstrap {
 
     private LumenBiomeBootstrap() {}
 
-    public static final ResourceKey<Biome> LUMEN_MEADOW = key("lumen_meadow");
-    public static final ResourceKey<Biome> GLOWING_GROVE = key("glowing_grove");
-    public static final ResourceKey<Biome> MOONLIT_BARRENS = key("moonlit_barrens");
+    // The bible's seven biomes. Lumen Glade is the baseline arrival biome (live as of Phase 5a); the
+    // rest get their definitions/terrain in Phase 5d.
+    public static final ResourceKey<Biome> LUMEN_GLADE = key("lumen_glade");
+    public static final ResourceKey<Biome> GLOWROOT_FOREST = key("glowroot_forest");
+    public static final ResourceKey<Biome> MOONMIRE = key("moonmire");
+    public static final ResourceKey<Biome> SPOREFALL_JUNGLE = key("sporefall_jungle");
+    public static final ResourceKey<Biome> GLASSPETAL_CRAGS = key("glasspetal_crags");
+    public static final ResourceKey<Biome> UNDERCROWN_CAVERNS = key("undercrown_caverns");
+    public static final ResourceKey<Biome> STILLBLOOM_BASIN = key("stillbloom_basin");
 
     private static ResourceKey<Biome> key(String path) {
         return ResourceKey.create(Registries.BIOME, ResourceLocationHelper.modLoc(path));

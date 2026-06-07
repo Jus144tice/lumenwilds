@@ -257,7 +257,20 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 
 ---
 
-## Phase 5 — World content & generation (the 7 biomes)
+## Phase 5 — World content & generation (the 7 biomes) 🔶 (in progress)
+
+> **Increment plan** (each committed + validated): **5a** foundation — bespoke terrain + arrival biome
+> ✅; **5b** plants/flora blocks + ores as features; **5c** trees (Glowwood, then the Glowroot mega tree
+> with root bridges); **5d** the remaining 6 biomes + a MultiNoise spread; **5e** Lumenwater fluid.
+>
+> **5a done.** Custom `worldgen/noise_settings/lumenwilds.json` (moonstone default; terrain = a y-gradient
+> + multi-octave `worldgen/noise/hills.json`, centred ~y88 with ponds at sea level 63) + surface rules
+> layering lumen grass → moonloam → moonstone → deep moonstone (below ~y0). Single fixed biome
+> `worldgen/biome/lumen_glade.json` (blue-green palette, blue grass/foliage override, vanilla cave
+> carvers, no spawns/features yet). `world/LumenBiomeBootstrap` now holds the bible's 7 biome keys;
+> `LumenDimensionConstants#LUMENWILDS_NOISE` added. Verified: `build` green + dedicated server loads the
+> worldgen datapack with no codec errors + a client session generated Lumenwilds chunks with zero
+> worldgen exceptions. Terrain *shape* tuning deferred until real models/textures make it judgeable.
 
 **Goal:** the dimension reads as the bible's layered, vertical, bioluminescent world — real biomes,
 terrain shape, surface materials, plants, trees, and ores.

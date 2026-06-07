@@ -1,12 +1,12 @@
 {
-  "__comment": "Placeholder Lumenwilds dimension. Reuses vanilla overworld noise terrain + a single fixed plains biome so the dimension is valid and enterable once the portal teleports (Phase 2). TODO (Phase 2/3): swap to a custom biome source (data/lumenwilds/worldgen/biome/*) and, if needed, custom noise settings.",
+  "__comment": "Lumenwilds dimension (Phase 5a): bespoke terrain (lumenwilds:lumenwilds noise settings) with a single fixed biome (Lumen Glade). Phase 5d swaps the fixed source for a MultiNoise spread of the 7 biomes.",
   "type": "lumenwilds:lumenwilds",
   "generator": {
     "type": "minecraft:noise",
-    "settings": "minecraft:overworld",
+    "settings": "lumenwilds:lumenwilds",
     "biome_source": {
       "type": "minecraft:fixed",
-      "biome": "minecraft:plains"
+      "biome": "lumenwilds:lumen_glade"
     }
   }
 }

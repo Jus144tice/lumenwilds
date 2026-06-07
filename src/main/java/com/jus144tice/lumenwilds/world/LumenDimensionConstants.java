@@ -10,6 +10,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.dimension.LevelStem;
+import net.minecraft.world.level.levelgen.NoiseGeneratorSettings;
 
 /**
  * Canonical resource keys for the Lumenwilds dimension.
@@ -39,8 +40,10 @@ public final class LumenDimensionConstants {
     public static final ResourceKey<DimensionType> LUMENWILDS_DIM_TYPE =
             ResourceKey.create(Registries.DIMENSION_TYPE, ResourceLocationHelper.modLoc(DIMENSION_PATH));
 
-    // TODO (Phase 2): if/when terrain moves to a custom NoiseGeneratorSettings, add:
-    //   ResourceKey<NoiseGeneratorSettings> LUMENWILDS_NOISE =
-    //       ResourceKey.create(Registries.NOISE_SETTINGS, ResourceLocationHelper.modLoc("lumenwilds"));
-    // For now the dimension JSON reuses minecraft:overworld noise settings as a safe placeholder.
+    /**
+     * {@link NoiseGeneratorSettings} key — the bespoke Lumenwilds terrain (Phase 5a). Loaded from
+     * {@code data/lumenwilds/worldgen/noise_settings/lumenwilds.json}.
+     */
+    public static final ResourceKey<NoiseGeneratorSettings> LUMENWILDS_NOISE =
+            ResourceKey.create(Registries.NOISE_SETTINGS, ResourceLocationHelper.modLoc(DIMENSION_PATH));
 }

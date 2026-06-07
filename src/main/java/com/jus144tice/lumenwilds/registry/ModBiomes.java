@@ -13,14 +13,18 @@ import net.minecraft.world.level.biome.Biome;
  *
  * <p>Biomes are a datapack (worldgen) registry, not a {@code DeferredRegister}-backed one, so the
  * canonical keys live in {@link LumenBiomeBootstrap}. This class re-exports them so callers can use a
- * single {@code registry}-package entry point ({@code ModBiomes.LUMEN_MEADOW}) consistent with the
+ * single {@code registry}-package entry point ({@code ModBiomes.LUMEN_GLADE}) consistent with the
  * other {@code Mod*} registries.</p>
  */
 public final class ModBiomes {
 
     private ModBiomes() {}
 
-    public static final ResourceKey<Biome> LUMEN_MEADOW = LumenBiomeBootstrap.LUMEN_MEADOW;
-    public static final ResourceKey<Biome> GLOWING_GROVE = LumenBiomeBootstrap.GLOWING_GROVE;
-    public static final ResourceKey<Biome> MOONLIT_BARRENS = LumenBiomeBootstrap.MOONLIT_BARRENS;
+    public static final ResourceKey<Biome> LUMEN_GLADE = LumenBiomeBootstrap.LUMEN_GLADE;
+    public static final ResourceKey<Biome> GLOWROOT_FOREST = LumenBiomeBootstrap.GLOWROOT_FOREST;
+    public static final ResourceKey<Biome> MOONMIRE = LumenBiomeBootstrap.MOONMIRE;
+    public static final ResourceKey<Biome> SPOREFALL_JUNGLE = LumenBiomeBootstrap.SPOREFALL_JUNGLE;
+    public static final ResourceKey<Biome> GLASSPETAL_CRAGS = LumenBiomeBootstrap.GLASSPETAL_CRAGS;
+    public static final ResourceKey<Biome> UNDERCROWN_CAVERNS = LumenBiomeBootstrap.UNDERCROWN_CAVERNS;
+    public static final ResourceKey<Biome> STILLBLOOM_BASIN = LumenBiomeBootstrap.STILLBLOOM_BASIN;
 }
