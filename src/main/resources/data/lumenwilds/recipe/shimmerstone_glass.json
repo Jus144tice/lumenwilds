@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "lumenwilds:polished_shimmerstone"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:shimmerstone_glass"
+  }
+}

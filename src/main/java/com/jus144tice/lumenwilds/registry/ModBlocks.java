@@ -11,12 +11,14 @@ import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -297,7 +299,88 @@ public final class ModBlocks {
     public static final DeferredBlock<SlabBlock> DEEP_MOONSTONE_TILE_SLAB = deepSlab("deep_moonstone_tile_slab");
     public static final DeferredBlock<WallBlock> DEEP_MOONSTONE_TILE_WALL = deepWall("deep_moonstone_tile_wall");
 
+    // --- Shimmerstone (high-end blue-violet crystalline stone) (Phase 4) ------------------------
+
+    public static final DeferredBlock<Block> SHIMMERSTONE = shimmerCube("shimmerstone");
+    public static final DeferredBlock<Block> POLISHED_SHIMMERSTONE = shimmerCube("polished_shimmerstone");
+    public static final DeferredBlock<Block> SHIMMERSTONE_BRICKS = shimmerCube("shimmerstone_bricks");
+    public static final DeferredBlock<Block> SHIMMERSTONE_TILES = shimmerCube("shimmerstone_tiles");
+
+    public static final DeferredBlock<RotatedPillarBlock> SHIMMERSTONE_PILLAR =
+            BLOCKS.registerBlock("shimmerstone_pillar", RotatedPillarBlock::new, shimmerProps());
+
+    public static final DeferredBlock<TransparentBlock> SHIMMERSTONE_GLASS = BLOCKS.registerBlock(
+            "shimmerstone_glass",
+            TransparentBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(0.4F)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion());
+
+    public static final DeferredBlock<StairBlock> POLISHED_SHIMMERSTONE_STAIRS =
+            shimmerStairs("polished_shimmerstone_stairs", POLISHED_SHIMMERSTONE);
+    public static final DeferredBlock<SlabBlock> POLISHED_SHIMMERSTONE_SLAB = shimmerSlab("polished_shimmerstone_slab");
+    public static final DeferredBlock<WallBlock> POLISHED_SHIMMERSTONE_WALL = shimmerWall("polished_shimmerstone_wall");
+
+    public static final DeferredBlock<StairBlock> SHIMMERSTONE_BRICK_STAIRS =
+            shimmerStairs("shimmerstone_brick_stairs", SHIMMERSTONE_BRICKS);
+    public static final DeferredBlock<SlabBlock> SHIMMERSTONE_BRICK_SLAB = shimmerSlab("shimmerstone_brick_slab");
+    public static final DeferredBlock<WallBlock> SHIMMERSTONE_BRICK_WALL = shimmerWall("shimmerstone_brick_wall");
+
+    public static final DeferredBlock<StairBlock> SHIMMERSTONE_TILE_STAIRS =
+            shimmerStairs("shimmerstone_tile_stairs", SHIMMERSTONE_TILES);
+    public static final DeferredBlock<SlabBlock> SHIMMERSTONE_TILE_SLAB = shimmerSlab("shimmerstone_tile_slab");
+    public static final DeferredBlock<WallBlock> SHIMMERSTONE_TILE_WALL = shimmerWall("shimmerstone_tile_wall");
+
+    // --- Sporeglass (translucent glowing glass, light 6) (Phase 4) ------------------------------
+
+    public static final DeferredBlock<TransparentBlock> SPOREGLASS = BLOCKS.registerBlock(
+            "sporeglass",
+            TransparentBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(0.4F)
+                    .lightLevel(state -> 6)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion());
+
+    public static final DeferredBlock<IronBarsBlock> SPOREGLASS_PANE = BLOCKS.registerBlock(
+            "sporeglass_pane",
+            IronBarsBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(0.3F)
+                    .lightLevel(state -> 6)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion());
+
     // --- Property + stone-family helpers --------------------------------------------------------
+
+    private static BlockBehaviour.Properties shimmerProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_PURPLE)
+                .strength(1.5F, 6.0F)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.AMETHYST);
+    }
+
+    private static DeferredBlock<Block> shimmerCube(String name) {
+        return BLOCKS.registerSimpleBlock(name, shimmerProps());
+    }
+
+    private static DeferredBlock<StairBlock> shimmerStairs(String name, DeferredBlock<? extends Block> base) {
+        return BLOCKS.registerBlock(
+                name, props -> new StairBlock(base.get().defaultBlockState(), props), shimmerProps());
+    }
+
+    private static DeferredBlock<SlabBlock> shimmerSlab(String name) {
+        return BLOCKS.registerBlock(name, SlabBlock::new, shimmerProps());
+    }
+
+    private static DeferredBlock<WallBlock> shimmerWall(String name) {
+        return BLOCKS.registerBlock(name, WallBlock::new, shimmerProps());
+    }
 
     private static BlockBehaviour.Properties moonstoneProps() {
         return BlockBehaviour.Properties.of()

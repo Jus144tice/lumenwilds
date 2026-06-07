@@ -13,6 +13,7 @@ import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -68,6 +69,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 buttonBlock(button, baseTex(name));
             } else if (block instanceof PressurePlateBlock plate) {
                 pressurePlateBlock(plate, baseTex(name));
+            } else if (block instanceof IronBarsBlock bars) {
+                ResourceLocation tex = blockTex(name.endsWith("_pane") ? name.substring(0, name.length() - 5) : name);
+                paneBlock(bars, tex, tex);
             } else {
                 // Cube blocks (planks, leaves, stone, ores, the portal, …) → cube_all on block/<name>.
                 simpleBlock(block);

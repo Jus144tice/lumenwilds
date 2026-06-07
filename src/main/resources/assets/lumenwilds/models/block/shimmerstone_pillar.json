@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "lumenwilds:block/shimmerstone_pillar_top",
+    "side": "lumenwilds:block/shimmerstone_pillar"
+  }
+}

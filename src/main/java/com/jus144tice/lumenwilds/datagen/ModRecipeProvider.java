@@ -73,6 +73,58 @@ public class ModRecipeProvider extends RecipeProvider {
 
         buildGlowwoodRecipes(recipeOutput);
         buildMoonstoneRecipes(recipeOutput);
+        buildShimmerstoneRecipes(recipeOutput);
+    }
+
+    /** Shimmerstone variants + the two Sporeglass crafts (Phase 4). */
+    private void buildShimmerstoneRecipes(RecipeOutput out) {
+        square2x2(out, ModBlocks.SHIMMERSTONE.get(), ModBlocks.POLISHED_SHIMMERSTONE.get());
+        square2x2(out, ModBlocks.POLISHED_SHIMMERSTONE.get(), ModBlocks.SHIMMERSTONE_BRICKS.get());
+        square2x2(out, ModBlocks.SHIMMERSTONE_BRICKS.get(), ModBlocks.SHIMMERSTONE_TILES.get());
+
+        Block s = ModBlocks.SHIMMERSTONE.get();
+        cut(out, s, ModBlocks.POLISHED_SHIMMERSTONE.get(), 1);
+        cut(out, s, ModBlocks.SHIMMERSTONE_BRICKS.get(), 1);
+        cut(out, s, ModBlocks.SHIMMERSTONE_TILES.get(), 1);
+        cut(out, s, ModBlocks.SHIMMERSTONE_PILLAR.get(), 1);
+        for (Block v : List.of(
+                ModBlocks.POLISHED_SHIMMERSTONE_STAIRS.get(),
+                ModBlocks.POLISHED_SHIMMERSTONE_WALL.get(),
+                ModBlocks.SHIMMERSTONE_BRICK_STAIRS.get(),
+                ModBlocks.SHIMMERSTONE_BRICK_WALL.get(),
+                ModBlocks.SHIMMERSTONE_TILE_STAIRS.get(),
+                ModBlocks.SHIMMERSTONE_TILE_WALL.get())) {
+            cut(out, s, v, 1);
+        }
+        for (Block v : List.of(
+                ModBlocks.POLISHED_SHIMMERSTONE_SLAB.get(),
+                ModBlocks.SHIMMERSTONE_BRICK_SLAB.get(),
+                ModBlocks.SHIMMERSTONE_TILE_SLAB.get())) {
+            cut(out, s, v, 2);
+        }
+
+        // Shimmerstone glass: glass + polished shimmerstone.
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SHIMMERSTONE_GLASS.get(), 1)
+                .requires(Items.GLASS)
+                .requires(ModBlocks.POLISHED_SHIMMERSTONE.get())
+                .unlockedBy("has_shimmerstone", has(ModBlocks.SHIMMERSTONE.get()))
+                .save(out);
+
+        // Sporeglass: glass + glow pollen + lumen crystal shard.
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SPOREGLASS.get(), 1)
+                .requires(Items.GLASS)
+                .requires(ModItems.GLOW_POLLEN.get())
+                .requires(ModItems.LUMEN_CRYSTAL_SHARD.get())
+                .unlockedBy("has_glow_pollen", has(ModItems.GLOW_POLLEN.get()))
+                .save(out);
+
+        // Sporeglass panes: 6 sporeglass → 16 (like vanilla glass panes).
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.SPOREGLASS_PANE.get(), 16)
+                .pattern("###")
+                .pattern("###")
+                .define('#', ModBlocks.SPOREGLASS.get())
+                .unlockedBy("has_sporeglass", has(ModBlocks.SPOREGLASS.get()))
+                .save(out);
     }
 
     /**

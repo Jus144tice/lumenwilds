@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "lumenwilds:block/polished_shimmerstone_slab"
+    },
+    "type=double": {
+      "model": "lumenwilds:block/polished_shimmerstone"
+    },
+    "type=top": {
+      "model": "lumenwilds:block/polished_shimmerstone_slab_top"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "lumenwilds:glow_pollen"
+    },
+    {
+      "item": "lumenwilds:lumen_crystal_shard"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:sporeglass"
+  }
+}

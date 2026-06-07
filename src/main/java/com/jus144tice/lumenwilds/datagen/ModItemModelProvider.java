@@ -35,8 +35,9 @@ public class ModItemModelProvider extends ItemModelProvider {
         for (var entry : ModItems.ITEMS.getEntries()) {
             Item item = entry.get();
             String name = entry.getId().getPath();
-            if (!(item instanceof BlockItem) || name.endsWith("_door")) {
-                basicItem(item); // item/generated, layer0 = item/<name> (doors render from a flat texture)
+            if (!(item instanceof BlockItem) || name.endsWith("_door") || name.endsWith("_pane")) {
+                // item/generated, layer0 = item/<name>. Doors and panes render from a flat item texture.
+                basicItem(item);
                 continue;
             }
             String parent;

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "lumenwilds:shimmerstone"
+  },
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:shimmerstone_brick_wall"
+  }
+}
