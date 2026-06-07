@@ -6,18 +6,23 @@ package com.jus144tice.lumenwilds.portal;
 
 import com.jus144tice.lumenwilds.registry.ModBlocks;
 import java.util.Optional;
+import java.util.function.Predicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * Frame detection for a Lumenbound Stone portal.
+ * Frame detection + interior fill for a Lumenbound Stone portal.
  *
- * <p>Phase 1 placeholder: defines the frame block and the intended size bounds, and exposes a single
- * {@link #findEmptyPortalShape} seam that currently returns {@link Optional#empty()}. The real
- * implementation will scan from the ignited block for a rectangular {@link ModBlocks#LUMENBOUND_STONE}
- * frame (interior {@link #MIN_WIDTH}×{@link #MIN_HEIGHT} up to {@link #MAX_WIDTH}×{@link #MAX_HEIGHT}),
- * much like {@code net.minecraft.world.level.portal.PortalShape} does for obsidian/Nether portals.</p>
+ * <p>This is a focused port of vanilla {@code net.minecraft.world.level.portal.PortalShape}, but bound
+ * to OUR frame material ({@link ModBlocks#LUMENBOUND_STONE}) and OUR interior block
+ * ({@link ModBlocks#LUMEN_PORTAL}) rather than obsidian/nether portal. We deliberately do NOT reuse
+ * vanilla {@code PortalShape} (whose frame predicate is NeoForge's shared {@code isPortalFrame}, default
+ * obsidian) so that Lumenbound Stone can never accidentally ignite a Nether portal.</p>
+ *
+ * <p>Interior bounds match Nether-portal conventions: {@link #MIN_WIDTH}×{@link #MIN_HEIGHT} up to
+ * {@link #MAX_WIDTH}×{@link #MAX_HEIGHT} air blocks.</p>
  */
 public final class LumenPortalShape {
 
@@ -31,23 +36,154 @@ public final class LumenPortalShape {
 
     public static final int MAX_HEIGHT = 21;
 
-    private LumenPortalShape() {}
+    private final LevelAccessor level;
+    private final Direction.Axis axis;
+    private final Direction rightDir;
+    private int numPortalBlocks;
+    private BlockPos bottomLeft;
+    private int height;
+    private int width;
 
     /** True if {@code state} is the required frame material ({@link ModBlocks#LUMENBOUND_STONE}). */
     public static boolean isFrameBlock(BlockState state) {
         return state.is(ModBlocks.LUMENBOUND_STONE.get());
     }
 
+    /** "Empty" interior: air, or an existing Lumen Portal block (so re-detection is idempotent). */
+    private static boolean isEmpty(BlockState state) {
+        return state.isAir() || state.is(ModBlocks.LUMEN_PORTAL.get());
+    }
+
     /**
-     * Attempt to locate a valid, empty (air-filled) Lumenbound Stone frame anchored at/near
-     * {@code pos}. Returns the discovered shape, or empty if no valid frame exists.
-     *
-     * <p>TODO (Phase 2): implement the rectangular scan + validation and return a small record
-     * describing the interior bounds/axis so {@link LumenPortalManager} can fill it with
-     * {@link ModBlocks#LUMEN_PORTAL}. Until then this always returns {@link Optional#empty()} so the
-     * striker logs an "attempt" without doing anything unsafe.</p>
+     * Locate a valid, empty (air-filled) Lumenbound Stone frame anchored at/near {@code seed}, trying
+     * both horizontal axes. Returns the discovered shape, or empty if no valid empty frame exists.
      */
-    public static Optional<LumenPortalShape> findEmptyPortalShape(LevelAccessor level, BlockPos pos) {
-        return Optional.empty();
+    public static Optional<LumenPortalShape> findEmptyPortalShape(
+            LevelAccessor level, BlockPos seed, Direction.Axis axis) {
+        return findPortalShape(level, seed, s -> s.isValid() && s.numPortalBlocks == 0, axis);
+    }
+
+    private static Optional<LumenPortalShape> findPortalShape(
+            LevelAccessor level, BlockPos seed, Predicate<LumenPortalShape> predicate, Direction.Axis axis) {
+        Optional<LumenPortalShape> first =
+                Optional.of(new LumenPortalShape(level, seed, axis)).filter(predicate);
+        if (first.isPresent()) {
+            return first;
+        }
+        Direction.Axis other = axis == Direction.Axis.X ? Direction.Axis.Z : Direction.Axis.X;
+        return Optional.of(new LumenPortalShape(level, seed, other)).filter(predicate);
+    }
+
+    private LumenPortalShape(LevelAccessor level, BlockPos seed, Direction.Axis axis) {
+        this.level = level;
+        this.axis = axis;
+        this.rightDir = axis == Direction.Axis.X ? Direction.WEST : Direction.SOUTH;
+        this.bottomLeft = this.calculateBottomLeft(seed);
+        if (this.bottomLeft == null) {
+            this.bottomLeft = seed;
+            this.width = 1;
+            this.height = 1;
+        } else {
+            this.width = this.calculateWidth();
+            if (this.width > 0) {
+                this.height = this.calculateHeight();
+            }
+        }
+    }
+
+    private BlockPos calculateBottomLeft(BlockPos pos) {
+        int floor = Math.max(this.level.getMinBuildHeight(), pos.getY() - MAX_HEIGHT);
+        while (pos.getY() > floor && isEmpty(this.level.getBlockState(pos.below()))) {
+            pos = pos.below();
+        }
+        Direction left = this.rightDir.getOpposite();
+        int dist = this.getDistanceUntilEdgeAboveFrame(pos, left) - 1;
+        return dist < 0 ? null : pos.relative(left, dist);
+    }
+
+    private int calculateWidth() {
+        int w = this.getDistanceUntilEdgeAboveFrame(this.bottomLeft, this.rightDir);
+        return w >= MIN_WIDTH && w <= MAX_WIDTH ? w : 0;
+    }
+
+    private int getDistanceUntilEdgeAboveFrame(BlockPos pos, Direction direction) {
+        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        for (int i = 0; i <= MAX_WIDTH; i++) {
+            cursor.set(pos).move(direction, i);
+            BlockState state = this.level.getBlockState(cursor);
+            if (!isEmpty(state)) {
+                if (isFrameBlock(state)) {
+                    return i;
+                }
+                break;
+            }
+            BlockState below = this.level.getBlockState(cursor.move(Direction.DOWN));
+            if (!isFrameBlock(below)) {
+                break;
+            }
+        }
+        return 0;
+    }
+
+    private int calculateHeight() {
+        BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
+        int h = this.getDistanceUntilTop(cursor);
+        return h >= MIN_HEIGHT && h <= MAX_HEIGHT && this.hasTopFrame(cursor, h) ? h : 0;
+    }
+
+    private boolean hasTopFrame(BlockPos.MutableBlockPos cursor, int height) {
+        for (int i = 0; i < this.width; i++) {
+            BlockPos.MutableBlockPos p =
+                    cursor.set(this.bottomLeft).move(Direction.UP, height).move(this.rightDir, i);
+            if (!isFrameBlock(this.level.getBlockState(p))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private int getDistanceUntilTop(BlockPos.MutableBlockPos cursor) {
+        for (int i = 0; i < MAX_HEIGHT; i++) {
+            cursor.set(this.bottomLeft).move(Direction.UP, i).move(this.rightDir, -1);
+            if (!isFrameBlock(this.level.getBlockState(cursor))) {
+                return i;
+            }
+            cursor.set(this.bottomLeft).move(Direction.UP, i).move(this.rightDir, this.width);
+            if (!isFrameBlock(this.level.getBlockState(cursor))) {
+                return i;
+            }
+            for (int j = 0; j < this.width; j++) {
+                cursor.set(this.bottomLeft).move(Direction.UP, i).move(this.rightDir, j);
+                BlockState state = this.level.getBlockState(cursor);
+                if (!isEmpty(state)) {
+                    return i;
+                }
+                if (state.is(ModBlocks.LUMEN_PORTAL.get())) {
+                    this.numPortalBlocks++;
+                }
+            }
+        }
+        return MAX_HEIGHT;
+    }
+
+    /** A geometrically valid frame (size within bounds). Does not require the interior to be empty. */
+    public boolean isValid() {
+        return this.bottomLeft != null
+                && this.width >= MIN_WIDTH
+                && this.width <= MAX_WIDTH
+                && this.height >= MIN_HEIGHT
+                && this.height <= MAX_HEIGHT;
+    }
+
+    public Direction.Axis axis() {
+        return this.axis;
+    }
+
+    /** Fill the validated interior with {@link ModBlocks#LUMEN_PORTAL}, oriented along {@link #axis}. */
+    public void createPortalBlocks() {
+        BlockState portal = ModBlocks.LUMEN_PORTAL.get().defaultBlockState().setValue(LumenPortalBlock.AXIS, this.axis);
+        BlockPos farCorner =
+                this.bottomLeft.relative(Direction.UP, this.height - 1).relative(this.rightDir, this.width - 1);
+        BlockPos.betweenClosed(this.bottomLeft, farCorner).forEach(p -> this.level.setBlock(p, portal, 18));
     }
 }

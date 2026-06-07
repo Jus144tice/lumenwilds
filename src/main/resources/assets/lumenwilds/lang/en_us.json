@@ -1,6 +1,9 @@
 {
   "itemGroup.lumenwilds": "The Lumenwilds",
 
+  "lumenwilds.portal.entering": "Entering the Lumenwilds",
+  "lumenwilds.portal.leaving": "Leaving the Lumenwilds",
+
   "block.lumenwilds.lumenbound_stone": "Lumenbound Stone",
   "block.lumenwilds.lumen_portal": "Lumen Portal",
   "block.lumenwilds.moonloam": "Moonloam",

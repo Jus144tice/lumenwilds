@@ -15,10 +15,15 @@ The portal's defining rule: the frame is a **custom block, Lumenbound Stone** (`
 The portal is lit with the **Lumen Striker** (`lumenwilds:lumen_striker`), its interior is the **Lumen
 Portal** block (`lumenwilds:lumen_portal`), and the destination is **`lumenwilds:lumenwilds`**.
 
-**Current state = Phase 1 scaffolding.** It compiles, loads on client/server, registers all content,
-shows the creative tab, and the striker detects Lumenbound Stone and logs an activation attempt. What
-is deliberately *not* built yet: real terrain/biomes, working portal teleport, mobs, structures, fluids,
-low-gravity movement, custom sky/fog. Those are stubbed with TODOs. Roadmap:
+**Current state = Phase 2 (portal + dimension entry) working on Phase 1 scaffolding.** It compiles,
+loads on client/server, registers all content, and shows the creative tab. **The portal works
+end-to-end:** the Lumen Striker ignites a Lumenbound Stone frame (real frame detection + interior fill),
+and stepping through teleports the player to `lumenwilds:lumenwilds` and back, find-or-building a return
+portal at 1:1-scaled coordinates, with "Entering/Leaving the Lumenwilds" messages. The destination still
+uses **placeholder terrain** (vanilla overworld noise + a fixed `minecraft:plains` biome) — solid ground
+to arrive on, but the 7 custom biomes/terrain are Phase 5. What is deliberately *not* built yet: custom
+terrain/biomes, low-gravity movement (Phase 3), mobs, structures, fluids, custom sky/fog. Those are
+stubbed with TODOs. Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -86,9 +91,10 @@ as `File#member`.
   `#LUMENBULB`, `#LUMEN_CRYSTAL_BLOCK`. **Add a block here → add its BlockItem in `ModItems` → asset +
   loot (see [Resources](#resources--srcmainresources)).**
 - [ModItems.java](src/main/java/com/jus144tice/lumenwilds/registry/ModItems.java) — `#ITEMS`
-  (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`), `#LUMEN_CRYSTAL_SHARD`,
-  `#GLOW_POLLEN`, `#LIVING_FIBER`, `#LUMEN_FRUIT`, `#LUMEN_NECTAR`, `#AIR_GEL`. Plus a
-  `registerSimpleBlockItem` (returns `DeferredItem<BlockItem>`) for every block **except `LUMEN_PORTAL`**.
+  (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`, **durable: `stacksTo(1)
+  .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
+  `#LIVING_FIBER`, `#LUMEN_FRUIT`, `#LUMEN_NECTAR`, `#AIR_GEL`. Plus a `registerSimpleBlockItem` (returns
+  `DeferredItem<BlockItem>`) for every block **except `LUMEN_PORTAL`**.
 - [ModCreativeTabs.java](src/main/java/com/jus144tice/lumenwilds/registry/ModCreativeTabs.java) —
   `#CREATIVE_MODE_TABS`, `#LUMENWILDS_TAB` (id `lumenwilds`, title key `itemGroup.lumenwilds`, icon =
   Lumen Striker). **Auto-populates from `ModItems.ITEMS`** — new items appear without editing this file.
@@ -108,22 +114,31 @@ as `File#member`.
   re-exports of the worldgen/dimension `ResourceKey`s from `world/` (worldgen is datapack-driven, not a
   DeferredRegister).
 
-### portal/ — portal mechanics (stubbed)
+### portal/ — portal mechanics (working, Phase 2)
 - [LumenPortalBlock.java](src/main/java/com/jus144tice/lumenwilds/portal/LumenPortalBlock.java) — `Block`
-  subclass. `#CODEC`, `#codec`, `#getShape` (empty), `#entityInside` (TODO teleport).
+  **implements `net.minecraft.world.level.block.Portal`**. `#CODEC`, `#codec`, `#AXIS`
+  (`HORIZONTAL_AXIS` state), per-axis `#getShape`, `#entityInside` → `Entity#setAsInsidePortal(this,pos)`
+  (engine drives dwell/teleport/cooldown), `#getPortalTransitionTime` (players 80t, else 0),
+  `#getPortalDestination` (resolves overworld↔lumenwilds, 1:1-scaled target, delegates placement),
+  `#getLocalTransition` = `NONE` (no Nether nausea), `#animateTick` (teal `GLOW` spores, placeholder).
 - [LumenPortalShape.java](src/main/java/com/jus144tice/lumenwilds/portal/LumenPortalShape.java) — frame
-  detection. `#MIN_WIDTH`/`#MAX_WIDTH`/`#MIN_HEIGHT`/`#MAX_HEIGHT`, `#isFrameBlock(state)` (checks
-  `ModBlocks.LUMENBOUND_STONE`), `#findEmptyPortalShape` (returns empty — Phase 2 TODO).
+  detection, a focused port of vanilla `PortalShape` keyed on **our** frame/interior (NOT the shared
+  NeoForge `isPortalFrame` predicate — see [gotchas](#invariants--gotchas)). `#MIN/MAX_WIDTH`,
+  `#MIN/MAX_HEIGHT`, `#isFrameBlock` (`ModBlocks.LUMENBOUND_STONE`), `#findEmptyPortalShape(level,seed,
+  axis)` (tries both axes), `#isValid`, `#axis`, `#createPortalBlocks` (fills interior with `LUMEN_PORTAL`).
 - [LumenPortalManager.java](src/main/java/com/jus144tice/lumenwilds/portal/LumenPortalManager.java) —
-  `#tryActivatePortal(level, framePos)`: runs the shape check + logs; fill is TODO.
+  `#tryActivatePortal(level, seed)`: validate empty frame → fill → ignition sound. `#getOrCreateExitPortal`
+  + `#ExitPortal` record: find an existing `LUMEN_PORTAL` near the scaled destination, else build a 2×3
+  frame at the surface. (Vanilla `PortalForcer` is NOT reused — it's obsidian/Nether-POI only.)
 - [LumenPortalTeleporter.java](src/main/java/com/jus144tice/lumenwilds/portal/LumenPortalTeleporter.java) —
-  `#teleport(entity, destination)`: logs only; will use `Entity#changeDimension(DimensionTransition)`.
+  `#createDestinationTransition(target, entity, approx, axis)`: find/build the exit portal and return a
+  `DimensionTransition` placing the entity collision-free at the opening base (zeroed momentum).
 
 ### item/
 - [LumenStrikerItem.java](src/main/java/com/jus144tice/lumenwilds/item/LumenStrikerItem.java) — `#useOn`:
-  detects Lumenbound Stone via `LumenPortalShape#isFrameBlock`, logs the activation attempt (server-side),
-  delegates to `LumenPortalManager#tryActivatePortal`, returns `PASS` on non-frame blocks. **Never checks
-  lodestone.**
+  on a Lumenbound Stone frame, seeds detection from the air at the clicked face (fallback: block above),
+  delegates to `LumenPortalManager#tryActivatePortal`; on success consumes 1 durability via
+  `hurtAndBreak`. Returns `PASS` on non-frame blocks. **Never checks lodestone.**
 
 ### world/ — dimension & worldgen keys (datapack-driven)
 - [LumenDimensionConstants.java](src/main/java/com/jus144tice/lumenwilds/world/LumenDimensionConstants.java)
@@ -179,7 +194,8 @@ as `File#member`.
 - [META-INF/neoforge.mods.toml](src/main/resources/META-INF/neoforge.mods.toml) — mod metadata; only
   `neoforge` + `minecraft` deps (required). `pack.mcmeta` → `pack_format` 48.
 - `assets/lumenwilds/`: `blockstates/`, `models/block|item/`, `textures/block|item/` (flat-colour 16px
-  placeholders), `lang/en_us.json` (display names + `itemGroup.lumenwilds`).
+  placeholders), `lang/en_us.json` (display names + `itemGroup.lumenwilds` + portal transition messages
+  `lumenwilds.portal.{entering,leaving}`).
 - `data/lumenwilds/`: `recipe/{lumenbound_stone,lumen_striker}.json`, `loot_table/blocks/*` (drop-self),
   `dimension/lumenwilds.json` + `dimension_type/lumenwilds.json` (placeholder — reuses overworld noise +
   fixed plains biome; valid & loads), `worldgen/README.md` (future-home note).
@@ -209,6 +225,17 @@ as `File#member`.
   can't clash with committed hand-authored assets.
 - **Empty stub registries with no entries are still bus-registered** (harmless) except `ModFeatures`,
   which is left unwired until it has an entry.
+- **Portal uses the 1.21 `Portal` interface, not manual teleport.** `LumenPortalBlock implements
+  net.minecraft.world.level.block.Portal`; `entityInside` calls `Entity#setAsInsidePortal(this,pos)` and
+  the engine handles dwell timer + `Entity#changeDimension(DimensionTransition)` + post-teleport cooldown.
+- **Do NOT reuse vanilla `PortalShape`/`PortalForcer` for the Lumen portal.** Their frame predicate is
+  NeoForge's shared `IBlockStateExtension#isPortalFrame` (default obsidian) and the forcer is bound to the
+  `nether_portal` POI — overriding `isPortalFrame` on Lumenbound Stone would let it ignite Nether portals.
+  `LumenPortalShape` is our own port keyed explicitly on `LUMENBOUND_STONE` + `LUMEN_PORTAL`.
+- **Exact MC API signatures** for portal work (`Portal`, `DimensionTransition`, `PortalShape`) were taken
+  from the decompiled sources in the NeoForm cache: `~/.gradle/caches/neoformruntime/intermediate_results/
+  sourcesAndCompiledWithNeoForge_*_output.jar`. Extract from there (not the `neoforge-*-sources.jar`,
+  which holds only NeoForge's own classes) when you need a vanilla signature.
 
 ---
 

@@ -6,6 +6,9 @@ package com.jus144tice.lumenwilds.event;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.effects.LowGravityHandler;
+import com.jus144tice.lumenwilds.world.LumenDimensionConstants;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -30,7 +33,17 @@ public final class PlayerDimensionEvents {
                 event.getFrom().location(),
                 event.getTo().location());
 
-        // Apply/remove dimension-specific effects (low gravity is a Phase 4 TODO inside the handler).
-        LowGravityHandler.onChangedDimension(event.getEntity());
+        // Show the calm teal transition message when crossing the Lumenwilds boundary.
+        Player player = event.getEntity();
+        boolean enteringLumenwilds = event.getTo().equals(LumenDimensionConstants.LUMENWILDS_LEVEL);
+        boolean leavingLumenwilds = event.getFrom().equals(LumenDimensionConstants.LUMENWILDS_LEVEL);
+        if (enteringLumenwilds) {
+            player.displayClientMessage(Component.translatable("lumenwilds.portal.entering"), true);
+        } else if (leavingLumenwilds) {
+            player.displayClientMessage(Component.translatable("lumenwilds.portal.leaving"), true);
+        }
+
+        // Apply/remove dimension-specific effects (low gravity is a Phase 3 TODO inside the handler).
+        LowGravityHandler.onChangedDimension(player);
     }
 }

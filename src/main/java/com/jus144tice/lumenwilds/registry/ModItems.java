@@ -26,9 +26,14 @@ public final class ModItems {
 
     // --- Standalone items -----------------------------------------------------------------------
 
-    /** Lumen Striker — ignites a Lumenbound Stone portal frame. See {@link LumenStrikerItem}. */
-    public static final DeferredItem<Item> LUMEN_STRIKER =
-            ITEMS.registerItem("lumen_striker", LumenStrikerItem::new, new Item.Properties().stacksTo(1));
+    /**
+     * Lumen Striker — ignites a Lumenbound Stone portal frame. See {@link LumenStrikerItem}. A durable,
+     * reusable mystical tool (not single-use); each ignition costs one point of durability.
+     */
+    public static final DeferredItem<Item> LUMEN_STRIKER = ITEMS.registerItem(
+            "lumen_striker",
+            LumenStrikerItem::new,
+            new Item.Properties().stacksTo(1).durability(64));
 
     public static final DeferredItem<Item> LUMEN_CRYSTAL_SHARD = ITEMS.registerSimpleItem("lumen_crystal_shard");
     public static final DeferredItem<Item> GLOW_POLLEN = ITEMS.registerSimpleItem("glow_pollen");

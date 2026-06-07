@@ -4,36 +4,59 @@
  */
 package com.jus144tice.lumenwilds.portal;
 
-import com.jus144tice.lumenwilds.Lumenwilds;
-import com.jus144tice.lumenwilds.world.LumenDimensionConstants;
+import javax.annotation.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.level.portal.DimensionTransition;
+import net.minecraft.world.level.portal.PortalShape;
+import net.minecraft.world.phys.Vec3;
 
 /**
- * Moves an entity between the overworld and {@code lumenwilds:lumenwilds}.
+ * Builds the {@link DimensionTransition} that places an entity at its destination Lumen portal.
  *
- * <p>Phase 1 placeholder: {@link #teleport} only logs intent. The class deliberately implements no
- * vanilla teleport interface yet, because 1.21.1 routes cross-dimension travel through
- * {@code Entity#changeDimension(DimensionTransition)} — wiring that up (placement, portal-link search,
- * cooldown) is Phase 2 work.</p>
+ * <p>It finds-or-builds the exit portal via {@link LumenPortalManager}, centres the entity at the base of
+ * the opening (collision-free, via vanilla {@link PortalShape#findCollisionFreePosition}), stops its
+ * momentum so it doesn't shoot out, and attaches the standard portal-sound + chunk-ticket post effects.</p>
  */
 public final class LumenPortalTeleporter {
 
     private LumenPortalTeleporter() {}
 
     /**
-     * Send {@code entity} to the Lumenwilds (or back to its return dimension).
-     *
-     * <p>TODO (Phase 2): resolve the destination {@link ServerLevel} via
-     * {@link LumenDimensionConstants#LUMENWILDS_LEVEL}, find/create the matching portal through
-     * {@link LumenPortalManager}, build a {@code DimensionTransition} (target pos, speed, yaw/pitch,
-     * post-teleport effects) and call {@code entity.changeDimension(transition)}.</p>
+     * Resolve (or create) the exit portal in {@code target} near the scaled {@code approx} position and
+     * return a transition that lands {@code entity} in it. Returns {@code null} if no portal could be
+     * found or built.
      */
-    public static void teleport(Entity entity, ServerLevel destination) {
-        Lumenwilds.LOGGER.info(
-                "[{}] Teleport requested for {} -> {} (Phase 2 TODO: not yet implemented).",
-                Lumenwilds.MOD_ID,
-                entity.getName().getString(),
-                destination.dimension().location());
+    @Nullable
+    public static DimensionTransition createDestinationTransition(
+            ServerLevel target, Entity entity, BlockPos approx, Direction.Axis axis) {
+        LumenPortalManager.ExitPortal exit = LumenPortalManager.getOrCreateExitPortal(target, approx, axis);
+        if (exit == null) {
+            return null;
+        }
+
+        Direction right = exit.axis() == Direction.Axis.X ? Direction.EAST : Direction.SOUTH;
+        BlockPos bottomLeft = exit.bottomLeftInterior();
+        // Centre of the opening along its width, at the base of the interior.
+        double centerX = bottomLeft.getX() + 0.5 + right.getStepX() * (exit.width() - 1) / 2.0;
+        double centerZ = bottomLeft.getZ() + 0.5 + right.getStepZ() * (exit.width() - 1) / 2.0;
+        Vec3 base = new Vec3(centerX, bottomLeft.getY(), centerZ);
+
+        EntityDimensions dimensions = entity.getDimensions(entity.getPose());
+        Vec3 placed = PortalShape.findCollisionFreePosition(base, target, entity, dimensions);
+
+        // Face perpendicular to the portal plane (out of the opening).
+        float yaw = exit.axis() == Direction.Axis.X ? 180.0F : 90.0F;
+
+        return new DimensionTransition(
+                target,
+                placed,
+                Vec3.ZERO,
+                yaw,
+                entity.getXRot(),
+                DimensionTransition.PLAY_PORTAL_SOUND.then(DimensionTransition.PLACE_PORTAL_TICKET));
     }
 }
