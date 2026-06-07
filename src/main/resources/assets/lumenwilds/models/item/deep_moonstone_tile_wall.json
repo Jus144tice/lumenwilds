@@ -1,3 +1,6 @@
 {
-  "parent": "lumenwilds:block/deep_moonstone_tile_wall_inventory"
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "lumenwilds:block/deep_moonstone_tiles"
+  }
 }

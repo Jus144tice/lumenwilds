@@ -1,3 +1,6 @@
 {
-  "parent": "lumenwilds:block/cobbled_moonstone_wall_inventory"
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "lumenwilds:block/cobbled_moonstone"
+  }
 }

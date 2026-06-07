@@ -1,3 +1,6 @@
 {
-  "parent": "lumenwilds:block/shimmerstone_tile_wall_inventory"
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "lumenwilds:block/shimmerstone_tiles"
+  }
 }

@@ -1,3 +1,6 @@
 {
-  "parent": "lumenwilds:block/polished_shimmerstone_wall_inventory"
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "lumenwilds:block/polished_shimmerstone"
+  }
 }
