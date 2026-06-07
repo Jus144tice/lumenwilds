@@ -21,7 +21,10 @@ Striker ignites a Lumenbound Stone frame (real frame detection + interior fill),
 teleports the player to `lumenwilds:lumenwilds` and back, find-or-building a return portal at 1:1-scaled
 coordinates, with "Entering/Leaving the Lumenwilds" messages. **Low-gravity movement works** (Phase 3):
 reduced gravity, higher jumps, later + halved fall damage, and flatter projectile arcs, all via vanilla
-attribute modifiers applied on dimension entry. The destination still uses **placeholder terrain**
+attribute modifiers applied on dimension entry. **The building-block sets are in** (Phase 4): full
+Glowwood wood set, Moonstone + Deep Moonstone stone sets, Shimmerstone set, and Sporeglass — ~77 blocks
+total with placeholder assets, recipes (incl. stonecutter), loot, and tags (signs + boats deferred). The
+destination still uses **placeholder terrain**
 (vanilla overworld noise + a fixed `minecraft:plains` biome) — solid ground to arrive on, but the 7
 custom biomes/terrain are Phase 5. What is deliberately *not* built yet: custom terrain/biomes, mobs,
 structures, fluids, custom sky/fog. Those are stubbed with TODOs. Roadmap:
@@ -86,16 +89,22 @@ as `File#member`.
 
 ### registry/ — all registered content
 - [ModBlocks.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBlocks.java) — `#BLOCKS`
-  (`DeferredRegister.Blocks`). 13 blocks: `#LUMENBOUND_STONE` (portal frame), `#LUMEN_PORTAL`
-  (`LumenPortalBlock`, non-solid/glowing), `#MOONLOAM`, `#LUMEN_GRASS_BLOCK`, `#MOONSTONE`,
-  `#COBBLED_MOONSTONE`, `#GLOWWOOD_LOG`, `#GLOWWOOD_PLANKS`, `#GLOWROOT_LOG`, `#GLOWVINE`, `#MOONBLOSSOM`,
-  `#LUMENBULB`, `#LUMEN_CRYSTAL_BLOCK`. **Add a block here → add its BlockItem in `ModItems` → asset +
-  loot (see [Resources](#resources--srcmainresources)).**
+  (`DeferredRegister.Blocks`), ~77 blocks. Core: `#LUMENBOUND_STONE` (portal frame), `#LUMEN_PORTAL`
+  (`LumenPortalBlock`, non-solid/glowing), `#MOONLOAM`, `#LUMEN_GRASS_BLOCK`, `#MOONSTONE`/`#COBBLED_MOONSTONE`,
+  `#GLOWROOT_LOG`, `#GLOWVINE`, `#MOONBLOSSOM`, `#LUMENBULB`, `#LUMEN_CRYSTAL_BLOCK`. **Phase 4 sets**
+  (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
+  Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
+  `#GLOWWOOD_LEAVES`, stairs/slab/fence/fence_gate/door/trapdoor/button/pressure_plate — wood types reuse
+  vanilla `BlockSetType.OAK`/`WoodType.OAK`); Moonstone set (smooth/bricks/chiseled/tiles + stairs/slabs/
+  walls); Deep Moonstone (deepslate-analog: cobbled/polished/bricks/tiles + shapes); Shimmerstone
+  (polished/bricks/tiles/pillar/glass + shapes); Sporeglass (`TransparentBlock`) + pane (`IronBarsBlock`).
+  **Add a block here → it auto-gets a BlockItem in `ModItems` (loop); add asset + loot via datagen.**
 - [ModItems.java](src/main/java/com/jus144tice/lumenwilds/registry/ModItems.java) — `#ITEMS`
   (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`, **durable: `stacksTo(1)
   .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
-  `#LIVING_FIBER`, `#LUMEN_FRUIT`, `#LUMEN_NECTAR`, `#AIR_GEL`. Plus a `registerSimpleBlockItem` (returns
-  `DeferredItem<BlockItem>`) for every block **except `LUMEN_PORTAL`**.
+  `#LIVING_FIBER`, `#LUMEN_FRUIT`, `#LUMEN_NECTAR`, `#AIR_GEL`. A **static loop auto-registers a simple
+  `BlockItem` for every block except `LUMEN_PORTAL`** (runs after the standalone items so the striker
+  stays first in the tab) — new blocks get an item with no edits here.
 - [ModCreativeTabs.java](src/main/java/com/jus144tice/lumenwilds/registry/ModCreativeTabs.java) —
   `#CREATIVE_MODE_TABS`, `#LUMENWILDS_TAB` (id `lumenwilds`, title key `itemGroup.lumenwilds`, icon =
   Lumen Striker). **Auto-populates from `ModItems.ITEMS`** — new items appear without editing this file.
@@ -183,17 +192,26 @@ as `File#member`.
 - [DataGenerators.java](src/main/java/com/jus144tice/lumenwilds/datagen/DataGenerators.java) —
   `@EventBusSubscriber(bus = MOD)`, `#gatherData(GatherDataEvent)` wires the six providers below.
 - [ModBlockStateProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModBlockStateProvider.java) —
-  cube_all blockstate+model for every block (`#registerStatesAndModels`).
+  **dispatches by block type** (`#registerStatesAndModels`): logs/wood → `logBlock`/`axisBlock`,
+  stairs/slab/fence/gate/wall/door/trapdoor/button/plate → the matching helper, panes → `paneBlock`, else
+  `cube_all`. `#baseTex(name)` resolves a shape's base texture (Glowwood shapes → planks; `_brick`/`_tile`
+  → plural `_bricks`/`_tiles`).
 - [ModItemModelProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModItemModelProvider.java) —
-  block items inherit the block model; others `basicItem` (`#registerModels`).
+  block items inherit `block/<name>` (via `UncheckedModelFile`, to dodge cross-provider validation);
+  fence/wall/button → `_inventory`, trapdoor → `_bottom`, doors + panes → flat `item/<name>`; standalone
+  items → `basicItem`.
 - [ModLanguageProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLanguageProvider.java) —
-  auto names from registry paths (`#addTranslations`, `#titleCase`) + the tab title.
+  auto names from registry paths (`#addTranslations`, `#titleCase`) + the tab title + portal messages.
 - [ModRecipeProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModRecipeProvider.java) —
-  `#buildRecipes`: Lumenbound Stone (`CGC/SAS/CGC`) + Lumen Striker (`I/A/G`).
+  `#buildRecipes`: Lumenbound Stone (`CGC/SAS/CGC`) + Lumen Striker (`I/A/G`); `#buildGlowwoodRecipes`
+  (wood set), `#buildMoonstoneRecipes` + `#buildShimmerstoneRecipes` (smelting + 2×2 crafting + stonecutter
+  via helpers `#smelt`/`#square2x2`/`#cut`).
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
-  `#create` + inner `ModBlockLoot` (drop-self for all blocks except `LUMEN_PORTAL`).
+  `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL`, with slab (drops 2)
+  and door (drops 1) special-cased.
 - [ModTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModTagProvider.java) —
-  `#addTags`: `mineable/pickaxe|axe|shovel`.
+  `#addTags`: classifies blocks by name into `mineable/pickaxe|axe|shovel|hoe` + `leaves` (auto-covers new
+  stone/wood blocks).
 
 > NOTE: hand-authored placeholder assets in `src/main/resources` are **authoritative** (the mod works
 > from a plain `build`, no datagen needed). `runData` output is a regeneration/diff aid only; it is NOT
@@ -216,7 +234,7 @@ as `File#member`.
 
 | Task | Touch (in order) |
 | --- | --- |
-| **Add a block** | `ModBlocks#<NEW>` → BlockItem in `ModItems` → `assets/.../blockstates/<n>.json` + `models/block/<n>.json` + `models/item/<n>.json` + `textures/block/<n>.png` → `data/lumenwilds/loot_table/blocks/<n>.json` → mining tag in `data/minecraft/tags/block/mineable/*` → lang `block.lumenwilds.<n>` → update [Codebase map](#codebase-map). (Datagen regenerates assets/loot/tags/lang if you run `runData`.) |
+| **Add a block** | `ModBlocks#<NEW>` (BlockItem is auto-registered by the `ModItems` loop) → add the base `textures/block/<n>.png` (+ `_top` for pillars, `_bottom`/`_top` for doors) → run `runData` (the providers handle blockstate/model/item-model/loot/tag/lang by block type) → copy the new files from `src/generated/resources` into `src/main/resources` → update [Codebase map](#codebase-map). Add a recipe in `ModRecipeProvider` if craftable. |
 | **Add an item** | `ModItems#<NEW>` → `models/item/<n>.json` + `textures/item/<n>.png` → lang `item.lumenwilds.<n>` (auto in datagen) → it auto-joins the creative tab. |
 | **Add a recipe** | `data/lumenwilds/recipe/<n>.json` (result key is `{"id":…,"count":…}`) and/or `ModRecipeProvider#buildRecipes`. |
 | **Add a non-empty registry** | create/populate `Mod*`, then register it on the mod bus in `Lumenwilds` ctor. |

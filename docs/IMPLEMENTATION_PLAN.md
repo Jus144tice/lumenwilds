@@ -190,7 +190,19 @@ arrows fly flatter than in the Overworld; leaving restores vanilla movement exac
 
 ---
 
-## Phase 4 — Building blocks: full sets & materials
+## Phase 4 — Building blocks: full sets & materials ✅ (built; signs/boats deferred)
+
+> **Status.** Done across three commits (4a/4b/4c), ~77 blocks total. **Glowwood wood set** (log/wood/
+> stripped, planks, leaves, stairs/slab/fence/gate/door/trapdoor/button/plate — wood sounds reuse vanilla
+> `OAK` types). **Moonstone set** (smooth/bricks/chiseled/tiles + stairs/slabs/walls). **Deep Moonstone**
+> (deepslate-analog: cobbled/polished/bricks/tiles + shapes). **Shimmerstone set** (polished/bricks/tiles/
+> pillar/glass + shapes). **Sporeglass** (block + pane, light 6). All with placeholder textures, recipes
+> (smelting + 2×2 + stonecutter, wood-set crafts, sporeglass crafts), drop-self loot (slab/door special-
+> cased), and mining tags. Datagen providers now dispatch by block type and the committed assets are the
+> runData output, copied in. `./gradlew build` green; runData validates the full model/texture graph.
+> **Deferred:** signs + hanging signs (need block-entity + client sign renderers + a bespoke Glowwood
+> `WoodType`) and boats/chest boats (need an entity type + renderer + dispenser behaviour) — both are a
+> self-contained follow-up. Stripping logs with an axe is also TODO. Not yet visually playtested.
 
 **Goal:** a player who arrives can immediately gather and build — the "reward builders immediately"
 mandate from the bible. This is breadth work: lots of vanilla block subclasses + assets.
