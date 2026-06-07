@@ -1,0 +1,35 @@
+## The Lumenwilds — NeoForge mod metadata (Minecraft 1.21.1)
+
+modLoader = "javafml"
+loaderVersion = "[4,)"
+license = "Apache-2.0"
+issueTrackerURL = "https://github.com/Jus144tice/lumenwilds/issues"
+
+[[mods]]
+modId = "lumenwilds"
+version = "${file.jarVersion}"
+displayName = "The Lumenwilds"
+authors = "Jus144tice"
+description = '''
+The Lumenwilds is an alien, bioluminescent custom dimension reached through a portal whose frame is
+built from Lumenbound Stone (NOT vanilla lodestone) and lit with the Lumen Striker. This build is
+Phase 1 scaffolding: registries, placeholder blocks/items, a creative tab, the portal block + striker,
+and the dimension keys all exist and compile. Worldgen, mobs, structures and full portal behaviour are
+intentionally placeholders — see docs/IMPLEMENTATION_PLAN.md.
+'''
+
+# --- NeoForge (required) ---
+[[dependencies.lumenwilds]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+# --- Minecraft (required) ---
+[[dependencies.lumenwilds]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "BOTH"

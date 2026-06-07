@@ -1,0 +1,25 @@
+{
+  "itemGroup.lumenwilds": "The Lumenwilds",
+
+  "block.lumenwilds.lumenbound_stone": "Lumenbound Stone",
+  "block.lumenwilds.lumen_portal": "Lumen Portal",
+  "block.lumenwilds.moonloam": "Moonloam",
+  "block.lumenwilds.lumen_grass_block": "Lumen Grass Block",
+  "block.lumenwilds.moonstone": "Moonstone",
+  "block.lumenwilds.cobbled_moonstone": "Cobbled Moonstone",
+  "block.lumenwilds.glowwood_log": "Glowwood Log",
+  "block.lumenwilds.glowwood_planks": "Glowwood Planks",
+  "block.lumenwilds.glowroot_log": "Glowroot Log",
+  "block.lumenwilds.glowvine": "Glowvine",
+  "block.lumenwilds.moonblossom": "Moonblossom",
+  "block.lumenwilds.lumenbulb": "Lumenbulb",
+  "block.lumenwilds.lumen_crystal_block": "Lumen Crystal Block",
+
+  "item.lumenwilds.lumen_striker": "Lumen Striker",
+  "item.lumenwilds.lumen_crystal_shard": "Lumen Crystal Shard",
+  "item.lumenwilds.glow_pollen": "Glow Pollen",
+  "item.lumenwilds.living_fiber": "Living Fiber",
+  "item.lumenwilds.lumen_fruit": "Lumen Fruit",
+  "item.lumenwilds.lumen_nectar": "Lumen Nectar",
+  "item.lumenwilds.air_gel": "Air Gel"
+}

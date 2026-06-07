@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "lumenwilds:lumenbound_stone",
+    "lumenwilds:moonstone",
+    "lumenwilds:cobbled_moonstone",
+    "lumenwilds:lumen_crystal_block"
+  ]
+}

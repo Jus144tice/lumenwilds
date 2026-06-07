@@ -1,0 +1,1749 @@
+The Lumenwilds
+
+The Lumenwilds is an alien, living dimension of endless twilight, blue vegetation, low gravity, glowing rivers, enormous fungal trees, floating spores, and moonlit jungle. It is not a hostile hell like the Nether and not an empty void like the End. It is a breathing, overgrown, bioluminescent wilderness where the world itself provides light.
+
+The defining sentence is:
+
+The Lumenwilds is a lush alien jungle dimension where daylight is weak, the moon is bright, gravity is low, and the plants are the primary source of light.
+
+Everything in the dimension serves that identity.
+
+Core World Rules
+Dimension Name
+
+The Lumenwilds
+
+Portal Block
+
+The portal is framed with Lumenbound Stone.
+
+Portal Shape
+
+The portal uses the same shape rules as a Nether portal:
+
+Minimum internal opening: 2 blocks wide by 3 blocks tall
+Maximum internal opening: 21 by 21
+Frame material: Lumenbound Stone
+Portal interior block: Lumen Portal
+Portal color: deep teal with drifting blue-white particles
+Portal Ignition Item
+
+The portal is activated with a new item called the Lumen Striker.
+
+The Lumen Striker is crafted from:
+
+1 amethyst shard
+1 iron ingot
+1 glow ink sac
+
+This makes the portal feel more mystical and later-game than the Nether, without requiring endgame materials.
+
+Portal Experience
+
+When the player steps into the portal, the screen does not go purple like the Nether. It darkens at the edges and fills with drifting teal spores. The sound is a low chime mixed with distant insect-song.
+
+The transition message is:
+
+Entering the Lumenwilds
+
+When returning:
+
+Leaving the Lumenwilds
+
+Dimension Position in Progression
+
+The Lumenwilds is a mid-game exploration dimension.
+
+The player reaches it after they can craft Lumenbound Stone, which requires amethyst from Overworld geodes and glowstone from the Nether. That means the Lumenwilds is not an early-game replacement for the Nether. It is discovered after the player has already entered the Nether and acquired advanced materials.
+
+That gives the dimension a clear role:
+
+The Nether is heat, danger, and fast travel.
+The End is emptiness, void, and finality.
+The Lumenwilds is life, verticality, light, and discovery.
+Coordinate Scaling
+
+The Lumenwilds uses 1:1 coordinate scaling with the Overworld.
+
+Unlike the Nether, it is not primarily a travel shortcut. It is a destination.
+
+When a player enters at Overworld X/Z coordinates, the Lumenwilds portal attempts to generate near the same X/Z coordinates. When returning, the player returns near the corresponding Overworld position.
+
+The Lumenwilds does not replace Nether travel. It becomes its own exploration layer.
+
+Sky and Lighting
+Time of Day
+
+The Lumenwilds has a full day/night cycle, but it never becomes bright noon.
+
+The sky behaves as if the sun is permanently filtered through a thick alien atmosphere. Even at peak day, the world looks like late evening.
+
+The cycle length is 48,000 ticks, twice as long as the Overworld day.
+
+Dawn lasts a long time.
+Day is dim and soft.
+Dusk is extremely long.
+Night is bright under the moon.
+Sun
+
+The sun exists, but it is weak and obscured.
+
+It appears as a large blurred white disc behind green-blue haze. It never creates harsh shadows. The player never feels like they are standing under normal daylight.
+
+Moon
+
+The Lumenwilds has one enormous moon named Veyra.
+
+Veyra is always visible somewhere in the sky, even during the day. At night, it becomes the dominant light source.
+
+It is visually much larger than the Overworld moon and has pale blue-white coloration.
+
+Sky Color
+
+The sky is deep turquoise near the horizon and dark indigo above.
+
+At long distances, the horizon fades into a green-blue fog. The atmosphere always looks humid, alive, and slightly glowing.
+
+Fog
+
+The Lumenwilds uses colored atmospheric fog.
+
+Normal fog color: blue-green
+Night fog: deep teal
+Cave fog: dark cyan
+Swamp fog: greenish blue
+Crystal biome fog: blue violet
+
+The fog is not thick enough to annoy the player in normal terrain, but it softens distance and makes the world feel alien.
+
+Ambient Light
+
+The dimension has lower natural skylight than the Overworld.
+
+At day, open terrain is readable but never bright. At night, the sky is dim but not black. The player depends on glowing plants, glowing water, glowing fungi, and luminous insects for most local visibility.
+
+The target feeling is:
+
+You can travel without torches, but the safest paths are the ones marked by living light.
+
+Gravity and Movement
+
+Gravity is lower in the Lumenwilds.
+
+Player Gravity
+
+Players fall more slowly and jump higher.
+
+The player’s normal jump height increases from roughly 1.25 blocks to about 1.75 blocks.
+
+This means:
+
+Players can jump onto blocks they normally could not.
+Hills and roots are easier to climb.
+Vertical terrain becomes more playable.
+Falling feels floaty without becoming flight.
+Fall Damage
+
+Fall damage starts later and is reduced.
+
+In the Overworld, players normally start taking fall damage after falling more than 3 blocks. In the Lumenwilds, fall damage starts after approximately 6 blocks.
+
+Fall damage is also reduced by 50%.
+
+This encourages the player to leap down from giant roots, glowing cliffs, mushroom shelves, and floating landforms.
+
+Mobs and Projectiles
+
+Most native Lumenwilds mobs obey the same low-gravity rules.
+
+Arrows, thrown tridents, snowballs, eggs, and similar projectiles have slightly flatter arcs in this dimension. This makes ranged combat feel subtly different without changing Minecraft into a different game.
+
+Elytra
+
+Elytra flight is stronger here.
+
+Players glide farther due to reduced gravity, but rocket boosting is slightly less controllable because momentum carries longer. The Lumenwilds becomes one of the best dimensions for dramatic gliding, especially through massive glowing forests.
+
+Terrain Identity
+
+The Lumenwilds terrain is lush, vertical, and layered.
+
+The world is not flat jungle. It is a stacked environment:
+
+Ground layer — blue grasses, glowing rivers, dense alien shrubs.
+Root layer — huge exposed roots forming natural bridges.
+Canopy layer — giant trees, fungal shelves, hanging vines.
+Spore layer — floating pollen clouds and drifting seed pods.
+Cavern layer — glowing underground root systems and crystal pools.
+
+The player is constantly moving up, down, across roots, through vines, and under canopies.
+
+Base Terrain Blocks
+Moonloam
+
+Moonloam is the main soil block of the Lumenwilds.
+
+It replaces dirt as the primary surface substrate.
+
+Appearance:
+
+Dark blue-gray soil
+Faint specks of cyan light
+Slightly damp texture
+
+Behavior:
+
+Supports Lumenwilds grass and plants.
+Can be tilled into Tilled Moonloam.
+Grows native crops better than Overworld farmland.
+Can be crafted into decorative packed variants.
+Lumen Grass Block
+
+The main grass block is Lumen Grass.
+
+Appearance:
+
+Blue grass top
+Dark moonloam sides
+Small glowing cyan flecks at night
+
+Behavior:
+
+Spreads like grass.
+Emits light level 1 at night only.
+Can grow alien grass, flowers, and small fungi.
+Can be bonemealed.
+
+This is important: the grass itself does not light the world like torches. It softly glows enough to make the ground shimmer.
+
+Moonstone
+
+Moonstone is the basic stone of the dimension.
+
+Appearance:
+
+Smooth dark slate-blue stone
+Faint pearlescent mineral veins
+
+Behavior:
+
+Replaces normal stone.
+Can be mined with a wooden pickaxe or better.
+Smelts into Smooth Moonstone.
+Has cobbled, polished, brick, tile, stair, slab, and wall variants.
+Deep Moonstone
+
+Below the main cave layers, Moonstone transitions into Deep Moonstone.
+
+Appearance:
+
+Darker, denser, almost black-blue
+Higher contrast luminous veins
+
+Behavior:
+
+Equivalent to deepslate.
+Slower to mine.
+Generates deeper ores.
+Water and Liquids
+Lumenwater
+
+The Lumenwilds has its own water variant: Lumenwater.
+
+It behaves like water but has a distinct appearance.
+
+Appearance:
+
+Clear dark cyan
+Soft glow around edges
+Glowing particles beneath the surface
+
+Behavior:
+
+Functions as water for swimming, boats, buckets, farmland hydration, and extinguishing fire.
+Emits light level 4.
+Fish-like native mobs spawn in it.
+Overworld fish can survive in it.
+When placed in the Overworld, it slowly loses its glow and becomes normal water after a delay.
+
+This keeps it from becoming an overpowered portable light-fluid while still feeling magical in the dimension.
+
+Glow Pools
+
+Some areas contain concentrated Lumenwater called Glow Pools.
+
+Glow Pools are not a separate fluid. They are Lumenwater pools surrounded by high-density glowing flora, crystal clusters, and algae mats.
+
+They are landmarks, not just decoration.
+
+Fire Behavior
+
+Fire behaves strangely in the Lumenwilds.
+
+Normal fire can exist, but it burns dimmer and spreads less aggressively. The humid atmosphere suppresses ordinary flames.
+
+Torches
+
+Normal torches work, but they look wrong in the Lumenwilds.
+
+They produce warmer orange light that clashes with the environment. This is intentional. The player quickly learns that local light sources look better and belong here.
+
+Native Light Sources
+
+The dimension provides its own light blocks:
+
+Glowcap
+Lumenbulb
+Glowvine
+Moonblossom
+Lumen Lantern
+Glowwood Lamp
+Sporeglass
+Lumen Crystal
+
+The player is encouraged to build with living light rather than torch-spam.
+
+Major Biomes
+
+The Lumenwilds has seven primary biomes.
+
+Each biome is visually distinct but still belongs to the same dimension.
+
+1. Lumen Glade
+
+The Lumen Glade is the baseline biome and the player’s most common arrival biome.
+
+Visual Identity
+
+Open blue grassland with scattered glowing plants, low trees, luminous flowers, and winding Lumenwater streams.
+
+Terrain
+Rolling hills
+Gentle valleys
+Small cliffs
+Shallow ponds
+Exposed moonstone patches
+Vegetation
+Lumen grass
+Glow ferns
+Moonblossoms
+Small glowcaps
+Short glowwood trees
+Hanging seed pods
+Lighting
+
+Light is spread softly across the ground.
+
+At night, the glade becomes speckled with blue, cyan, and pale lavender light.
+
+Gameplay Role
+
+This is the safest biome. It teaches the player the rules of the dimension:
+
+The grass glows faintly.
+The water glows.
+Plants are useful.
+Gravity is lower.
+The world is alien but not immediately lethal.
+2. Glowroot Forest
+
+The Glowroot Forest is the signature biome of the Lumenwilds.
+
+Visual Identity
+
+Massive alien trees rise into a glowing canopy. Their roots twist above the ground like bridges. Blue grass and teal fog fill the forest floor.
+
+Terrain
+Dense forest floor
+Giant root bridges
+Root arches
+Natural tunnels
+Elevated platforms
+Hollow tree interiors
+Trees
+
+The dominant tree is the Glowroot Tree.
+
+Glowroot Trees are enormous compared to oak or spruce. They generate in sizes similar to large jungle trees or custom mega trees.
+
+They have:
+
+Dark blue-purple bark
+Cyan glowing cracks
+Wide root systems
+Hanging glowvines
+Broad teal leaves
+Bioluminescent fruit clusters
+Lighting
+
+The forest floor is darker than the Lumen Glade, but the trees themselves glow.
+
+Light comes from:
+
+Root veins
+Hanging vines
+Leaf clusters
+Lumen fruit
+Fungal shelves
+Gameplay Role
+
+This is the main wood biome.
+
+Players come here for:
+
+Glowwood logs
+Glowroot bark
+Glowvines
+Lumen fruit
+Canopy exploration
+Early Lumenwilds building materials
+3. Moonmire
+
+The Moonmire is a glowing swamp biome.
+
+Visual Identity
+
+A dark wetland of luminous pools, blue reeds, mist, hanging vines, and strange amphibious life.
+
+Terrain
+Shallow Lumenwater
+Muddy moonloam
+Low islands
+Submerged roots
+Dense reeds
+Misty channels
+Blocks
+
+The Moonmire introduces:
+
+Soft Moonmud
+Lumen Reeds
+Glow Algae
+Bogroot Logs
+Spore Pads
+Lighting
+
+The water glows brighter here than anywhere else.
+
+At night, the entire swamp looks like it is lit from below.
+
+Gameplay Role
+
+This is the wetland resource biome.
+
+Players come here for:
+
+Glow algae
+Bogroot wood
+Lumen reeds
+Amphibious mobs
+Potion ingredients
+Decorative water plants
+Danger
+
+The Moonmire is more dangerous than the Glade because shallow water slows movement and hostile mobs use the fog and vegetation for cover.
+
+4. Sporefall Jungle
+
+The Sporefall Jungle is the densest biome.
+
+Visual Identity
+
+A thick alien rainforest filled with enormous mushrooms, glowing flowers, falling spores, and layered vegetation.
+
+Terrain
+Dense undergrowth
+Tall fungal columns
+Canopy platforms
+Hanging vines
+Mushroom shelves
+Hidden clearings
+Weather Effect
+
+Sporefall Jungle has a frequent local ambient effect called Sporefall.
+
+During Sporefall:
+
+Glowing particles drift downward.
+Visibility is slightly reduced.
+Plants pulse brighter.
+Some mobs become more active.
+Bonemeal effects are slightly stronger.
+Gameplay Role
+
+This biome is for players who want the dimension’s strongest plant resources.
+
+Players come here for:
+
+Giant glowcaps
+Spore sacs
+Rare flowers
+Living fiber
+Dense vines
+Decorative fungal blocks
+Danger
+
+This biome is visually beautiful but easy to get lost in.
+
+Compasses do not malfunction, but line-of-sight navigation is difficult because of vegetation density and fog.
+
+5. Glasspetal Crags
+
+The Glasspetal Crags are sharp crystal highlands.
+
+Visual Identity
+
+Steep moonstone cliffs with translucent glowing crystal petals growing from rock faces.
+
+Terrain
+High cliffs
+Narrow ridges
+Ravines
+Crystal shelves
+Floating crystal fragments
+Exposed ore veins
+Blocks
+
+This biome introduces:
+
+Lumen Crystal
+Glasspetal Cluster
+Shimmerstone
+Cracked Moonstone
+Crystal Dust
+Lighting
+
+Light comes from mineral growth rather than plants.
+
+The palette shifts from blue-green to blue-violet.
+
+Gameplay Role
+
+This is the mining and advanced crafting biome.
+
+Players come here for:
+
+Lumen crystals
+Shimmerstone
+Crystal dust
+High-altitude structures
+Rare ores
+Danger
+
+Falling is the main hazard, but low gravity makes traversal fun instead of punishing.
+
+Hostile flying mobs appear here more often.
+
+6. Undercrown Caverns
+
+The Undercrown Caverns are the underground heart of the dimension.
+
+Visual Identity
+
+Vast root-filled caves where giant luminous roots hang from ceilings and plunge into glowing underground pools.
+
+Terrain
+Massive caverns
+Root pillars
+Underground lakes
+Crystal pools
+Hanging glowvines
+Fungal shelves
+Deep moonstone tunnels
+Lighting
+
+Unlike Overworld caves, these are not completely dark.
+
+There are still dangerous dark pockets, but many areas are naturally lit by:
+
+Glowvine
+Lumen crystals
+Glow fungi
+Lumenwater
+Root veins
+Gameplay Role
+
+This is the deep exploration biome.
+
+Players come here for:
+
+Deep moonstone
+Rare crystals
+Underground mobs
+Ancient ruins
+High-value plant materials
+Dimension lore
+Rule
+
+The deeper the player goes, the more the world feels alive. Roots become thicker, light pulses more slowly, and cave sounds become more organic.
+
+7. The Stillbloom Basin
+
+The Stillbloom Basin is the rarest surface biome.
+
+Visual Identity
+
+A calm, open basin full of giant flowers, shallow glowing water, floating pollen, and almost no hostile mobs.
+
+Terrain
+Wide basins
+Shallow reflective pools
+Flower fields
+Gentle terraces
+Smooth moonstone outcrops
+Vegetation
+
+The biome is dominated by enormous flowers called Stillblooms.
+
+Stillblooms are 3 to 8 blocks tall and emit pale blue-white light.
+
+Lighting
+
+This is the brightest biome in the Lumenwilds, but the brightness is soft and floral rather than solar.
+
+Gameplay Role
+
+This is the sanctuary biome.
+
+Players come here for:
+
+Rare flowers
+Peaceful building sites
+Decorative blocks
+Lumen nectar
+Passive mobs
+Beautiful base locations
+Special Rule
+
+Hostile mob spawning is greatly reduced in Stillbloom Basins.
+
+This makes them natural safe zones without making the entire dimension safe.
+
+Plants and Trees
+Glowwood Tree
+
+The basic tree of the dimension.
+
+Blocks:
+
+Glowwood Log
+Stripped Glowwood Log
+Glowwood Planks
+Glowwood Leaves
+Glowwood Sapling
+
+Appearance:
+
+Dark blue bark
+Cyan inner wood
+Teal planks
+Leaves with faint glowing speckles
+
+Behavior:
+
+Leaves emit light level 2
+Logs emit no light
+Glowwood planks emit no light
+Glowwood lamps can be crafted from planks and glow pollen
+
+This prevents the entire wood set from becoming overpowered free lighting while still making forests glow.
+
+Glowroot Tree
+
+The mega tree of the dimension.
+
+Blocks:
+
+Glowroot Log
+Glowroot Core
+Glowroot Bark
+Glowroot Leaves
+Glowroot Root
+Hanging Glowroot
+
+Appearance:
+
+Huge dark trunks
+Exposed glowing root veins
+Massive canopies
+Thick roots that generate above ground
+
+Behavior:
+
+Root blocks emit light level 5
+Core blocks emit light level 8
+Hanging roots can be climbed like vines
+Large roots generate natural bridges
+Glowvine
+
+Glowvine is one of the most important plants in the dimension.
+
+Appearance:
+
+Hanging teal vine
+Small glowing bulbs along the stem
+
+Behavior:
+
+Climbed like vines.
+Emits light level 7.
+Can be harvested with shears.
+Grows downward from leaves, roots, and cave ceilings.
+Can be bonemealed.
+
+Gameplay use:
+
+Natural ladders
+Base decoration
+Gentle lighting
+Crafting ingredient for Lumen Lanterns
+Moonblossom
+
+Moonblossoms are common glowing flowers.
+
+Appearance:
+
+Short flower with pale blue petals
+Bright white-blue center
+
+Behavior:
+
+Emits light level 6.
+Opens more brightly at night.
+Can be crafted into Glow Dye.
+Used in basic Lumenwilds potions.
+Lumenbulb
+
+Lumenbulbs are bulb plants found in glades and forests.
+
+Appearance:
+
+Round glowing pod on a short stem
+Cyan or lavender glow
+
+Behavior:
+
+Emits light level 10.
+Drops Lumen Bulb when harvested.
+Can be replanted.
+Used to craft portable native light sources.
+Giant Glowcap
+
+Giant Glowcaps are enormous mushrooms found in Sporefall Jungle and Undercrown Caverns.
+
+Blocks:
+
+Glowcap Stem
+Glowcap Block
+Glowcap Gills
+
+Behavior:
+
+Gills emit light level 9.
+Can generate as mushroom shelves on trees and cave walls.
+Can be grown from Glowcap Spores on moonloam in low light.
+Spore Pads
+
+Spore Pads float on Lumenwater.
+
+Behavior:
+
+Function like lily pads.
+Slightly bounce the player.
+Emit light level 3.
+Can be used to cross swamps.
+Stillbloom
+
+Stillblooms are giant flowers from the Stillbloom Basin.
+
+Blocks:
+
+Stillbloom Stem
+Stillbloom Petal
+Stillbloom Core
+
+Behavior:
+
+Core emits light level 12.
+Petals can be harvested with shears.
+Stillbloom Nectar is collected with a glass bottle.
+Hostile mobs avoid areas near active Stillbloom Cores.
+New Building Materials
+
+The Lumenwilds needs to reward builders immediately.
+
+Glowwood Set
+
+Full wood set:
+
+Logs
+Wood
+Stripped logs
+Stripped wood
+Planks
+Stairs
+Slabs
+Fences
+Fence gates
+Doors
+Trapdoors
+Buttons
+Pressure plates
+Signs
+Hanging signs
+Boats
+Chest boats
+
+Color:
+
+Teal-blue planks
+Dark bark
+Pale cyan stripped texture
+Moonstone Set
+
+Full stone set:
+
+Moonstone
+Cobbled Moonstone
+Smooth Moonstone
+Moonstone Bricks
+Chiseled Moonstone
+Moonstone Tiles
+Stairs
+Slabs
+Walls
+
+Color:
+
+Dark blue-gray
+Subtle cyan undertones
+Shimmerstone Set
+
+Shimmerstone is the high-end decorative stone.
+
+Appearance:
+
+Blue-violet stone
+Reflective crystalline flecks
+
+Variants:
+
+Polished Shimmerstone
+Shimmerstone Bricks
+Shimmerstone Pillar
+Shimmerstone Tiles
+Shimmerstone Glass
+Sporeglass
+
+Sporeglass is a translucent glowing glass.
+
+Crafted from:
+
+Glass
+Glow pollen
+Lumen crystal dust
+
+Behavior:
+
+Emits light level 6
+Comes in pane and block forms
+Has a faint animated speckled texture
+Ores and Resources
+Lumen Crystal Ore
+
+Found in Moonstone and Deep Moonstone.
+
+Drops:
+
+Lumen Crystal Shard
+
+Uses:
+
+Lumen Lanterns
+Lumen Striker repair
+Crystal tools
+Dimension utility blocks
+Decorative lighting
+Shimmerstone Veins
+
+Found mostly in Glasspetal Crags and deep caves.
+
+Uses:
+
+Decorative blocks
+Advanced crafting
+Portal stabilization blocks
+Gravity-related items
+Glow Pollen
+
+Harvested from flowers, vines, and Sporefall events.
+
+Uses:
+
+Glow Dye
+Lumen Lanterns
+Plant growth items
+Potions
+Decorative blocks
+Living Fiber
+
+Harvested from hanging roots and dense vines.
+
+Uses:
+
+Rope-like blocks
+Climbing gear
+Plant-based armor trim materials
+Bow/crossbow variants
+Utility recipes
+Lumen Nectar
+
+Collected from Stillblooms.
+
+Uses:
+
+Food
+Brewing
+Calming hostile mobs temporarily
+Crafting restoration items
+Native Light System
+
+The dimension’s lighting progression is a core gameplay loop.
+
+Early Native Light
+
+The player first collects:
+
+Moonblossoms
+Glowvines
+Lumenbulbs
+
+These provide natural lighting and decoration.
+
+Mid-Tier Native Light
+
+The player crafts:
+
+Lumen Lanterns
+Glowwood Lamps
+Sporeglass
+Glowcap Blocks
+High-Tier Native Light
+
+The player later obtains:
+
+Stillbloom Cores
+Lumen Crystal Lamps
+Shimmerstone Beacons
+
+These become premium building lights.
+
+Lumen Lantern
+
+The main portable light block.
+
+Crafted from:
+
+Lumen Crystal Shard
+Glowvine
+Iron nugget
+Glow pollen
+
+Behavior:
+
+Emits light level 14
+Has teal-blue flame-like particles
+Can hang from ceilings or sit on blocks
+Does not melt ice or snow
+
+This becomes the Lumenwilds equivalent of a lantern.
+
+Mobs
+
+The Lumenwilds mobs are not just reskinned Overworld animals. They reinforce the ecosystem.
+
+Passive Mobs
+Lumen Grazer
+
+A peaceful six-legged herbivore.
+
+Appearance:
+
+Deer-like body
+Long neck
+Four small horns
+Glowing markings along its sides
+
+Behavior:
+
+Eats Lumen Grass.
+Travels in small herds.
+Flees from players.
+Emits very faint light at night.
+Can be bred with Lumen Fruit.
+
+Drops:
+
+Hide
+Raw Grazer Meat
+Glow Sinew, rarely
+
+Gameplay role:
+
+Food source
+Ambient life
+Makes glades feel alive
+Lantern Beetle
+
+A small flying insect mob.
+
+Appearance:
+
+Beetle body
+Transparent wings
+Bright glowing abdomen
+
+Behavior:
+
+Flies around flowers and Glowvines.
+Emits moving light.
+Attracted to Moonblossoms.
+Can be caught in a bottle to create Bottled Lantern Beetle.
+
+Bottled Lantern Beetle:
+
+Works as a temporary placed light source.
+Eventually expires unless crafted into a proper lantern.
+
+Gameplay role:
+
+Moving ambience
+Early exploration light
+Magical atmosphere
+Sky Jelly
+
+A floating passive mob.
+
+Appearance:
+
+Jellyfish-like body
+Long glowing tendrils
+Drifts through the air
+
+Behavior:
+
+Floats slowly above forests and crags.
+Moves vertically with low gravity.
+Harmless unless attacked.
+Drops Air Gel.
+
+Air Gel uses:
+
+Slow-fall potions
+Bounce pads
+Low-gravity crafting
+
+Gameplay role:
+
+Makes the sky feel inhabited
+Provides movement-related materials
+Neutral Mobs
+Rootback
+
+A large turtle-like creature with plants growing on its shell.
+
+Appearance:
+
+Broad body
+Mossy shell
+Small glowing shrubs on its back
+Slow heavy movement
+
+Behavior:
+
+Neutral unless attacked.
+Slowly wanders forests and basins.
+Small plants grow near where it rests.
+Can be followed to find rich vegetation.
+
+Drops:
+
+Rootback Plate
+Living Fiber
+Moonloam Clumps
+
+Gameplay role:
+
+Living landmark
+Source of durable organic material
+Glowmoth
+
+A large moth attracted to light sources.
+
+Appearance:
+
+Wide luminous wings
+Soft blue and lavender glow
+
+Behavior:
+
+Neutral.
+Circles bright flowers and lanterns.
+Becomes aggressive if the player breaks nearby Moonblossoms or Stillblooms.
+Drops Glow Scales.
+
+Glow Scales uses:
+
+Glow dye
+Decorative armor trims
+Potions of night vision
+
+Gameplay role:
+
+Protects valuable flowers
+Adds consequence to harvesting
+Hostile Mobs
+Shade Stalker
+
+The main hostile ground mob.
+
+Appearance:
+
+Thin dark quadruped
+Long limbs
+Glowing eyes
+Faint cyan markings
+
+Behavior:
+
+Spawns in low-light areas.
+Avoids strong natural light.
+Moves quickly through grass and roots.
+Hesitates near Stillbloom Cores and bright lanterns.
+
+Combat identity:
+
+Ambush predator.
+Dangerous in dense vegetation.
+Less dangerous in well-lit spaces.
+
+Drops:
+
+Shade Claw
+Dark Hide
+Rarely Echo Dust
+
+Gameplay role:
+
+Teaches the player to respect darkness.
+Makes lighting meaningful without making the whole dimension oppressive.
+Sporeling
+
+A small hostile fungal creature.
+
+Appearance:
+
+Mushroom-like head
+Thin legs
+Glowing spots
+
+Behavior:
+
+Spawns during Sporefall and in dense jungles.
+Attacks in groups.
+Releases a small spore cloud when killed.
+
+Spore cloud effect:
+
+Briefly obscures vision.
+Applies mild slowness for a few seconds.
+
+Drops:
+
+Spore Sac
+Glowcap Spores
+
+Gameplay role:
+
+Swarm enemy
+Source of fungal materials
+Crag Wraith
+
+A hostile flying mob in Glasspetal Crags.
+
+Appearance:
+
+Thin manta-like body
+Crystal fragments embedded in its wings
+Violet glow
+
+Behavior:
+
+Glides through cliffs and ravines.
+Attacks by diving.
+Knockback is dangerous near ledges.
+Avoids enclosed spaces.
+
+Drops:
+
+Wraith Membrane
+Crystal Dust
+
+Gameplay role:
+
+Makes highlands dangerous
+Adds aerial combat
+Makes low gravity cliffs exciting
+Mirelurker
+
+A hostile swamp predator.
+
+Appearance:
+
+Amphibious creature
+Flat body
+Glowing lure on its head
+Dark teal skin
+
+Behavior:
+
+Hides in shallow Lumenwater.
+Uses its glowing lure to mimic harmless plants.
+Lunges when the player approaches.
+Stronger at night.
+
+Drops:
+
+Mire Tooth
+Lumen Algae
+Raw Mirefish
+
+Gameplay role:
+
+Makes Moonmire dangerous
+Punishes careless swamp travel
+Structures
+
+The Lumenwilds has structures, but they are overgrown and partially organic. Nothing here looks like a normal village.
+
+Lumenbound Ruins
+
+The most important structure.
+
+Appearance
+
+Ancient ruined portal sites made of:
+
+Lumenbound Stone blocks
+Moonstone bricks
+Shimmerstone
+Glowvines
+Broken Lumen Portal remnants
+Generation
+
+Rarely found in:
+
+Lumen Glades
+Glowroot Forests
+Glasspetal Crags
+Gameplay Role
+
+These ruins explain why Lumenbound Stone connects to the dimension.
+
+They contain:
+
+Partial Lumenbound Stone portal frames
+Chests with Lumen Striker ingredients
+Moonstone brick variants
+Glow pollen
+Lore fragments
+Occasionally a damaged Lumen Striker
+
+This gives players an in-world way to understand the portal without needing a wiki.
+
+Rootshrines
+
+Small organic shrine structures built into giant tree roots.
+
+Appearance
+Hollow roots
+Glowvine curtains
+Moonstone altar
+Lumen crystal clusters
+Loot
+Lumen Crystal Shards
+Glowvine
+Living Fiber
+Moonblossoms
+Rarely Lumen Nectar
+Gameplay Role
+
+Early exploration reward.
+
+Glasspetal Spires
+
+Tall crystal structures in crag biomes.
+
+Appearance
+Moonstone tower base
+Crystal growth piercing upward
+Floating crystal shards nearby
+Loot
+Shimmerstone
+Crystal Dust
+Wraith Membrane
+Rare Lumen Crystal Blocks
+Danger
+
+Usually guarded by Crag Wraiths.
+
+Undercrown Relics
+
+Deep underground ancient structures.
+
+Appearance
+Moonstone brick halls
+Root-covered chambers
+Glowing pools
+Broken machines or altars
+Living roots breaking through walls
+Gameplay Role
+
+The closest thing the dimension has to a dungeon.
+
+Contains:
+
+Rare loot
+Lore
+Hostile mob spawners
+Special crafting components
+Portal stabilization materials
+Food and Survival
+
+The player can survive in the Lumenwilds without returning immediately to the Overworld.
+
+Lumen Fruit
+
+Grows from Glowroot Trees.
+
+Food value:
+
+Moderate hunger
+Low saturation
+Brief weak night vision effect
+
+This makes it useful while exploring but not overpowered.
+
+Grazer Meat
+
+Dropped by Lumen Grazers.
+
+Can be cooked.
+
+Comparable to mutton or beef depending on balancing.
+
+Glowcap Stew
+
+Crafted from:
+
+Bowl
+Glowcap
+Lumen Fruit
+Moonblossom
+
+Effect:
+
+Restores hunger
+Briefly grants night vision
+Lumen Nectar
+
+Consumed directly or brewed.
+
+Effect:
+
+Small hunger restoration
+Brief regeneration-like soothing effect
+Used in brewing better items
+Brewing and Effects
+
+The Lumenwilds adds several effects tied to its identity.
+
+Lightfoot
+
+A positive effect.
+
+Result:
+
+Increases jump height.
+Reduces fall damage.
+Slightly increases air control.
+
+Sources:
+
+Sky Jelly Air Gel
+Lumen Nectar brewing
+Glowmarked
+
+A visibility effect.
+
+Result:
+
+The affected entity softly glows.
+Hostile mobs affected by Glowmarked are easier to see in dense forests.
+
+Sources:
+
+Glow pollen splash potion
+Glowmoth scales
+Sporeblind
+
+A negative effect.
+
+Result:
+
+Slightly reduces visibility.
+Adds drifting particle overlay.
+Slight movement slowdown.
+
+Sources:
+
+Sporeling death clouds
+Sporefall Jungle hazards
+Rooted
+
+A negative effect.
+
+Result:
+
+Slows movement.
+Reduces jump height.
+Prevents sprinting while active.
+
+Sources:
+
+Root traps
+Shade Stalker attacks
+Certain plant hazards
+Hostility and Safety Philosophy
+
+The Lumenwilds is not meant to be as immediately lethal as the Nether.
+
+Its danger comes from:
+
+Getting lost
+Dense terrain
+Vertical drops
+Ambush predators
+Swamps
+Spore events
+Deep caves
+Flying enemies near cliffs
+
+The surface is survivable. The depths and special biomes are dangerous.
+
+The dimension should feel like:
+
+Beautiful first, dangerous second.
+
+That makes it different from the Nether, where danger is the first impression.
+
+Weather and Ambient Events
+Sporefall
+
+Sporefall is the signature weather event.
+
+During Sporefall:
+
+Glowing spores drift through the air.
+The sky darkens slightly.
+Plants pulse brighter.
+Sporelings spawn more frequently.
+Bonemeal-like plant growth ticks occur occasionally.
+The soundscape becomes muffled and organic.
+
+Sporefall does not replace rain everywhere. It is a Lumenwilds-specific environmental event.
+
+Moonwake
+
+Moonwake is a rare night event.
+
+During Moonwake:
+
+The moon becomes brighter.
+Lumenwater glows more intensely.
+Lantern Beetles spawn more often.
+Moonblossoms emit stronger light.
+Passive mobs are calmer.
+Shade Stalkers become less common on the surface.
+
+Moonwake is the safest and most beautiful time to travel.
+
+Deep Hush
+
+Deep Hush occurs underground.
+
+During Deep Hush:
+
+Cave ambience becomes quieter.
+Root lights pulse slowly.
+Hostile mobs spawn slightly more often.
+Distant low-frequency sounds play.
+Undercrown Relics become more ominous.
+
+Deep Hush makes caves feel alive without needing jump scares.
+
+Sound Design
+
+The Lumenwilds must sound alive.
+
+Surface Ambience
+
+The surface has:
+
+Soft insect chorus
+Distant whale-like calls
+Wind through giant leaves
+Occasional chimes from crystal formations
+Soft water hum near Lumenwater
+Forest Ambience
+
+Glowroot Forests have:
+
+Creaking roots
+Dripping water
+Low rustling canopy sounds
+Lantern Beetle wing buzzes
+Swamp Ambience
+
+Moonmires have:
+
+Wet bubbling
+Distant croaks
+Low foggy wind
+Occasional lure-click sounds from Mirelurkers
+Cave Ambience
+
+Undercrown Caverns have:
+
+Root groans
+Distant water echoes
+Crystal resonance
+Low organic pulses
+
+The player should know they are in the Lumenwilds even with the screen hidden.
+
+Color Palette
+
+The Lumenwilds has a strict color palette.
+
+Primary Colors
+Deep teal
+Cyan
+Blue grass
+Indigo sky
+Dark blue stone
+Blue-green fog
+Secondary Colors
+Pale lavender flowers
+Violet crystals
+White-blue moonlight
+Muted emerald haze
+Forbidden Dominant Colors
+
+The dimension avoids dominant:
+
+Overworld green
+Nether red
+End yellow-green
+Desert tan
+Snow white
+
+Small accents are allowed, but the Lumenwilds must never look like a normal forest with blue filters. It is alien at the block level.
+
+Player Progression Inside the Dimension
+First Five Minutes
+
+The player arrives in a dim blue glade.
+
+They notice:
+
+The world is not dark, but not bright.
+The grass is blue.
+Plants glow.
+Jumping feels different.
+The portal behind them is teal.
+The moon is huge.
+The local wood is new.
+Lumenwater glows.
+
+Immediate goals:
+
+Mark the portal.
+Collect Moonblossoms.
+Gather Glowwood.
+Capture or follow light sources.
+Learn that native plants replace torches.
+First Hour
+
+The player explores nearby biomes.
+
+They obtain:
+
+Glowwood
+Moonstone
+Glowvine
+Lumenbulbs
+Lumen Fruit
+Lumen Crystal Shards
+
+They craft:
+
+Lumen Lanterns
+Glowwood tools or decorative blocks
+Moonstone bricks
+Sporeglass
+
+They encounter:
+
+Lumen Grazers
+Lantern Beetles
+Shade Stalkers
+Sporelings
+Mid-Progression
+
+The player seeks rarer biomes.
+
+Goals:
+
+Explore Moonmire for algae and reeds.
+Explore Glasspetal Crags for crystals.
+Explore Sporefall Jungle for fungal resources.
+Find Lumenbound Ruins.
+Enter Undercrown Caverns.
+
+They craft:
+
+Improved light sources
+Movement-enhancing items
+Decorative building sets
+Brewing ingredients
+Portal stabilization materials
+Late Dimension Progression
+
+The player explores Undercrown Relics and rare Stillbloom Basins.
+
+Goals:
+
+Collect Stillbloom Cores.
+Obtain Shimmerstone.
+Craft premium lighting.
+Build a base in the dimension.
+Create stabilized portals.
+Use low gravity for large vertical builds.
+
+The Lumenwilds becomes a place the player wants to live, not just loot.
+
+Portal Stabilization
+
+The first portal works like a Nether portal, but advanced players can improve portal reliability.
+
+Unstable Return Behavior
+
+Basic Lumen portals create or locate a return portal like Nether portals do. This is functional but not always perfect in rugged terrain.
+
+Stabilized Portal Anchor
+
+Players can craft a Lumen Anchor.
+
+Crafted from:
+
+Lumenbound Stone
+Lumen Crystal Block
+Shimmerstone
+Echo Shard
+
+Behavior:
+
+Links two Lumen portals directly.
+Prevents weird return placement.
+Adds visual particles around the frame.
+Makes permanent bases more practical.
+
+This solves a real Minecraft portal pain point while fitting the theme.
+
+The Lumenwilds Base-Building Fantasy
+
+The dimension strongly supports base building.
+
+The ideal player base is:
+
+Built into a giant Glowroot Tree
+Lit by Glowvines and Lumen Lanterns
+Connected by root bridges
+Overlooking glowing rivers
+Protected by Stillbloom gardens
+Using Sporeglass windows
+Decorated with Moonstone and Shimmerstone
+
+The Lumenwilds should produce screenshots players want to show other people.
+
+Rules for Vanilla Integration
+
+The Lumenwilds respects vanilla Minecraft.
+
+It Does Not Replace the Nether
+
+The player still needs the Nether for:
+
+Blaze rods
+Nether wart
+Nether fortresses
+Ancient debris
+Fast travel
+Piglin bartering
+It Does Not Replace the End
+
+The player still needs the End for:
+
+Elytra
+Shulker boxes
+Dragon progression
+End cities
+It Adds a New Reason to Explore
+
+The Lumenwilds gives players:
+
+New building blocks
+New lighting options
+Low-gravity exploration
+Alien plants
+A beautiful base dimension
+New mobs
+New resources
+New structures
+The One Thing the Dimension Is About
+
+The Lumenwilds is about living light.
+
+Not lava light.
+Not torch light.
+Not sunlight.
+Not redstone light.
+
+Living light.
+
+Every major system reinforces that:
+
+The plants glow.
+The water glows.
+The insects glow.
+The moon glows.
+The caves glow.
+The best building blocks glow.
+The safest paths glow.
+The most valuable resources glow.
+The world is dim enough that the glow matters.
+
+The player should step through the Lumenbound Stone portal, look around, and immediately understand:
+
+This place is alive, and the light is coming from the life itself.
