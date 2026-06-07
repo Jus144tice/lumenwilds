@@ -15,15 +15,16 @@ The portal's defining rule: the frame is a **custom block, Lumenbound Stone** (`
 The portal is lit with the **Lumen Striker** (`lumenwilds:lumen_striker`), its interior is the **Lumen
 Portal** block (`lumenwilds:lumen_portal`), and the destination is **`lumenwilds:lumenwilds`**.
 
-**Current state = Phase 2 (portal + dimension entry) working on Phase 1 scaffolding.** It compiles,
-loads on client/server, registers all content, and shows the creative tab. **The portal works
-end-to-end:** the Lumen Striker ignites a Lumenbound Stone frame (real frame detection + interior fill),
-and stepping through teleports the player to `lumenwilds:lumenwilds` and back, find-or-building a return
-portal at 1:1-scaled coordinates, with "Entering/Leaving the Lumenwilds" messages. The destination still
-uses **placeholder terrain** (vanilla overworld noise + a fixed `minecraft:plains` biome) — solid ground
-to arrive on, but the 7 custom biomes/terrain are Phase 5. What is deliberately *not* built yet: custom
-terrain/biomes, low-gravity movement (Phase 3), mobs, structures, fluids, custom sky/fog. Those are
-stubbed with TODOs. Roadmap:
+**Current state = Phases 2–3 working on Phase 1 scaffolding.** It compiles, loads on client/server,
+registers all content, and shows the creative tab. **The portal works end-to-end** (Phase 2): the Lumen
+Striker ignites a Lumenbound Stone frame (real frame detection + interior fill), and stepping through
+teleports the player to `lumenwilds:lumenwilds` and back, find-or-building a return portal at 1:1-scaled
+coordinates, with "Entering/Leaving the Lumenwilds" messages. **Low-gravity movement works** (Phase 3):
+reduced gravity, higher jumps, later + halved fall damage, and flatter projectile arcs, all via vanilla
+attribute modifiers applied on dimension entry. The destination still uses **placeholder terrain**
+(vanilla overworld noise + a fixed `minecraft:plains` biome) — solid ground to arrive on, but the 7
+custom biomes/terrain are Phase 5. What is deliberately *not* built yet: custom terrain/biomes, mobs,
+structures, fluids, custom sky/fog. Those are stubbed with TODOs. Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -153,16 +154,26 @@ as `File#member`.
 - [LumenWorldgenBootstrap.java](src/main/java/com/jus144tice/lumenwilds/world/LumenWorldgenBootstrap.java)
   — empty seam for code-generated worldgen (`RegistrySetBuilder`/`BootstrapContext`) if we leave JSON.
 
-### effects/
+### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
-  `#LUMENWILDS_GRAVITY_MULTIPLIER`, `#isInLumenwilds(entity)`, `#onChangedDimension(player)` (logs;
-  Phase 4 plan = transient `minecraft:generic.gravity` attribute modifier on enter/leave).
+  applies the low-gravity feel via **transient vanilla attribute modifiers** (stable `ResourceLocation`
+  ids), added on dimension enter and removed on exit. `#GRAVITY_MULTIPLIER` (0.7 → `Attributes.GRAVITY`
+  ×0.7; jump height ~1.79 blocks emerges from this, so `JUMP_STRENGTH` is deliberately NOT touched),
+  `#SAFE_FALL_BONUS` (+3 → 6-block safe fall), `#FALL_DAMAGE_REDUCTION` (−0.5 → half damage),
+  `#isInLumenwilds(entity)`, `#refresh(livingEntity)` (server-side; the GRAVITY attr is syncable),
+  `#onChangedDimension(player)`, `#remove(livingEntity)`. Native-mob gravity comes via their attribute
+  suppliers in Phase 6, so this hook is player-only.
 
 ### event/ — `@EventBusSubscriber` (game bus), auto-registered
 - [CommonEvents.java](src/main/java/com/jus144tice/lumenwilds/event/CommonEvents.java) —
-  `#onPlayerLoggedIn` (debug log).
+  `#onPlayerLoggedIn` + `#onPlayerRespawn` → `LowGravityHandler#refresh` (rebuilt player entities lose
+  transient modifiers, so re-sync them; no-op outside the dimension).
 - [PlayerDimensionEvents.java](src/main/java/com/jus144tice/lumenwilds/event/PlayerDimensionEvents.java) —
-  `#onPlayerChangedDimension` → forwards to `LowGravityHandler#onChangedDimension`.
+  `#onPlayerChangedDimension` → "Entering/Leaving the Lumenwilds" action-bar messages + forwards to
+  `LowGravityHandler#onChangedDimension`.
+- [ProjectileArcHandler.java](src/main/java/com/jus144tice/lumenwilds/event/ProjectileArcHandler.java) —
+  `#onEntityTick(EntityTickEvent.Post)`: restores `#FLATTEN_FRACTION` (0.4) of per-tick gravity to
+  `AbstractArrow`/`ThrowableProjectile` in-dimension (server-side), for subtly flatter arcs.
 
 ### util/
 - [ResourceLocationHelper.java](src/main/java/com/jus144tice/lumenwilds/util/ResourceLocationHelper.java)

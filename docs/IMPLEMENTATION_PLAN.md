@@ -141,7 +141,16 @@ ground in the Lumenwilds with the "Entering…" message → returning lands you 
 
 ---
 
-## Phase 3 — Movement & gravity identity
+## Phase 3 — Movement & gravity identity ✅ (built)
+
+> **Status.** Done. `effects/LowGravityHandler` applies transient vanilla attribute modifiers on
+> dimension enter/exit (`GRAVITY` ×0.7 — which alone yields the bible's ~1.75-block jump, so
+> `JUMP_STRENGTH` is intentionally untouched; `SAFE_FALL_DISTANCE` +3; `FALL_DAMAGE_MULTIPLIER` −0.5),
+> re-synced on login/respawn via `event/CommonEvents`. `event/ProjectileArcHandler` flattens
+> arrow/throwable arcs (restores 40% of per-tick gravity) via `EntityTickEvent.Post`. `./gradlew build`
+> green. **Not yet interactively playtested** (needs a `runClient` session). **Deferred:** native-mob
+> gravity (Phase 6, via their attribute suppliers); Elytra left as emergent (revisit if testing shows
+> boosting feels wrong). Values are first-pass and will be tuned in Phase 9.
 
 **Goal:** the moment you step through, the world *feels* low-gravity — higher jumps, floaty falls, soft
 landings — using vanilla attributes only.
