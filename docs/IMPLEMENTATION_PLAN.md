@@ -190,9 +190,21 @@ arrows fly flatter than in the Overworld; leaving restores vanilla movement exac
 
 ---
 
-## Phase 4 — Building blocks: full sets & materials ✅ (built; signs/boats deferred)
+## Phase 4 — Building blocks: full sets & materials ✅ (complete)
 
-> **Status.** Done across three commits (4a/4b/4c), ~77 blocks total. **Glowwood wood set** (log/wood/
+> **Update.** Signs, hanging signs, boats + chest boats, and axe-stripping are now in (a 4th commit),
+> completing the bible's Glowwood set. Signs use a bespoke `ModWoodTypes.GLOWWOOD` WoodType/BlockSetType
+> (the whole wood set now uses it), the four sign blocks reuse the vanilla SIGN/HANGING_SIGN block
+> entities (added via `BlockEntityTypeAddBlocksEvent`), and `client.LumenwildsClient` registers the
+> WoodType with `Sheets`. Boats reuse vanilla `Boat`/`ChestBoat` via a Glowwood `Boat.Type` added with
+> NeoForge enum extension (`META-INF/enumextensions.json` + `ModBoatTypes`); the client registers the
+> boat/chest-boat model layers and the vanilla `BoatRenderer` draws them. Axe-stripping is the NeoForge
+> `strippables` data map. Verified: `./gradlew build` green + dedicated server reaches `Done` with no
+> errors (server-load validated the enum extension, sign BEs, and the data map; two format bugs were
+> caught + fixed there). **Still pending only a visual `runClient` check** of sign/boat rendering. ~81
+> blocks total.
+
+> **Status (initial 3 commits 4a/4b/4c), ~77 blocks.** **Glowwood wood set** (log/wood/
 > stripped, planks, leaves, stairs/slab/fence/gate/door/trapdoor/button/plate — wood sounds reuse vanilla
 > `OAK` types). **Moonstone set** (smooth/bricks/chiseled/tiles + stairs/slabs/walls). **Deep Moonstone**
 > (deepslate-analog: cobbled/polished/bricks/tiles + shapes). **Shimmerstone set** (polished/bricks/tiles/

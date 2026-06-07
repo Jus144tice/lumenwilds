@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.item.LumenStrikerItem;
+import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.SignItem;
@@ -44,6 +45,17 @@ public final class ModItems {
     public static final DeferredItem<Item> LUMEN_FRUIT = ITEMS.registerSimpleItem("lumen_fruit");
     public static final DeferredItem<Item> LUMEN_NECTAR = ITEMS.registerSimpleItem("lumen_nectar");
     public static final DeferredItem<Item> AIR_GEL = ITEMS.registerSimpleItem("air_gel");
+
+    // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
+    public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
+            "glowwood_boat",
+            props -> new BoatItem(false, ModBoatTypes.glowwood(), props),
+            new Item.Properties().stacksTo(1));
+
+    public static final DeferredItem<BoatItem> GLOWWOOD_CHEST_BOAT = ITEMS.registerItem(
+            "glowwood_chest_boat",
+            props -> new BoatItem(true, ModBoatTypes.glowwood(), props),
+            new Item.Properties().stacksTo(1));
 
     // --- Sign items (one item per sign pair; the wall variants share it) -------------------------
     public static final DeferredItem<SignItem> GLOWWOOD_SIGN = ITEMS.registerItem(

@@ -10,6 +10,8 @@ modId = "lumenwilds"
 version = "${file.jarVersion}"
 displayName = "The Lumenwilds"
 authors = "Jus144tice"
+# Adds the Glowwood Boat.Type via NeoForge's enum extension (see registry/ModBoatTypes).
+enumExtensions = "META-INF/enumextensions.json"
 description = '''
 The Lumenwilds is an alien, bioluminescent custom dimension reached through a portal whose frame is
 built from Lumenbound Stone (NOT vanilla lodestone) and lit with the Lumen Striker. This build is

@@ -21,10 +21,10 @@ Striker ignites a Lumenbound Stone frame (real frame detection + interior fill),
 teleports the player to `lumenwilds:lumenwilds` and back, find-or-building a return portal at 1:1-scaled
 coordinates, with "Entering/Leaving the Lumenwilds" messages. **Low-gravity movement works** (Phase 3):
 reduced gravity, higher jumps, later + halved fall damage, and flatter projectile arcs, all via vanilla
-attribute modifiers applied on dimension entry. **The building-block sets are in** (Phase 4): full
-Glowwood wood set, Moonstone + Deep Moonstone stone sets, Shimmerstone set, and Sporeglass — ~77 blocks
-total with placeholder assets, recipes (incl. stonecutter), loot, and tags (signs + boats deferred). The
-destination still uses **placeholder terrain**
+attribute modifiers applied on dimension entry. **The building-block sets are complete** (Phase 4): full
+Glowwood wood set (incl. signs, hanging signs, boats + chest boats, and axe-stripping), Moonstone + Deep
+Moonstone stone sets, Shimmerstone set, and Sporeglass — ~81 blocks with placeholder assets, recipes
+(incl. stonecutter), loot, and tags. The destination still uses **placeholder terrain**
 (vanilla overworld noise + a fixed `minecraft:plains` biome) — solid ground to arrive on, but the 7
 custom biomes/terrain are Phase 5. What is deliberately *not* built yet: custom terrain/biomes, mobs,
 structures, fluids, custom sky/fog. Those are stubbed with TODOs. Roadmap:
@@ -84,7 +84,8 @@ as `File#member`.
 - [Lumenwilds.java](src/main/java/com/jus144tice/lumenwilds/Lumenwilds.java) — `@Mod` class.
   `#MOD_ID` (`"lumenwilds"`), `#MOD_NAME` (`"The Lumenwilds"`), `#LOGGER`. Ctor registers these
   DeferredRegisters to the **mod bus**: `ModSounds`, `ModParticles`, `ModMobEffects`, `ModFluids`,
-  `ModBlocks`, `ModItems`, `ModBlockEntities`, `ModEntities`, `ModMenus`, `ModCreativeTabs`. `#onCommonSetup`
+  `ModBlocks`, `ModItems`, `ModBlockEntities`, `ModEntities`, `ModMenus`, `ModCreativeTabs`. Also calls
+  `ModWoodTypes#init()` first (WoodType/BlockSetType must register before blocks build). `#onCommonSetup`
   logs only. **When you add a new (non-empty) DeferredRegister, register it here.**
 
 ### registry/ — all registered content
@@ -94,17 +95,27 @@ as `File#member`.
   `#GLOWROOT_LOG`, `#GLOWVINE`, `#MOONBLOSSOM`, `#LUMENBULB`, `#LUMEN_CRYSTAL_BLOCK`. **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
-  `#GLOWWOOD_LEAVES`, stairs/slab/fence/fence_gate/door/trapdoor/button/pressure_plate — wood types reuse
-  vanilla `BlockSetType.OAK`/`WoodType.OAK`); Moonstone set (smooth/bricks/chiseled/tiles + stairs/slabs/
+  `#GLOWWOOD_LEAVES`, stairs/slab/fence/fence_gate/door/trapdoor/button/pressure_plate + signs
+  `#GLOWWOOD_SIGN`/`#GLOWWOOD_WALL_SIGN`/`#GLOWWOOD_HANGING_SIGN`/`#GLOWWOOD_WALL_HANGING_SIGN` — all using
+  `ModWoodTypes.GLOWWOOD`/`GLOWWOOD_SET`); Moonstone set (smooth/bricks/chiseled/tiles + stairs/slabs/
   walls); Deep Moonstone (deepslate-analog: cobbled/polished/bricks/tiles + shapes); Shimmerstone
   (polished/bricks/tiles/pillar/glass + shapes); Sporeglass (`TransparentBlock`) + pane (`IronBarsBlock`).
   **Add a block here → it auto-gets a BlockItem in `ModItems` (loop); add asset + loot via datagen.**
+- [ModWoodTypes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModWoodTypes.java) — bespoke
+  `#GLOWWOOD` (`WoodType`, name `lumenwilds:glowwood` → sign textures) + `#GLOWWOOD_SET` (`BlockSetType`).
+  NOT DeferredRegister content; `#init()` is called early in the `Lumenwilds` ctor.
+- [ModBoatTypes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBoatTypes.java) — `#GLOWWOOD_BOAT_TYPE`
+  (`EnumProxy<Boat.Type>`) adds a Glowwood `Boat.Type` via NeoForge enum extension
+  (`META-INF/enumextensions.json` + the `enumExtensions` key in `neoforge.mods.toml`); `#glowwood()` →
+  the created type. Reuses vanilla `Boat`/`ChestBoat`/renderer — no custom entity.
 - [ModItems.java](src/main/java/com/jus144tice/lumenwilds/registry/ModItems.java) — `#ITEMS`
   (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`, **durable: `stacksTo(1)
   .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
-  `#LIVING_FIBER`, `#LUMEN_FRUIT`, `#LUMEN_NECTAR`, `#AIR_GEL`. A **static loop auto-registers a simple
-  `BlockItem` for every block except `LUMEN_PORTAL`** (runs after the standalone items so the striker
-  stays first in the tab) — new blocks get an item with no edits here.
+  `#LIVING_FIBER`, `#LUMEN_FRUIT`, `#LUMEN_NECTAR`, `#AIR_GEL`; boats `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT`
+  (`BoatItem` over `ModBoatTypes.glowwood()`); signs `#GLOWWOOD_SIGN` (`SignItem`)/`#GLOWWOOD_HANGING_SIGN`
+  (`HangingSignItem`) — wall variants share these. A **static loop auto-registers a simple `BlockItem` for
+  every block except `LUMEN_PORTAL` and the sign blocks** (runs after the standalone/sign items so the
+  striker stays first in the tab) — new blocks get an item with no edits here.
 - [ModCreativeTabs.java](src/main/java/com/jus144tice/lumenwilds/registry/ModCreativeTabs.java) —
   `#CREATIVE_MODE_TABS`, `#LUMENWILDS_TAB` (id `lumenwilds`, title key `itemGroup.lumenwilds`, icon =
   Lumen Striker). **Auto-populates from `ModItems.ITEMS`** — new items appear without editing this file.
@@ -183,6 +194,15 @@ as `File#member`.
 - [ProjectileArcHandler.java](src/main/java/com/jus144tice/lumenwilds/event/ProjectileArcHandler.java) —
   `#onEntityTick(EntityTickEvent.Post)`: restores `#FLATTEN_FRACTION` (0.4) of per-tick gravity to
   `AbstractArrow`/`ThrowableProjectile` in-dimension (server-side), for subtly flatter arcs.
+- [ModBlockEntityTypes.java](src/main/java/com/jus144tice/lumenwilds/event/ModBlockEntityTypes.java) —
+  mod-bus `#addSignBlocks(BlockEntityTypeAddBlocksEvent)`: adds the Glowwood sign blocks to the vanilla
+  `BlockEntityType.SIGN`/`HANGING_SIGN` (modded signs reuse the vanilla block entities).
+
+### client/ — `@EventBusSubscriber(value = Dist.CLIENT, bus = MOD)`, client-only
+- [LumenwildsClient.java](src/main/java/com/jus144tice/lumenwilds/client/LumenwildsClient.java) —
+  `#onClientSetup` → `Sheets.addWoodType(ModWoodTypes.GLOWWOOD)` (sign atlas material);
+  `#registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions)` → boat + chest-boat model
+  layers for the Glowwood `Boat.Type` (the vanilla `BoatRenderer` then draws them).
 
 ### util/
 - [ResourceLocationHelper.java](src/main/java/com/jus144tice/lumenwilds/util/ResourceLocationHelper.java)
@@ -193,19 +213,20 @@ as `File#member`.
   `@EventBusSubscriber(bus = MOD)`, `#gatherData(GatherDataEvent)` wires the six providers below.
 - [ModBlockStateProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModBlockStateProvider.java) —
   **dispatches by block type** (`#registerStatesAndModels`): logs/wood → `logBlock`/`axisBlock`,
-  stairs/slab/fence/gate/wall/door/trapdoor/button/plate → the matching helper, panes → `paneBlock`, else
-  `cube_all`. `#baseTex(name)` resolves a shape's base texture (Glowwood shapes → planks; `_brick`/`_tile`
-  → plural `_bricks`/`_tiles`).
+  stairs/slab/fence/gate/wall/door/trapdoor/button/plate → the matching helper, panes → `paneBlock`,
+  signs → `#registerSigns` (particle model), else `cube_all`. `#baseTex(name)` resolves a shape's base
+  texture (Glowwood shapes → planks; `_brick`/`_tile` → plural `_bricks`/`_tiles`).
 - [ModItemModelProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModItemModelProvider.java) —
   block items inherit `block/<name>` (via `UncheckedModelFile`, to dodge cross-provider validation);
-  fence/wall/button → `_inventory`, trapdoor → `_bottom`, doors + panes → flat `item/<name>`; standalone
-  items → `basicItem`.
+  fence/wall/button → `_inventory`, trapdoor → `_bottom`, doors + panes + signs → flat `item/<name>`;
+  standalone items (incl. boats) → `basicItem`.
 - [ModLanguageProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLanguageProvider.java) —
-  auto names from registry paths (`#addTranslations`, `#titleCase`) + the tab title + portal messages.
+  auto names from registry paths (`#addTranslations`, `#titleCase`) + tab title + portal messages,
+  **deduped by description id** (SignItem/BlockItem reuse a block's key).
 - [ModRecipeProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModRecipeProvider.java) —
   `#buildRecipes`: Lumenbound Stone (`CGC/SAS/CGC`) + Lumen Striker (`I/A/G`); `#buildGlowwoodRecipes`
-  (wood set), `#buildMoonstoneRecipes` + `#buildShimmerstoneRecipes` (smelting + 2×2 crafting + stonecutter
-  via helpers `#smelt`/`#square2x2`/`#cut`).
+  (wood set incl. signs, hanging signs, boat + chest boat), `#buildMoonstoneRecipes` +
+  `#buildShimmerstoneRecipes` (smelting + 2×2 crafting + stonecutter via helpers `#smelt`/`#square2x2`/`#cut`).
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
   `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL`, with slab (drops 2)
   and door (drops 1) special-cased.
@@ -221,14 +242,19 @@ as `File#member`.
 ## Resources — `src/main/resources`
 
 - [META-INF/neoforge.mods.toml](src/main/resources/META-INF/neoforge.mods.toml) — mod metadata; only
-  `neoforge` + `minecraft` deps (required). `pack.mcmeta` → `pack_format` 48.
+  `neoforge` + `minecraft` deps (required); `enumExtensions = "META-INF/enumextensions.json"` (Glowwood
+  `Boat.Type`). `pack.mcmeta` → `pack_format` 48.
+- `META-INF/enumextensions.json` — the Glowwood `Boat.Type` entry (constant name `lumenwilds_glowwood` is
+  a Java identifier; the constructor's name string `lumenwilds:glowwood` drives textures). See `ModBoatTypes`.
 - `assets/lumenwilds/`: `blockstates/`, `models/block|item/`, `textures/block|item/` (flat-colour 16px
-  placeholders), `lang/en_us.json` (display names + `itemGroup.lumenwilds` + portal transition messages
-  `lumenwilds.portal.{entering,leaving}`).
-- `data/lumenwilds/`: `recipe/{lumenbound_stone,lumen_striker}.json`, `loot_table/blocks/*` (drop-self),
-  `dimension/lumenwilds.json` + `dimension_type/lumenwilds.json` (placeholder — reuses overworld noise +
-  fixed plains biome; valid & loads), `worldgen/README.md` (future-home note).
-- `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel}.json`.
+  placeholders), `textures/entity/{signs,signs/hanging,boat,chest_boat}/glowwood.png` + `textures/gui/
+  hanging_signs/glowwood.png` (sign/boat placeholders), `lang/en_us.json` (display names +
+  `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}`).
+- `data/lumenwilds/`: `recipe/*`, `loot_table/blocks/*`, `dimension/lumenwilds.json` +
+  `dimension_type/lumenwilds.json` (placeholder — reuses overworld noise + fixed plains biome; valid &
+  loads), `worldgen/README.md`.
+- `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
+- `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`.
 
 ## Adding content — quick recipes
 

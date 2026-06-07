@@ -313,5 +313,18 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('#', ModBlocks.STRIPPED_GLOWWOOD_LOG.get())
                 .unlockedBy("has_stripped_glowwood_log", has(ModBlocks.STRIPPED_GLOWWOOD_LOG.get()))
                 .save(out);
+
+        // Boats.
+        ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, ModItems.GLOWWOOD_BOAT.get(), 1)
+                .pattern("# #")
+                .pattern("###")
+                .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
+                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+                .save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, ModItems.GLOWWOOD_CHEST_BOAT.get(), 1)
+                .requires(Items.CHEST)
+                .requires(ModItems.GLOWWOOD_BOAT.get())
+                .unlockedBy("has_glowwood_boat", has(ModItems.GLOWWOOD_BOAT.get()))
+                .save(out);
     }
 }
