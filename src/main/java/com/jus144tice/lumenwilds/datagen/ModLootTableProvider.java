@@ -5,6 +5,7 @@
 package com.jus144tice.lumenwilds.datagen;
 
 import com.jus144tice.lumenwilds.registry.ModBlocks;
+import com.jus144tice.lumenwilds.registry.ModItems;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -49,12 +50,17 @@ public final class ModLootTableProvider {
         @Override
         protected void generate() {
             for (Block block : lootableBlocks()) {
+                String name = block.builtInRegistryHolder().key().location().getPath();
                 if (block instanceof SlabBlock) {
                     add(block, this::createSlabItemTable); // double slab drops 2
                 } else if (block instanceof DoorBlock) {
                     add(block, this::createDoorTable); // a door is two blocks but drops one item
+                } else if (name.endsWith("_wall_hanging_sign")) {
+                    dropOther(block, ModItems.GLOWWOOD_HANGING_SIGN.get());
+                } else if (name.endsWith("_wall_sign")) {
+                    dropOther(block, ModItems.GLOWWOOD_SIGN.get());
                 } else {
-                    dropSelf(block);
+                    dropSelf(block); // standing/ceiling signs drop their own (Sign/HangingSign)Item
                 }
             }
         }

@@ -14,6 +14,7 @@ import com.jus144tice.lumenwilds.registry.ModMenus;
 import com.jus144tice.lumenwilds.registry.ModMobEffects;
 import com.jus144tice.lumenwilds.registry.ModParticles;
 import com.jus144tice.lumenwilds.registry.ModSounds;
+import com.jus144tice.lumenwilds.registry.ModWoodTypes;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -47,6 +48,9 @@ public final class Lumenwilds {
 
     public Lumenwilds(IEventBus modBus, ModContainer container) {
         LOGGER.info("[{}] Initialising {} (scaffolding build).", MOD_ID, MOD_NAME);
+
+        // Register the Glowwood WoodType/BlockSetType BEFORE blocks that reference them are built.
+        ModWoodTypes.init();
 
         // --- Register every DeferredRegister to the mod event bus. Order is not significant. ---
         ModSounds.SOUNDS.register(modBus);

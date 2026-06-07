@@ -6,7 +6,9 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.item.LumenStrikerItem;
+import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SignItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -43,13 +45,26 @@ public final class ModItems {
     public static final DeferredItem<Item> LUMEN_NECTAR = ITEMS.registerSimpleItem("lumen_nectar");
     public static final DeferredItem<Item> AIR_GEL = ITEMS.registerSimpleItem("air_gel");
 
+    // --- Sign items (one item per sign pair; the wall variants share it) -------------------------
+    public static final DeferredItem<SignItem> GLOWWOOD_SIGN = ITEMS.registerItem(
+            "glowwood_sign",
+            props -> new SignItem(props, ModBlocks.GLOWWOOD_SIGN.get(), ModBlocks.GLOWWOOD_WALL_SIGN.get()),
+            new Item.Properties().stacksTo(16));
+
+    public static final DeferredItem<HangingSignItem> GLOWWOOD_HANGING_SIGN = ITEMS.registerItem(
+            "glowwood_hanging_sign",
+            props -> new HangingSignItem(
+                    ModBlocks.GLOWWOOD_HANGING_SIGN.get(), ModBlocks.GLOWWOOD_WALL_HANGING_SIGN.get(), props),
+            new Item.Properties().stacksTo(16));
+
     // --- Block items ----------------------------------------------------------------------------
-    // Auto-register a simple BlockItem for every registered block EXCEPT the portal interior (which is
-    // placed by portal mechanics, never held). Runs after the standalone items above so the Lumen
-    // Striker stays first in the creative tab. New blocks get an item for free — no edits here.
+    // Auto-register a simple BlockItem for every registered block EXCEPT the portal interior (placed by
+    // portal mechanics) and the sign blocks (handled above as SignItem/HangingSignItem; wall variants get
+    // no item). Runs after the standalone + sign items so the Lumen Striker stays first in the tab. New
+    // blocks get an item for free — no edits here.
     static {
         for (var block : ModBlocks.BLOCKS.getEntries()) {
-            if (block == ModBlocks.LUMEN_PORTAL) {
+            if (block == ModBlocks.LUMEN_PORTAL || block.getId().getPath().contains("sign")) {
                 continue;
             }
             ITEMS.registerSimpleBlockItem(block);

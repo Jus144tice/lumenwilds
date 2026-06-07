@@ -8,9 +8,10 @@ import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.registry.ModBlocks;
 import com.jus144tice.lumenwilds.registry.ModItems;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.BlockItem;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
 /**
@@ -32,15 +33,19 @@ public class ModLanguageProvider extends LanguageProvider {
         add("lumenwilds.portal.entering", "Entering the Lumenwilds");
         add("lumenwilds.portal.leaving", "Leaving the Lumenwilds");
 
-        // Block display names (BlockItems use the block translation key).
-        ModBlocks.BLOCKS
-                .getEntries()
-                .forEach(block -> add(block.get(), titleCase(block.getId().getPath())));
-
-        // Standalone (non-block) item names.
-        ModItems.ITEMS.getEntries().stream()
-                .filter(item -> !(item.get() instanceof BlockItem))
-                .forEach(item -> add(item.get(), titleCase(item.getId().getPath())));
+        // Names derived from registry paths. Dedupe by description id so items that reuse a block's key
+        // (BlockItems, SignItem/HangingSignItem) aren't added twice.
+        Set<String> seen = new HashSet<>();
+        ModBlocks.BLOCKS.getEntries().forEach(block -> {
+            if (seen.add(block.get().getDescriptionId())) {
+                add(block.get(), titleCase(block.getId().getPath()));
+            }
+        });
+        ModItems.ITEMS.getEntries().forEach(item -> {
+            if (seen.add(item.get().getDescriptionId())) {
+                add(item.get(), titleCase(item.getId().getPath()));
+            }
+        });
     }
 
     private static String titleCase(String path) {

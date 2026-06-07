@@ -13,6 +13,10 @@
     "lumenwilds:glowwood_door",
     "lumenwilds:glowwood_trapdoor",
     "lumenwilds:glowwood_button",
-    "lumenwilds:glowwood_pressure_plate"
+    "lumenwilds:glowwood_pressure_plate",
+    "lumenwilds:glowwood_sign",
+    "lumenwilds:glowwood_wall_sign",
+    "lumenwilds:glowwood_hanging_sign",
+    "lumenwilds:glowwood_wall_hanging_sign"
   ]
 }

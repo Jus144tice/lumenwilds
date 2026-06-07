@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 /**
@@ -37,10 +38,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
+        registerSigns();
+
         for (var holder : ModBlocks.BLOCKS.getEntries()) {
             Block block = holder.get();
             String name = holder.getId().getPath();
 
+            if (name.endsWith("_sign")) {
+                continue; // handled in registerSigns() (needs standing+wall paired)
+            }
             if (block instanceof RotatedPillarBlock pillar) {
                 if (name.endsWith("_wood")) {
                     // "Wood" (all-bark) reuses its log's side texture on every face.
@@ -77,6 +83,15 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 simpleBlock(block);
             }
         }
+    }
+
+    /** Sign blocks render via a block-entity renderer; their blockstate just points at a particle model. */
+    private void registerSigns() {
+        ResourceLocation particle = blockTex("glowwood_planks");
+        signBlock(ModBlocks.GLOWWOOD_SIGN.get(), ModBlocks.GLOWWOOD_WALL_SIGN.get(), particle);
+        ModelFile hanging = models().sign("glowwood_hanging_sign", particle);
+        simpleBlock(ModBlocks.GLOWWOOD_HANGING_SIGN.get(), hanging);
+        simpleBlock(ModBlocks.GLOWWOOD_WALL_HANGING_SIGN.get(), hanging);
     }
 
     /** Texture {@code lumenwilds:block/<id>}. */

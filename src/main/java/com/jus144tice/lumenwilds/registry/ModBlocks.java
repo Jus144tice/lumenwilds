@@ -8,6 +8,7 @@ import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.portal.LumenPortalBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
@@ -18,12 +19,13 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.WallHangingSignBlock;
+import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -160,8 +162,7 @@ public final class ModBlocks {
                     .sound(SoundType.AMETHYST));
 
     // --- Glowwood building set (Phase 4) --------------------------------------------------------
-    // Wood-set sounds/behaviour reuse vanilla OAK BlockSetType/WoodType for now (invisible to players);
-    // a bespoke Glowwood WoodType arrives with signs in a later pass.
+    // Wood-set sounds/behaviour + signs use the bespoke Glowwood WoodType/BlockSetType (ModWoodTypes).
 
     public static final DeferredBlock<RotatedPillarBlock> GLOWWOOD_WOOD =
             BLOCKS.registerBlock("glowwood_wood", RotatedPillarBlock::new, logProps());
@@ -198,11 +199,11 @@ public final class ModBlocks {
             BLOCKS.registerBlock("glowwood_fence", FenceBlock::new, planksProps());
 
     public static final DeferredBlock<FenceGateBlock> GLOWWOOD_FENCE_GATE = BLOCKS.registerBlock(
-            "glowwood_fence_gate", props -> new FenceGateBlock(WoodType.OAK, props), planksProps());
+            "glowwood_fence_gate", props -> new FenceGateBlock(ModWoodTypes.GLOWWOOD, props), planksProps());
 
     public static final DeferredBlock<DoorBlock> GLOWWOOD_DOOR = BLOCKS.registerBlock(
             "glowwood_door",
-            props -> new DoorBlock(BlockSetType.OAK, props),
+            props -> new DoorBlock(ModWoodTypes.GLOWWOOD_SET, props),
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(3.0F)
@@ -212,7 +213,7 @@ public final class ModBlocks {
 
     public static final DeferredBlock<TrapDoorBlock> GLOWWOOD_TRAPDOOR = BLOCKS.registerBlock(
             "glowwood_trapdoor",
-            props -> new TrapDoorBlock(BlockSetType.OAK, props),
+            props -> new TrapDoorBlock(ModWoodTypes.GLOWWOOD_SET, props),
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(3.0F)
@@ -222,7 +223,7 @@ public final class ModBlocks {
 
     public static final DeferredBlock<ButtonBlock> GLOWWOOD_BUTTON = BLOCKS.registerBlock(
             "glowwood_button",
-            props -> new ButtonBlock(BlockSetType.OAK, 30, props),
+            props -> new ButtonBlock(ModWoodTypes.GLOWWOOD_SET, 30, props),
             BlockBehaviour.Properties.of()
                     .noCollission()
                     .strength(0.5F)
@@ -231,12 +232,26 @@ public final class ModBlocks {
 
     public static final DeferredBlock<PressurePlateBlock> GLOWWOOD_PRESSURE_PLATE = BLOCKS.registerBlock(
             "glowwood_pressure_plate",
-            props -> new PressurePlateBlock(BlockSetType.OAK, props),
+            props -> new PressurePlateBlock(ModWoodTypes.GLOWWOOD_SET, props),
             BlockBehaviour.Properties.of()
                     .noCollission()
                     .strength(0.5F)
                     .sound(SoundType.WOOD)
                     .pushReaction(PushReaction.DESTROY));
+
+    // Signs (standing + wall, hanging + wall-hanging). Wall variants share the standing item; all four
+    // use the vanilla SIGN/HANGING_SIGN block entities (wired via event.ModBlockEntityTypes).
+    public static final DeferredBlock<StandingSignBlock> GLOWWOOD_SIGN = BLOCKS.registerBlock(
+            "glowwood_sign", props -> new StandingSignBlock(ModWoodTypes.GLOWWOOD, props), signProps());
+
+    public static final DeferredBlock<WallSignBlock> GLOWWOOD_WALL_SIGN = BLOCKS.registerBlock(
+            "glowwood_wall_sign", props -> new WallSignBlock(ModWoodTypes.GLOWWOOD, props), signProps());
+
+    public static final DeferredBlock<CeilingHangingSignBlock> GLOWWOOD_HANGING_SIGN = BLOCKS.registerBlock(
+            "glowwood_hanging_sign", props -> new CeilingHangingSignBlock(ModWoodTypes.GLOWWOOD, props), signProps());
+
+    public static final DeferredBlock<WallHangingSignBlock> GLOWWOOD_WALL_HANGING_SIGN = BLOCKS.registerBlock(
+            "glowwood_wall_hanging_sign", props -> new WallHangingSignBlock(ModWoodTypes.GLOWWOOD, props), signProps());
 
     // --- Moonstone stone set (Phase 4) ----------------------------------------------------------
     // MOONSTONE + COBBLED_MOONSTONE are declared above. Cube variants first, then stairs/slabs/walls.
@@ -444,6 +459,15 @@ public final class ModBlocks {
         return BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_CYAN)
                 .strength(2.0F, 3.0F)
+                .sound(SoundType.WOOD);
+    }
+
+    private static BlockBehaviour.Properties signProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_CYAN)
+                .forceSolidOn()
+                .noCollission()
+                .strength(1.0F)
                 .sound(SoundType.WOOD);
     }
 }

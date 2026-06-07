@@ -295,5 +295,23 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
                 .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
                 .save(out);
+
+        // Signs (the recipe result is the SignItem, registered under glowwood_sign).
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.GLOWWOOD_SIGN.get(), 3)
+                .pattern("###")
+                .pattern("###")
+                .pattern(" / ")
+                .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
+                .define('/', Items.STICK)
+                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.GLOWWOOD_HANGING_SIGN.get(), 6)
+                .pattern("C C")
+                .pattern("###")
+                .pattern("###")
+                .define('C', Items.CHAIN)
+                .define('#', ModBlocks.STRIPPED_GLOWWOOD_LOG.get())
+                .unlockedBy("has_stripped_glowwood_log", has(ModBlocks.STRIPPED_GLOWWOOD_LOG.get()))
+                .save(out);
     }
 }
