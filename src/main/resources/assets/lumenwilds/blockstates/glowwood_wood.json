@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "lumenwilds:block/glowwood_wood_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "lumenwilds:block/glowwood_wood"
+    },
+    "axis=z": {
+      "model": "lumenwilds:block/glowwood_wood_horizontal",
+      "x": 90
+    }
+  }
+}

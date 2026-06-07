@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "lumenwilds:glowwood_log"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "lumenwilds:glowwood_planks"
+  }
+}

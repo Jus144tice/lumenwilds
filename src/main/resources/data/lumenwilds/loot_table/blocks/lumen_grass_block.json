@@ -2,13 +2,20 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "rolls": 1.0,
-      "entries": [
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_grass_block" }
-      ],
+      "bonus_rolls": 0.0,
       "conditions": [
-        { "condition": "minecraft:survives_explosion" }
-      ]
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:lumen_grass_block"
+        }
+      ],
+      "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "lumenwilds:blocks/lumen_grass_block"
 }

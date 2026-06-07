@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "lumenwilds:block/glowwood_log",
+    "side": "lumenwilds:block/glowwood_log"
+  }
+}

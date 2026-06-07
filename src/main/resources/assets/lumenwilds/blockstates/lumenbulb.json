@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "lumenwilds:block/lumenbulb" }
+    "": {
+      "model": "lumenwilds:block/lumenbulb"
+    }
   }
 }

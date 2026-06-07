@@ -16,6 +16,8 @@ import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
 /**
@@ -46,7 +48,15 @@ public final class ModLootTableProvider {
 
         @Override
         protected void generate() {
-            lootableBlocks().forEach(this::dropSelf);
+            for (Block block : lootableBlocks()) {
+                if (block instanceof SlabBlock) {
+                    add(block, this::createSlabItemTable); // double slab drops 2
+                } else if (block instanceof DoorBlock) {
+                    add(block, this::createDoorTable); // a door is two blocks but drops one item
+                } else {
+                    dropSelf(block);
+                }
+            }
         }
 
         @Override

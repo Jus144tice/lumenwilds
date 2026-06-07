@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/button",
+  "textures": {
+    "texture": "lumenwilds:block/glowwood_planks"
+  }
+}

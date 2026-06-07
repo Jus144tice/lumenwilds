@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "lumenwilds:block/moonblossom" }
+    "": {
+      "model": "lumenwilds:block/moonblossom"
+    }
   }
 }

@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "lumenwilds:block/lumen_grass_block" }
+    "": {
+      "model": "lumenwilds:block/lumen_grass_block"
+    }
   }
 }

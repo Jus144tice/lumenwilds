@@ -7,8 +7,20 @@ package com.jus144tice.lumenwilds.registry;
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.portal.LumenPortalBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.PressurePlateBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockSetType;
+import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -92,19 +104,11 @@ public final class ModBlocks {
 
     // --- Wood & plants --------------------------------------------------------------------------
 
-    public static final DeferredBlock<Block> GLOWWOOD_LOG = BLOCKS.registerSimpleBlock(
-            "glowwood_log",
-            BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_CYAN)
-                    .strength(2.0F)
-                    .sound(SoundType.WOOD));
+    public static final DeferredBlock<RotatedPillarBlock> GLOWWOOD_LOG =
+            BLOCKS.registerBlock("glowwood_log", RotatedPillarBlock::new, logProps());
 
-    public static final DeferredBlock<Block> GLOWWOOD_PLANKS = BLOCKS.registerSimpleBlock(
-            "glowwood_planks",
-            BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_CYAN)
-                    .strength(2.0F, 3.0F)
-                    .sound(SoundType.WOOD));
+    public static final DeferredBlock<Block> GLOWWOOD_PLANKS =
+            BLOCKS.registerSimpleBlock("glowwood_planks", planksProps());
 
     public static final DeferredBlock<Block> GLOWROOT_LOG = BLOCKS.registerSimpleBlock(
             "glowroot_log",
@@ -151,4 +155,99 @@ public final class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 6)
                     .sound(SoundType.AMETHYST));
+
+    // --- Glowwood building set (Phase 4) --------------------------------------------------------
+    // Wood-set sounds/behaviour reuse vanilla OAK BlockSetType/WoodType for now (invisible to players);
+    // a bespoke Glowwood WoodType arrives with signs in a later pass.
+
+    public static final DeferredBlock<RotatedPillarBlock> GLOWWOOD_WOOD =
+            BLOCKS.registerBlock("glowwood_wood", RotatedPillarBlock::new, logProps());
+
+    public static final DeferredBlock<RotatedPillarBlock> STRIPPED_GLOWWOOD_LOG =
+            BLOCKS.registerBlock("stripped_glowwood_log", RotatedPillarBlock::new, logProps());
+
+    public static final DeferredBlock<RotatedPillarBlock> STRIPPED_GLOWWOOD_WOOD =
+            BLOCKS.registerBlock("stripped_glowwood_wood", RotatedPillarBlock::new, logProps());
+
+    /** Glowwood Leaves — faint glow (light 2) per the bible; no full set of leaf drops yet. */
+    public static final DeferredBlock<LeavesBlock> GLOWWOOD_LEAVES = BLOCKS.registerBlock(
+            "glowwood_leaves",
+            LeavesBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(0.2F)
+                    .randomTicks()
+                    .lightLevel(state -> 2)
+                    .sound(SoundType.GRASS)
+                    .noOcclusion()
+                    .isViewBlocking((s, l, p) -> false)
+                    .pushReaction(PushReaction.DESTROY));
+
+    public static final DeferredBlock<StairBlock> GLOWWOOD_STAIRS = BLOCKS.registerBlock(
+            "glowwood_stairs",
+            props -> new StairBlock(GLOWWOOD_PLANKS.get().defaultBlockState(), props),
+            planksProps());
+
+    public static final DeferredBlock<SlabBlock> GLOWWOOD_SLAB =
+            BLOCKS.registerBlock("glowwood_slab", SlabBlock::new, planksProps());
+
+    public static final DeferredBlock<FenceBlock> GLOWWOOD_FENCE =
+            BLOCKS.registerBlock("glowwood_fence", FenceBlock::new, planksProps());
+
+    public static final DeferredBlock<FenceGateBlock> GLOWWOOD_FENCE_GATE = BLOCKS.registerBlock(
+            "glowwood_fence_gate", props -> new FenceGateBlock(WoodType.OAK, props), planksProps());
+
+    public static final DeferredBlock<DoorBlock> GLOWWOOD_DOOR = BLOCKS.registerBlock(
+            "glowwood_door",
+            props -> new DoorBlock(BlockSetType.OAK, props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(3.0F)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY));
+
+    public static final DeferredBlock<TrapDoorBlock> GLOWWOOD_TRAPDOOR = BLOCKS.registerBlock(
+            "glowwood_trapdoor",
+            props -> new TrapDoorBlock(BlockSetType.OAK, props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(3.0F)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()
+                    .isValidSpawn((s, l, p, e) -> false));
+
+    public static final DeferredBlock<ButtonBlock> GLOWWOOD_BUTTON = BLOCKS.registerBlock(
+            "glowwood_button",
+            props -> new ButtonBlock(BlockSetType.OAK, 30, props),
+            BlockBehaviour.Properties.of()
+                    .noCollission()
+                    .strength(0.5F)
+                    .sound(SoundType.WOOD)
+                    .pushReaction(PushReaction.DESTROY));
+
+    public static final DeferredBlock<PressurePlateBlock> GLOWWOOD_PRESSURE_PLATE = BLOCKS.registerBlock(
+            "glowwood_pressure_plate",
+            props -> new PressurePlateBlock(BlockSetType.OAK, props),
+            BlockBehaviour.Properties.of()
+                    .noCollission()
+                    .strength(0.5F)
+                    .sound(SoundType.WOOD)
+                    .pushReaction(PushReaction.DESTROY));
+
+    // --- Property helpers -----------------------------------------------------------------------
+
+    private static BlockBehaviour.Properties logProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_CYAN)
+                .strength(2.0F)
+                .sound(SoundType.WOOD);
+    }
+
+    private static BlockBehaviour.Properties planksProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_CYAN)
+                .strength(2.0F, 3.0F)
+                .sound(SoundType.WOOD);
+    }
 }

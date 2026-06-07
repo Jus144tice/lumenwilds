@@ -28,6 +28,10 @@ public class ModLanguageProvider extends LanguageProvider {
     protected void addTranslations() {
         add("itemGroup.lumenwilds", Lumenwilds.MOD_NAME);
 
+        // Portal transition messages (see event.PlayerDimensionEvents).
+        add("lumenwilds.portal.entering", "Entering the Lumenwilds");
+        add("lumenwilds.portal.leaving", "Leaving the Lumenwilds");
+
         // Block display names (BlockItems use the block translation key).
         ModBlocks.BLOCKS
                 .getEntries()

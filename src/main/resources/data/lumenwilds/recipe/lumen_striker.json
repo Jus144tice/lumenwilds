@@ -1,18 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
+  "key": {
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "G": {
+      "item": "minecraft:glow_ink_sac"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
   "pattern": [
     "I",
     "A",
     "G"
   ],
-  "key": {
-    "I": { "item": "minecraft:iron_ingot" },
-    "A": { "item": "minecraft:amethyst_shard" },
-    "G": { "item": "minecraft:glow_ink_sac" }
-  },
   "result": {
-    "id": "lumenwilds:lumen_striker",
-    "count": 1
+    "count": 1,
+    "id": "lumenwilds:lumen_striker"
   }
 }

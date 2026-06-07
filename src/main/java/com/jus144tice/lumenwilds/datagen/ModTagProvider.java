@@ -35,10 +35,27 @@ public class ModTagProvider extends BlockTagsProvider {
                         ModBlocks.LUMEN_CRYSTAL_BLOCK.get());
 
         tag(BlockTags.MINEABLE_WITH_AXE)
-                .add(ModBlocks.GLOWWOOD_LOG.get(), ModBlocks.GLOWWOOD_PLANKS.get(), ModBlocks.GLOWROOT_LOG.get());
+                .add(
+                        ModBlocks.GLOWWOOD_LOG.get(),
+                        ModBlocks.GLOWWOOD_WOOD.get(),
+                        ModBlocks.STRIPPED_GLOWWOOD_LOG.get(),
+                        ModBlocks.STRIPPED_GLOWWOOD_WOOD.get(),
+                        ModBlocks.GLOWWOOD_PLANKS.get(),
+                        ModBlocks.GLOWWOOD_STAIRS.get(),
+                        ModBlocks.GLOWWOOD_SLAB.get(),
+                        ModBlocks.GLOWWOOD_FENCE.get(),
+                        ModBlocks.GLOWWOOD_FENCE_GATE.get(),
+                        ModBlocks.GLOWWOOD_DOOR.get(),
+                        ModBlocks.GLOWWOOD_TRAPDOOR.get(),
+                        ModBlocks.GLOWWOOD_BUTTON.get(),
+                        ModBlocks.GLOWWOOD_PRESSURE_PLATE.get(),
+                        ModBlocks.GLOWROOT_LOG.get());
 
         tag(BlockTags.MINEABLE_WITH_SHOVEL).add(ModBlocks.MOONLOAM.get(), ModBlocks.LUMEN_GRASS_BLOCK.get());
 
-        // TODO (Phase 3+): needs_*_tool tiers, leaves/plant tags, c: common tags via an item-tag provider.
+        tag(BlockTags.MINEABLE_WITH_HOE).add(ModBlocks.GLOWWOOD_LEAVES.get());
+        tag(BlockTags.LEAVES).add(ModBlocks.GLOWWOOD_LEAVES.get());
+
+        // TODO (Phase 4+): needs_*_tool tiers, c: common tags via an item-tag provider, plant/vine tags.
     }
 }

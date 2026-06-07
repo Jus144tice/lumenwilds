@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "lumenwilds:block/glowroot_log" }
+    "": {
+      "model": "lumenwilds:block/glowroot_log"
+    }
   }
 }

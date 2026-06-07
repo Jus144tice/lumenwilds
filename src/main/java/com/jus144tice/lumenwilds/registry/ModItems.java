@@ -63,4 +63,27 @@ public final class ModItems {
     public static final DeferredItem<BlockItem> LUMENBULB = ITEMS.registerSimpleBlockItem(ModBlocks.LUMENBULB);
     public static final DeferredItem<BlockItem> LUMEN_CRYSTAL_BLOCK =
             ITEMS.registerSimpleBlockItem(ModBlocks.LUMEN_CRYSTAL_BLOCK);
+
+    // --- Glowwood building set (Phase 4) --------------------------------------------------------
+    public static final DeferredItem<BlockItem> GLOWWOOD_WOOD = ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_WOOD);
+    public static final DeferredItem<BlockItem> STRIPPED_GLOWWOOD_LOG =
+            ITEMS.registerSimpleBlockItem(ModBlocks.STRIPPED_GLOWWOOD_LOG);
+    public static final DeferredItem<BlockItem> STRIPPED_GLOWWOOD_WOOD =
+            ITEMS.registerSimpleBlockItem(ModBlocks.STRIPPED_GLOWWOOD_WOOD);
+    public static final DeferredItem<BlockItem> GLOWWOOD_LEAVES =
+            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_LEAVES);
+    public static final DeferredItem<BlockItem> GLOWWOOD_STAIRS =
+            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_STAIRS);
+    public static final DeferredItem<BlockItem> GLOWWOOD_SLAB = ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_SLAB);
+    public static final DeferredItem<BlockItem> GLOWWOOD_FENCE =
+            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_FENCE);
+    public static final DeferredItem<BlockItem> GLOWWOOD_FENCE_GATE =
+            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_FENCE_GATE);
+    public static final DeferredItem<BlockItem> GLOWWOOD_DOOR = ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_DOOR);
+    public static final DeferredItem<BlockItem> GLOWWOOD_TRAPDOOR =
+            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_TRAPDOOR);
+    public static final DeferredItem<BlockItem> GLOWWOOD_BUTTON =
+            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_BUTTON);
+    public static final DeferredItem<BlockItem> GLOWWOOD_PRESSURE_PLATE =
+            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_PRESSURE_PLATE);
 }

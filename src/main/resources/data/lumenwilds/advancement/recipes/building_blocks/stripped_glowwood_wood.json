@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_stripped_glowwood_log": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:stripped_glowwood_log"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:stripped_glowwood_wood"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_stripped_glowwood_log"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:stripped_glowwood_wood"
+    ]
+  }
+}

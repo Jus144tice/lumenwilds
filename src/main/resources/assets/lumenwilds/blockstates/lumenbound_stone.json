@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "lumenwilds:block/lumenbound_stone" }
+    "": {
+      "model": "lumenwilds:block/lumenbound_stone"
+    }
   }
 }
