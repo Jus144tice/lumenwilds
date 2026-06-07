@@ -74,6 +74,34 @@ public class ModRecipeProvider extends RecipeProvider {
         buildGlowwoodRecipes(recipeOutput);
         buildMoonstoneRecipes(recipeOutput);
         buildShimmerstoneRecipes(recipeOutput);
+        buildLumenCrystalRecipes(recipeOutput);
+    }
+
+    /** Lumen Crystal: block ↔ 9 shards, and ore → shard (smelting + blasting). */
+    private void buildLumenCrystalRecipes(RecipeOutput out) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.LUMEN_CRYSTAL_BLOCK.get(), 1)
+                .pattern("###")
+                .pattern("###")
+                .pattern("###")
+                .define('#', ModItems.LUMEN_CRYSTAL_SHARD.get())
+                .unlockedBy("has_lumen_crystal_shard", has(ModItems.LUMEN_CRYSTAL_SHARD.get()))
+                .save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.LUMEN_CRYSTAL_SHARD.get(), 9)
+                .requires(ModBlocks.LUMEN_CRYSTAL_BLOCK.get())
+                .unlockedBy("has_lumen_crystal_block", has(ModBlocks.LUMEN_CRYSTAL_BLOCK.get()))
+                .save(out, id("lumen_crystal_shard_from_block"));
+
+        Ingredient ores = Ingredient.of(ModBlocks.LUMEN_CRYSTAL_ORE.get(), ModBlocks.DEEP_LUMEN_CRYSTAL_ORE.get());
+        SimpleCookingRecipeBuilder.smelting(ores, RecipeCategory.MISC, ModItems.LUMEN_CRYSTAL_SHARD.get(), 0.7F, 200)
+                .unlockedBy("has_lumen_crystal_ore", has(ModBlocks.LUMEN_CRYSTAL_ORE.get()))
+                .save(out, id("lumen_crystal_shard_from_smelting"));
+        SimpleCookingRecipeBuilder.blasting(ores, RecipeCategory.MISC, ModItems.LUMEN_CRYSTAL_SHARD.get(), 0.7F, 100)
+                .unlockedBy("has_lumen_crystal_ore", has(ModBlocks.LUMEN_CRYSTAL_ORE.get()))
+                .save(out, id("lumen_crystal_shard_from_blasting"));
+    }
+
+    private static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(Lumenwilds.MOD_ID, path);
     }
 
     /** Shimmerstone variants + the two Sporeglass crafts (Phase 4). */

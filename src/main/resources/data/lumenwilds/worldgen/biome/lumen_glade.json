@@ -20,7 +20,19 @@
   "carvers": {
     "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
   },
-  "features": [[], [], [], [], [], [], [], [], [], [], []],
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    ["lumenwilds:lumen_crystal_ore"],
+    [],
+    [],
+    ["lumenwilds:patch_glow_fern", "lumenwilds:patch_moonblossom"],
+    []
+  ],
   "spawners": {
     "ambient": [],
     "axolotls": [],

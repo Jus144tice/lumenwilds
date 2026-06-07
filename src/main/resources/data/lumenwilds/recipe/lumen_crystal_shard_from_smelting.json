@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "ingredient": [
+    {
+      "item": "lumenwilds:lumen_crystal_ore"
+    },
+    {
+      "item": "lumenwilds:deep_lumen_crystal_ore"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:lumen_crystal_shard"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 8,
+    "targets": [
+      {
+        "state": { "Name": "lumenwilds:lumen_crystal_ore" },
+        "target": { "predicate_type": "minecraft:block_match", "block": "lumenwilds:moonstone" }
+      },
+      {
+        "state": { "Name": "lumenwilds:deep_lumen_crystal_ore" },
+        "target": { "predicate_type": "minecraft:block_match", "block": "lumenwilds:deep_moonstone" }
+      }
+    ]
+  }
+}

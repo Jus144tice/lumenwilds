@@ -18,6 +18,7 @@ import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 
@@ -59,6 +60,10 @@ public final class ModLootTableProvider {
                     dropOther(block, ModItems.GLOWWOOD_HANGING_SIGN.get());
                 } else if (name.endsWith("_wall_sign")) {
                     dropOther(block, ModItems.GLOWWOOD_SIGN.get());
+                } else if (block instanceof DropExperienceBlock) {
+                    add(
+                            block,
+                            b -> createOreDrop(b, ModItems.LUMEN_CRYSTAL_SHARD.get())); // ore → shard (+silk/fortune)
                 } else {
                     dropSelf(block); // standing/ceiling signs drop their own (Sign/HangingSign)Item
                 }

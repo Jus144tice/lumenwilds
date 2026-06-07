@@ -6,12 +6,16 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.portal.LumenPortalBlock;
+import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
@@ -20,6 +24,7 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.StandingSignBlock;
+import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
@@ -131,15 +136,30 @@ public final class ModBlocks {
                     .lightLevel(state -> 7)
                     .sound(SoundType.VINE));
 
-    // TODO: moonblossom should become a flower/BushBlock with proper placement rules.
-    public static final DeferredBlock<Block> MOONBLOSSOM = BLOCKS.registerSimpleBlock(
+    /** Moonblossom — a common glowing flower (light 9); brief night vision in suspicious stew/brewing. */
+    public static final DeferredBlock<FlowerBlock> MOONBLOSSOM = BLOCKS.registerBlock(
             "moonblossom",
+            props -> new FlowerBlock(MobEffects.NIGHT_VISION, 5.0F, props),
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .noCollission()
                     .instabreak()
                     .lightLevel(state -> 9)
+                    .sound(SoundType.GRASS)
+                    .pushReaction(PushReaction.DESTROY));
+
+    /** Glow Fern — alien ground cover with a faint cyan glow. Cross-model, instabreak, replaceable. */
+    public static final DeferredBlock<TallGrassBlock> GLOW_FERN = BLOCKS.registerBlock(
+            "glow_fern",
+            TallGrassBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
                     .noCollission()
-                    .sound(SoundType.GRASS));
+                    .instabreak()
+                    .lightLevel(state -> 2)
+                    .sound(SoundType.GRASS)
+                    .replaceable()
+                    .pushReaction(PushReaction.DESTROY));
 
     /** Lumenbulb — a native living light source. Placeholder full cube that emits max light. */
     public static final DeferredBlock<Block> LUMENBULB = BLOCKS.registerSimpleBlock(
@@ -160,6 +180,27 @@ public final class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 6)
                     .sound(SoundType.AMETHYST));
+
+    /** Lumen Crystal Ore — drops Lumen Crystal Shard; glows faintly (helps light caves). */
+    public static final DeferredBlock<DropExperienceBlock> LUMEN_CRYSTAL_ORE = BLOCKS.registerBlock(
+            "lumen_crystal_ore",
+            props -> new DropExperienceBlock(UniformInt.of(2, 5), props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 4)
+                    .sound(SoundType.STONE));
+
+    public static final DeferredBlock<DropExperienceBlock> DEEP_LUMEN_CRYSTAL_ORE = BLOCKS.registerBlock(
+            "deep_lumen_crystal_ore",
+            props -> new DropExperienceBlock(UniformInt.of(2, 5), props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.DEEPSLATE)
+                    .strength(4.5F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 4)
+                    .sound(SoundType.DEEPSLATE));
 
     // --- Glowwood building set (Phase 4) --------------------------------------------------------
     // Wood-set sounds/behaviour + signs use the bespoke Glowwood WoodType/BlockSetType (ModWoodTypes).

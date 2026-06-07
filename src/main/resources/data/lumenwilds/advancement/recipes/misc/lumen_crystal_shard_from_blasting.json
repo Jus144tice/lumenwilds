@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lumen_crystal_ore": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:lumen_crystal_ore"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:lumen_crystal_shard_from_blasting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lumen_crystal_ore"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:lumen_crystal_shard_from_blasting"
+    ]
+  }
+}

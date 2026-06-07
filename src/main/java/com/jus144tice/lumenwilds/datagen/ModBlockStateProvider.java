@@ -9,6 +9,7 @@ import com.jus144tice.lumenwilds.registry.ModBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
@@ -78,6 +79,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
             } else if (block instanceof IronBarsBlock bars) {
                 ResourceLocation tex = blockTex(name.endsWith("_pane") ? name.substring(0, name.length() - 5) : name);
                 paneBlock(bars, tex, tex);
+            } else if (block instanceof BushBlock) {
+                // Flowers/ferns/etc. render as a cutout cross.
+                simpleBlock(block, models().cross(name, blockTex(name)).renderType("minecraft:cutout"));
             } else {
                 // Cube blocks (planks, leaves, stone, ores, the portal, …) → cube_all on block/<name>.
                 simpleBlock(block);
