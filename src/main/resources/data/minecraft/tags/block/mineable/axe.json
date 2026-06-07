@@ -1,10 +1,11 @@
 {
   "values": [
     "lumenwilds:glowwood_log",
+    "lumenwilds:glowwood_planks",
+    "lumenwilds:glowroot_log",
     "lumenwilds:glowwood_wood",
     "lumenwilds:stripped_glowwood_log",
     "lumenwilds:stripped_glowwood_wood",
-    "lumenwilds:glowwood_planks",
     "lumenwilds:glowwood_stairs",
     "lumenwilds:glowwood_slab",
     "lumenwilds:glowwood_fence",
@@ -12,7 +13,6 @@
     "lumenwilds:glowwood_door",
     "lumenwilds:glowwood_trapdoor",
     "lumenwilds:glowwood_button",
-    "lumenwilds:glowwood_pressure_plate",
-    "lumenwilds:glowroot_log"
+    "lumenwilds:glowwood_pressure_plate"
   ]
 }

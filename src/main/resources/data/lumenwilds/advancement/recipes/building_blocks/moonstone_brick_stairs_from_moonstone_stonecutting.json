@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_moonstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:moonstone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:moonstone_brick_stairs_from_moonstone_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_moonstone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:moonstone_brick_stairs_from_moonstone_stonecutting"
+    ]
+  }
+}

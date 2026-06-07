@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "lumenwilds:block/cobbled_deep_moonstone",
+    "side": "lumenwilds:block/cobbled_deep_moonstone",
+    "top": "lumenwilds:block/cobbled_deep_moonstone"
+  }
+}

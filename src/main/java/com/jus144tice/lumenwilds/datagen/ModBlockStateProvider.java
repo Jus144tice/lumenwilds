@@ -96,6 +96,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 break;
             }
         }
+        // "<x>_brick"/"<x>_tile" shapes are cut from the plural "<x>_bricks"/"<x>_tiles" base texture.
+        if (base.endsWith("_brick") || base.endsWith("_tile")) {
+            base = base + "s";
+        }
         return blockTex(base);
     }
 }

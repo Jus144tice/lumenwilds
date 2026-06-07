@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "lumenwilds:block/polished_deep_moonstone",
+    "side": "lumenwilds:block/polished_deep_moonstone",
+    "top": "lumenwilds:block/polished_deep_moonstone"
+  }
+}

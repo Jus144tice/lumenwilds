@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_deep_moonstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:deep_moonstone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:polished_deep_moonstone"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_deep_moonstone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:polished_deep_moonstone"
+    ]
+  }
+}

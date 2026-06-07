@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "lumenwilds:block/moonstone_brick_slab"
+    },
+    "type=double": {
+      "model": "lumenwilds:block/moonstone_bricks"
+    },
+    "type=top": {
+      "model": "lumenwilds:block/moonstone_brick_slab_top"
+    }
+  }
+}

@@ -6,7 +6,6 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.item.LumenStrikerItem;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -44,46 +43,16 @@ public final class ModItems {
     public static final DeferredItem<Item> LUMEN_NECTAR = ITEMS.registerSimpleItem("lumen_nectar");
     public static final DeferredItem<Item> AIR_GEL = ITEMS.registerSimpleItem("air_gel");
 
-    // --- Block items (one per block, except the portal interior) ---------------------------------
-
-    public static final DeferredItem<BlockItem> LUMENBOUND_STONE =
-            ITEMS.registerSimpleBlockItem(ModBlocks.LUMENBOUND_STONE);
-    public static final DeferredItem<BlockItem> MOONLOAM = ITEMS.registerSimpleBlockItem(ModBlocks.MOONLOAM);
-    public static final DeferredItem<BlockItem> LUMEN_GRASS_BLOCK =
-            ITEMS.registerSimpleBlockItem(ModBlocks.LUMEN_GRASS_BLOCK);
-    public static final DeferredItem<BlockItem> MOONSTONE = ITEMS.registerSimpleBlockItem(ModBlocks.MOONSTONE);
-    public static final DeferredItem<BlockItem> COBBLED_MOONSTONE =
-            ITEMS.registerSimpleBlockItem(ModBlocks.COBBLED_MOONSTONE);
-    public static final DeferredItem<BlockItem> GLOWWOOD_LOG = ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_LOG);
-    public static final DeferredItem<BlockItem> GLOWWOOD_PLANKS =
-            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_PLANKS);
-    public static final DeferredItem<BlockItem> GLOWROOT_LOG = ITEMS.registerSimpleBlockItem(ModBlocks.GLOWROOT_LOG);
-    public static final DeferredItem<BlockItem> GLOWVINE = ITEMS.registerSimpleBlockItem(ModBlocks.GLOWVINE);
-    public static final DeferredItem<BlockItem> MOONBLOSSOM = ITEMS.registerSimpleBlockItem(ModBlocks.MOONBLOSSOM);
-    public static final DeferredItem<BlockItem> LUMENBULB = ITEMS.registerSimpleBlockItem(ModBlocks.LUMENBULB);
-    public static final DeferredItem<BlockItem> LUMEN_CRYSTAL_BLOCK =
-            ITEMS.registerSimpleBlockItem(ModBlocks.LUMEN_CRYSTAL_BLOCK);
-
-    // --- Glowwood building set (Phase 4) --------------------------------------------------------
-    public static final DeferredItem<BlockItem> GLOWWOOD_WOOD = ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_WOOD);
-    public static final DeferredItem<BlockItem> STRIPPED_GLOWWOOD_LOG =
-            ITEMS.registerSimpleBlockItem(ModBlocks.STRIPPED_GLOWWOOD_LOG);
-    public static final DeferredItem<BlockItem> STRIPPED_GLOWWOOD_WOOD =
-            ITEMS.registerSimpleBlockItem(ModBlocks.STRIPPED_GLOWWOOD_WOOD);
-    public static final DeferredItem<BlockItem> GLOWWOOD_LEAVES =
-            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_LEAVES);
-    public static final DeferredItem<BlockItem> GLOWWOOD_STAIRS =
-            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_STAIRS);
-    public static final DeferredItem<BlockItem> GLOWWOOD_SLAB = ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_SLAB);
-    public static final DeferredItem<BlockItem> GLOWWOOD_FENCE =
-            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_FENCE);
-    public static final DeferredItem<BlockItem> GLOWWOOD_FENCE_GATE =
-            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_FENCE_GATE);
-    public static final DeferredItem<BlockItem> GLOWWOOD_DOOR = ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_DOOR);
-    public static final DeferredItem<BlockItem> GLOWWOOD_TRAPDOOR =
-            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_TRAPDOOR);
-    public static final DeferredItem<BlockItem> GLOWWOOD_BUTTON =
-            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_BUTTON);
-    public static final DeferredItem<BlockItem> GLOWWOOD_PRESSURE_PLATE =
-            ITEMS.registerSimpleBlockItem(ModBlocks.GLOWWOOD_PRESSURE_PLATE);
+    // --- Block items ----------------------------------------------------------------------------
+    // Auto-register a simple BlockItem for every registered block EXCEPT the portal interior (which is
+    // placed by portal mechanics, never held). Runs after the standalone items above so the Lumen
+    // Striker stays first in the creative tab. New blocks get an item for free — no edits here.
+    static {
+        for (var block : ModBlocks.BLOCKS.getEntries()) {
+            if (block == ModBlocks.LUMEN_PORTAL) {
+                continue;
+            }
+            ITEMS.registerSimpleBlockItem(block);
+        }
+    }
 }

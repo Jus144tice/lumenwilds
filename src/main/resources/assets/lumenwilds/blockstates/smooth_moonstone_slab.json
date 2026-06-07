@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "lumenwilds:block/smooth_moonstone_slab"
+    },
+    "type=double": {
+      "model": "lumenwilds:block/smooth_moonstone"
+    },
+    "type=top": {
+      "model": "lumenwilds:block/smooth_moonstone_slab_top"
+    }
+  }
+}

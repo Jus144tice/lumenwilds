@@ -27,34 +27,33 @@ public class ModTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        tag(BlockTags.MINEABLE_WITH_PICKAXE)
-                .add(
-                        ModBlocks.LUMENBOUND_STONE.get(),
-                        ModBlocks.MOONSTONE.get(),
-                        ModBlocks.COBBLED_MOONSTONE.get(),
-                        ModBlocks.LUMEN_CRYSTAL_BLOCK.get());
+        var pickaxe = tag(BlockTags.MINEABLE_WITH_PICKAXE);
+        var axe = tag(BlockTags.MINEABLE_WITH_AXE);
+        var shovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
+        var hoe = tag(BlockTags.MINEABLE_WITH_HOE);
+        var leaves = tag(BlockTags.LEAVES);
 
-        tag(BlockTags.MINEABLE_WITH_AXE)
-                .add(
-                        ModBlocks.GLOWWOOD_LOG.get(),
-                        ModBlocks.GLOWWOOD_WOOD.get(),
-                        ModBlocks.STRIPPED_GLOWWOOD_LOG.get(),
-                        ModBlocks.STRIPPED_GLOWWOOD_WOOD.get(),
-                        ModBlocks.GLOWWOOD_PLANKS.get(),
-                        ModBlocks.GLOWWOOD_STAIRS.get(),
-                        ModBlocks.GLOWWOOD_SLAB.get(),
-                        ModBlocks.GLOWWOOD_FENCE.get(),
-                        ModBlocks.GLOWWOOD_FENCE_GATE.get(),
-                        ModBlocks.GLOWWOOD_DOOR.get(),
-                        ModBlocks.GLOWWOOD_TRAPDOOR.get(),
-                        ModBlocks.GLOWWOOD_BUTTON.get(),
-                        ModBlocks.GLOWWOOD_PRESSURE_PLATE.get(),
-                        ModBlocks.GLOWROOT_LOG.get());
-
-        tag(BlockTags.MINEABLE_WITH_SHOVEL).add(ModBlocks.MOONLOAM.get(), ModBlocks.LUMEN_GRASS_BLOCK.get());
-
-        tag(BlockTags.MINEABLE_WITH_HOE).add(ModBlocks.GLOWWOOD_LEAVES.get());
-        tag(BlockTags.LEAVES).add(ModBlocks.GLOWWOOD_LEAVES.get());
+        // Classify by name so new stone/wood blocks are covered automatically.
+        for (var holder : ModBlocks.BLOCKS.getEntries()) {
+            if (holder == ModBlocks.LUMEN_PORTAL) {
+                continue;
+            }
+            net.minecraft.world.level.block.Block block = holder.get();
+            String name = holder.getId().getPath();
+            if (name.endsWith("leaves")) {
+                hoe.add(block);
+                leaves.add(block);
+            } else if (name.contains("glowwood") || name.contains("glowroot")) {
+                axe.add(block);
+            } else if (name.equals("moonloam") || name.equals("lumen_grass_block")) {
+                shovel.add(block);
+            } else if (name.contains("moonstone")
+                    || name.equals("lumenbound_stone")
+                    || name.equals("lumen_crystal_block")) {
+                pickaxe.add(block);
+            }
+            // Others (moonblossom, glowvine, lumenbulb, …) break instantly / need no mining tag yet.
+        }
 
         // TODO (Phase 4+): needs_*_tool tiers, c: common tags via an item-tag provider, plant/vine tags.
     }

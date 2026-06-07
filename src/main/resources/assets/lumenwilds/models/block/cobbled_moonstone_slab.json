@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "lumenwilds:block/cobbled_moonstone",
+    "side": "lumenwilds:block/cobbled_moonstone",
+    "top": "lumenwilds:block/cobbled_moonstone"
+  }
+}

@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.WoodType;
@@ -234,6 +235,118 @@ public final class ModBlocks {
                     .strength(0.5F)
                     .sound(SoundType.WOOD)
                     .pushReaction(PushReaction.DESTROY));
+
+    // --- Moonstone stone set (Phase 4) ----------------------------------------------------------
+    // MOONSTONE + COBBLED_MOONSTONE are declared above. Cube variants first, then stairs/slabs/walls.
+
+    public static final DeferredBlock<Block> SMOOTH_MOONSTONE = moonCube("smooth_moonstone");
+    public static final DeferredBlock<Block> MOONSTONE_BRICKS = moonCube("moonstone_bricks");
+    public static final DeferredBlock<Block> CHISELED_MOONSTONE = moonCube("chiseled_moonstone");
+    public static final DeferredBlock<Block> MOONSTONE_TILES = moonCube("moonstone_tiles");
+
+    public static final DeferredBlock<StairBlock> MOONSTONE_STAIRS = moonStairs("moonstone_stairs", MOONSTONE);
+    public static final DeferredBlock<SlabBlock> MOONSTONE_SLAB = moonSlab("moonstone_slab");
+    public static final DeferredBlock<WallBlock> MOONSTONE_WALL = moonWall("moonstone_wall");
+
+    public static final DeferredBlock<StairBlock> COBBLED_MOONSTONE_STAIRS =
+            moonStairs("cobbled_moonstone_stairs", COBBLED_MOONSTONE);
+    public static final DeferredBlock<SlabBlock> COBBLED_MOONSTONE_SLAB = moonSlab("cobbled_moonstone_slab");
+    public static final DeferredBlock<WallBlock> COBBLED_MOONSTONE_WALL = moonWall("cobbled_moonstone_wall");
+
+    public static final DeferredBlock<StairBlock> MOONSTONE_BRICK_STAIRS =
+            moonStairs("moonstone_brick_stairs", MOONSTONE_BRICKS);
+    public static final DeferredBlock<SlabBlock> MOONSTONE_BRICK_SLAB = moonSlab("moonstone_brick_slab");
+    public static final DeferredBlock<WallBlock> MOONSTONE_BRICK_WALL = moonWall("moonstone_brick_wall");
+
+    public static final DeferredBlock<StairBlock> MOONSTONE_TILE_STAIRS =
+            moonStairs("moonstone_tile_stairs", MOONSTONE_TILES);
+    public static final DeferredBlock<SlabBlock> MOONSTONE_TILE_SLAB = moonSlab("moonstone_tile_slab");
+    public static final DeferredBlock<WallBlock> MOONSTONE_TILE_WALL = moonWall("moonstone_tile_wall");
+
+    public static final DeferredBlock<StairBlock> SMOOTH_MOONSTONE_STAIRS =
+            moonStairs("smooth_moonstone_stairs", SMOOTH_MOONSTONE);
+    public static final DeferredBlock<SlabBlock> SMOOTH_MOONSTONE_SLAB = moonSlab("smooth_moonstone_slab");
+
+    // --- Deep Moonstone (deepslate analog, deeper layers) (Phase 4) -----------------------------
+
+    public static final DeferredBlock<Block> DEEP_MOONSTONE = deepCube("deep_moonstone");
+    public static final DeferredBlock<Block> COBBLED_DEEP_MOONSTONE = deepCube("cobbled_deep_moonstone");
+    public static final DeferredBlock<Block> POLISHED_DEEP_MOONSTONE = deepCube("polished_deep_moonstone");
+    public static final DeferredBlock<Block> DEEP_MOONSTONE_BRICKS = deepCube("deep_moonstone_bricks");
+    public static final DeferredBlock<Block> DEEP_MOONSTONE_TILES = deepCube("deep_moonstone_tiles");
+
+    public static final DeferredBlock<StairBlock> COBBLED_DEEP_MOONSTONE_STAIRS =
+            deepStairs("cobbled_deep_moonstone_stairs", COBBLED_DEEP_MOONSTONE);
+    public static final DeferredBlock<SlabBlock> COBBLED_DEEP_MOONSTONE_SLAB = deepSlab("cobbled_deep_moonstone_slab");
+    public static final DeferredBlock<WallBlock> COBBLED_DEEP_MOONSTONE_WALL = deepWall("cobbled_deep_moonstone_wall");
+
+    public static final DeferredBlock<StairBlock> POLISHED_DEEP_MOONSTONE_STAIRS =
+            deepStairs("polished_deep_moonstone_stairs", POLISHED_DEEP_MOONSTONE);
+    public static final DeferredBlock<SlabBlock> POLISHED_DEEP_MOONSTONE_SLAB =
+            deepSlab("polished_deep_moonstone_slab");
+    public static final DeferredBlock<WallBlock> POLISHED_DEEP_MOONSTONE_WALL =
+            deepWall("polished_deep_moonstone_wall");
+
+    public static final DeferredBlock<StairBlock> DEEP_MOONSTONE_BRICK_STAIRS =
+            deepStairs("deep_moonstone_brick_stairs", DEEP_MOONSTONE_BRICKS);
+    public static final DeferredBlock<SlabBlock> DEEP_MOONSTONE_BRICK_SLAB = deepSlab("deep_moonstone_brick_slab");
+    public static final DeferredBlock<WallBlock> DEEP_MOONSTONE_BRICK_WALL = deepWall("deep_moonstone_brick_wall");
+
+    public static final DeferredBlock<StairBlock> DEEP_MOONSTONE_TILE_STAIRS =
+            deepStairs("deep_moonstone_tile_stairs", DEEP_MOONSTONE_TILES);
+    public static final DeferredBlock<SlabBlock> DEEP_MOONSTONE_TILE_SLAB = deepSlab("deep_moonstone_tile_slab");
+    public static final DeferredBlock<WallBlock> DEEP_MOONSTONE_TILE_WALL = deepWall("deep_moonstone_tile_wall");
+
+    // --- Property + stone-family helpers --------------------------------------------------------
+
+    private static BlockBehaviour.Properties moonstoneProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.STONE)
+                .strength(1.5F, 6.0F)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.STONE);
+    }
+
+    private static BlockBehaviour.Properties deepProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.DEEPSLATE)
+                .strength(3.0F, 6.0F)
+                .requiresCorrectToolForDrops()
+                .sound(SoundType.DEEPSLATE);
+    }
+
+    private static DeferredBlock<Block> moonCube(String name) {
+        return BLOCKS.registerSimpleBlock(name, moonstoneProps());
+    }
+
+    private static DeferredBlock<StairBlock> moonStairs(String name, DeferredBlock<? extends Block> base) {
+        return BLOCKS.registerBlock(
+                name, props -> new StairBlock(base.get().defaultBlockState(), props), moonstoneProps());
+    }
+
+    private static DeferredBlock<SlabBlock> moonSlab(String name) {
+        return BLOCKS.registerBlock(name, SlabBlock::new, moonstoneProps());
+    }
+
+    private static DeferredBlock<WallBlock> moonWall(String name) {
+        return BLOCKS.registerBlock(name, WallBlock::new, moonstoneProps());
+    }
+
+    private static DeferredBlock<Block> deepCube(String name) {
+        return BLOCKS.registerSimpleBlock(name, deepProps());
+    }
+
+    private static DeferredBlock<StairBlock> deepStairs(String name, DeferredBlock<? extends Block> base) {
+        return BLOCKS.registerBlock(name, props -> new StairBlock(base.get().defaultBlockState(), props), deepProps());
+    }
+
+    private static DeferredBlock<SlabBlock> deepSlab(String name) {
+        return BLOCKS.registerBlock(name, SlabBlock::new, deepProps());
+    }
+
+    private static DeferredBlock<WallBlock> deepWall(String name) {
+        return BLOCKS.registerBlock(name, WallBlock::new, deepProps());
+    }
 
     // --- Property helpers -----------------------------------------------------------------------
 
