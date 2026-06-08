@@ -14,6 +14,7 @@ import com.jus144tice.lumenwilds.registry.ModMenus;
 import com.jus144tice.lumenwilds.registry.ModMobEffects;
 import com.jus144tice.lumenwilds.registry.ModParticles;
 import com.jus144tice.lumenwilds.registry.ModSounds;
+import com.jus144tice.lumenwilds.registry.ModStructures;
 import com.jus144tice.lumenwilds.registry.ModWoodTypes;
 import com.mojang.logging.LogUtils;
 import net.neoforged.bus.api.IEventBus;
@@ -59,6 +60,8 @@ public final class Lumenwilds {
         ModFluids.FLUIDS.register(modBus);
         ModBlocks.BLOCKS.register(modBus);
         ModItems.ITEMS.register(modBus);
+        ModStructures.STRUCTURE_TYPES.register(modBus);
+        ModStructures.STRUCTURE_PIECES.register(modBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modBus);
         ModEntities.ENTITIES.register(modBus);
         ModMenus.MENUS.register(modBus);

@@ -1,0 +1,40 @@
+/*
+ * Copyright 2026 The Lumenwilds contributors.
+ * Licensed under the Apache License, Version 2.0.
+ */
+package com.jus144tice.lumenwilds.registry;
+
+import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.world.structure.GlowrootTreePiece;
+import com.jus144tice.lumenwilds.world.structure.GlowrootTreeStructure;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+
+/**
+ * Worldgen {@link StructureType} + {@link StructurePieceType} registries.
+ *
+ * <p>The Glowroot mega tree is a <em>structure</em> (not a feature): structures generate per-chunk via a
+ * bounding box, so the tree can span many chunks with no size cap and no "far chunk" write errors — the
+ * same reason villages/fortresses are structures. The structure instance + spawn spacing are data-driven
+ * (see {@code data/lumenwilds/worldgen/structure*}); these are the code types they bind to.</p>
+ */
+public final class ModStructures {
+
+    public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES =
+            DeferredRegister.create(Registries.STRUCTURE_TYPE, Lumenwilds.MOD_ID);
+
+    public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECES =
+            DeferredRegister.create(Registries.STRUCTURE_PIECE, Lumenwilds.MOD_ID);
+
+    public static final DeferredHolder<StructureType<?>, StructureType<GlowrootTreeStructure>> GLOWROOT_TREE =
+            STRUCTURE_TYPES.register("glowroot_tree", () -> () -> GlowrootTreeStructure.CODEC);
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> GLOWROOT_TREE_PIECE =
+            STRUCTURE_PIECES.register(
+                    "glowroot_tree", () -> (StructurePieceType.ContextlessType) GlowrootTreePiece::new);
+
+    private ModStructures() {}
+}

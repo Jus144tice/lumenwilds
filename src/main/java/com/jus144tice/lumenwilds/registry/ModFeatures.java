@@ -12,13 +12,12 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 /**
  * Custom {@link Feature} types added by The Lumenwilds (the worldgen <em>logic</em>, as opposed to the
  * data-driven configured/placed feature keys in {@code world.LumenConfiguredFeatures} /
- * {@code world.LumenPlacedFeatures}). Empty for Phase 1 — vanilla feature types cover the early
- * placeholders.
+ * {@code world.LumenPlacedFeatures}).
  *
- * <p>TODO (Phase 3): register custom features only if vanilla ones can't express a structure (e.g. a
- * bespoke glowwood canopy or a living-light cluster). This DeferredRegister is intentionally NOT
- * wired to the mod bus yet because it is empty; add {@code ModFeatures.FEATURES.register(modBus)} in
- * {@link Lumenwilds} when the first feature is added.</p>
+ * <p>Empty again as of Phase 5c-2: the Glowroot mega tree moved to a <em>structure</em>
+ * ({@code registry.ModStructures}) so it can span chunks. Intentionally NOT wired to the mod bus while
+ * empty; add {@code ModFeatures.FEATURES.register(modBus)} in {@link Lumenwilds} when the first custom
+ * feature is added.</p>
  */
 public final class ModFeatures {
 

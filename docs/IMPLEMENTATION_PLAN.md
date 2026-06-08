@@ -260,9 +260,12 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 ## Phase 5 — World content & generation (the 7 biomes) 🔶 (in progress)
 
 > **Increment plan** (each committed + validated): **5a** foundation — bespoke terrain + arrival biome
-> ✅; **5b** flora blocks + ore as features ✅; **5c** Glowwood tree + sapling ✅ (**5c-2** = the Glowroot
-> mega tree with root bridges, a custom Java `Feature`, still to do); **5d** the remaining 6 biomes + a
-> MultiNoise spread; **5e** Lumenwater fluid.
+> ✅; **5b** flora blocks + ore as features ✅; **5c** Glowwood tree + sapling ✅; **5c-2** the Glowroot
+> mega tree ✅ (a town-sized worldgen **structure** — ~20-wide trunk, ~80 tall, ~50-wide canopy, arching
+> roots, ore cluster beneath; `GlowrootTreeStructure`/`GlowrootTreePiece` + `ModStructures`, spawned via
+> `structure_set` spacing 20. Made a structure, not a feature, so it spans chunks with no far-chunk
+> errors — verified zero in a client session); **5d** the remaining 6 biomes + a MultiNoise spread;
+> **5e** Lumenwater fluid.
 >
 > **5c done.** `#GLOWWOOD_SAPLING` (`SaplingBlock` + a `TreeGrower` pointing at `glowwood_tree`);
 > configured + placed `glowwood_tree` (straight trunk of glowwood_log, blob foliage of glowwood_leaves,

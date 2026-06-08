@@ -29,9 +29,11 @@ custom `noise_settings/lumenwilds.json` (moonstone default, hilly/cliffy terrain
 rules layering lumen grass → moonloam → moonstone → deep moonstone, under the **Lumen Glade** biome
 (blue-green palette). The Glade now generates **Lumen Crystal Ore** (in moonstone + deep moonstone, glows
 faintly), scattered flora — **Moonblossom** (a real flower) and **Glow Fern** — (5b), and **Glowwood
-trees** (with a growable **Glowwood Sapling**) (5c), via configured/placed features. What is deliberately
-*not* built yet: the Glowroot mega tree (5c-2), the other 6 biomes (5d), Lumenwater (5e), mobs,
-structures, custom sky/fog. Those are stubbed with TODOs. Roadmap:
+trees** (with a growable **Glowwood Sapling**) (5c), via configured/placed features. The **Glowroot mega
+tree** (5c-2) is a town-sized worldgen **structure** (~20-wide trunk, ~80 tall, ~50-wide canopy, arching
+roots, and a Lumen-Crystal-Ore cluster beneath) that spawns sporadically (~every 20 chunks). What is
+deliberately *not* built yet: the other 6 biomes (5d), Lumenwater (5e), mobs, more structures, custom
+sky/fog. Those are stubbed with TODOs. Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -88,9 +90,10 @@ as `File#member`.
 - [Lumenwilds.java](src/main/java/com/jus144tice/lumenwilds/Lumenwilds.java) — `@Mod` class.
   `#MOD_ID` (`"lumenwilds"`), `#MOD_NAME` (`"The Lumenwilds"`), `#LOGGER`. Ctor registers these
   DeferredRegisters to the **mod bus**: `ModSounds`, `ModParticles`, `ModMobEffects`, `ModFluids`,
-  `ModBlocks`, `ModItems`, `ModBlockEntities`, `ModEntities`, `ModMenus`, `ModCreativeTabs`. Also calls
-  `ModWoodTypes#init()` first (WoodType/BlockSetType must register before blocks build). `#onCommonSetup`
-  logs only. **When you add a new (non-empty) DeferredRegister, register it here.**
+  `ModBlocks`, `ModItems`, `ModStructures` (`STRUCTURE_TYPES` + `STRUCTURE_PIECES`), `ModBlockEntities`,
+  `ModEntities`, `ModMenus`, `ModCreativeTabs`. Also calls `ModWoodTypes#init()` first (WoodType/
+  BlockSetType must register before blocks build). `#onCommonSetup` logs only. **When you add a new
+  (non-empty) DeferredRegister, register it here.**
 
 ### registry/ — all registered content
 - [ModBlocks.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBlocks.java) — `#BLOCKS`
@@ -135,8 +138,12 @@ as `File#member`.
   [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS`,
   [ModParticles](src/main/java/com/jus144tice/lumenwilds/registry/ModParticles.java) `#PARTICLES`.
 - [ModFeatures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFeatures.java) — `#FEATURES`
-  (custom `Feature` types). Empty and **intentionally NOT bus-registered** (register in `Lumenwilds` ctor
-  when the first feature is added).
+  (custom `Feature` types). Empty and **intentionally NOT bus-registered** (the Glowroot mega tree moved
+  to a structure; register in `Lumenwilds` ctor when the first custom feature is added).
+- [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
+  `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` (`StructureType`) + `#GLOWROOT_TREE_PIECE`
+  (`StructurePieceType`). The mega tree is a structure (spans chunks, no feature size cap). Structure
+  instance + spawn spacing are datapack JSON (`worldgen/structure*`); these are the code types.
 - [ModBiomes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBiomes.java) /
   [ModDimensions.java](src/main/java/com/jus144tice/lumenwilds/registry/ModDimensions.java) — thin
   re-exports of the worldgen/dimension `ResourceKey`s from `world/` (worldgen is datapack-driven, not a
@@ -185,6 +192,17 @@ as `File#member`.
   (vegetal step).
 - [LumenWorldgenBootstrap.java](src/main/java/com/jus144tice/lumenwilds/world/LumenWorldgenBootstrap.java)
   — empty seam for code-generated worldgen (`RegistrySetBuilder`/`BootstrapContext`) if we leave JSON.
+
+### world/structure/ — the Glowroot mega tree (Phase 5c-2)
+- [GlowrootTreeStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/GlowrootTreeStructure.java)
+  — `Structure` (`#CODEC` via `simpleCodec`); `#findGenerationPoint` places one `GlowrootTreePiece` at the
+  surface chunk centre. Bound to `ModStructures#GLOWROOT_TREE`.
+- [GlowrootTreePiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/GlowrootTreePiece.java)
+  — `StructurePiece` whose `#postProcess` draws the whole tree from a position-seeded RNG (deterministic
+  across chunks) but writes only inside the per-chunk `writeBox` — so the ~20-wide/~80-tall/~50-canopy
+  giant spans chunks with **no "far chunk" errors**. Holds the origin; builds trunk, arching buttress
+  roots, taproots, the dual-dome canopy, and the Lumen-Crystal-Ore root cluster. Tune the constants
+  (`TRUNK_RADIUS`, `MIN/EXTRA_HEIGHT`, `ROOT_DEPTH`, `HORIZONTAL_REACH`) at the top.
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -266,7 +284,10 @@ as `File#member`.
   fixed Lumen Glade biome) + `dimension_type/lumenwilds.json`, and `worldgen/` — `noise_settings/
   lumenwilds.json` (bespoke terrain + surface rules), `biome/lumen_glade.json`, `noise/hills.json`,
   `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`, `patch_moonblossom`, `patch_glow_fern`,
-  `glowwood_tree`). Hand-authored (not datagen); the Glowroot mega tree + other 6 biomes arrive in 5x passes.
+  `glowwood_tree`), and the Glowroot mega-tree structure: `structure/glowroot_tree.json`,
+  `structure_set/glowroot_tree.json` (random_spread, spacing 20/sep 7), and the biome tag
+  `tags/worldgen/biome/has_structure/glowroot_tree.json`. Hand-authored (not datagen); the other 6 biomes
+  arrive in 5d.
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`; `tags/block/dirt.json`
   adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil).
