@@ -6,6 +6,8 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.portal.LumenPortalBlock;
+import com.jus144tice.lumenwilds.world.LumenConfiguredFeatures;
+import java.util.Optional;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.Block;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
@@ -30,6 +33,7 @@ import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.WallHangingSignBlock;
 import net.minecraft.world.level.block.WallSignBlock;
+import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
@@ -159,6 +163,25 @@ public final class ModBlocks {
                     .lightLevel(state -> 2)
                     .sound(SoundType.GRASS)
                     .replaceable()
+                    .pushReaction(PushReaction.DESTROY));
+
+    /** Grows the {@code lumenwilds:glowwood_tree} configured feature (Phase 5c); no mega tree yet. */
+    private static final TreeGrower GLOWWOOD_GROWER = new TreeGrower(
+            Lumenwilds.MOD_ID + ":glowwood",
+            Optional.empty(),
+            Optional.of(LumenConfiguredFeatures.GLOWWOOD_TREE),
+            Optional.empty());
+
+    /** Glowwood Sapling — grows into a Glowwood tree (bonemeal/random tick). */
+    public static final DeferredBlock<SaplingBlock> GLOWWOOD_SAPLING = BLOCKS.registerBlock(
+            "glowwood_sapling",
+            props -> new SaplingBlock(GLOWWOOD_GROWER, props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
                     .pushReaction(PushReaction.DESTROY));
 
     /** Lumenbulb — a native living light source. Placeholder full cube that emits max light. */

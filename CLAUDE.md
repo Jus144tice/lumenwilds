@@ -28,9 +28,10 @@ Moonstone stone sets, Shimmerstone set, and Sporeglass — ~81 blocks with place
 custom `noise_settings/lumenwilds.json` (moonstone default, hilly/cliffy terrain, ponds) with surface
 rules layering lumen grass → moonloam → moonstone → deep moonstone, under the **Lumen Glade** biome
 (blue-green palette). The Glade now generates **Lumen Crystal Ore** (in moonstone + deep moonstone, glows
-faintly) and scattered flora — **Moonblossom** (a real flower) and **Glow Fern** — via configured/placed
-features (5b). What is deliberately *not* built yet: trees (5c), the other 6 biomes (5d), Lumenwater
-(5e), mobs, structures, custom sky/fog. Those are stubbed with TODOs. Roadmap:
+faintly), scattered flora — **Moonblossom** (a real flower) and **Glow Fern** — (5b), and **Glowwood
+trees** (with a growable **Glowwood Sapling**) (5c), via configured/placed features. What is deliberately
+*not* built yet: the Glowroot mega tree (5c-2), the other 6 biomes (5d), Lumenwater (5e), mobs,
+structures, custom sky/fog. Those are stubbed with TODOs. Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -96,8 +97,9 @@ as `File#member`.
   (`DeferredRegister.Blocks`), ~77 blocks. Core: `#LUMENBOUND_STONE` (portal frame), `#LUMEN_PORTAL`
   (`LumenPortalBlock`, non-solid/glowing), `#MOONLOAM`, `#LUMEN_GRASS_BLOCK`, `#MOONSTONE`/`#COBBLED_MOONSTONE`,
   `#GLOWROOT_LOG`, `#GLOWVINE`, `#LUMENBULB`, `#LUMEN_CRYSTAL_BLOCK`. **Phase 5 content:** `#MOONBLOSSOM`
-  (`FlowerBlock`, night-vision), `#GLOW_FERN` (`TallGrassBlock`) — both cross-model; `#LUMEN_CRYSTAL_ORE`
-  + `#DEEP_LUMEN_CRYSTAL_ORE` (`DropExperienceBlock`, drop shards, glow). **Phase 4 sets**
+  (`FlowerBlock`, night-vision), `#GLOW_FERN` (`TallGrassBlock`), `#GLOWWOOD_SAPLING` (`SaplingBlock` +
+  `TreeGrower` → `glowwood_tree`) — all cross-model; `#LUMEN_CRYSTAL_ORE` + `#DEEP_LUMEN_CRYSTAL_ORE`
+  (`DropExperienceBlock`, drop shards, glow). **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
   `#GLOWWOOD_LEAVES`, stairs/slab/fence/fence_gate/door/trapdoor/button/pressure_plate + signs
@@ -176,10 +178,11 @@ as `File#member`.
   `#SPOREFALL_JUNGLE`, `#GLASSPETAL_CRAGS`, `#UNDERCROWN_CAVERNS`, `#STILLBLOOM_BASIN` (defined in 5d).
 - [LumenConfiguredFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenConfiguredFeatures.java)
   — keys for `data/.../worldgen/configured_feature/`: `#LUMEN_CRYSTAL_ORE`, `#PATCH_MOONBLOSSOM`,
-  `#PATCH_GLOW_FERN` (live, 5b); `#GLOWWOOD_TREE` (5c).
+  `#PATCH_GLOW_FERN`, `#GLOWWOOD_TREE` (all live, 5b/5c).
 - [LumenPlacedFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenPlacedFeatures.java) —
   same paths under `placed_feature/` (different registry), referenced from `biome/lumen_glade.json`'s
-  feature lists: `#LUMEN_CRYSTAL_ORE` (ores step), `#PATCH_MOONBLOSSOM`/`#PATCH_GLOW_FERN` (vegetal step).
+  feature lists: `#LUMEN_CRYSTAL_ORE` (ores step), `#GLOWWOOD_TREE` + `#PATCH_MOONBLOSSOM`/`#PATCH_GLOW_FERN`
+  (vegetal step).
 - [LumenWorldgenBootstrap.java](src/main/java/com/jus144tice/lumenwilds/world/LumenWorldgenBootstrap.java)
   — empty seam for code-generated worldgen (`RegistrySetBuilder`/`BootstrapContext`) if we leave JSON.
 
@@ -262,8 +265,8 @@ as `File#member`.
 - `data/lumenwilds/`: `recipe/*`, `loot_table/blocks/*`, `dimension/lumenwilds.json` (custom noise gen +
   fixed Lumen Glade biome) + `dimension_type/lumenwilds.json`, and `worldgen/` — `noise_settings/
   lumenwilds.json` (bespoke terrain + surface rules), `biome/lumen_glade.json`, `noise/hills.json`,
-  `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`, `patch_moonblossom`, `patch_glow_fern`).
-  Hand-authored (not datagen); the other 6 biomes + trees arrive in later 5x passes.
+  `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`, `patch_moonblossom`, `patch_glow_fern`,
+  `glowwood_tree`). Hand-authored (not datagen); the Glowroot mega tree + other 6 biomes arrive in 5x passes.
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`; `tags/block/dirt.json`
   adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil).

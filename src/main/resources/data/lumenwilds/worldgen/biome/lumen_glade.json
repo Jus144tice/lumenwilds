@@ -30,7 +30,7 @@
     ["lumenwilds:lumen_crystal_ore"],
     [],
     [],
-    ["lumenwilds:patch_glow_fern", "lumenwilds:patch_moonblossom"],
+    ["lumenwilds:glowwood_tree", "lumenwilds:patch_glow_fern", "lumenwilds:patch_moonblossom"],
     []
   ],
   "spawners": {

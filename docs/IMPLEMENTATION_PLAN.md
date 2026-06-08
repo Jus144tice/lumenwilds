@@ -260,8 +260,14 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 ## Phase 5 — World content & generation (the 7 biomes) 🔶 (in progress)
 
 > **Increment plan** (each committed + validated): **5a** foundation — bespoke terrain + arrival biome
-> ✅; **5b** flora blocks + ore as features ✅; **5c** trees (Glowwood, then the Glowroot mega tree
-> with root bridges); **5d** the remaining 6 biomes + a MultiNoise spread; **5e** Lumenwater fluid.
+> ✅; **5b** flora blocks + ore as features ✅; **5c** Glowwood tree + sapling ✅ (**5c-2** = the Glowroot
+> mega tree with root bridges, a custom Java `Feature`, still to do); **5d** the remaining 6 biomes + a
+> MultiNoise spread; **5e** Lumenwater fluid.
+>
+> **5c done.** `#GLOWWOOD_SAPLING` (`SaplingBlock` + a `TreeGrower` pointing at `glowwood_tree`);
+> configured + placed `glowwood_tree` (straight trunk of glowwood_log, blob foliage of glowwood_leaves,
+> moonloam dirt provider), wired into Lumen Glade's vegetal step ahead of the ground cover. Verified:
+> build green + server loads the worldgen with no feature/codec errors.
 >
 > **5b done.** Lumen Crystal Ore (`#LUMEN_CRYSTAL_ORE` + `#DEEP_LUMEN_CRYSTAL_ORE`, `DropExperienceBlock`,
 > glow, drop shards; block↔shard + smelt/blast recipes), Moonblossom converted to a real `FlowerBlock`,
