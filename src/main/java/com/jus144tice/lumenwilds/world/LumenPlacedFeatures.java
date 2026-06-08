@@ -26,7 +26,10 @@ public final class LumenPlacedFeatures {
     public static final ResourceKey<PlacedFeature> PATCH_MOONBLOSSOM = key("patch_moonblossom");
     public static final ResourceKey<PlacedFeature> PATCH_GLOW_FERN = key("patch_glow_fern");
     public static final ResourceKey<PlacedFeature> GLOWWOOD_TREE = key("glowwood_tree");
-    // The Glowroot mega tree is a structure now (registry.ModStructures), not a placed feature.
+    public static final ResourceKey<PlacedFeature> GLOWROOT_TREE = key("glowroot_tree");
+    public static final ResourceKey<PlacedFeature> GLOWROOT_TREE_2X2 = key("glowroot_tree_2x2");
+    // The Glowroot MEGA tree is a structure (registry.ModStructures); the two above are the ordinary
+    // (1×1 / 2×2) Glowroot trees that spawn naturally.
 
     private static ResourceKey<PlacedFeature> key(String path) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocationHelper.modLoc(path));

@@ -27,7 +27,10 @@ public final class LumenConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_MOONBLOSSOM = key("patch_moonblossom");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_GLOW_FERN = key("patch_glow_fern");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWWOOD_TREE = key("glowwood_tree");
-    // The Glowroot mega tree is a structure now (registry.ModStructures), not a configured feature.
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWROOT_TREE = key("glowroot_tree");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWROOT_TREE_2X2 = key("glowroot_tree_2x2");
+    // The Glowroot MEGA tree is a structure (registry.ModStructures); the two above are the ordinary
+    // (1×1 / 2×2) Glowroot trees that spawn naturally, like spruce/jungle/dark-oak.
 
     private static ResourceKey<ConfiguredFeature<?, ?>> key(String path) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocationHelper.modLoc(path));

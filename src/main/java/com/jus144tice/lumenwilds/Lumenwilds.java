@@ -8,6 +8,7 @@ import com.jus144tice.lumenwilds.registry.ModBlockEntities;
 import com.jus144tice.lumenwilds.registry.ModBlocks;
 import com.jus144tice.lumenwilds.registry.ModCreativeTabs;
 import com.jus144tice.lumenwilds.registry.ModEntities;
+import com.jus144tice.lumenwilds.registry.ModFeatures;
 import com.jus144tice.lumenwilds.registry.ModFluids;
 import com.jus144tice.lumenwilds.registry.ModItems;
 import com.jus144tice.lumenwilds.registry.ModMenus;
@@ -60,6 +61,7 @@ public final class Lumenwilds {
         ModFluids.FLUIDS.register(modBus);
         ModBlocks.BLOCKS.register(modBus);
         ModItems.ITEMS.register(modBus);
+        ModFeatures.FEATURES.register(modBus);
         ModStructures.STRUCTURE_TYPES.register(modBus);
         ModStructures.STRUCTURE_PIECES.register(modBus);
         ModBlockEntities.BLOCK_ENTITIES.register(modBus);

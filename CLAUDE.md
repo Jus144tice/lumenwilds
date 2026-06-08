@@ -29,11 +29,13 @@ custom `noise_settings/lumenwilds.json` (moonstone default, hilly/cliffy terrain
 rules layering lumen grass → moonloam → moonstone → deep moonstone, under the **Lumen Glade** biome
 (blue-green palette). The Glade now generates **Lumen Crystal Ore** (in moonstone + deep moonstone, glows
 faintly), scattered flora — **Moonblossom** (a real flower) and **Glow Fern** — (5b), and **Glowwood
-trees** (with a growable **Glowwood Sapling**) (5c), via configured/placed features. The **Glowroot mega
-tree** (5c-2) is a town-sized worldgen **structure** (~20-wide trunk, ~80 tall, ~50-wide canopy, arching
-roots, and a Lumen-Crystal-Ore cluster beneath) that spawns sporadically (~every 20 chunks). What is
-deliberately *not* built yet: the other 6 biomes (5d), Lumenwater (5e), mobs, more structures, custom
-sky/fog. Those are stubbed with TODOs. Roadmap:
+trees** (with a growable **Glowwood Sapling**) (5c), via configured/placed features. **Glowroot trees**
+(5c-2/5c-3) are the bible's signature species, sharing one procedural shape (`world.feature.GlowrootShape`)
+at three scales: an ordinary **2×2 tree** (tall, spreading, leafy — a normal feature, distinct from
+vanilla dark oak), a growable **Glowroot Sapling** (4 → the 2×2), and the **mega tree** — a town-sized
+worldgen **structure** (~20-wide trunk, ~80 tall, ~50-wide canopy, arching roots + a Lumen-Crystal-Ore
+cluster beneath) that spawns sporadically (~every 20 chunks). What is deliberately *not* built yet: the
+other 6 biomes (5d), Lumenwater (5e), mobs, more structures, custom sky/fog. Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -99,10 +101,11 @@ as `File#member`.
 - [ModBlocks.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBlocks.java) — `#BLOCKS`
   (`DeferredRegister.Blocks`), ~77 blocks. Core: `#LUMENBOUND_STONE` (portal frame), `#LUMEN_PORTAL`
   (`LumenPortalBlock`, non-solid/glowing), `#MOONLOAM`, `#LUMEN_GRASS_BLOCK`, `#MOONSTONE`/`#COBBLED_MOONSTONE`,
-  `#GLOWROOT_LOG`, `#GLOWVINE`, `#LUMENBULB`, `#LUMEN_CRYSTAL_BLOCK`. **Phase 5 content:** `#MOONBLOSSOM`
-  (`FlowerBlock`, night-vision), `#GLOW_FERN` (`TallGrassBlock`), `#GLOWWOOD_SAPLING` (`SaplingBlock` +
-  `TreeGrower` → `glowwood_tree`) — all cross-model; `#LUMEN_CRYSTAL_ORE` + `#DEEP_LUMEN_CRYSTAL_ORE`
-  (`DropExperienceBlock`, drop shards, glow). **Phase 4 sets**
+  `#GLOWROOT_LOG` (`RotatedPillarBlock`), `#GLOWVINE`, `#LUMENBULB`, `#LUMEN_CRYSTAL_BLOCK`. **Phase 5
+  content:** `#MOONBLOSSOM` (`FlowerBlock`, night-vision), `#GLOW_FERN` (`TallGrassBlock`),
+  `#GLOWWOOD_SAPLING`/`#GLOWROOT_SAPLING` (`SaplingBlock` + `TreeGrower`; the Glowroot grower's mega slot
+  is the 2×2), `#GLOWROOT_LEAVES` (`LeavesBlock`, glow) — cross-model; `#LUMEN_CRYSTAL_ORE` +
+  `#DEEP_LUMEN_CRYSTAL_ORE` (`DropExperienceBlock`, drop shards, glow). **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
   `#GLOWWOOD_LEAVES`, stairs/slab/fence/fence_gate/door/trapdoor/button/pressure_plate + signs
@@ -138,8 +141,8 @@ as `File#member`.
   [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS`,
   [ModParticles](src/main/java/com/jus144tice/lumenwilds/registry/ModParticles.java) `#PARTICLES`.
 - [ModFeatures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFeatures.java) — `#FEATURES`
-  (custom `Feature` types). Empty and **intentionally NOT bus-registered** (the Glowroot mega tree moved
-  to a structure; register in `Lumenwilds` ctor when the first custom feature is added).
+  (custom `Feature` types), bus-wired. `#GLOWROOT_TREE_2X2` (`GlowrootTreeFeature`) — the ordinary 2×2
+  Glowroot tree (the mega tree is a structure; both share `world.feature.GlowrootShape`).
 - [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
   `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` (`StructureType`) + `#GLOWROOT_TREE_PIECE`
   (`StructurePieceType`). The mega tree is a structure (spans chunks, no feature size cap). Structure
@@ -185,24 +188,34 @@ as `File#member`.
   `#SPOREFALL_JUNGLE`, `#GLASSPETAL_CRAGS`, `#UNDERCROWN_CAVERNS`, `#STILLBLOOM_BASIN` (defined in 5d).
 - [LumenConfiguredFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenConfiguredFeatures.java)
   — keys for `data/.../worldgen/configured_feature/`: `#LUMEN_CRYSTAL_ORE`, `#PATCH_MOONBLOSSOM`,
-  `#PATCH_GLOW_FERN`, `#GLOWWOOD_TREE` (all live, 5b/5c).
+  `#PATCH_GLOW_FERN`, `#GLOWWOOD_TREE`, `#GLOWROOT_TREE` (1×1, vanilla `tree`), `#GLOWROOT_TREE_2X2`
+  (custom `GlowrootTreeFeature`) — all live (5b/5c/5c-3). (The Glowroot *mega* tree is a structure.)
 - [LumenPlacedFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenPlacedFeatures.java) —
   same paths under `placed_feature/` (different registry), referenced from `biome/lumen_glade.json`'s
-  feature lists: `#LUMEN_CRYSTAL_ORE` (ores step), `#GLOWWOOD_TREE` + `#PATCH_MOONBLOSSOM`/`#PATCH_GLOW_FERN`
-  (vegetal step).
+  feature lists: `#LUMEN_CRYSTAL_ORE` (ores step), `#GLOWROOT_TREE_2X2`/`#GLOWROOT_TREE`/`#GLOWWOOD_TREE`
+  + `#PATCH_MOONBLOSSOM`/`#PATCH_GLOW_FERN` (vegetal step).
 - [LumenWorldgenBootstrap.java](src/main/java/com/jus144tice/lumenwilds/world/LumenWorldgenBootstrap.java)
   — empty seam for code-generated worldgen (`RegistrySetBuilder`/`BootstrapContext`) if we leave JSON.
+
+### world/feature/ — Glowroot tree geometry (Phase 5c-3)
+- [GlowrootShape.java](src/main/java/com/jus144tice/lumenwilds/world/feature/GlowrootShape.java) — the
+  **shared** procedural Glowroot tree (trunk/roots/branches/dual-dome canopy + optional ore). `#generate`
+  draws into a `#Placer` (abstracts structure box-clipping vs. feature direct writes); `#Params` size
+  knobs with presets `#MEGA` (the structure giant) and `#MEDIUM` (the ordinary 2×2 feature). **Tune tree
+  shape here** — both variants share it.
+- [GlowrootTreeFeature.java](src/main/java/com/jus144tice/lumenwilds/world/feature/GlowrootTreeFeature.java)
+  — `Feature<NoneFeatureConfiguration>` for the ordinary 2×2 Glowroot tree; `#place` runs
+  `GlowrootShape.generate(..., MEDIUM)`. Bound to `ModFeatures#GLOWROOT_TREE_2X2`.
 
 ### world/structure/ — the Glowroot mega tree (Phase 5c-2)
 - [GlowrootTreeStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/GlowrootTreeStructure.java)
   — `Structure` (`#CODEC` via `simpleCodec`); `#findGenerationPoint` places one `GlowrootTreePiece` at the
   surface chunk centre. Bound to `ModStructures#GLOWROOT_TREE`.
 - [GlowrootTreePiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/GlowrootTreePiece.java)
-  — `StructurePiece` whose `#postProcess` draws the whole tree from a position-seeded RNG (deterministic
-  across chunks) but writes only inside the per-chunk `writeBox` — so the ~20-wide/~80-tall/~50-canopy
-  giant spans chunks with **no "far chunk" errors**. Holds the origin; builds trunk, arching buttress
-  roots, taproots, the dual-dome canopy, and the Lumen-Crystal-Ore root cluster. Tune the constants
-  (`TRUNK_RADIUS`, `MIN/EXTRA_HEIGHT`, `ROOT_DEPTH`, `HORIZONTAL_REACH`) at the top.
+  — `StructurePiece` whose `#postProcess` runs `GlowrootShape.generate(..., MEGA)` from a position-seeded
+  RNG (deterministic across chunks) through a box-clipped `Placer` — so the ~20-wide/~80-tall/~50-canopy
+  giant spans chunks with **no "far chunk" errors**. Geometry lives in `GlowrootShape` (shared with the
+  2×2 feature); tweak the giant's size via `GlowrootShape#MEGA`.
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -284,7 +297,8 @@ as `File#member`.
   fixed Lumen Glade biome) + `dimension_type/lumenwilds.json`, and `worldgen/` — `noise_settings/
   lumenwilds.json` (bespoke terrain + surface rules), `biome/lumen_glade.json`, `noise/hills.json`,
   `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`, `patch_moonblossom`, `patch_glow_fern`,
-  `glowwood_tree`), and the Glowroot mega-tree structure: `structure/glowroot_tree.json`,
+  `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2` [custom feature]), and the Glowroot mega-tree
+  structure: `structure/glowroot_tree.json`,
   `structure_set/glowroot_tree.json` (random_spread, spacing 20/sep 7), and the biome tag
   `tags/worldgen/biome/has_structure/glowroot_tree.json`. Hand-authored (not datagen); the other 6 biomes
   arrive in 5d.

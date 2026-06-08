@@ -124,12 +124,45 @@ public final class ModBlocks {
     public static final DeferredBlock<Block> GLOWWOOD_PLANKS =
             BLOCKS.registerSimpleBlock("glowwood_planks", planksProps());
 
-    public static final DeferredBlock<Block> GLOWROOT_LOG = BLOCKS.registerSimpleBlock(
+    public static final DeferredBlock<RotatedPillarBlock> GLOWROOT_LOG = BLOCKS.registerBlock(
             "glowroot_log",
+            RotatedPillarBlock::new,
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(2.0F)
                     .sound(SoundType.WOOD));
+
+    /** Glowroot Leaves — broad teal canopy of the Glowroot trees (and the mega tree). Faint glow. */
+    public static final DeferredBlock<LeavesBlock> GLOWROOT_LEAVES = BLOCKS.registerBlock(
+            "glowroot_leaves",
+            LeavesBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(0.2F)
+                    .randomTicks()
+                    .lightLevel(state -> 3)
+                    .sound(SoundType.GRASS)
+                    .noOcclusion()
+                    .isViewBlocking((s, l, p) -> false)
+                    .pushReaction(PushReaction.DESTROY));
+
+    /** Grows a normal Glowroot tree, or the 2×2 variant when 4 saplings are planted together. */
+    private static final TreeGrower GLOWROOT_GROWER = new TreeGrower(
+            Lumenwilds.MOD_ID + ":glowroot",
+            Optional.of(LumenConfiguredFeatures.GLOWROOT_TREE_2X2),
+            Optional.of(LumenConfiguredFeatures.GLOWROOT_TREE),
+            Optional.empty());
+
+    public static final DeferredBlock<SaplingBlock> GLOWROOT_SAPLING = BLOCKS.registerBlock(
+            "glowroot_sapling",
+            props -> new SaplingBlock(GLOWROOT_GROWER, props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .noCollission()
+                    .randomTicks()
+                    .instabreak()
+                    .sound(SoundType.GRASS)
+                    .pushReaction(PushReaction.DESTROY));
 
     // TODO: glowvine should become a climbable/decay vine block (LeavesBlock/GrowingPlantBlock-like).
     public static final DeferredBlock<Block> GLOWVINE = BLOCKS.registerSimpleBlock(
