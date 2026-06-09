@@ -53,10 +53,12 @@ feature], fringed by the new **Glow Algae** + **Lumen Reeds** flora and sparse G
 **5d.5** added the **Undercrown Caverns** — the underground **cave biome**: the noise router's `depth` was
 made y-varying so the `multi_noise` source layers Undercrown *under* the surface biomes (deep-depth point);
 it's naturally lit by dense Lumen Crystal Ore + **Glowvine veins** (an ore feature) with underground
-Lumenwater pools. What is deliberately *not* built yet: the last biome
-(5d.6 Stillbloom Basin), mobs, more structures, custom sky/fog. **All biomes share one terrain *height***
-(only `depth` varies, for the cave layer) — per-biome terrain silhouette is a deferred cross-cutting pass
-(see IMPLEMENTATION_PLAN). Roadmap:
+Lumenwater pools. **5d.6** added the **Stillbloom Basin** — the rare sanctuary: open fields of the new
+multi-block giant **Stillbloom** (stem + petal dome + glowing core, built by a custom `StillbloomFeature`),
+brightest/softest palette, placed at a hot+driest climate *corner* so it's rare. **All seven biomes are now
+in — Phase 5d complete.** What is deliberately *not* built yet: mobs, more structures, custom sky/fog.
+**All biomes share one terrain *height*** (only `depth` varies, for the cave layer) — per-biome terrain
+silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -125,6 +127,8 @@ as `File#member`.
   `#GLOWROOT_LOG` (`RotatedPillarBlock`), `#GLOWVINE`, `#LUMENBULB`, `#LUMEN_CRYSTAL_BLOCK`. **Phase 5
   content:** `#MOONBLOSSOM` (`FlowerBlock`, night-vision), `#GLOW_FERN`/`#GLOW_ALGAE`/`#LUMEN_REEDS`
   (`TallGrassBlock` cross flora — the latter two are Moonmire's glowing swamp cover, 5d.4),
+  `#STILLBLOOM_STEM`/`#STILLBLOOM_PETAL`/`#STILLBLOOM_CORE` (soft glowing cubes the `StillbloomFeature`
+  assembles into a giant flower, core light 12, 5d.6),
   `#GLOWWOOD_SAPLING`/`#GLOWROOT_SAPLING` (`SaplingBlock` + `TreeGrower`; the Glowroot grower's mega slot
   is the 2×2), `#GLOWROOT_LEAVES` (`LeavesBlock`, glow) — cross-model; `#LUMEN_CRYSTAL_ORE` +
   `#DEEP_LUMEN_CRYSTAL_ORE` (`DropExperienceBlock`, drop shards, glow); `#GLASSPETAL_CLUSTER`
@@ -175,7 +179,8 @@ as `File#member`.
   [ModParticles](src/main/java/com/jus144tice/lumenwilds/registry/ModParticles.java) `#PARTICLES`.
 - [ModFeatures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFeatures.java) — `#FEATURES`
   (custom `Feature` types), bus-wired. `#GLOWROOT_TREE_2X2` (`GlowrootTreeFeature`) — the ordinary 2×2
-  Glowroot tree (the mega tree is a structure; both share `world.feature.GlowrootShape`).
+  Glowroot tree (the mega tree is a structure; both share `world.feature.GlowrootShape`); `#STILLBLOOM`
+  (`StillbloomFeature`) — the giant Stillbloom flower (5d.6).
 - [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
   `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` + `#GLOWROOT_TREE_PIECE` (the mega Glowroot
   tree) and `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom). Both are
@@ -227,16 +232,16 @@ as `File#member`.
   (`NoiseGeneratorSettings` — the bespoke terrain, Phase 5a).
 - [LumenBiomeBootstrap.java](src/main/java/com/jus144tice/lumenwilds/world/LumenBiomeBootstrap.java) —
   the bible's 7 biome keys: `#LUMEN_GLADE` (5a) + `#GLOWROOT_FOREST` (5d.1) + `#GLASSPETAL_CRAGS` (5d.2)
-  + `#SPOREFALL_JUNGLE` (5d.3) + `#MOONMIRE` (5d.4) + `#UNDERCROWN_CAVERNS` (5d.5, the cave biome) all live;
-  `#STILLBLOOM_BASIN` lands in 5d.6.
+  + `#SPOREFALL_JUNGLE` (5d.3) + `#MOONMIRE` (5d.4) + `#UNDERCROWN_CAVERNS` (5d.5) + `#STILLBLOOM_BASIN`
+  (5d.6) — **all seven live (Phase 5d complete)**.
 - [LumenConfiguredFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenConfiguredFeatures.java)
   — keys for `data/.../worldgen/configured_feature/`: `#LUMEN_CRYSTAL_ORE`, `#PATCH_MOONBLOSSOM`,
   `#PATCH_GLOW_FERN`, `#GLOWWOOD_TREE`, `#GLOWROOT_TREE` (1×1, vanilla `tree`), `#GLOWROOT_TREE_2X2`
   (custom `GlowrootTreeFeature`), `#PATCH_GLASSPETAL` (5d.2, Glasspetal Cluster `random_patch`),
   `#GIANT_GLOWCAP` (5d.3, vanilla `huge_brown_mushroom` with the glowcap blocks), `#LUMENWATER_POOL`
   (5d.4, vanilla `lake` filled with Lumenwater) + `#PATCH_GLOW_ALGAE`/`#PATCH_LUMEN_REEDS`,
-  `#UNDERCROWN_GLOWVINE` (5d.5, an `ore` feature threading Glowvine through cave rock) — all live.
-  (The Glowroot *mega* tree is a structure.)
+  `#UNDERCROWN_GLOWVINE` (5d.5, an `ore` feature threading Glowvine through cave rock), `#STILLBLOOM` (5d.6,
+  the custom giant-flower `StillbloomFeature`) — all live. (The Glowroot *mega* tree is a structure.)
 - [LumenPlacedFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenPlacedFeatures.java) —
   same paths under `placed_feature/` (different registry), referenced from `biome/lumen_glade.json`'s
   feature lists: `#LUMEN_CRYSTAL_ORE` (ores step), `#GLOWROOT_TREE_2X2`/`#GLOWROOT_TREE`/`#GLOWWOOD_TREE`
@@ -244,7 +249,8 @@ as `File#member`.
   forest-density placement of the 2×2 tree (Glowroot Forest); `#PATCH_GLASSPETAL` (5d.2) scatters Glasspetal
   Clusters (Glasspetal Crags); `#GIANT_GLOWCAP` (5d.3) places giant mushrooms (Sporefall Jungle);
   `#LUMENWATER_POOL`/`#PATCH_GLOW_ALGAE`/`#PATCH_LUMEN_REEDS` (5d.4) make the Moonmire swamp;
-  `#UNDERCROWN_GLOWVINE`/`#UNDERCROWN_CRYSTAL`/`#UNDERCROWN_POOL` (5d.5, height-ranged) light the deep caves.
+  `#UNDERCROWN_GLOWVINE`/`#UNDERCROWN_CRYSTAL`/`#UNDERCROWN_POOL` (5d.5, height-ranged) light the deep caves;
+  `#STILLBLOOM` (5d.6) fields the giant flowers.
 - [LumenWorldgenBootstrap.java](src/main/java/com/jus144tice/lumenwilds/world/LumenWorldgenBootstrap.java)
   — empty seam for code-generated worldgen (`RegistrySetBuilder`/`BootstrapContext`) if we leave JSON.
 
@@ -257,6 +263,10 @@ as `File#member`.
 - [GlowrootTreeFeature.java](src/main/java/com/jus144tice/lumenwilds/world/feature/GlowrootTreeFeature.java)
   — `Feature<NoneFeatureConfiguration>` for the ordinary 2×2 Glowroot tree; `#place` runs
   `GlowrootShape.generate(..., MEDIUM)`. Bound to `ModFeatures#GLOWROOT_TREE_2X2`.
+- [StillbloomFeature.java](src/main/java/com/jus144tice/lumenwilds/world/feature/StillbloomFeature.java) —
+  `Feature<NoneFeatureConfiguration>` (5d.6); `#place` builds a 3–8-tall giant Stillbloom (stem column +
+  petal disc dome + glowing core) into air/replaceable space, stopping if it hits solid. Bound to
+  `ModFeatures#STILLBLOOM`.
 - [MegaGlowcapShape.java](src/main/java/com/jus144tice/lumenwilds/world/feature/MegaGlowcapShape.java) —
   the procedural geometry for the **mega Glowcap** mushroom structure: a flared solid stem + a broad domed
   cap *shell* (hollow underside) of glowing cap blocks + a Lumen-Crystal-Ore cluster beneath (`#seedOreColumn`,
@@ -371,11 +381,12 @@ as `File#member`.
   every other climate axis is still constant), `biome/lumen_glade.json` + `biome/glowroot_forest.json`
   (5d.1, dark-teal) + `biome/glasspetal_crags.json` (5d.2, blue-violet) + `biome/sporefall_jungle.json`
   (5d.3, lush green + warped_spore particle) + `biome/moonmire.json` (5d.4, dark glowing swamp) +
-  `biome/undercrown_caverns.json` (5d.5, deep cave biome), `noise/hills.json`, `configured_feature/` +
-  `placed_feature/` (`lumen_crystal_ore`, `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`,
-  `glowroot_tree` [1×1], `glowroot_tree_2x2` [custom feature], `patch_glasspetal` [5d.2], `giant_glowcap`
-  [5d.3], `lumenwater_pool` [5d.4, `lake`] + `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine`
-  [5d.5] + placed-only `undercrown_crystal`/`undercrown_pool`; placed-only `glowroot_forest_trees`
+  `biome/undercrown_caverns.json` (5d.5, deep cave biome) + `biome/stillbloom_basin.json` (5d.6, rare bright
+  sanctuary), `noise/hills.json`, `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`,
+  `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2`
+  [custom feature], `patch_glasspetal` [5d.2], `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, `lake`] +
+  `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine` [5d.5] + placed-only `undercrown_crystal`/
+  `undercrown_pool`, `stillbloom` [5d.6, custom feature]; placed-only `glowroot_forest_trees`
   [forest-density 2×2]), and **two town-sized structures** — `structure/glowroot_tree.json`
   + `structure_set/glowroot_tree.json` (spacing 20/sep 7, in `lumen_glade`) and `structure/mega_glowcap.json`
   + `structure_set/mega_glowcap.json` (spacing 20/sep 7, distinct salt, in `sporefall_jungle`), each with its
@@ -401,6 +412,13 @@ as `File#member`.
 
 - **1.21.1 datapack folders are singular**: `recipe/`, `loot_table/`, `dimension/`, `dimension_type/`,
   `tags/block/`. Pack format **48**. Recipe result uses `{"id":…,"count":…}` (not `"item":`).
+- **Biome feature lists must share a globally-consistent order per step** (the engine topo-sorts all biomes'
+  features into one order; conflicting relative orders throw *"Feature order cycle found"* at **chunk-gen**,
+  NOT at boot — so `runServer` reaching "Done" does NOT catch it). Keep shared features in the same relative
+  order in every biome: trees → ground patches, with `patch_glow_fern` **before** `patch_moonblossom`, and
+  `patch_moonblossom` last. To actually exercise this (and any custom feature), force-generate Lumenwilds
+  chunks — a temp `data/minecraft/tags/function/load.json` → a fn running `execute in lumenwilds:lumenwilds
+  run forceload add …` (delete before commit).
 - **`DeferredRegister.getEntries()` yields `DeferredHolder`**, not `DeferredBlock`/`DeferredItem` —
   iterate with `var`. `registerSimpleBlockItem(...)` returns `DeferredItem<BlockItem>`.
 - **`@EventBusSubscriber(bus = Bus.MOD)` warns "deprecated for removal"** — still the correct route for

@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.world.feature.GlowrootTreeFeature;
+import com.jus144tice.lumenwilds.world.feature.StillbloomFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -25,6 +26,10 @@ public final class ModFeatures {
     /** The ordinary 2×2 Glowroot tree (a scaled-down spreading version of the mega-tree shape). */
     public static final DeferredHolder<Feature<?>, GlowrootTreeFeature> GLOWROOT_TREE_2X2 =
             FEATURES.register("glowroot_tree_2x2", () -> new GlowrootTreeFeature(NoneFeatureConfiguration.CODEC));
+
+    /** The giant Stillbloom flower (Phase 5d.6) — stem column + petal dome + glowing core. */
+    public static final DeferredHolder<Feature<?>, StillbloomFeature> STILLBLOOM =
+            FEATURES.register("stillbloom", () -> new StillbloomFeature(NoneFeatureConfiguration.CODEC));
 
     private ModFeatures() {}
 }

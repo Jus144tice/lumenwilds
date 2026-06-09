@@ -46,6 +46,9 @@ public final class LumenConfiguredFeatures {
     // Phase 5d.5: Undercrown Caverns — glowing Glowvine veins threaded through the deep rock.
     public static final ResourceKey<ConfiguredFeature<?, ?>> UNDERCROWN_GLOWVINE = key("undercrown_glowvine");
 
+    // Phase 5d.6: the giant Stillbloom flower (custom StillbloomFeature), used by the Stillbloom Basin.
+    public static final ResourceKey<ConfiguredFeature<?, ?>> STILLBLOOM = key("stillbloom");
+
     private static ResourceKey<ConfiguredFeature<?, ?>> key(String path) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocationHelper.modLoc(path));
     }

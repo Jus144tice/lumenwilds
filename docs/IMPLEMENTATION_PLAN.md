@@ -269,8 +269,10 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 > `GlowrootTreeFeature` — a tall, spreading 2×2 tree that reads as the same species, not vanilla dark oak;
 > plus `GLOWROOT_LEAVES` + `GLOWROOT_SAPLING` (mega slot = 2×2) and `glowroot_log` promoted to a pillar);
 > **5d** the remaining 6 biomes — split into **six separate efforts (5d.1–5d.6)**, one biome each, so each
-> can be reviewed and made distinctly *alien* before the next (see breakdown below); **5e** Lumenwater fluid
-> ✅ (pulled forward, ahead of 5d.4 Moonmire, so the swamp can ship with the real glowing fluid).
+> can be reviewed and made distinctly *alien* before the next (see breakdown below) ✅ **all six done**;
+> **5e** Lumenwater fluid ✅ (pulled forward, ahead of 5d.4 Moonmire, so the swamp ships with the real fluid).
+> **→ Phase 5 is functionally complete** (bespoke terrain, all 7 biomes, trees, ores, flora, the two giant
+> structures, and Lumenwater). Remaining polish/refinements are tracked in Phase 9; next major work is Phase 6 (mobs).
 >
 > ### 5d — the six biomes, one effort each (in build order)
 >
@@ -329,6 +331,22 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 > *Deferred:* separate luminous gills block, hanging vines, the timed Sporefall event. Verified: build green +
 > server boots to "Done" with the jungle biome, glowcap blocks, mushroom feature and spore particle all
 > parsed, no worldgen errors. 3 biomes remain (5d.4–5d.6).
+>
+> **5d.6 done — Phase 5d complete (all 7 biomes).** Stillbloom Basin — the rare sanctuary. New blocks
+> `#STILLBLOOM_STEM`/`#STILLBLOOM_PETAL`/`#STILLBLOOM_CORE` (soft glowing cubes; core light 12) assembled by
+> a new custom `world.feature.StillbloomFeature` (`ModFeatures#STILLBLOOM`) into a 3–8-tall giant flower
+> (stem column + petal disc dome + core), placed into air/replaceable space. `biome/stillbloom_basin.json` —
+> brightest/softest pale-floral palette; vegetal = `stillbloom` + dense `patch_glow_fern`/`patch_moonblossom`;
+> reflective pools are the terrain's natural water (no Lumenwater, to stay distinct from the Moonmire);
+> safe-haven = empty monster spawns. Placed at a **hot+driest climate corner** (temp 0.8 / humidity −0.9) so
+> it's rare. Keys `LumenConfiguredFeatures`/`LumenPlacedFeatures#STILLBLOOM`; `LumenBiomeBootstrap
+> #STILLBLOOM_BASIN` live. **Caught + fixed a real bug via force-gen testing:** a *"Feature order cycle"*
+> between `sporefall_jungle` and `stillbloom_basin` (I'd listed `patch_moonblossom` before `patch_glow_fern`,
+> opposite to every other biome) — this crashes ALL Lumenwilds chunk-gen and does NOT show at boot; fixed by
+> making the shared vegetal order consistent (see the new gotcha in CLAUDE.md). *Deferred (→ Phase 9):*
+> smooth-moonstone outcrops, Stillbloom Nectar harvesting, the active-core hostile-avoidance aura (Phase 6).
+> Verified: build green + a temp force-gen of a basin-dominant Lumenwilds region ran `StillbloomFeature`
+> across thousands of chunks with zero exceptions (temp datapack + dominance override removed before commit).
 >
 > **5d.5 done.** Undercrown Caverns — the underground cave biome (the bible's "underground heart"). The
 > hard part: made the noise router's **`depth` y-varying** (`y_clamped_gradient`, ~0 at/above the surface
@@ -666,6 +684,10 @@ return travel lands precisely.
     underground **giant glowcaps** (custom features); **massive caverns** (needs noise/cheese caves in the
     `noise_settings` `final_density`, not just carvers); **glow-fungi floor flora** (the cross plants can't
     survive on moonstone cave floors — needs a cave-floor soil block or a waterloggable/lichen-style plant).
+  - **Stillbloom Basin (5d.6):** smooth-moonstone **outcrops** (a disk/ore surface feature), **Stillbloom
+    Nectar** harvesting (right-click a core with a glass bottle → nectar item), and the **active-core
+    hostile-avoidance aura** (mobs shun lit cores — needs the Phase 6 mob AI). The safe-haven "greatly
+    reduced spawns" is already honored (empty monster spawns); wire the explicit suppression when mobs land.
 - See also the **⚠ per-biome terrain silhouette** task in the Phase 5 / 5d section — a dimension-wide
   noise-router pass best done once all six biomes exist.
 

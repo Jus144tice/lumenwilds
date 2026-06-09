@@ -1,5 +1,5 @@
 {
-  "__comment": "Lumenwilds dimension. Bespoke terrain (lumenwilds:lumenwilds noise settings) with a MultiNoise biome spread (Phase 5d). Biomes are added one parameter point per 5d.x effort. Humidity splits the arrival Lumen Glade (dry) from the Glowroot Forest (humid); a cold temperature band carves out the Glasspetal Crags (5d.2); a hot+humid band gives the Sporefall Jungle (5d.3); a mild+wettest band gives the Moonmire swamp (5d.4). All surface biomes sit at depth 0; the Undercrown Caverns (5d.5) sit at deep depth (0.9) so the y-varying depth router layers them UNDER everything. Terrain HEIGHT is shared across biomes (one noise_settings); identity comes from palette + surface rules + features.",
+  "__comment": "Lumenwilds dimension. Bespoke terrain (lumenwilds:lumenwilds noise settings) with a MultiNoise biome spread (Phase 5d). Biomes are added one parameter point per 5d.x effort. Humidity splits the arrival Lumen Glade (dry) from the Glowroot Forest (humid); a cold temperature band carves out the Glasspetal Crags (5d.2); a hot+humid band gives the Sporefall Jungle (5d.3); a mild+wettest band gives the Moonmire swamp (5d.4); a hot+driest CORNER gives the rare Stillbloom Basin (5d.6). All surface biomes sit at depth 0; the Undercrown Caverns (5d.5) sit at deep depth (0.9) so the y-varying depth router layers them UNDER everything. Terrain HEIGHT is shared across biomes (one noise_settings); identity comes from palette + surface rules + features.",
   "type": "lumenwilds:lumenwilds",
   "generator": {
     "type": "minecraft:noise",
@@ -75,6 +75,18 @@
             "continentalness": 0.0,
             "erosion": 0.0,
             "depth": 0.9,
+            "weirdness": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "lumenwilds:stillbloom_basin",
+          "parameters": {
+            "temperature": 0.8,
+            "humidity": -0.9,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "depth": 0.0,
             "weirdness": 0.0,
             "offset": 0.0
           }

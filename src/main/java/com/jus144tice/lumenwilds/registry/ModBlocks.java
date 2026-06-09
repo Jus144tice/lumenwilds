@@ -228,6 +228,37 @@ public final class ModBlocks {
                     .replaceable()
                     .pushReaction(PushReaction.DESTROY));
 
+    // --- Stillbloom Basin — the giant Stillbloom flower (Phase 5d.6) ----------------------------
+    // Three soft, glowing blocks assembled by StillbloomFeature into a 3–8-tall giant flower: a stem
+    // column carrying a petal dome around a brilliant core. The brightest blocks in the dimension.
+
+    /** Stillbloom Stem — the soft glowing stalk of a giant Stillbloom. */
+    public static final DeferredBlock<Block> STILLBLOOM_STEM = BLOCKS.registerSimpleBlock(
+            "stillbloom_stem",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(0.3F)
+                    .lightLevel(state -> 3)
+                    .sound(SoundType.WET_GRASS));
+
+    /** Stillbloom Petal — the pale blue-white petals; glow softly (light 7). */
+    public static final DeferredBlock<Block> STILLBLOOM_PETAL = BLOCKS.registerSimpleBlock(
+            "stillbloom_petal",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(0.2F)
+                    .lightLevel(state -> 7)
+                    .sound(SoundType.WART_BLOCK));
+
+    /** Stillbloom Core — the brilliant heart of the bloom (light 12); hostiles shun it (Phase 6). */
+    public static final DeferredBlock<Block> STILLBLOOM_CORE = BLOCKS.registerSimpleBlock(
+            "stillbloom_core",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(0.4F)
+                    .lightLevel(state -> 12)
+                    .sound(SoundType.WART_BLOCK));
+
     /** Grows the {@code lumenwilds:glowwood_tree} configured feature (Phase 5c); no mega tree yet. */
     private static final TreeGrower GLOWWOOD_GROWER = new TreeGrower(
             Lumenwilds.MOD_ID + ":glowwood",

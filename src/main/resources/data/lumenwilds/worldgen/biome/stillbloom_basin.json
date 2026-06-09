@@ -1,0 +1,51 @@
+{
+  "__comment": "Stillbloom Basin (Phase 5d.6) — the bible's rarest, safest biome. An open field of giant glowing Stillblooms with a bright, soft, floral palette (the brightest biome, but pale and gentle, not solar). Calm reflective water ponds (the terrain's natural sea-level pools — NOT glowing Lumenwater, to stay distinct from the Moonmire), dense Moonblossom + Glow Fern. The safe-haven rule (greatly reduced hostiles) is honored by leaving monster spawns empty; when mobs land in Phase 6 this biome keeps them suppressed. Rare: placed at a hot+driest climate corner few points reach. Smooth-moonstone outcrops are a deferred refinement (Phase 9).",
+  "has_precipitation": false,
+  "temperature": 0.8,
+  "downfall": 0.0,
+  "effects": {
+    "fog_color": 9418968,
+    "sky_color": 10405092,
+    "water_color": 7325912,
+    "water_fog_color": 4885152,
+    "grass_color": 8175784,
+    "foliage_color": 9097406,
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    }
+  },
+  "carvers": {
+    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    ["lumenwilds:lumen_crystal_ore"],
+    [],
+    [],
+    [
+      "lumenwilds:stillbloom",
+      "lumenwilds:patch_glow_fern",
+      "lumenwilds:patch_moonblossom"
+    ],
+    []
+  ],
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "spawn_costs": {}
+}

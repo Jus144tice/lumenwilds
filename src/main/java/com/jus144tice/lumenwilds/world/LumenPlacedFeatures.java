@@ -50,6 +50,9 @@ public final class LumenPlacedFeatures {
     public static final ResourceKey<PlacedFeature> UNDERCROWN_CRYSTAL = key("undercrown_crystal");
     public static final ResourceKey<PlacedFeature> UNDERCROWN_POOL = key("undercrown_pool");
 
+    // Phase 5d.6: the giant Stillbloom flower, used by the Stillbloom Basin biome.
+    public static final ResourceKey<PlacedFeature> STILLBLOOM = key("stillbloom");
+
     private static ResourceKey<PlacedFeature> key(String path) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocationHelper.modLoc(path));
     }
