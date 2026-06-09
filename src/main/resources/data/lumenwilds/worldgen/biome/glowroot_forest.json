@@ -1,0 +1,53 @@
+{
+  "__comment": "Glowroot Forest (Phase 5d.1) — the bible's signature wood biome. A dim, dense forest of giant self-lit Glowroot trees over a dark teal floor. Darker fog than the Lumen Glade; the light comes from the trees, not the sky. Reuses the 5c-3 Glowroot tree features at forest density.",
+  "has_precipitation": false,
+  "temperature": 0.6,
+  "downfall": 0.7,
+  "effects": {
+    "fog_color": 1450030,
+    "sky_color": 1715258,
+    "water_color": 1727086,
+    "water_fog_color": 664112,
+    "grass_color": 4095126,
+    "foliage_color": 3050636,
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    }
+  },
+  "carvers": {
+    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    ["lumenwilds:lumen_crystal_ore"],
+    [],
+    [],
+    [
+      "lumenwilds:glowroot_forest_trees",
+      "lumenwilds:glowroot_tree",
+      "lumenwilds:glowwood_tree",
+      "lumenwilds:patch_glow_fern",
+      "lumenwilds:patch_moonblossom"
+    ],
+    []
+  ],
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "spawn_costs": {}
+}

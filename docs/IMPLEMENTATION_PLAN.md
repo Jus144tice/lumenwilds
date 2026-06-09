@@ -268,7 +268,50 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 > geometry was extracted to `world.feature.GlowrootShape`, shared by the giant and a new `MEDIUM`-scale
 > `GlowrootTreeFeature` — a tall, spreading 2×2 tree that reads as the same species, not vanilla dark oak;
 > plus `GLOWROOT_LEAVES` + `GLOWROOT_SAPLING` (mega slot = 2×2) and `glowroot_log` promoted to a pillar);
-> **5d** the remaining 6 biomes + a MultiNoise spread; **5e** Lumenwater fluid.
+> **5d** the remaining 6 biomes — split into **six separate efforts (5d.1–5d.6)**, one biome each, so each
+> can be reviewed and made distinctly *alien* before the next (see breakdown below); **5e** Lumenwater fluid.
+>
+> ### 5d — the six biomes, one effort each (in build order)
+>
+> Each effort delivers: a `worldgen/biome/<name>.json` with a bible-accurate palette (fog/sky/water/grass/
+> foliage), its signature flora/trees as features (new blocks only where the bible names them), carvers,
+> placeholder spawn lists, and a `multi_noise` parameter point so it actually appears. **5d.1 stands up the
+> shared infrastructure**: the dimension currently uses a *fixed* `lumen_glade` biome source — 5d.1 swaps it
+> for a `minecraft:multi_noise` source and a biome parameter list, which every later effort extends by one
+> point. Terrain *height* stays globally shared (one `noise_settings`); biome identity comes from palette +
+> surface-rule tweaks + features + flora + spawns. Per-biome terrain drama (crag spires, basins) is carried
+> by **features** layered on the base terrain, not per-biome density (a stretch goal noted where relevant).
+>
+> - **5d.1 Glowroot Forest** — the signature wood biome. Dense Glowroot trees (reuse 5c-3 features at higher
+>   count) over a darker floor; hanging glowvines, Lumen-fruit clusters, scattered Glowwood. Darker fog than
+>   the Glade, trees self-lit. *Stands up the `multi_noise` biome source* (Glade + Glowroot Forest).
+> - **5d.2 Glasspetal Crags** — sharp crystal highlands, palette shifts blue-green → **blue-violet**. Reuses
+>   Lumen Crystal / Shimmerstone / Cracked Moonstone; **new Glasspetal Cluster** (translucent glowing crystal
+>   growing on rock, `AmethystClusterBlock`-like). Exposed ore veins; feature-driven crystal shelves /
+>   floating fragments for verticality. Hostile-flyer spawn hint (mob in Phase 6).
+> - **5d.3 Sporefall Jungle** — densest biome. **New Giant Glowcap** mushroom set (`HugeMushroomBlock` stem/
+>   cap/gills, gills glow) + dense vines/undergrowth + rare flowers. The **Sporefall** look via biome
+>   `ambient_particle` (downward glowing spores) — the full timed event is Phase 7; here it's the ambient.
+> - **5d.4 Moonmire** — glowing swamp. Low islands, dense **Lumen Reeds** + **Glow Algae** (new flora),
+>   submerged Glowroot, brighter-than-anywhere water. **Lumenwater dependency:** uses tinted vanilla water as
+>   a placeholder for the glowing pools until **5e** lands the real fluid, then swap. Bogroot wood deferred
+>   (reuse Glowwood-tinted for now or defer the tree).
+> - **5d.5 Undercrown Caverns** — underground cave biome (placed via the cave-biome noise band, deep `y`).
+>   Root pillars (Glowroot columns), underground glowing pools, hanging glowvines, glow fungi, deep-moonstone
+>   tunnels — naturally lit, not pitch black. Large caverns via stronger carvers.
+> - **5d.6 Stillbloom Basin** — rarest sanctuary biome. **New multi-block Stillbloom** (3–8 tall giant flower:
+>   stem / petals / glowing core, core light ~12) in open flower fields; brightest, softest palette; **greatly
+>   reduced** hostile spawns (the bible's safe-haven rule). Smooth-moonstone outcrops, shallow reflective pools.
+>
+> **5d.1 done.** Swapped the dimension's `fixed` biome source for `minecraft:multi_noise` (the shared
+> infrastructure for all of 5d): `dimension/lumenwilds.json` now lists biome parameter points; humidity
+> splits the dry `lumen_glade` from the humid `glowroot_forest`. New `biome/glowroot_forest.json` — the
+> signature wood biome: dark-teal palette (dimmer/bluer than the Glade — light comes from the trees), dense
+> Glowroot trees via a new forest-density `placed_feature/glowroot_forest_trees.json` (the 5c-3 2×2 tree at
+> ~1–2/chunk) + the 1×1 Glowroot + Glowwood + glow-fern/moonblossom ground cover. `LumenPlacedFeatures
+> #GLOWROOT_FOREST_TREES` key added; `LumenBiomeBootstrap#GLOWROOT_FOREST` now live. Verified: build green +
+> dedicated server boots to "Done" with the multi_noise source + both biomes' codecs parsed and all feature
+> refs resolved, no worldgen errors. 5 biomes remain (5d.2–5d.6).
 >
 > **5c done.** `#GLOWWOOD_SAPLING` (`SaplingBlock` + a `TreeGrower` pointing at `glowwood_tree`);
 > configured + placed `glowwood_tree` (straight trunk of glowwood_log, blob foliage of glowwood_leaves,

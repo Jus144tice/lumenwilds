@@ -31,6 +31,9 @@ public final class LumenPlacedFeatures {
     // The Glowroot MEGA tree is a structure (registry.ModStructures); the two above are the ordinary
     // (1×1 / 2×2) Glowroot trees that spawn naturally.
 
+    // Phase 5d.1: forest-density placement of the 2×2 Glowroot tree, used by the Glowroot Forest biome.
+    public static final ResourceKey<PlacedFeature> GLOWROOT_FOREST_TREES = key("glowroot_forest_trees");
+
     private static ResourceKey<PlacedFeature> key(String path) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocationHelper.modLoc(path));
     }

@@ -1,12 +1,37 @@
 {
-  "__comment": "Lumenwilds dimension (Phase 5a): bespoke terrain (lumenwilds:lumenwilds noise settings) with a single fixed biome (Lumen Glade). Phase 5d swaps the fixed source for a MultiNoise spread of the 7 biomes.",
+  "__comment": "Lumenwilds dimension. Bespoke terrain (lumenwilds:lumenwilds noise settings) with a MultiNoise biome spread (Phase 5d). Biomes are added one parameter point per 5d.x effort; for now humidity splits the arrival Lumen Glade (dry) from the Glowroot Forest (humid). Terrain HEIGHT is shared across biomes (one noise_settings); identity comes from palette + surface rules + features.",
   "type": "lumenwilds:lumenwilds",
   "generator": {
     "type": "minecraft:noise",
     "settings": "lumenwilds:lumenwilds",
     "biome_source": {
-      "type": "minecraft:fixed",
-      "biome": "lumenwilds:lumen_glade"
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "lumenwilds:lumen_glade",
+          "parameters": {
+            "temperature": 0.0,
+            "humidity": -0.4,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "depth": 0.0,
+            "weirdness": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "lumenwilds:glowroot_forest",
+          "parameters": {
+            "temperature": 0.0,
+            "humidity": 0.5,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "depth": 0.0,
+            "weirdness": 0.0,
+            "offset": 0.0
+          }
+        }
+      ]
     }
   }
 }
