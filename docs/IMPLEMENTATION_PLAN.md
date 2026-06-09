@@ -525,10 +525,13 @@ client renderer/model seam via `EntityRenderersEvent` + `RegisterLayerDefinition
 `data/lumenwilds/loot_table/entities/`; spawn eggs; and `RegisterSpawnPlacementsEvent` + biome `spawners`
 wiring), which every later mob reuses. Each mob adds its own drop items to `ModItems`.
 
-- **6.0 Lumenwater "functions as water"** (prerequisite — a 5e finish, per the bible): make Lumenwater
-  behave as water so boats float, farmland hydrates, fire extinguishes, and fish survive — add the fluid to
-  `#minecraft:water` (and `#neoforge:water`) + set the matching `FluidType` behaviors. Unblocks the aquatic
-  mobs (6e/6f).
+- **6.0 Lumenwater "functions as water"** ✅ **done** — `ModFluidTypes.LUMENWATER_TYPE` now sets
+  `canExtinguish(true)` + `canHydrate(true)` + `supportsBoating(true)` (swim/drown/push already default true),
+  and `data/minecraft/tags/fluid/water.json` adds both Lumenwater fluids to `#minecraft:water` (the tag the
+  vanilla `FluidTags.WATER` checks read). So boats float, farmland hydrates, fire extinguishes, swimming
+  works, and (overworld + native) fish survive — while it stays anti-OP (no infinite source; overworld
+  decay intact). Verified: build green + server boots to "Done" with the tag merge + FluidType loaded, no
+  errors. (Behaviour in-world is a `runClient` check.) Unblocks the aquatic mobs (6e Mirelurker / 6f Lumen Fish).
 - **6a Lumen Grazer** — passive herd herbivore; *stands up the entity infrastructure.* Six-legged, grazes
   lumen grass, travels in herds, flees players, faint night glow, breeds with Lumen Fruit. Drops Raw Grazer
   Meat / Hide / rare Glow Sinew.

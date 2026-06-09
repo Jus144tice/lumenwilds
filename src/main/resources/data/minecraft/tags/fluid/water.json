@@ -1,0 +1,7 @@
+{
+  "__comment": "Phase 6.0 — add Lumenwater (source + flowing) to the vanilla water fluid tag so it behaves as water (swimming, fish survival, farmland, fire, water physics). Merges with vanilla (replace defaults false). The teal glow + the anti-OP overworld decay are unaffected (rendering is the FluidType client extension; decay is LumenwaterBlock#randomTick).",
+  "values": [
+    "lumenwilds:lumenwater",
+    "lumenwilds:flowing_lumenwater"
+  ]
+}

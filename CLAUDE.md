@@ -164,8 +164,11 @@ as `File#member`.
   `#CREATIVE_MODE_TABS`, `#LUMENWILDS_TAB` (id `lumenwilds`, title key `itemGroup.lumenwilds`, icon =
   Lumen Striker). **Auto-populates from `ModItems.ITEMS`** — new items appear without editing this file.
 - [ModFluidTypes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFluidTypes.java) — `#FLUID_TYPES`
-  (`NeoForgeRegistries.Keys.FLUID_TYPES`); `#LUMENWATER_TYPE` (`FluidType`, light 4, no source-spread). The
-  non-state half of Lumenwater (Phase 5e).
+  (`NeoForgeRegistries.Keys.FLUID_TYPES`); `#LUMENWATER_TYPE` (`FluidType`, light 4, no infinite source). The
+  non-state half of Lumenwater (5e). **Functions as water (Phase 6.0):** `canExtinguish`/`canHydrate`/
+  `supportsBoating` set (swim/drown/push default true) **and** both fluids are in `#minecraft:water`
+  (`data/minecraft/tags/fluid/water.json`) — so boats float, farmland hydrates, fire extinguishes, and fish
+  survive. Glow + overworld-decay are unaffected.
 - [ModFluids.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFluids.java) — `#FLUIDS`;
   `#LUMENWATER` (source) + `#LUMENWATER_FLOWING` (`BaseFlowingFluid`). `#props()` lazily wires
   type↔still↔flowing↔block↔bucket (avoids a static forward-ref). The fluid registers **before** blocks, so
@@ -394,7 +397,8 @@ as `File#member`.
   arrive in 5d.4–5d.6.
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`; `tags/block/dirt.json`
-  adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil).
+  adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil); `tags/fluid/water.json`
+  adds Lumenwater (source + flowing) to `#minecraft:water` so it behaves as water (Phase 6.0).
 
 ## Adding content — quick recipes
 
