@@ -511,38 +511,83 @@ Lumenwater pools that glow in-dimension and decay to water in the Overworld.
 
 **Goal:** the ecosystem from the bible — passive, neutral, and hostile mobs that reinforce "living light."
 
-### Scope (per the bible roster)
-- **Passive:** Lumen Grazer (six-legged herbivore; eats lumen grass, herds, breeds with Lumen Fruit,
-  faint night glow), Lantern Beetle (flying; moving light; bottleable → Bottled Lantern Beetle item that
-  places a temporary light block), Sky Jelly (floating air mob; `FlyingMoveControl`; drops Air Gel).
-- **Neutral:** Rootback (large turtle-like; plants grow where it rests; drops Living Fiber/Rootback
-  Plate), Glowmoth (attracted to light; aggro if you break nearby Moonblossoms/Stillblooms; drops Glow
-  Scales).
-- **Hostile:** Shade Stalker (ground ambush predator; spawns in low light; avoids bright natural light /
-  Stillbloom Cores), Sporeling (swarm; spawns during Sporefall; death spore cloud → Sporeblind),
-  Crag Wraith (flying; dive attacks in crags; knockback near ledges), Mirelurker (swamp lurker;
-  anglerfish-style lure; stronger at night).
-- **Per mob:** `EntityType` (`registry/ModEntities`), entity class (`entity/…` extending
-  `Animal`/`PathfinderMob`/`Monster`/`FlyingMob`), attributes via `EntityAttributeCreationEvent`
-  (native mobs get the low-gravity `generic.gravity` here per Phase 3), AI goals, drops (loot tables),
-  spawn eggs, **client** model (`LayerDefinition` via `RegisterLayerDefinitions`) + renderer
-  (`EntityRenderersEvent`), and spawn placement (`RegisterSpawnPlacementsEvent`) + biome `spawners` lists.
-- **Light-aware behavior** is the throughline: Shade Stalker light avoidance, Glowmoth attraction,
-  beetles around Moonblossoms — encode as custom `Goal`s referencing block light / nearby blocks.
+### Roster — the bible's 9 + 1 implied (10 total)
+The bible's **Mobs** section defines exactly **9** (3 passive / 2 neutral / 4 hostile). It also says
+"fish-like native mobs spawn in Lumenwater" without naming one, so we add a **10th**: the **Lumen Fish**.
+There is **no boss** — the dimension is deliberately a "beautiful base dimension," so Phase 6 has a definite
+end.
+
+### Build order — a prerequisite, then ONE mob per increment (like the 5d biomes)
+Each increment is committed + validated + reviewable before the next. **6a stands up the shared entity
+infrastructure** (the `ModEntities` registry wired to the mod bus; a new `entity/` package; the
+`EntityAttributeCreationEvent` hook that gives native mobs the Phase-3 low-gravity `generic.gravity`; the
+client renderer/model seam via `EntityRenderersEvent` + `RegisterLayerDefinitions`; loot tables under
+`data/lumenwilds/loot_table/entities/`; spawn eggs; and `RegisterSpawnPlacementsEvent` + biome `spawners`
+wiring), which every later mob reuses. Each mob adds its own drop items to `ModItems`.
+
+- **6.0 Lumenwater "functions as water"** (prerequisite — a 5e finish, per the bible): make Lumenwater
+  behave as water so boats float, farmland hydrates, fire extinguishes, and fish survive — add the fluid to
+  `#minecraft:water` (and `#neoforge:water`) + set the matching `FluidType` behaviors. Unblocks the aquatic
+  mobs (6e/6f).
+- **6a Lumen Grazer** — passive herd herbivore; *stands up the entity infrastructure.* Six-legged, grazes
+  lumen grass, travels in herds, flees players, faint night glow, breeds with Lumen Fruit. Drops Raw Grazer
+  Meat / Hide / rare Glow Sinew.
+- **6b Shade Stalker** — the core hostile **and** the living-light mechanic. Ground ambush predator; spawns
+  in low light; hesitates/flees near bright natural light + Stillbloom Cores + Lumen lanterns. Drops Shade
+  Claw / Dark Hide / rare Echo Dust. *Establishes the reusable light-aware `Goal`.*
+- **6c Lantern Beetle** — flying ambience + early light. Circles flowers/glowvines/lumenbulbs, drawn to
+  Moonblossoms, moving light, bottleable → **Bottled Lantern Beetle** (places a temporary light). Drops Glow
+  Pollen (item exists).
+- **6d Sporeling** — Sporefall Jungle / Undercrown swarm. Attacks in groups; death → spore cloud (vision
+  obscure + slowness = "Sporeblind"). Drops Spore Sac / Glowcap Spores.
+- **6e Mirelurker** — Moonmire ambush. Hides in shallow Lumenwater, anglerfish-style lure, lunges, stronger
+  at night. Drops Mire Tooth / Lumen Algae / Raw Mirefish.
+- **6f Lumen Fish** — the native aquatic ambient mob (the bible's "fish-like native mobs"). Small glowing
+  schooling swimmer in Lumenwater pools / Moonmire; the in-world Mirefish source. (Depends on 6.0.)
+- **6g Sky Jelly** — floating air mob; bespoke vertical low-gravity drift (`FlyingMoveControl`). Harmless
+  unless attacked. Drops Air Gel (item exists).
+- **6h Glowmoth** — flower guardian. Circles bright flowers/lanterns; neutral until you break nearby
+  Moonblossoms/Stillblooms → aggro. Drops Glow Scales.
+- **6i Rootback** — large neutral "living-feature" turtle; glowing shrubs on its shell; plants grow where it
+  rests. Drops Rootback Plate / Living Fiber (item exists) / Moonloam Clumps. (Most complex; showcase mob.)
+- **6j Crag Wraith** — Glasspetal Crags aerial threat; manta-like, dive attacks, dangerous ledge knockback,
+  avoids enclosed spaces. Drops Wraith Membrane / Crystal Dust. (Most complex AI — last.)
+
+### Per-mob deliverables
+`EntityType` (`registry/ModEntities`), entity class (`entity/…` extending `Animal`/`PathfinderMob`/
+`Monster`/`FlyingMob`/`WaterAnimal`), attributes via `EntityAttributeCreationEvent` (native mobs get
+low-gravity `generic.gravity` here per Phase 3), AI goals, drop items + loot table, a spawn egg, **client**
+model (`LayerDefinition` via `RegisterLayerDefinitions`) + renderer (`EntityRenderersEvent`), and spawn
+placement (`RegisterSpawnPlacementsEvent`) + the biome `spawners` lists. **Light-aware behavior is the
+throughline** — Shade Stalker avoidance, Glowmoth attraction, beetles around Moonblossoms — encoded as
+custom `Goal`s referencing block light / nearby blocks (the Stillbloom Basin's "greatly reduced spawns" +
+active-core hostile-avoidance also land here, completing that 5d.6 deferral).
 
 ### Seams
 `registry/ModEntities`, new `entity/` package, new `client/` renderers+models, loot tables under
 `data/lumenwilds/loot_table/entities/`, biome `spawners`.
 
 ### Done when
-Each mob spawns in its intended biome/conditions, renders correctly, exhibits its signature behavior
-(grazers flee & herd, beetles glow & bottle, shade stalkers shun light, sporelings swarm and cloud on
-death), drops its loot, and breeds/tames where specified.
+All 10 mobs spawn in their intended biome/conditions, render (placeholder ok), exhibit their signature
+behaviour (grazers flee & herd, beetles glow & bottle, shade stalkers shun light, sporelings swarm & cloud
+on death, mirelurkers lure, sky jellies drift, fish school), drop their loot, and breed where specified —
+**and the living-light rule reads in play:** glowing/lit areas feel safe, dark areas dangerous, and the
+Stillbloom Basin is a verifiable safe haven.
 
 ### Risks
+- **6a is the heaviest increment** — it carries the one-time entity infrastructure (registry bus wiring,
+  attribute hook, renderer/model seam, spawn-placement plumbing) on top of the Grazer itself. Later mobs are
+  lighter (reuse the seam). Budget for that.
 - Flying/floating navigation (Sky Jelly, Crag Wraith, Glowmoth) needs custom move controllers — model on
   `Bat`/`Phantom`/`Allay`. Vertical low-gravity drift for Sky Jelly is bespoke.
-- Model/animation volume is large; consider a shared base model + tint layers to hold the palette.
+- **Placeholder art, like the blocks:** ship each mob with a simple/cube-ish placeholder model + flat-colour
+  texture first so behaviour is testable; final models/animation are a Phase 9 art pass (the model/animation
+  volume across 10 mobs is the biggest single art cost in the mod).
+- **Spawn balance** — the bible's "beautiful first, then dangerous" curve: tune `monster_spawn_light_level`,
+  spawn weights and `spawn_costs` per biome; the Stillbloom Basin stays a safe haven (and the active-core
+  aura suppresses nearby hostiles). Validate with the force-gen + an actual `runClient` night.
+- **Mob worldgen-throw parity:** spawn placements + biome `spawners` are validated at chunk-gen / spawn
+  time, not just boot — exercise with the same temp force-gen technique used in 5d.5/5d.6.
 
 ---
 
@@ -677,9 +722,10 @@ return travel lands precisely.
     written — Moonmire currently uses the shared lumen-grass/moonloam surface), **Bogroot** wood, and
     **Spore Pads** (`LilyPadBlock`-like). (5e shipped first, so Moonmire already uses real Lumenwater.)
   - **Lumenwater finish (5e):** bespoke still/flow fluid **textures** (currently reuses tinted vanilla
-    water) and any **buoyancy / special motion** beyond water-like. **Glow Pools** (Lumenwater + dense
-    glow-flora placed-feature decorators) are a **Moonmire (5d.4)** landmark, not a new fluid — build them
-    when that biome lands.
+    water) and any **buoyancy / special motion** beyond water-like. (The "functions as water" behaviour —
+    boats/farmland/fire/fish — is pulled forward to **Phase 6.0** as a prerequisite for the aquatic mobs.)
+    **Glow Pools** (Lumenwater + dense glow-flora placed-feature decorators) are a **Moonmire (5d.4)**
+    landmark, not a new fluid — build them when that biome lands.
   - **Undercrown Caverns (5d.5) depth:** **root pillars** (Glowroot columns from floor to ceiling) and
     underground **giant glowcaps** (custom features); **massive caverns** (needs noise/cheese caves in the
     `noise_settings` `final_density`, not just carvers); **glow-fungi floor flora** (the cross plants can't
