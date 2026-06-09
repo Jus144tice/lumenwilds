@@ -7,8 +7,10 @@ package com.jus144tice.lumenwilds.registry;
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.item.LumenStrikerItem;
 import net.minecraft.world.item.BoatItem;
+import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SignItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -46,6 +48,12 @@ public final class ModItems {
     public static final DeferredItem<Item> LUMEN_NECTAR = ITEMS.registerSimpleItem("lumen_nectar");
     public static final DeferredItem<Item> AIR_GEL = ITEMS.registerSimpleItem("air_gel");
 
+    /** Lumenwater bucket (Phase 5e) — picks up/places the {@link ModFluids#LUMENWATER} source. */
+    public static final DeferredItem<BucketItem> LUMENWATER_BUCKET = ITEMS.registerItem(
+            "lumenwater_bucket",
+            props -> new BucketItem(ModFluids.LUMENWATER.get(), props),
+            new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
+
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
             "glowwood_boat",
@@ -76,7 +84,9 @@ public final class ModItems {
     // blocks get an item for free — no edits here.
     static {
         for (var block : ModBlocks.BLOCKS.getEntries()) {
-            if (block == ModBlocks.LUMEN_PORTAL || block.getId().getPath().contains("sign")) {
+            if (block == ModBlocks.LUMEN_PORTAL
+                    || block == ModBlocks.LUMENWATER_BLOCK
+                    || block.getId().getPath().contains("sign")) {
                 continue;
             }
             ITEMS.registerSimpleBlockItem(block);

@@ -5,12 +5,16 @@
 package com.jus144tice.lumenwilds.client;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.registry.ModFluidTypes;
 import com.jus144tice.lumenwilds.registry.ModWoodTypes;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
 /**
  * Client-only setup ({@link Dist#CLIENT}). Registers the Glowwood
@@ -21,6 +25,10 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
  * already iterates {@code Boat.Type.values()} (which now includes our enum-extended Glowwood type), and
  * the vanilla {@code BoatRenderer} draws it from {@code lumenwilds:entity/boat|chest_boat/glowwood}.
  * Registering them again caused a duplicate-layer crash.</p>
+ *
+ * <p>Also registers the Lumenwater {@code FluidType}'s client render extensions (Phase 5e): it reuses the
+ * vanilla water still/flow animations with a teal tint, so Lumenwater reads as glowing teal water without
+ * bespoke fluid textures yet.</p>
  */
 @EventBusSubscriber(modid = Lumenwilds.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class LumenwildsClient {
@@ -30,5 +38,32 @@ public final class LumenwildsClient {
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent event) {
         event.enqueueWork(() -> Sheets.addWoodType(ModWoodTypes.GLOWWOOD));
+    }
+
+    @SubscribeEvent
+    public static void onRegisterClientExtensions(final RegisterClientExtensionsEvent event) {
+        event.registerFluidType(
+                new IClientFluidTypeExtensions() {
+                    private static final ResourceLocation STILL =
+                            ResourceLocation.withDefaultNamespace("block/water_still");
+                    private static final ResourceLocation FLOW =
+                            ResourceLocation.withDefaultNamespace("block/water_flow");
+
+                    @Override
+                    public ResourceLocation getStillTexture() {
+                        return STILL;
+                    }
+
+                    @Override
+                    public ResourceLocation getFlowingTexture() {
+                        return FLOW;
+                    }
+
+                    @Override
+                    public int getTintColor() {
+                        return 0xFF36E0C0; // ARGB — glowing teal
+                    }
+                },
+                ModFluidTypes.LUMENWATER_TYPE.get());
     }
 }

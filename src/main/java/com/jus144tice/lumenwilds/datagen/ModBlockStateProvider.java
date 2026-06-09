@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
@@ -48,6 +49,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
             if (name.endsWith("_sign")) {
                 continue; // handled in registerSigns() (needs standing+wall paired)
+            }
+            if (block instanceof LiquidBlock) {
+                continue; // fluid block — hand-authored particle-only blockstate/model
             }
             if (block instanceof RotatedPillarBlock pillar) {
                 if (name.endsWith("_wood")) {

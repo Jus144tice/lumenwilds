@@ -269,7 +269,8 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 > `GlowrootTreeFeature` — a tall, spreading 2×2 tree that reads as the same species, not vanilla dark oak;
 > plus `GLOWROOT_LEAVES` + `GLOWROOT_SAPLING` (mega slot = 2×2) and `glowroot_log` promoted to a pillar);
 > **5d** the remaining 6 biomes — split into **six separate efforts (5d.1–5d.6)**, one biome each, so each
-> can be reviewed and made distinctly *alien* before the next (see breakdown below); **5e** Lumenwater fluid.
+> can be reviewed and made distinctly *alien* before the next (see breakdown below); **5e** Lumenwater fluid
+> ✅ (pulled forward, ahead of 5d.4 Moonmire, so the swamp can ship with the real glowing fluid).
 >
 > ### 5d — the six biomes, one effort each (in build order)
 >
@@ -328,6 +329,21 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 > *Deferred:* separate luminous gills block, hanging vines, the timed Sporefall event. Verified: build green +
 > server boots to "Done" with the jungle biome, glowcap blocks, mushroom feature and spore particle all
 > parsed, no worldgen errors. 3 biomes remain (5d.4–5d.6).
+>
+> **5e done (pulled forward).** Lumenwater — the dimension's native glowing water — as a full NeoForge
+> fluid. `ModFluidTypes#LUMENWATER_TYPE` (`FluidType`, light 4, `canConvertToSource(false)`); `ModFluids`
+> `#LUMENWATER` (source) + `#LUMENWATER_FLOWING` (`BaseFlowingFluid`), wired via a lazy `#props()` to dodge
+> a static forward-ref; `ModBlocks#LUMENWATER_BLOCK` (custom `fluid.LumenwaterBlock`) + `ModItems#LUMENWATER_BUCKET`
+> (`BucketItem`). **Anti-OP rule:** `LumenwaterBlock#randomTick` reverts the block to vanilla water (keeping
+> the flow level) whenever it is **outside** the Lumenwilds; in-dimension it's a no-op. Client render
+> (`LumenwildsClient#onRegisterClientExtensions`) reuses vanilla `water_still`/`water_flow` with a teal tint
+> (no bespoke fluid textures yet). Excluded from the auto BlockItem loop (placed via bucket), `noLootTable`,
+> and skipped in the blockstate datagen (hand-authored particle-only model). `ModFluidTypes.FLUID_TYPES`
+> wired on the mod bus; fluids register before blocks, so the block factory can resolve the source fluid.
+> *Deferred (→ Phase 9 / 5d.4):* bespoke still/flow fluid textures, buoyancy/special motion, and **Glow
+> Pools** (Lumenwater + dense glow-flora placed-feature decorators — a Moonmire landmark, not a new fluid).
+> Verified: build green + server boots to "Done" with the fluid type, fluids, liquid block and bucket all
+> registered, no errors.
 >
 > **5d.3+ mega Glowcap.** A town-sized Giant Glowcap as a worldgen **structure** (parallel to the mega
 > Glowroot tree, but a genuine *mushroom* silhouette — NOT the tree shape). New `world.feature.MegaGlowcapShape`
@@ -608,8 +624,12 @@ return travel lands precisely.
   - **Glasspetal Crags materials:** the bible-listed **Cracked Moonstone** + **Crystal Dust** blocks (not
     yet added), and **sideways cliff-face** Glasspetal Cluster growth (5d.2 places clusters facing up on the
     surface only).
-  - **Moonmire (5d.4) Bogroot wood** if deferred when that biome lands, and the Lumenwater swap once 5e
-    ships (5d.4 ships with tinted vanilla water as a placeholder).
+  - **Moonmire (5d.4) Bogroot wood** if deferred when that biome lands. (5e shipped first, so Moonmire can
+    use real Lumenwater directly.)
+  - **Lumenwater finish (5e):** bespoke still/flow fluid **textures** (currently reuses tinted vanilla
+    water) and any **buoyancy / special motion** beyond water-like. **Glow Pools** (Lumenwater + dense
+    glow-flora placed-feature decorators) are a **Moonmire (5d.4)** landmark, not a new fluid — build them
+    when that biome lands.
 - See also the **⚠ per-biome terrain silhouette** task in the Phase 5 / 5d section — a dimension-wide
   noise-router pass best done once all six biomes exist.
 

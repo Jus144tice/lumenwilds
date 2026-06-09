@@ -43,7 +43,11 @@ block + exposed Lumen Crystal Ore; carved out by a cold temperature band). **5d.
 Jungle** (the densest biome — a lush green rainforest of new **Giant Glowcap** huge mushrooms with drifting
 glowing-spore ambient particles; hot+humid band), plus the **mega Glowcap** — a town-sized worldgen
 **structure** (a giant flared-stem, domed-cap mushroom with a Lumen-Crystal-Ore cluster beneath) that
-spawns sporadically in the jungle (its own mushroom geometry, parallel to the mega Glowroot tree). What is
+spawns sporadically in the jungle (its own mushroom geometry, parallel to the mega Glowroot tree).
+**Lumenwater is in (Phase 5e):** the dimension's native glowing water — a full NeoForge fluid (`FluidType`
++ source/flowing pair + liquid block, light 4 + bucket), rendered as glowing teal water (reusing vanilla
+water animations, tinted). Per the bible's anti-OP rule, Lumenwater carried **out** of the Lumenwilds
+slowly reverts to ordinary water (a dimension-gated random tick on `fluid.LumenwaterBlock`). What is
 deliberately *not* built yet: the other 3 biomes
 (5d.4–5d.6), Lumenwater (5e), mobs, more structures, custom sky/fog. **All six biomes share one terrain
 shape** — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
@@ -102,8 +106,8 @@ as `File#member`.
 ### Entry point
 - [Lumenwilds.java](src/main/java/com/jus144tice/lumenwilds/Lumenwilds.java) — `@Mod` class.
   `#MOD_ID` (`"lumenwilds"`), `#MOD_NAME` (`"The Lumenwilds"`), `#LOGGER`. Ctor registers these
-  DeferredRegisters to the **mod bus**: `ModSounds`, `ModParticles`, `ModMobEffects`, `ModFluids`,
-  `ModBlocks`, `ModItems`, `ModStructures` (`STRUCTURE_TYPES` + `STRUCTURE_PIECES`), `ModBlockEntities`,
+  DeferredRegisters to the **mod bus**: `ModSounds`, `ModParticles`, `ModMobEffects`, `ModFluidTypes`,
+  `ModFluids`, `ModBlocks`, `ModItems`, `ModStructures` (`STRUCTURE_TYPES` + `STRUCTURE_PIECES`), `ModBlockEntities`,
   `ModEntities`, `ModMenus`, `ModCreativeTabs`. Also calls `ModWoodTypes#init()` first (WoodType/
   BlockSetType must register before blocks build). `#onCommonSetup` logs only. **When you add a new
   (non-empty) DeferredRegister, register it here.**
@@ -119,7 +123,8 @@ as `File#member`.
   `#DEEP_LUMEN_CRYSTAL_ORE` (`DropExperienceBlock`, drop shards, glow); `#GLASSPETAL_CLUSTER`
   (`AmethystClusterBlock`, directional/waterloggable, glow 7 — the Glasspetal Crags crystal, 5d.2);
   `#GIANT_GLOWCAP_BLOCK` (glow 9) + `#GIANT_GLOWCAP_STEM` (`HugeMushroomBlock` — the Sporefall Jungle giant
-  mushroom, placed by the vanilla `huge_brown_mushroom` feature, 5d.3). **Phase 4 sets**
+  mushroom, placed by the vanilla `huge_brown_mushroom` feature, 5d.3); `#LUMENWATER_BLOCK`
+  (`fluid.LumenwaterBlock`, the Lumenwater liquid block — **no BlockItem, `noLootTable`**, 5e). **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
   `#GLOWWOOD_LEAVES`, stairs/slab/fence/fence_gate/door/trapdoor/button/pressure_plate + signs
@@ -138,16 +143,23 @@ as `File#member`.
 - [ModItems.java](src/main/java/com/jus144tice/lumenwilds/registry/ModItems.java) — `#ITEMS`
   (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`, **durable: `stacksTo(1)
   .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
-  `#LIVING_FIBER`, `#LUMEN_FRUIT`, `#LUMEN_NECTAR`, `#AIR_GEL`; boats `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT`
+  `#LIVING_FIBER`, `#LUMEN_FRUIT`, `#LUMEN_NECTAR`, `#AIR_GEL`, `#LUMENWATER_BUCKET` (`BucketItem` over
+  `ModFluids.LUMENWATER`, 5e); boats `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT`
   (`BoatItem` over `ModBoatTypes.glowwood()`); signs `#GLOWWOOD_SIGN` (`SignItem`)/`#GLOWWOOD_HANGING_SIGN`
   (`HangingSignItem`) — wall variants share these. A **static loop auto-registers a simple `BlockItem` for
-  every block except `LUMEN_PORTAL` and the sign blocks** (runs after the standalone/sign items so the
-  striker stays first in the tab) — new blocks get an item with no edits here.
+  every block except `LUMEN_PORTAL`, `LUMENWATER_BLOCK`, and the sign blocks** (runs after the standalone/sign
+  items so the striker stays first in the tab) — new blocks get an item with no edits here.
 - [ModCreativeTabs.java](src/main/java/com/jus144tice/lumenwilds/registry/ModCreativeTabs.java) —
   `#CREATIVE_MODE_TABS`, `#LUMENWILDS_TAB` (id `lumenwilds`, title key `itemGroup.lumenwilds`, icon =
   Lumen Striker). **Auto-populates from `ModItems.ITEMS`** — new items appear without editing this file.
+- [ModFluidTypes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFluidTypes.java) — `#FLUID_TYPES`
+  (`NeoForgeRegistries.Keys.FLUID_TYPES`); `#LUMENWATER_TYPE` (`FluidType`, light 4, no source-spread). The
+  non-state half of Lumenwater (Phase 5e).
+- [ModFluids.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFluids.java) — `#FLUIDS`;
+  `#LUMENWATER` (source) + `#LUMENWATER_FLOWING` (`BaseFlowingFluid`). `#props()` lazily wires
+  type↔still↔flowing↔block↔bucket (avoids a static forward-ref). The fluid registers **before** blocks, so
+  `ModBlocks.LUMENWATER_BLOCK`'s factory can call `LUMENWATER.get()`.
 - Empty stubs (compile; carry phase TODOs). Wired to the bus already (registered empty): 
-  [ModFluids](src/main/java/com/jus144tice/lumenwilds/registry/ModFluids.java) `#FLUIDS`,
   [ModMobEffects](src/main/java/com/jus144tice/lumenwilds/registry/ModMobEffects.java) `#MOB_EFFECTS`,
   [ModEntities](src/main/java/com/jus144tice/lumenwilds/registry/ModEntities.java) `#ENTITIES`,
   [ModBlockEntities](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) `#BLOCK_ENTITIES`,
@@ -186,6 +198,14 @@ as `File#member`.
 - [LumenPortalTeleporter.java](src/main/java/com/jus144tice/lumenwilds/portal/LumenPortalTeleporter.java) —
   `#createDestinationTransition(target, entity, approx, axis)`: find/build the exit portal and return a
   `DimensionTransition` placing the entity collision-free at the opening base (zeroed momentum).
+
+### fluid/ — Lumenwater (Phase 5e)
+- [LumenwaterBlock.java](src/main/java/com/jus144tice/lumenwilds/fluid/LumenwaterBlock.java) — the
+  placeable Lumenwater `LiquidBlock`. `#CODEC` (typed `MapCodec<LiquidBlock>` but builds a `LumenwaterBlock`)
+  + `#codec`. `#randomTick` enforces the bible's anti-OP rule: **outside** `LUMENWILDS_LEVEL` the block
+  reverts to vanilla water (preserving the flow `LEVEL`); in-dimension it's a no-op. The `FluidType` +
+  source/flowing fluids + bucket live in `registry/ModFluidTypes`, `ModFluids`, `ModItems`; client render
+  (teal-tinted vanilla water textures) is registered in `client.LumenwildsClient`.
 
 ### item/
 - [LumenStrikerItem.java](src/main/java/com/jus144tice/lumenwilds/item/LumenStrikerItem.java) — `#useOn`:
@@ -275,8 +295,9 @@ as `File#member`.
 ### client/ — `@EventBusSubscriber(value = Dist.CLIENT, bus = MOD)`, client-only
 - [LumenwildsClient.java](src/main/java/com/jus144tice/lumenwilds/client/LumenwildsClient.java) —
   `#onClientSetup` → `Sheets.addWoodType(ModWoodTypes.GLOWWOOD)` (sign atlas material);
-  `#registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions)` → boat + chest-boat model
-  layers for the Glowwood `Boat.Type` (the vanilla `BoatRenderer` then draws them).
+  `#onRegisterClientExtensions(RegisterClientExtensionsEvent)` → Lumenwater's `IClientFluidTypeExtensions`
+  (reuses vanilla `water_still`/`water_flow` with a teal tint `0xFF36E0C0`). (Boat layers are NOT registered
+  here — vanilla auto-registers them for every `Boat.Type`; doing it again caused a duplicate-layer crash.)
 
 ### util/
 - [ResourceLocationHelper.java](src/main/java/com/jus144tice/lumenwilds/util/ResourceLocationHelper.java)
@@ -289,8 +310,9 @@ as `File#member`.
   **dispatches by block type** (`#registerStatesAndModels`): logs/wood → `logBlock`/`axisBlock`,
   stairs/slab/fence/gate/wall/door/trapdoor/button/plate → the matching helper, panes → `paneBlock`,
   `AmethystClusterBlock` → `directionalBlock` of a cutout cross, `BushBlock` → cutout cross,
-  signs → `#registerSigns` (particle model), else `cube_all`. `#baseTex(name)` resolves a shape's base
-  texture (Glowwood shapes → planks; `_brick`/`_tile` → plural `_bricks`/`_tiles`).
+  signs → `#registerSigns` (particle model), `LiquidBlock` → **skipped** (hand-authored particle model),
+  else `cube_all`. `#baseTex(name)` resolves a shape's base texture (Glowwood shapes → planks;
+  `_brick`/`_tile` → plural `_bricks`/`_tiles`).
 - [ModItemModelProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModItemModelProvider.java) —
   block items inherit `block/<name>` (via `UncheckedModelFile`, to dodge cross-provider validation);
   `BushBlock`/`AmethystClusterBlock` items → flat `item/generated` from the block texture;
@@ -304,8 +326,8 @@ as `File#member`.
   (wood set incl. signs, hanging signs, boat + chest boat), `#buildMoonstoneRecipes` +
   `#buildShimmerstoneRecipes` (smelting + 2×2 crafting + stonecutter via helpers `#smelt`/`#square2x2`/`#cut`).
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
-  `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL`, with slab (drops 2)
-  and door (drops 1) special-cased.
+  `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL` + `LUMENWATER_BLOCK`
+  (both `noLootTable`), with slab (drops 2) and door (drops 1) special-cased.
 - [ModTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModTagProvider.java) —
   `#addTags`: classifies blocks by name into `mineable/pickaxe|axe|shovel|hoe` + `leaves` (auto-covers new
   stone/wood blocks; `_ore`/`_cluster`/moonstone → pickaxe).
@@ -325,7 +347,10 @@ as `File#member`.
 - `assets/lumenwilds/`: `blockstates/`, `models/block|item/`, `textures/block|item/` (flat-colour 16px
   placeholders), `textures/entity/{signs,signs/hanging,boat,chest_boat}/glowwood.png` + `textures/gui/
   hanging_signs/glowwood.png` (sign/boat placeholders), `lang/en_us.json` (display names +
-  `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}`).
+  `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}` + `fluid_type.lumenwilds.lumenwater`).
+  Lumenwater (5e) has a particle-only `blockstates/lumenwater.json` + `models/block/lumenwater.json` (the
+  fluid itself renders via the client `IClientFluidTypeExtensions`, not a block model) and a flat
+  `lumenwater_bucket` item; it has **no fluid textures** of its own (reuses vanilla water, tinted).
 - `data/lumenwilds/`: `recipe/*`, `loot_table/blocks/*`, `dimension/lumenwilds.json` (custom noise gen +
   a **`multi_noise` biome source** — humidity splits `lumen_glade`/`glowroot_forest`, a cold band carves out
   `glasspetal_crags`, a hot+humid band gives `sporefall_jungle`; one parameter point added per 5d.x) +

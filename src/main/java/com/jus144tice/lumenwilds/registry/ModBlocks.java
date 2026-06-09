@@ -5,6 +5,7 @@
 package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.fluid.LumenwaterBlock;
 import com.jus144tice.lumenwilds.portal.LumenPortalBlock;
 import com.jus144tice.lumenwilds.world.LumenConfiguredFeatures;
 import java.util.Optional;
@@ -22,6 +23,7 @@ import net.minecraft.world.level.block.FlowerBlock;
 import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LeavesBlock;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SaplingBlock;
@@ -301,6 +303,24 @@ public final class ModBlocks {
                     .strength(0.2F)
                     .sound(SoundType.WOOD)
                     .ignitedByLava());
+
+    // --- Fluids (Phase 5e) ----------------------------------------------------------------------
+    // Liquid block for Lumenwater. NOT given a BlockItem (placed via bucket) and has noLootTable. The
+    // custom LumenwaterBlock reverts to water outside the dimension (anti-OP). See ModFluids/ModFluidTypes.
+
+    public static final DeferredBlock<LiquidBlock> LUMENWATER_BLOCK = BLOCKS.registerBlock(
+            "lumenwater",
+            props -> new LumenwaterBlock(ModFluids.LUMENWATER.get(), props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WATER)
+                    .replaceable()
+                    .noCollission()
+                    .strength(100.0F)
+                    .noLootTable()
+                    .liquid()
+                    .randomTicks()
+                    .lightLevel(state -> 4)
+                    .pushReaction(PushReaction.DESTROY));
 
     // --- Glowwood building set (Phase 4) --------------------------------------------------------
     // Wood-set sounds/behaviour + signs use the bespoke Glowwood WoodType/BlockSetType (ModWoodTypes).

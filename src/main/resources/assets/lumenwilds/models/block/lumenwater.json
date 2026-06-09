@@ -1,0 +1,6 @@
+{
+  "__comment": "Lumenwater renders via the fluid renderer (see client IClientFluidTypeExtensions); the block model only supplies a particle texture, like vanilla block/water.",
+  "textures": {
+    "particle": "minecraft:block/water_still"
+  }
+}

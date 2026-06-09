@@ -79,6 +79,7 @@ public final class ModLootTableProvider {
             return ModBlocks.BLOCKS.getEntries().stream()
                     .map(holder -> (Block) holder.get())
                     .filter(block -> block != ModBlocks.LUMEN_PORTAL.get())
+                    .filter(block -> block != ModBlocks.LUMENWATER_BLOCK.get()) // noLootTable fluid block
                     .collect(Collectors.toList());
         }
     }
