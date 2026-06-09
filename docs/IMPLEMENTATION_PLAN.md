@@ -330,6 +330,20 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 > server boots to "Done" with the jungle biome, glowcap blocks, mushroom feature and spore particle all
 > parsed, no worldgen errors. 3 biomes remain (5d.4–5d.6).
 >
+> **5d.4 done.** Moonmire — the glowing swamp. Two new `TallGrassBlock` cross flora: `#GLOW_ALGAE`
+> (teal ground cover, glow 3) + `#LUMEN_REEDS` (blue, glow 4), each mirroring the Glow-Fern pipeline
+> (cross model / flat item / drop-self loot / lang; auto BlockItems; no tags). The swamp's signature is its
+> **real glowing water:** `configured/placed_feature/lumenwater_pool` is the vanilla `minecraft:lake`
+> feature filled with **Lumenwater** (5e) and walled with moonloam, placed in the LAKES step at rarity 5 so
+> the biome reads as a wetland of luminous pools. `biome/moonmire.json` — dark misty palette; features =
+> lumenwater pools (step 1) + Lumen Crystal Ore (step 6) + sparse Glowroot (the bible's "submerged roots")
+> and dense reeds/algae/moonblossom (step 9). Fifth `multi_noise` point (mild + wettest, temp 0.1 /
+> humidity 0.9). Keys `LumenConfiguredFeatures`/`LumenPlacedFeatures#{LUMENWATER_POOL,PATCH_GLOW_ALGAE,
+> PATCH_LUMEN_REEDS}`; `LumenBiomeBootstrap#MOONMIRE` live. *Deferred (→ Phase 9):* Soft **Moonmud** swamp
+> floor (a biome-specific surface rule), **Bogroot** wood, and **Spore Pads** (lily-pad-like). Verified:
+> build green + server boots to "Done" with the biome, lake feature (resolving the Lumenwater state), flora
+> and multi_noise point all parsed, no worldgen errors. 2 biomes remain (5d.5 Undercrown, 5d.6 Stillbloom).
+>
 > **5e done (pulled forward).** Lumenwater — the dimension's native glowing water — as a full NeoForge
 > fluid. `ModFluidTypes#LUMENWATER_TYPE` (`FluidType`, light 4, `canConvertToSource(false)`); `ModFluids`
 > `#LUMENWATER` (source) + `#LUMENWATER_FLOWING` (`BaseFlowingFluid`), wired via a lazy `#props()` to dodge
@@ -624,8 +638,9 @@ return travel lands precisely.
   - **Glasspetal Crags materials:** the bible-listed **Cracked Moonstone** + **Crystal Dust** blocks (not
     yet added), and **sideways cliff-face** Glasspetal Cluster growth (5d.2 places clusters facing up on the
     surface only).
-  - **Moonmire (5d.4) Bogroot wood** if deferred when that biome lands. (5e shipped first, so Moonmire can
-    use real Lumenwater directly.)
+  - **Moonmire (5d.4) extras:** Soft **Moonmud** swamp floor (a biome-specific surface rule, not yet
+    written — Moonmire currently uses the shared lumen-grass/moonloam surface), **Bogroot** wood, and
+    **Spore Pads** (`LilyPadBlock`-like). (5e shipped first, so Moonmire already uses real Lumenwater.)
   - **Lumenwater finish (5e):** bespoke still/flow fluid **textures** (currently reuses tinted vanilla
     water) and any **buoyancy / special motion** beyond water-like. **Glow Pools** (Lumenwater + dense
     glow-flora placed-feature decorators) are a **Moonmire (5d.4)** landmark, not a new fluid — build them

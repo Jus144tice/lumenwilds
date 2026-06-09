@@ -202,6 +202,32 @@ public final class ModBlocks {
                     .replaceable()
                     .pushReaction(PushReaction.DESTROY));
 
+    /** Glow Algae — luminous teal ground cover of the Moonmire swamp (Phase 5d.4). Cross-model. */
+    public static final DeferredBlock<TallGrassBlock> GLOW_ALGAE = BLOCKS.registerBlock(
+            "glow_algae",
+            TallGrassBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .noCollission()
+                    .instabreak()
+                    .lightLevel(state -> 3)
+                    .sound(SoundType.WET_GRASS)
+                    .replaceable()
+                    .pushReaction(PushReaction.DESTROY));
+
+    /** Lumen Reeds — tall glowing blue reeds that fringe the Moonmire's pools (Phase 5d.4). Cross-model. */
+    public static final DeferredBlock<TallGrassBlock> LUMEN_REEDS = BLOCKS.registerBlock(
+            "lumen_reeds",
+            TallGrassBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .noCollission()
+                    .instabreak()
+                    .lightLevel(state -> 4)
+                    .sound(SoundType.GRASS)
+                    .replaceable()
+                    .pushReaction(PushReaction.DESTROY));
+
     /** Grows the {@code lumenwilds:glowwood_tree} configured feature (Phase 5c); no mega tree yet. */
     private static final TreeGrower GLOWWOOD_GROWER = new TreeGrower(
             Lumenwilds.MOD_ID + ":glowwood",

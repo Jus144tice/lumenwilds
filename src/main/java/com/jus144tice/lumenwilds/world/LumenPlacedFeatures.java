@@ -40,6 +40,11 @@ public final class LumenPlacedFeatures {
     // Phase 5d.3: Giant Glowcap mushrooms, used by the Sporefall Jungle biome.
     public static final ResourceKey<PlacedFeature> GIANT_GLOWCAP = key("giant_glowcap");
 
+    // Phase 5d.4: Moonmire — Lumenwater pools + reed/algae ground cover.
+    public static final ResourceKey<PlacedFeature> LUMENWATER_POOL = key("lumenwater_pool");
+    public static final ResourceKey<PlacedFeature> PATCH_GLOW_ALGAE = key("patch_glow_algae");
+    public static final ResourceKey<PlacedFeature> PATCH_LUMEN_REEDS = key("patch_lumen_reeds");
+
     private static ResourceKey<PlacedFeature> key(String path) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocationHelper.modLoc(path));
     }
