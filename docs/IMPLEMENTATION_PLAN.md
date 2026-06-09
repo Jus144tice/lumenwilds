@@ -303,6 +303,20 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 >   stem / petals / glowing core, core light ~12) in open flower fields; brightest, softest palette; **greatly
 >   reduced** hostile spawns (the bible's safe-haven rule). Smooth-moonstone outcrops, shallow reflective pools.
 >
+> **5d.2 done.** Glasspetal Crags — the crystal highlands. New block `#GLASSPETAL_CLUSTER`
+> (`AmethystClusterBlock` 7.0F/3.0F — directional, waterloggable, glow 7; hand-authored 6-facing
+> blockstate + cross model + flat item + violet placeholder texture + drop-self loot + pickaxe tag + lang;
+> datagen branches added to `ModBlockStateProvider`/`ModItemModelProvider`/`ModTagProvider` so `runData`
+> stays aligned). New `biome/glasspetal_crags.json` — blue-violet palette, lit by mineral growth: scatters
+> Glasspetal Clusters (`configured/placed_feature/patch_glasspetal`, a `random_patch` gated on
+> `would_survive`) + exposed Lumen Crystal Ore, no flora. Added a third `multi_noise` parameter point
+> (temperature −0.7, a cold band) so the crags carve out their own regions. Keys
+> `LumenConfiguredFeatures#PATCH_GLASSPETAL` / `LumenPlacedFeatures#PATCH_GLASSPETAL`;
+> `LumenBiomeBootstrap#GLASSPETAL_CRAGS` now live. *Deferred:* Cracked Moonstone / Crystal Dust blocks,
+> cliff-face (sideways) cluster growth, and true highland terrain (terrain height is still shared). Verified:
+> build green + dedicated server boots to "Done" with the crags biome, cluster block, multi_noise point and
+> patch feature all parsed, no worldgen errors. 4 biomes remain (5d.3–5d.6).
+>
 > **5d.1 done.** Swapped the dimension's `fixed` biome source for `minecraft:multi_noise` (the shared
 > infrastructure for all of 5d): `dimension/lumenwilds.json` now lists biome parameter points; humidity
 > splits the dry `lumen_glade` from the humid `glowroot_forest`. New `biome/glowroot_forest.json` — the

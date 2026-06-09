@@ -1,0 +1,29 @@
+{
+  "__comment": "Glasspetal Cluster surface patch (Phase 5d.2). Scatters upward-facing crystal clusters where they can attach (would_survive), forming crystal fields across the Glasspetal Crags floor.",
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 48,
+    "xz_spread": 7,
+    "y_spread": 3,
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:simple_state_provider",
+            "state": { "Name": "lumenwilds:glasspetal_cluster", "Properties": { "facing": "up", "waterlogged": "false" } }
+          }
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:would_survive",
+            "state": { "Name": "lumenwilds:glasspetal_cluster", "Properties": { "facing": "up", "waterlogged": "false" } }
+          }
+        }
+      ]
+    }
+  }
+}

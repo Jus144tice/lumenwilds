@@ -8,6 +8,7 @@ import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.registry.ModBlocks;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BushBlock;
 import net.minecraft.world.level.block.ButtonBlock;
@@ -79,6 +80,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
             } else if (block instanceof IronBarsBlock bars) {
                 ResourceLocation tex = blockTex(name.endsWith("_pane") ? name.substring(0, name.length() - 5) : name);
                 paneBlock(bars, tex, tex);
+            } else if (block instanceof AmethystClusterBlock) {
+                // Crystal clusters (Glasspetal) — a cutout cross rotated to the FACING direction.
+                directionalBlock(block, models().cross(name, blockTex(name)).renderType("minecraft:cutout"));
             } else if (block instanceof BushBlock) {
                 // Flowers/ferns/etc. render as a cutout cross.
                 simpleBlock(block, models().cross(name, blockTex(name)).renderType("minecraft:cutout"));

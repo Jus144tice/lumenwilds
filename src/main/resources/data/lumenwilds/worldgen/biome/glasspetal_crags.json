@@ -1,0 +1,49 @@
+{
+  "__comment": "Glasspetal Crags (Phase 5d.2) — the bible's sharp crystal highlands. The palette shifts from the dimension's blue-green to BLUE-VIOLET; light comes from mineral growth (Glasspetal Clusters + exposed Lumen Crystal Ore), not plants. Hostile flyers spawn here in Phase 6. Per-biome terrain DRAMA (cliffs/spires/floating fragments) is a later refinement — terrain height is currently shared across biomes.",
+  "has_precipitation": false,
+  "temperature": 0.3,
+  "downfall": 0.3,
+  "effects": {
+    "fog_color": 2760266,
+    "sky_color": 2366014,
+    "water_color": 3359936,
+    "water_fog_color": 1314867,
+    "grass_color": 8283080,
+    "foliage_color": 9071824,
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    }
+  },
+  "carvers": {
+    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    ["lumenwilds:lumen_crystal_ore"],
+    [],
+    [],
+    [
+      "lumenwilds:patch_glasspetal"
+    ],
+    []
+  ],
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "spawn_costs": {}
+}

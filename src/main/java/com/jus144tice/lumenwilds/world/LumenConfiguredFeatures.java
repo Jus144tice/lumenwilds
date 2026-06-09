@@ -32,6 +32,9 @@ public final class LumenConfiguredFeatures {
     // The Glowroot MEGA tree is a structure (registry.ModStructures); the two above are the ordinary
     // (1×1 / 2×2) Glowroot trees that spawn naturally, like spruce/jungle/dark-oak.
 
+    // Phase 5d.2: a surface patch of Glasspetal Cluster crystals, used by the Glasspetal Crags biome.
+    public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_GLASSPETAL = key("patch_glasspetal");
+
     private static ResourceKey<ConfiguredFeature<?, ?>> key(String path) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocationHelper.modLoc(path));
     }

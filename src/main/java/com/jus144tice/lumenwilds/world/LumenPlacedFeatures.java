@@ -34,6 +34,9 @@ public final class LumenPlacedFeatures {
     // Phase 5d.1: forest-density placement of the 2×2 Glowroot tree, used by the Glowroot Forest biome.
     public static final ResourceKey<PlacedFeature> GLOWROOT_FOREST_TREES = key("glowroot_forest_trees");
 
+    // Phase 5d.2: surface Glasspetal Cluster patches, used by the Glasspetal Crags biome.
+    public static final ResourceKey<PlacedFeature> PATCH_GLASSPETAL = key("patch_glasspetal");
+
     private static ResourceKey<PlacedFeature> key(String path) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocationHelper.modLoc(path));
     }

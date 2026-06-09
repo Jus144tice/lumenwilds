@@ -34,11 +34,13 @@ trees** (with a growable **Glowwood Sapling**) (5c), via configured/placed featu
 at three scales: an ordinary **2×2 tree** (tall, spreading, leafy — a normal feature, distinct from
 vanilla dark oak), a growable **Glowroot Sapling** (4 → the 2×2), and the **mega tree** — a town-sized
 worldgen **structure** (~20-wide trunk, ~80 tall, ~50-wide canopy, arching roots + a Lumen-Crystal-Ore
-cluster beneath) that spawns sporadically (~every 20 chunks). **A second biome is in (Phase 5d.1):** the
-dimension now uses a **`multi_noise` biome source** (humidity-split) instead of a fixed one, adding the
-**Glowroot Forest** — the signature wood biome: a dim, dense forest of giant self-lit Glowroot trees over
-a dark-teal floor. The remaining 5 biomes land one per effort (5d.2–5d.6). What is deliberately *not* built
-yet: the other 5 biomes (5d.2–5d.6), Lumenwater (5e), mobs, more structures, custom sky/fog. Roadmap:
+cluster beneath) that spawns sporadically (~every 20 chunks). **More biomes are landing one per effort
+(Phase 5d.1–5d.6):** the dimension now uses a **`multi_noise` biome source** instead of a fixed one. **5d.1**
+added the **Glowroot Forest** (the signature wood biome — a dim, dense forest of giant self-lit Glowroot
+trees over a dark-teal floor; humidity-split from the Glade). **5d.2** added the **Glasspetal Crags** (the
+crystal highlands — a blue-violet palette lit by mineral growth, scattering the new **Glasspetal Cluster**
+block + exposed Lumen Crystal Ore; carved out by a cold temperature band). What is deliberately *not* built
+yet: the other 4 biomes (5d.3–5d.6), Lumenwater (5e), mobs, more structures, custom sky/fog. Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -108,7 +110,9 @@ as `File#member`.
   content:** `#MOONBLOSSOM` (`FlowerBlock`, night-vision), `#GLOW_FERN` (`TallGrassBlock`),
   `#GLOWWOOD_SAPLING`/`#GLOWROOT_SAPLING` (`SaplingBlock` + `TreeGrower`; the Glowroot grower's mega slot
   is the 2×2), `#GLOWROOT_LEAVES` (`LeavesBlock`, glow) — cross-model; `#LUMEN_CRYSTAL_ORE` +
-  `#DEEP_LUMEN_CRYSTAL_ORE` (`DropExperienceBlock`, drop shards, glow). **Phase 4 sets**
+  `#DEEP_LUMEN_CRYSTAL_ORE` (`DropExperienceBlock`, drop shards, glow); `#GLASSPETAL_CLUSTER`
+  (`AmethystClusterBlock`, directional/waterloggable, glow 7 — the Glasspetal Crags crystal, 5d.2).
+  **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
   `#GLOWWOOD_LEAVES`, stairs/slab/fence/fence_gate/door/trapdoor/button/pressure_plate + signs
@@ -187,17 +191,20 @@ as `File#member`.
   `#LUMENWILDS_STEM` (`LevelStem`), `#LUMENWILDS_DIM_TYPE` (`DimensionType`), `#LUMENWILDS_NOISE`
   (`NoiseGeneratorSettings` — the bespoke terrain, Phase 5a).
 - [LumenBiomeBootstrap.java](src/main/java/com/jus144tice/lumenwilds/world/LumenBiomeBootstrap.java) —
-  the bible's 7 biome keys: `#LUMEN_GLADE` (live, 5a) + `#GLOWROOT_FOREST` (live, 5d.1); `#MOONMIRE`,
-  `#SPOREFALL_JUNGLE`, `#GLASSPETAL_CRAGS`, `#UNDERCROWN_CAVERNS`, `#STILLBLOOM_BASIN` land one per 5d.x effort.
+  the bible's 7 biome keys: `#LUMEN_GLADE` (live, 5a) + `#GLOWROOT_FOREST` (live, 5d.1) +
+  `#GLASSPETAL_CRAGS` (live, 5d.2); `#MOONMIRE`, `#SPOREFALL_JUNGLE`, `#UNDERCROWN_CAVERNS`,
+  `#STILLBLOOM_BASIN` land one per remaining 5d.x effort.
 - [LumenConfiguredFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenConfiguredFeatures.java)
   — keys for `data/.../worldgen/configured_feature/`: `#LUMEN_CRYSTAL_ORE`, `#PATCH_MOONBLOSSOM`,
   `#PATCH_GLOW_FERN`, `#GLOWWOOD_TREE`, `#GLOWROOT_TREE` (1×1, vanilla `tree`), `#GLOWROOT_TREE_2X2`
-  (custom `GlowrootTreeFeature`) — all live (5b/5c/5c-3). (The Glowroot *mega* tree is a structure.)
+  (custom `GlowrootTreeFeature`), `#PATCH_GLASSPETAL` (5d.2, Glasspetal Cluster `random_patch`) — all live
+  (5b/5c/5c-3/5d.2). (The Glowroot *mega* tree is a structure.)
 - [LumenPlacedFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenPlacedFeatures.java) —
   same paths under `placed_feature/` (different registry), referenced from `biome/lumen_glade.json`'s
   feature lists: `#LUMEN_CRYSTAL_ORE` (ores step), `#GLOWROOT_TREE_2X2`/`#GLOWROOT_TREE`/`#GLOWWOOD_TREE`
   + `#PATCH_MOONBLOSSOM`/`#PATCH_GLOW_FERN` (vegetal step). `#GLOWROOT_FOREST_TREES` (5d.1) is a
-  forest-density placement of the 2×2 tree, used by the Glowroot Forest biome.
+  forest-density placement of the 2×2 tree (Glowroot Forest); `#PATCH_GLASSPETAL` (5d.2) scatters Glasspetal
+  Clusters (Glasspetal Crags).
 - [LumenWorldgenBootstrap.java](src/main/java/com/jus144tice/lumenwilds/world/LumenWorldgenBootstrap.java)
   — empty seam for code-generated worldgen (`RegistrySetBuilder`/`BootstrapContext`) if we leave JSON.
 
@@ -261,10 +268,12 @@ as `File#member`.
 - [ModBlockStateProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModBlockStateProvider.java) —
   **dispatches by block type** (`#registerStatesAndModels`): logs/wood → `logBlock`/`axisBlock`,
   stairs/slab/fence/gate/wall/door/trapdoor/button/plate → the matching helper, panes → `paneBlock`,
+  `AmethystClusterBlock` → `directionalBlock` of a cutout cross, `BushBlock` → cutout cross,
   signs → `#registerSigns` (particle model), else `cube_all`. `#baseTex(name)` resolves a shape's base
   texture (Glowwood shapes → planks; `_brick`/`_tile` → plural `_bricks`/`_tiles`).
 - [ModItemModelProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModItemModelProvider.java) —
   block items inherit `block/<name>` (via `UncheckedModelFile`, to dodge cross-provider validation);
+  `BushBlock`/`AmethystClusterBlock` items → flat `item/generated` from the block texture;
   fence/wall/button → `_inventory`, trapdoor → `_bottom`, doors + panes + signs → flat `item/<name>`;
   standalone items (incl. boats) → `basicItem`.
 - [ModLanguageProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLanguageProvider.java) —
@@ -279,7 +288,7 @@ as `File#member`.
   and door (drops 1) special-cased.
 - [ModTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModTagProvider.java) —
   `#addTags`: classifies blocks by name into `mineable/pickaxe|axe|shovel|hoe` + `leaves` (auto-covers new
-  stone/wood blocks).
+  stone/wood blocks; `_ore`/`_cluster`/moonstone → pickaxe).
 
 > NOTE: hand-authored placeholder assets in `src/main/resources` are **authoritative** (the mod works
 > from a plain `build`, no datagen needed). `runData` output is a regeneration/diff aid only; it is NOT
@@ -298,16 +307,17 @@ as `File#member`.
   hanging_signs/glowwood.png` (sign/boat placeholders), `lang/en_us.json` (display names +
   `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}`).
 - `data/lumenwilds/`: `recipe/*`, `loot_table/blocks/*`, `dimension/lumenwilds.json` (custom noise gen +
-  a **`multi_noise` biome source** — humidity splits `lumen_glade` from `glowroot_forest`; one parameter
-  point added per 5d.x) + `dimension_type/lumenwilds.json`, and `worldgen/` — `noise_settings/
-  lumenwilds.json` (bespoke terrain + surface rules), `biome/lumen_glade.json` + `biome/glowroot_forest.json`
-  (5d.1, dark-teal palette), `noise/hills.json`, `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`,
-  `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2`
-  [custom feature]; placed-only `glowroot_forest_trees` [forest-density 2×2]), and the Glowroot mega-tree
-  structure: `structure/glowroot_tree.json`,
+  a **`multi_noise` biome source** — humidity splits `lumen_glade`/`glowroot_forest`, a cold temperature band
+  carves out `glasspetal_crags`; one parameter point added per 5d.x) + `dimension_type/lumenwilds.json`, and
+  `worldgen/` — `noise_settings/lumenwilds.json` (bespoke terrain + surface rules), `biome/lumen_glade.json`
+  + `biome/glowroot_forest.json` (5d.1, dark-teal) + `biome/glasspetal_crags.json` (5d.2, blue-violet),
+  `noise/hills.json`, `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`, `patch_moonblossom`,
+  `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2` [custom feature],
+  `patch_glasspetal` [5d.2]; placed-only `glowroot_forest_trees` [forest-density 2×2]), and the Glowroot
+  mega-tree structure: `structure/glowroot_tree.json`,
   `structure_set/glowroot_tree.json` (random_spread, spacing 20/sep 7), and the biome tag
-  `tags/worldgen/biome/has_structure/glowroot_tree.json`. Hand-authored (not datagen); the other 5 biomes
-  arrive in 5d.2–5d.6.
+  `tags/worldgen/biome/has_structure/glowroot_tree.json`. Hand-authored (not datagen); the other 4 biomes
+  arrive in 5d.3–5d.6.
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`; `tags/block/dirt.json`
   adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil).

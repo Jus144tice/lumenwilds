@@ -10,6 +10,7 @@ import com.jus144tice.lumenwilds.world.LumenConfiguredFeatures;
 import java.util.Optional;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
@@ -257,6 +258,22 @@ public final class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .lightLevel(state -> 4)
                     .sound(SoundType.DEEPSLATE));
+
+    /**
+     * Glasspetal Cluster (Phase 5d.2) — translucent blue-violet crystal petals that grow from the rock
+     * faces of the Glasspetal Crags. A directional, waterloggable {@link AmethystClusterBlock} (places
+     * facing the clicked face) that glows (light 7). The 7.0F/3.0F box matches a vanilla large cluster.
+     */
+    public static final DeferredBlock<AmethystClusterBlock> GLASSPETAL_CLUSTER = BLOCKS.registerBlock(
+            "glasspetal_cluster",
+            props -> new AmethystClusterBlock(7.0F, 3.0F, props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .noOcclusion()
+                    .strength(1.5F)
+                    .lightLevel(state -> 7)
+                    .sound(SoundType.AMETHYST_CLUSTER)
+                    .pushReaction(PushReaction.DESTROY));
 
     // --- Glowwood building set (Phase 4) --------------------------------------------------------
     // Wood-set sounds/behaviour + signs use the bespoke Glowwood WoodType/BlockSetType (ModWoodTypes).

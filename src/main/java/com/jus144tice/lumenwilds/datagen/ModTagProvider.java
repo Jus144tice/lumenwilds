@@ -49,6 +49,7 @@ public class ModTagProvider extends BlockTagsProvider {
                 shovel.add(block);
             } else if (name.contains("moonstone")
                     || name.endsWith("_ore")
+                    || name.endsWith("_cluster")
                     || name.equals("lumenbound_stone")
                     || name.equals("lumen_crystal_block")) {
                 pickaxe.add(block);

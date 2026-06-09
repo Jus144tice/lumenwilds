@@ -11,6 +11,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.BushBlock;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
@@ -43,8 +44,9 @@ public class ModItemModelProvider extends ItemModelProvider {
                     || name.endsWith("_pane")
                     || name.endsWith("_sign")) {
                 basicItem(item); // item/generated, layer0 = item/<name>
-            } else if (item instanceof BlockItem bi && bi.getBlock() instanceof BushBlock) {
-                // Flowers/ferns render flat in the inventory, from their block texture.
+            } else if (item instanceof BlockItem bi
+                    && (bi.getBlock() instanceof BushBlock || bi.getBlock() instanceof AmethystClusterBlock)) {
+                // Flowers/ferns/crystal clusters render flat in the inventory, from their block texture.
                 getBuilder(name).parent(mc("item/generated")).texture("layer0", tex(name));
             } else if (name.endsWith("_fence")) {
                 getBuilder(name).parent(mc("block/fence_inventory")).texture("texture", baseTex(name));
