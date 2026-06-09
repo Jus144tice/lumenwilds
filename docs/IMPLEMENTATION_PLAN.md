@@ -599,6 +599,19 @@ return travel lands precisely.
 - **Performance:** profile worldgen (mega trees, density functions), particle/sky cost, and event-manager
   ticking.
 - **Sound/texture finalization:** replace flat-color placeholders with final art; final ambience mix.
+- **Deferred 5d refinements** (carried over from the biome efforts so they aren't lost — revisit here or
+  whenever the relevant art/flora pass happens):
+  - **Giant Glowcap gills:** a separate luminous *gills* sub-block for the underside (5d.3 currently makes
+    the whole cap glow as a stand-in, for both the feature mushroom and the mega structure).
+  - **Hanging vines:** turn `ModBlocks#GLOWVINE` (a placeholder full cube) into a real climbable
+    `GrowingPlantBlock` and hang it in the Glowroot Forest + Sporefall Jungle canopies.
+  - **Glasspetal Crags materials:** the bible-listed **Cracked Moonstone** + **Crystal Dust** blocks (not
+    yet added), and **sideways cliff-face** Glasspetal Cluster growth (5d.2 places clusters facing up on the
+    surface only).
+  - **Moonmire (5d.4) Bogroot wood** if deferred when that biome lands, and the Lumenwater swap once 5e
+    ships (5d.4 ships with tinted vanilla water as a placeholder).
+- See also the **⚠ per-biome terrain silhouette** task in the Phase 5 / 5d section — a dimension-wide
+  noise-router pass best done once all six biomes exist.
 
 ### Done when
 `./gradlew build` green; advancements fire; JEI shows recipes; configs work; a full playthrough from
