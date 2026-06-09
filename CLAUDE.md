@@ -41,7 +41,10 @@ trees over a dark-teal floor; humidity-split from the Glade). **5d.2** added the
 crystal highlands — a blue-violet palette lit by mineral growth, scattering the new **Glasspetal Cluster**
 block + exposed Lumen Crystal Ore; carved out by a cold temperature band). **5d.3** added the **Sporefall
 Jungle** (the densest biome — a lush green rainforest of new **Giant Glowcap** huge mushrooms with drifting
-glowing-spore ambient particles; hot+humid band). What is deliberately *not* built yet: the other 3 biomes
+glowing-spore ambient particles; hot+humid band), plus the **mega Glowcap** — a town-sized worldgen
+**structure** (a giant flared-stem, domed-cap mushroom with a Lumen-Crystal-Ore cluster beneath) that
+spawns sporadically in the jungle (its own mushroom geometry, parallel to the mega Glowroot tree). What is
+deliberately *not* built yet: the other 3 biomes
 (5d.4–5d.6), Lumenwater (5e), mobs, more structures, custom sky/fog. **All six biomes share one terrain
 shape** — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
@@ -155,9 +158,10 @@ as `File#member`.
   (custom `Feature` types), bus-wired. `#GLOWROOT_TREE_2X2` (`GlowrootTreeFeature`) — the ordinary 2×2
   Glowroot tree (the mega tree is a structure; both share `world.feature.GlowrootShape`).
 - [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
-  `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` (`StructureType`) + `#GLOWROOT_TREE_PIECE`
-  (`StructurePieceType`). The mega tree is a structure (spans chunks, no feature size cap). Structure
-  instance + spawn spacing are datapack JSON (`worldgen/structure*`); these are the code types.
+  `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` + `#GLOWROOT_TREE_PIECE` (the mega Glowroot
+  tree) and `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom). Both are
+  structures (span chunks, no feature size cap). Structure instances + spawn spacing are datapack JSON
+  (`worldgen/structure*`); these are the code types.
 - [ModBiomes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBiomes.java) /
   [ModDimensions.java](src/main/java/com/jus144tice/lumenwilds/registry/ModDimensions.java) — thin
   re-exports of the worldgen/dimension `ResourceKey`s from `world/` (worldgen is datapack-driven, not a
@@ -222,8 +226,14 @@ as `File#member`.
 - [GlowrootTreeFeature.java](src/main/java/com/jus144tice/lumenwilds/world/feature/GlowrootTreeFeature.java)
   — `Feature<NoneFeatureConfiguration>` for the ordinary 2×2 Glowroot tree; `#place` runs
   `GlowrootShape.generate(..., MEDIUM)`. Bound to `ModFeatures#GLOWROOT_TREE_2X2`.
+- [MegaGlowcapShape.java](src/main/java/com/jus144tice/lumenwilds/world/feature/MegaGlowcapShape.java) —
+  the procedural geometry for the **mega Glowcap** mushroom structure: a flared solid stem + a broad domed
+  cap *shell* (hollow underside) of glowing cap blocks + a Lumen-Crystal-Ore cluster beneath (`#seedOreColumn`,
+  same idea as the Glowroot mega). `#generate` draws into a `GlowrootShape.Placer` (the shared block sink —
+  only the interface and ore idea are shared; the silhouette is its own mushroom, NOT the tree). `#Params`
+  + preset `#MEGA`. **Tune the giant mushroom here.**
 
-### world/structure/ — the Glowroot mega tree (Phase 5c-2)
+### world/structure/ — the two town-sized giants (Phases 5c-2, 5d.3+)
 - [GlowrootTreeStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/GlowrootTreeStructure.java)
   — `Structure` (`#CODEC` via `simpleCodec`); `#findGenerationPoint` places one `GlowrootTreePiece` at the
   surface chunk centre. Bound to `ModStructures#GLOWROOT_TREE`.
@@ -232,6 +242,11 @@ as `File#member`.
   RNG (deterministic across chunks) through a box-clipped `Placer` — so the ~20-wide/~80-tall/~50-canopy
   giant spans chunks with **no "far chunk" errors**. Geometry lives in `GlowrootShape` (shared with the
   2×2 feature); tweak the giant's size via `GlowrootShape#MEGA`.
+- [MegaGlowcapStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/MegaGlowcapStructure.java)
+  / [MegaGlowcapPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/MegaGlowcapPiece.java) —
+  the **mega Glowcap** giant mushroom (same structure/piece plumbing as the Glowroot mega, position-seeded
+  RNG + box-clipped `Placer`). The piece runs `MegaGlowcapShape.generate(..., MEGA)`; geometry/size live in
+  `MegaGlowcapShape#MEGA`. Bound to `ModStructures#MEGA_GLOWCAP`. Spawns in the Sporefall Jungle only.
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -320,9 +335,10 @@ as `File#member`.
   warped_spore ambient particle), `noise/hills.json`, `configured_feature/` + `placed_feature/`
   (`lumen_crystal_ore`, `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1],
   `glowroot_tree_2x2` [custom feature], `patch_glasspetal` [5d.2], `giant_glowcap` [5d.3]; placed-only
-  `glowroot_forest_trees` [forest-density 2×2]), and the Glowroot mega-tree structure: `structure/glowroot_tree.json`,
-  `structure_set/glowroot_tree.json` (random_spread, spacing 20/sep 7), and the biome tag
-  `tags/worldgen/biome/has_structure/glowroot_tree.json`. Hand-authored (not datagen); the other 3 biomes
+  `glowroot_forest_trees` [forest-density 2×2]), and **two town-sized structures** — `structure/glowroot_tree.json`
+  + `structure_set/glowroot_tree.json` (spacing 20/sep 7, in `lumen_glade`) and `structure/mega_glowcap.json`
+  + `structure_set/mega_glowcap.json` (spacing 20/sep 7, distinct salt, in `sporefall_jungle`), each with its
+  `tags/worldgen/biome/has_structure/<name>.json` biome tag. Hand-authored (not datagen); the other 3 biomes
   arrive in 5d.4–5d.6.
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`; `tags/block/dirt.json`

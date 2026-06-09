@@ -329,6 +329,17 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 > server boots to "Done" with the jungle biome, glowcap blocks, mushroom feature and spore particle all
 > parsed, no worldgen errors. 3 biomes remain (5d.4–5d.6).
 >
+> **5d.3+ mega Glowcap.** A town-sized Giant Glowcap as a worldgen **structure** (parallel to the mega
+> Glowroot tree, but a genuine *mushroom* silhouette — NOT the tree shape). New `world.feature.MegaGlowcapShape`
+> (`#MEGA`): a flared solid stem (~38–52 tall) under a broad domed cap *shell* (~44 wide, hollow underside)
+> of glowing cap blocks, with a dense Lumen-Crystal-Ore cluster seeded in the moonstone beneath (`#seedOreColumn`
+> — the same buried reward as the mega Glowroot). `MegaGlowcapStructure` + `MegaGlowcapPiece` reuse the Glowroot
+> structure plumbing (position-seeded RNG + box-clipped `GlowrootShape.Placer`, so it spans chunks cleanly);
+> `ModStructures#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE`. Data: `structure/mega_glowcap.json`,
+> `structure_set/mega_glowcap.json` (random_spread 20/sep 7, distinct salt), `has_structure/mega_glowcap`
+> biome tag → Sporefall Jungle only. Verified: build green + server boots to "Done", all structure/piece/tag
+> codecs parsed, no errors.
+>
 > **5d.2 done.** Glasspetal Crags — the crystal highlands. New block `#GLASSPETAL_CLUSTER`
 > (`AmethystClusterBlock` 7.0F/3.0F — directional, waterloggable, glow 7; hand-authored 6-facing
 > blockstate + cross model + flat item + violet placeholder texture + drop-self loot + pickaxe tag + lang;

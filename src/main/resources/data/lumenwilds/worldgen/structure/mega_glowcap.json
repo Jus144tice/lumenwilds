@@ -1,0 +1,7 @@
+{
+  "type": "lumenwilds:mega_glowcap",
+  "biomes": "#lumenwilds:has_structure/mega_glowcap",
+  "step": "surface_structures",
+  "terrain_adaptation": "none",
+  "spawn_overrides": {}
+}

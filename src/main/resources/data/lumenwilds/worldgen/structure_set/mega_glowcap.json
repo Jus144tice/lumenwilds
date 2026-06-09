@@ -1,0 +1,12 @@
+{
+  "__comment": "Mega Glowcap spawn spacing (Phase 5d.3+). Same sporadic cadence as the Glowroot mega tree (~every 20 chunks), but a distinct salt so the two giants don't correlate. The has_structure/mega_glowcap biome tag restricts it to the Sporefall Jungle.",
+  "structures": [
+    { "structure": "lumenwilds:mega_glowcap", "weight": 1 }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 20,
+    "separation": 7,
+    "salt": 818364571
+  }
+}

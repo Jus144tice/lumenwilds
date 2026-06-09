@@ -7,6 +7,8 @@ package com.jus144tice.lumenwilds.registry;
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.world.structure.GlowrootTreePiece;
 import com.jus144tice.lumenwilds.world.structure.GlowrootTreeStructure;
+import com.jus144tice.lumenwilds.world.structure.MegaGlowcapPiece;
+import com.jus144tice.lumenwilds.world.structure.MegaGlowcapStructure;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
@@ -35,6 +37,12 @@ public final class ModStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> GLOWROOT_TREE_PIECE =
             STRUCTURE_PIECES.register(
                     "glowroot_tree", () -> (StructurePieceType.ContextlessType) GlowrootTreePiece::new);
+
+    public static final DeferredHolder<StructureType<?>, StructureType<MegaGlowcapStructure>> MEGA_GLOWCAP =
+            STRUCTURE_TYPES.register("mega_glowcap", () -> () -> MegaGlowcapStructure.CODEC);
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> MEGA_GLOWCAP_PIECE =
+            STRUCTURE_PIECES.register("mega_glowcap", () -> (StructurePieceType.ContextlessType) MegaGlowcapPiece::new);
 
     private ModStructures() {}
 }
