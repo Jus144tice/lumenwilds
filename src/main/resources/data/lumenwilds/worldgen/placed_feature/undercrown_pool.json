@@ -1,0 +1,17 @@
+{
+  "__comment": "Underground Lumenwater pools for the Undercrown (Phase 5d.5) — the lumenwater_pool lake feature dropped at depth (not the surface heightmap) so it forms glowing crystal pools in the deep caverns.",
+  "feature": "lumenwilds:lumenwater_pool",
+  "placement": [
+    { "type": "minecraft:rarity_filter", "chance": 6 },
+    { "type": "minecraft:in_square" },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "min_inclusive": { "absolute": -48 },
+        "max_inclusive": { "absolute": 16 }
+      }
+    },
+    { "type": "minecraft:biome" }
+  ]
+}

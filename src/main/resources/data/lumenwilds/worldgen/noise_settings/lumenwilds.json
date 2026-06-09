@@ -23,7 +23,14 @@
     "vegetation": 0.0,
     "continents": 0.0,
     "erosion": 0.0,
-    "depth": 0.0,
+    "depth": {
+      "__comment": "y-varying depth so the MultiNoise biome source can layer the Undercrown Caverns cave biome UNDER the surface biomes (Phase 5d.5). ~0 at/above the surface (y88, surface biomes win), rising to 1 deep (y-40, the deep-depth Undercrown point wins). This is the ONLY climate axis that varies; the surface biomes all sit at depth 0 so their distribution is unchanged.",
+      "type": "minecraft:y_clamped_gradient",
+      "from_y": 88,
+      "to_y": -40,
+      "from_value": 0.0,
+      "to_value": 1.0
+    },
     "ridges": 0.0,
     "vein_toggle": 0.0,
     "vein_ridged": 0.0,

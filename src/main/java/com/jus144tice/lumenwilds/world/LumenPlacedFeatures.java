@@ -45,6 +45,11 @@ public final class LumenPlacedFeatures {
     public static final ResourceKey<PlacedFeature> PATCH_GLOW_ALGAE = key("patch_glow_algae");
     public static final ResourceKey<PlacedFeature> PATCH_LUMEN_REEDS = key("patch_lumen_reeds");
 
+    // Phase 5d.5: Undercrown Caverns — deep glow (crystal + glowvine veins) and underground Lumenwater pools.
+    public static final ResourceKey<PlacedFeature> UNDERCROWN_GLOWVINE = key("undercrown_glowvine");
+    public static final ResourceKey<PlacedFeature> UNDERCROWN_CRYSTAL = key("undercrown_crystal");
+    public static final ResourceKey<PlacedFeature> UNDERCROWN_POOL = key("undercrown_pool");
+
     private static ResourceKey<PlacedFeature> key(String path) {
         return ResourceKey.create(Registries.PLACED_FEATURE, ResourceLocationHelper.modLoc(path));
     }

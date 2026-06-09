@@ -50,9 +50,13 @@ water animations, tinted). Per the bible's anti-OP rule, Lumenwater carried **ou
 slowly reverts to ordinary water (a dimension-gated random tick on `fluid.LumenwaterBlock`). **5d.4** added
 the **Moonmire** (the glowing swamp — a dark misty wetland whose pools are real Lumenwater [via a `lake`
 feature], fringed by the new **Glow Algae** + **Lumen Reeds** flora and sparse Glowroot; mild+wettest band).
-What is deliberately *not* built yet: the other 2 biomes
-(5d.5 Undercrown Caverns, 5d.6 Stillbloom Basin), mobs, more structures, custom sky/fog. **All biomes share
-one terrain shape** — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
+**5d.5** added the **Undercrown Caverns** — the underground **cave biome**: the noise router's `depth` was
+made y-varying so the `multi_noise` source layers Undercrown *under* the surface biomes (deep-depth point);
+it's naturally lit by dense Lumen Crystal Ore + **Glowvine veins** (an ore feature) with underground
+Lumenwater pools. What is deliberately *not* built yet: the last biome
+(5d.6 Stillbloom Basin), mobs, more structures, custom sky/fog. **All biomes share one terrain *height***
+(only `depth` varies, for the cave layer) — per-biome terrain silhouette is a deferred cross-cutting pass
+(see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -223,14 +227,15 @@ as `File#member`.
   (`NoiseGeneratorSettings` — the bespoke terrain, Phase 5a).
 - [LumenBiomeBootstrap.java](src/main/java/com/jus144tice/lumenwilds/world/LumenBiomeBootstrap.java) —
   the bible's 7 biome keys: `#LUMEN_GLADE` (5a) + `#GLOWROOT_FOREST` (5d.1) + `#GLASSPETAL_CRAGS` (5d.2)
-  + `#SPOREFALL_JUNGLE` (5d.3) + `#MOONMIRE` (5d.4) all live; `#UNDERCROWN_CAVERNS`, `#STILLBLOOM_BASIN`
-  land one per remaining 5d.x effort.
+  + `#SPOREFALL_JUNGLE` (5d.3) + `#MOONMIRE` (5d.4) + `#UNDERCROWN_CAVERNS` (5d.5, the cave biome) all live;
+  `#STILLBLOOM_BASIN` lands in 5d.6.
 - [LumenConfiguredFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenConfiguredFeatures.java)
   — keys for `data/.../worldgen/configured_feature/`: `#LUMEN_CRYSTAL_ORE`, `#PATCH_MOONBLOSSOM`,
   `#PATCH_GLOW_FERN`, `#GLOWWOOD_TREE`, `#GLOWROOT_TREE` (1×1, vanilla `tree`), `#GLOWROOT_TREE_2X2`
   (custom `GlowrootTreeFeature`), `#PATCH_GLASSPETAL` (5d.2, Glasspetal Cluster `random_patch`),
   `#GIANT_GLOWCAP` (5d.3, vanilla `huge_brown_mushroom` with the glowcap blocks), `#LUMENWATER_POOL`
-  (5d.4, vanilla `lake` filled with Lumenwater) + `#PATCH_GLOW_ALGAE`/`#PATCH_LUMEN_REEDS` — all live.
+  (5d.4, vanilla `lake` filled with Lumenwater) + `#PATCH_GLOW_ALGAE`/`#PATCH_LUMEN_REEDS`,
+  `#UNDERCROWN_GLOWVINE` (5d.5, an `ore` feature threading Glowvine through cave rock) — all live.
   (The Glowroot *mega* tree is a structure.)
 - [LumenPlacedFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenPlacedFeatures.java) —
   same paths under `placed_feature/` (different registry), referenced from `biome/lumen_glade.json`'s
@@ -238,7 +243,8 @@ as `File#member`.
   + `#PATCH_MOONBLOSSOM`/`#PATCH_GLOW_FERN` (vegetal step). `#GLOWROOT_FOREST_TREES` (5d.1) is a
   forest-density placement of the 2×2 tree (Glowroot Forest); `#PATCH_GLASSPETAL` (5d.2) scatters Glasspetal
   Clusters (Glasspetal Crags); `#GIANT_GLOWCAP` (5d.3) places giant mushrooms (Sporefall Jungle);
-  `#LUMENWATER_POOL`/`#PATCH_GLOW_ALGAE`/`#PATCH_LUMEN_REEDS` (5d.4) make the Moonmire swamp.
+  `#LUMENWATER_POOL`/`#PATCH_GLOW_ALGAE`/`#PATCH_LUMEN_REEDS` (5d.4) make the Moonmire swamp;
+  `#UNDERCROWN_GLOWVINE`/`#UNDERCROWN_CRYSTAL`/`#UNDERCROWN_POOL` (5d.5, height-ranged) light the deep caves.
 - [LumenWorldgenBootstrap.java](src/main/java/com/jus144tice/lumenwilds/world/LumenWorldgenBootstrap.java)
   — empty seam for code-generated worldgen (`RegistrySetBuilder`/`BootstrapContext`) if we leave JSON.
 
@@ -358,15 +364,19 @@ as `File#member`.
   `lumenwater_bucket` item; it has **no fluid textures** of its own (reuses vanilla water, tinted).
 - `data/lumenwilds/`: `recipe/*`, `loot_table/blocks/*`, `dimension/lumenwilds.json` (custom noise gen +
   a **`multi_noise` biome source** — humidity splits `lumen_glade`/`glowroot_forest`, a cold band carves out
-  `glasspetal_crags`, a hot+humid band gives `sporefall_jungle`, a mild+wettest band gives `moonmire`; one
-  parameter point added per 5d.x) + `dimension_type/lumenwilds.json`, and `worldgen/` — `noise_settings/
-  lumenwilds.json` (bespoke terrain + surface rules), `biome/lumen_glade.json` + `biome/glowroot_forest.json`
+  `glasspetal_crags`, a hot+humid band gives `sporefall_jungle`, a mild+wettest band gives `moonmire`, and a
+  **deep `depth` band** gives `undercrown_caverns` [5d.5]; one parameter point added per 5d.x) +
+  `dimension_type/lumenwilds.json`, and `worldgen/` — `noise_settings/lumenwilds.json` (bespoke terrain +
+  surface rules; the router's **`depth` is y-varying** [5d.5] so cave biomes can layer under the surface —
+  every other climate axis is still constant), `biome/lumen_glade.json` + `biome/glowroot_forest.json`
   (5d.1, dark-teal) + `biome/glasspetal_crags.json` (5d.2, blue-violet) + `biome/sporefall_jungle.json`
-  (5d.3, lush green + warped_spore particle) + `biome/moonmire.json` (5d.4, dark glowing swamp),
-  `noise/hills.json`, `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`, `patch_moonblossom`,
-  `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2` [custom feature],
-  `patch_glasspetal` [5d.2], `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, `lake`] + `patch_glow_algae` +
-  `patch_lumen_reeds`; placed-only `glowroot_forest_trees` [forest-density 2×2]), and **two town-sized structures** — `structure/glowroot_tree.json`
+  (5d.3, lush green + warped_spore particle) + `biome/moonmire.json` (5d.4, dark glowing swamp) +
+  `biome/undercrown_caverns.json` (5d.5, deep cave biome), `noise/hills.json`, `configured_feature/` +
+  `placed_feature/` (`lumen_crystal_ore`, `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`,
+  `glowroot_tree` [1×1], `glowroot_tree_2x2` [custom feature], `patch_glasspetal` [5d.2], `giant_glowcap`
+  [5d.3], `lumenwater_pool` [5d.4, `lake`] + `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine`
+  [5d.5] + placed-only `undercrown_crystal`/`undercrown_pool`; placed-only `glowroot_forest_trees`
+  [forest-density 2×2]), and **two town-sized structures** — `structure/glowroot_tree.json`
   + `structure_set/glowroot_tree.json` (spacing 20/sep 7, in `lumen_glade`) and `structure/mega_glowcap.json`
   + `structure_set/mega_glowcap.json` (spacing 20/sep 7, distinct salt, in `sporefall_jungle`), each with its
   `tags/worldgen/biome/has_structure/<name>.json` biome tag. Hand-authored (not datagen); the other 3 biomes

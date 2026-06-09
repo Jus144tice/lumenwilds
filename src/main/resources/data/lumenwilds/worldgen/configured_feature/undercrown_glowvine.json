@@ -1,0 +1,18 @@
+{
+  "__comment": "Undercrown glowing veins (Phase 5d.5) — an ore feature that threads Glowvine (light 7) through the moonstone/deep moonstone, so the deep caves are naturally lit. discard_chance_on_air_exposure 0 so the veins show on cave walls.",
+  "type": "minecraft:ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 12,
+    "targets": [
+      {
+        "state": { "Name": "lumenwilds:glowvine" },
+        "target": { "predicate_type": "minecraft:block_match", "block": "lumenwilds:moonstone" }
+      },
+      {
+        "state": { "Name": "lumenwilds:glowvine" },
+        "target": { "predicate_type": "minecraft:block_match", "block": "lumenwilds:deep_moonstone" }
+      }
+    ]
+  }
+}

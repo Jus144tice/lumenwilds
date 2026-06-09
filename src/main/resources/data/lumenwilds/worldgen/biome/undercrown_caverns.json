@@ -1,0 +1,50 @@
+{
+  "__comment": "Undercrown Caverns (Phase 5d.5) — the bible's underground heart. A DEPTH-placed cave biome (see the noise_settings depth router + the deep multi_noise point): it replaces the surface biomes in the deep caves. Naturally lit, not pitch black — dense Lumen Crystal Ore + Glowvine veins thread the rock and Lumenwater pools glow in the hollows. Root pillars + giant glowcaps + larger caverns are deferred (Phase 9).",
+  "has_precipitation": false,
+  "temperature": 0.4,
+  "downfall": 0.5,
+  "effects": {
+    "fog_color": 662046,
+    "sky_color": 396818,
+    "water_color": 2074768,
+    "water_fog_color": 401436,
+    "grass_color": 3042906,
+    "foliage_color": 2783846,
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    }
+  },
+  "carvers": {
+    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+  },
+  "features": [
+    [],
+    ["lumenwilds:undercrown_pool"],
+    [],
+    [],
+    [],
+    [],
+    [
+      "lumenwilds:undercrown_crystal",
+      "lumenwilds:undercrown_glowvine"
+    ],
+    [],
+    [],
+    [],
+    []
+  ],
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "spawn_costs": {}
+}

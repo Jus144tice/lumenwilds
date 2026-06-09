@@ -1,0 +1,17 @@
+{
+  "__comment": "Dense Lumen Crystal Ore for the Undercrown (Phase 5d.5) — reuses the lumen_crystal_ore configured feature but at high count across the deep layers, so the caverns glitter and self-light.",
+  "feature": "lumenwilds:lumen_crystal_ore",
+  "placement": [
+    { "type": "minecraft:count", "count": 24 },
+    { "type": "minecraft:in_square" },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "min_inclusive": { "absolute": -56 },
+        "max_inclusive": { "absolute": 32 }
+      }
+    },
+    { "type": "minecraft:biome" }
+  ]
+}

@@ -330,6 +330,23 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 > server boots to "Done" with the jungle biome, glowcap blocks, mushroom feature and spore particle all
 > parsed, no worldgen errors. 3 biomes remain (5d.4–5d.6).
 >
+> **5d.5 done.** Undercrown Caverns — the underground cave biome (the bible's "underground heart"). The
+> hard part: made the noise router's **`depth` y-varying** (`y_clamped_gradient`, ~0 at/above the surface
+> y88 → 1 at y−40) so the `multi_noise` source can layer a cave biome under the surface; all surface biomes
+> stay at `depth` 0 (distribution unchanged), and a sixth point places `undercrown_caverns` at deep `depth`
+> 0.9. Naturally lit, not pitch black: a new `undercrown_glowvine` **`ore` feature** threads `glowvine`
+> (light 7) through the moonstone/deep-moonstone, plus dense `undercrown_crystal` (Lumen Crystal Ore at high
+> count) and `undercrown_pool` (the Lumenwater `lake` feature dropped at depth → glowing crystal pools); all
+> three use `height_range` placement. `biome/undercrown_caverns.json` — deep dark palette, vanilla cave
+> carvers. Keys `LumenConfiguredFeatures#UNDERCROWN_GLOWVINE` + `LumenPlacedFeatures#{UNDERCROWN_GLOWVINE,
+> UNDERCROWN_CRYSTAL,UNDERCROWN_POOL}`; `LumenBiomeBootstrap#UNDERCROWN_CAVERNS` live. *Deferred (→ Phase 9):*
+> **root pillars** (Glowroot columns) + **giant glowcaps** underground, **massive caverns** (needs noise
+> caves in `final_density`, not just carvers), and glow-fungi floor flora (cross plants can't grow on
+> moonstone floors — would need a cave-floor block or a waterloggable plant). Verified: build green + server
+> boots to "Done"; and — because this changes GLOBAL terrain generation — a temporary load-function
+> force-generated a large Lumenwilds region (surface + deep) and it produced **thousands of chunks with zero
+> worldgen exceptions** (temp datapack removed before commit). 1 biome remains (5d.6 Stillbloom Basin).
+>
 > **5d.4 done.** Moonmire — the glowing swamp. Two new `TallGrassBlock` cross flora: `#GLOW_ALGAE`
 > (teal ground cover, glow 3) + `#LUMEN_REEDS` (blue, glow 4), each mirroring the Glow-Fern pipeline
 > (cross model / flat item / drop-self loot / lang; auto BlockItems; no tags). The swamp's signature is its
@@ -645,6 +662,10 @@ return travel lands precisely.
     water) and any **buoyancy / special motion** beyond water-like. **Glow Pools** (Lumenwater + dense
     glow-flora placed-feature decorators) are a **Moonmire (5d.4)** landmark, not a new fluid — build them
     when that biome lands.
+  - **Undercrown Caverns (5d.5) depth:** **root pillars** (Glowroot columns from floor to ceiling) and
+    underground **giant glowcaps** (custom features); **massive caverns** (needs noise/cheese caves in the
+    `noise_settings` `final_density`, not just carvers); **glow-fungi floor flora** (the cross plants can't
+    survive on moonstone cave floors — needs a cave-floor soil block or a waterloggable/lichen-style plant).
 - See also the **⚠ per-biome terrain silhouette** task in the Phase 5 / 5d section — a dimension-wide
   noise-router pass best done once all six biomes exist.
 

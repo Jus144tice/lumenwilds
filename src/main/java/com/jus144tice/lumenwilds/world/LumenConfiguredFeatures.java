@@ -43,6 +43,9 @@ public final class LumenConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_GLOW_ALGAE = key("patch_glow_algae");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_LUMEN_REEDS = key("patch_lumen_reeds");
 
+    // Phase 5d.5: Undercrown Caverns — glowing Glowvine veins threaded through the deep rock.
+    public static final ResourceKey<ConfiguredFeature<?, ?>> UNDERCROWN_GLOWVINE = key("undercrown_glowvine");
+
     private static ResourceKey<ConfiguredFeature<?, ?>> key(String path) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocationHelper.modLoc(path));
     }
