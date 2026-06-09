@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.FlowerBlock;
+import net.minecraft.world.level.block.HugeMushroomBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.PressurePlateBlock;
@@ -274,6 +275,32 @@ public final class ModBlocks {
                     .lightLevel(state -> 7)
                     .sound(SoundType.AMETHYST_CLUSTER)
                     .pushReaction(PushReaction.DESTROY));
+
+    // --- Sporefall Jungle — Giant Glowcap (Phase 5d.3) ------------------------------------------
+    // The bible's enormous jungle mushroom: a wide, glowing cap on a pale stem. Built by the vanilla
+    // huge_brown_mushroom feature (cap + stem providers), so both are HugeMushroomBlocks. The cap glows
+    // (light 9) to stand in for the separate luminous "gills" sub-block (a later refinement).
+
+    /** Giant Glowcap cap block — the broad, glowing crown (light 9). */
+    public static final DeferredBlock<HugeMushroomBlock> GIANT_GLOWCAP_BLOCK = BLOCKS.registerBlock(
+            "giant_glowcap_block",
+            HugeMushroomBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(0.2F)
+                    .lightLevel(state -> 9)
+                    .sound(SoundType.WOOD)
+                    .ignitedByLava());
+
+    /** Giant Glowcap stem block — the pale supporting trunk. */
+    public static final DeferredBlock<HugeMushroomBlock> GIANT_GLOWCAP_STEM = BLOCKS.registerBlock(
+            "giant_glowcap_stem",
+            HugeMushroomBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOL)
+                    .strength(0.2F)
+                    .sound(SoundType.WOOD)
+                    .ignitedByLava());
 
     // --- Glowwood building set (Phase 4) --------------------------------------------------------
     // Wood-set sounds/behaviour + signs use the bespoke Glowwood WoodType/BlockSetType (ModWoodTypes).

@@ -282,6 +282,17 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 > surface-rule tweaks + features + flora + spawns. Per-biome terrain drama (crag spires, basins) is carried
 > by **features** layered on the base terrain, not per-biome density (a stretch goal noted where relevant).
 >
+> > **⚠ Deferred cross-cutting task — per-biome terrain silhouette.** Through 5d every biome shares ONE
+> > `noise_settings/lumenwilds.json`, so the *terrain shape* (hills/height/roughness) is identical
+> > everywhere; biomes differ only in palette + surface materials + features + flora. This is good enough to
+> > make each biome *recognisable*, but they won't feel topographically distinct — the Glasspetal Crags
+> > aren't actually sharp highlands, the Moonmire isn't a low wetland, the Stillbloom Basin isn't a basin.
+> > Making terrain vary by biome needs biome-aware density in the noise router (tie height/jaggedness to the
+> > biome climate params — temperature/erosion/weirdness — the way vanilla does), which is a meatier,
+> > dimension-wide change best done as its **own pass after all six biomes exist** (so we shape against the
+> > full climate map at once), not piecemeal inside each 5d.x. Until then, lean on features for verticality
+> > (crag spires, floating fragments, basin terraces) and call out the gap per biome.
+>
 > - **5d.1 Glowroot Forest** — the signature wood biome. Dense Glowroot trees (reuse 5c-3 features at higher
 >   count) over a darker floor; hanging glowvines, Lumen-fruit clusters, scattered Glowwood. Darker fog than
 >   the Glade, trees self-lit. *Stands up the `multi_noise` biome source* (Glade + Glowroot Forest).
@@ -302,6 +313,21 @@ correct models, recipes craft, blocks drop and mine at the right tier, and hangi
 > - **5d.6 Stillbloom Basin** — rarest sanctuary biome. **New multi-block Stillbloom** (3–8 tall giant flower:
 >   stem / petals / glowing core, core light ~12) in open flower fields; brightest, softest palette; **greatly
 >   reduced** hostile spawns (the bible's safe-haven rule). Smooth-moonstone outcrops, shallow reflective pools.
+>
+> **5d.3 done.** Sporefall Jungle — the densest biome. New blocks `#GIANT_GLOWCAP_BLOCK` (glow 9) +
+> `#GIANT_GLOWCAP_STEM` (`HugeMushroomBlock`) build the bible's enormous glowing mushroom, placed by the
+> **vanilla `huge_brown_mushroom` feature** (cap/stem `simple_state_provider`s, `foliage_radius` 3) — no
+> custom Java; the cap glows to stand in for separate luminous gills (a later refinement). Hand-authored the
+> huge-mushroom multipart blockstates (reusing vanilla `mushroom_block_inside`), `template_single_face`
+> models, `cube_all` item models, drop-self loot, axe tag, lang, and teal-cap/pale-stem placeholder
+> textures; `ModTagProvider` learns `glowcap → axe`. New `biome/sporefall_jungle.json` — lush green palette
+> with a drifting-spore ambient particle (`minecraft:warped_spore`, prob 0.022) for the **Sporefall** look
+> (the full timed event is Phase 7); features = `giant_glowcap` + dense `patch_glow_fern`/`patch_moonblossom`
+> + Lumen Crystal Ore. Added a fourth `multi_noise` point (hot+humid, temp 0.8 / humidity 0.7). Keys
+> `LumenConfiguredFeatures`/`LumenPlacedFeatures#GIANT_GLOWCAP`; `LumenBiomeBootstrap#SPOREFALL_JUNGLE` live.
+> *Deferred:* separate luminous gills block, hanging vines, the timed Sporefall event. Verified: build green +
+> server boots to "Done" with the jungle biome, glowcap blocks, mushroom feature and spore particle all
+> parsed, no worldgen errors. 3 biomes remain (5d.4–5d.6).
 >
 > **5d.2 done.** Glasspetal Crags — the crystal highlands. New block `#GLASSPETAL_CLUSTER`
 > (`AmethystClusterBlock` 7.0F/3.0F — directional, waterloggable, glow 7; hand-authored 6-facing

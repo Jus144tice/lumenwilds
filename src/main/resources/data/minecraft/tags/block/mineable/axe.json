@@ -17,6 +17,8 @@
     "lumenwilds:glowwood_sign",
     "lumenwilds:glowwood_wall_sign",
     "lumenwilds:glowwood_hanging_sign",
-    "lumenwilds:glowwood_wall_hanging_sign"
+    "lumenwilds:glowwood_wall_hanging_sign",
+    "lumenwilds:giant_glowcap_block",
+    "lumenwilds:giant_glowcap_stem"
   ]
 }

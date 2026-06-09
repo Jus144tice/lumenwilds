@@ -1,5 +1,5 @@
 {
-  "__comment": "Lumenwilds dimension. Bespoke terrain (lumenwilds:lumenwilds noise settings) with a MultiNoise biome spread (Phase 5d). Biomes are added one parameter point per 5d.x effort. Humidity splits the arrival Lumen Glade (dry) from the Glowroot Forest (humid); a cold temperature band carves out the Glasspetal Crags (5d.2). Terrain HEIGHT is shared across biomes (one noise_settings); identity comes from palette + surface rules + features.",
+  "__comment": "Lumenwilds dimension. Bespoke terrain (lumenwilds:lumenwilds noise settings) with a MultiNoise biome spread (Phase 5d). Biomes are added one parameter point per 5d.x effort. Humidity splits the arrival Lumen Glade (dry) from the Glowroot Forest (humid); a cold temperature band carves out the Glasspetal Crags (5d.2); a hot+humid band gives the Sporefall Jungle (5d.3). Terrain HEIGHT is shared across biomes (one noise_settings); identity comes from palette + surface rules + features.",
   "type": "lumenwilds:lumenwilds",
   "generator": {
     "type": "minecraft:noise",
@@ -36,6 +36,18 @@
           "parameters": {
             "temperature": -0.7,
             "humidity": 0.0,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "depth": 0.0,
+            "weirdness": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "lumenwilds:sporefall_jungle",
+          "parameters": {
+            "temperature": 0.8,
+            "humidity": 0.7,
             "continentalness": 0.0,
             "erosion": 0.0,
             "depth": 0.0,

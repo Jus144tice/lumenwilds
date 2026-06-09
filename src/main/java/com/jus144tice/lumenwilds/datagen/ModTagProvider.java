@@ -43,7 +43,7 @@ public class ModTagProvider extends BlockTagsProvider {
             if (name.endsWith("leaves")) {
                 hoe.add(block);
                 leaves.add(block);
-            } else if (name.contains("glowwood") || name.contains("glowroot")) {
+            } else if (name.contains("glowwood") || name.contains("glowroot") || name.contains("glowcap")) {
                 axe.add(block);
             } else if (name.equals("moonloam") || name.equals("lumen_grass_block")) {
                 shovel.add(block);

@@ -1,0 +1,55 @@
+{
+  "__comment": "Sporefall Jungle (Phase 5d.3) — the densest biome: a thick alien rainforest of enormous glowing mushrooms, dense undergrowth, and the constant drift of glowing spores (the 'Sporefall'). Palette shifts to a lush, misty green. The ambient warped_spore particle stands in for the Sporefall look; the full timed event (brighter pulses, stronger bonemeal) is Phase 7.",
+  "has_precipitation": false,
+  "temperature": 0.9,
+  "downfall": 0.9,
+  "effects": {
+    "fog_color": 1980968,
+    "sky_color": 2244142,
+    "water_color": 2780762,
+    "water_fog_color": 797214,
+    "grass_color": 5223274,
+    "foliage_color": 4169822,
+    "particle": {
+      "options": { "type": "minecraft:warped_spore" },
+      "probability": 0.022
+    },
+    "mood_sound": {
+      "sound": "minecraft:ambient.cave",
+      "tick_delay": 6000,
+      "block_search_extent": 8,
+      "offset": 2.0
+    }
+  },
+  "carvers": {
+    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+    ["lumenwilds:lumen_crystal_ore"],
+    [],
+    [],
+    [
+      "lumenwilds:giant_glowcap",
+      "lumenwilds:patch_glow_fern",
+      "lumenwilds:patch_moonblossom"
+    ],
+    []
+  ],
+  "spawners": {
+    "ambient": [],
+    "axolotls": [],
+    "creature": [],
+    "misc": [],
+    "monster": [],
+    "underground_water_creature": [],
+    "water_ambient": [],
+    "water_creature": []
+  },
+  "spawn_costs": {}
+}

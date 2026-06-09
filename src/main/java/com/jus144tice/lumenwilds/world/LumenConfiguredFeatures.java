@@ -35,6 +35,9 @@ public final class LumenConfiguredFeatures {
     // Phase 5d.2: a surface patch of Glasspetal Cluster crystals, used by the Glasspetal Crags biome.
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_GLASSPETAL = key("patch_glasspetal");
 
+    // Phase 5d.3: the Giant Glowcap mushroom (vanilla huge_brown_mushroom feature), used by Sporefall Jungle.
+    public static final ResourceKey<ConfiguredFeature<?, ?>> GIANT_GLOWCAP = key("giant_glowcap");
+
     private static ResourceKey<ConfiguredFeature<?, ?>> key(String path) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE, ResourceLocationHelper.modLoc(path));
     }
