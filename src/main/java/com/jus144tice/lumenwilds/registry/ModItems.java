@@ -117,6 +117,34 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.SPORELING, 0x3E5A34, 0x9ED85A, props),
             new Item.Properties());
 
+    /** Mirelurker drops (6e): tooth, lumen algae, raw/cooked mirefish (foods); + spawn egg. */
+    public static final DeferredItem<Item> MIRE_TOOTH = ITEMS.registerSimpleItem("mire_tooth");
+
+    public static final DeferredItem<Item> LUMEN_ALGAE = ITEMS.registerSimpleItem("lumen_algae");
+
+    public static final DeferredItem<Item> RAW_MIREFISH = ITEMS.registerItem(
+            "raw_mirefish",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(0.2F)
+                            .build()));
+
+    public static final DeferredItem<Item> COOKED_MIREFISH = ITEMS.registerItem(
+            "cooked_mirefish",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(6)
+                            .saturationModifier(0.7F)
+                            .build()));
+
+    public static final DeferredItem<DeferredSpawnEggItem> MIRELURKER_SPAWN_EGG = ITEMS.registerItem(
+            "mirelurker_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.MIRELURKER, 0x2A3E36, 0x5AC0A0, props),
+            new Item.Properties());
+
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
             "glowwood_boat",

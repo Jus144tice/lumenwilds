@@ -7,6 +7,7 @@ package com.jus144tice.lumenwilds.event;
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
+import com.jus144tice.lumenwilds.entity.Mirelurker;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
 import com.jus144tice.lumenwilds.entity.Sporeling;
 import com.jus144tice.lumenwilds.registry.ModEntities;
@@ -38,6 +39,7 @@ public final class ModEntityEvents {
                 ModEntities.LANTERN_BEETLE.get(),
                 LanternBeetle.createAttributes().build());
         event.put(ModEntities.SPORELING.get(), Sporeling.createAttributes().build());
+        event.put(ModEntities.MIRELURKER.get(), Mirelurker.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -65,6 +67,13 @@ public final class ModEntityEvents {
         // Sporeling: hostile darkness rule (jungle/cave swarm).
         event.register(
                 ModEntities.SPORELING.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // Mirelurker: amphibious ambusher; spawns on the Moonmire floor (incl. under shallow water) in the dark.
+        event.register(
+                ModEntities.MIRELURKER.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkMonsterSpawnRules,

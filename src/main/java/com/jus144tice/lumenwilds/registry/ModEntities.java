@@ -7,6 +7,7 @@ package com.jus144tice.lumenwilds.registry;
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
+import com.jus144tice.lumenwilds.entity.Mirelurker;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
 import com.jus144tice.lumenwilds.entity.Sporeling;
 import net.minecraft.core.registries.Registries;
@@ -53,6 +54,13 @@ public final class ModEntities {
                     .sized(0.6F, 0.7F)
                     .clientTrackingRange(8)
                     .build("sporeling"));
+
+    /** Mirelurker — the Moonmire amphibious ambush predator (Phase 6e). */
+    public static final DeferredHolder<EntityType<?>, EntityType<Mirelurker>> MIRELURKER =
+            ENTITIES.register("mirelurker", () -> EntityType.Builder.of(Mirelurker::new, MobCategory.MONSTER)
+                    .sized(0.7F, 0.7F)
+                    .clientTrackingRange(8)
+                    .build("mirelurker"));
 
     private ModEntities() {}
 }

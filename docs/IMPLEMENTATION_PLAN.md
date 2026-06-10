@@ -573,8 +573,17 @@ wiring), which every later mob reuses. Each mob adds its own drop items to `ModI
   makes only the Stalker flee light), so it does not use `FleeBrightLightGoal`. Verified: build green + a temp
   load-function summoned **and killed** Sporelings so `die()` ran — the death `AreaEffectCloud` + effects
   constructed with zero exceptions (temp datapack removed before commit). Establishes the death-cloud pattern.
-- **6e Mirelurker** — Moonmire ambush. Hides in shallow Lumenwater, anglerfish-style lure, lunges, stronger
-  at night. Drops Mire Tooth / Lumen Algae / Raw Mirefish.
+- **6e Mirelurker** ✅ **done** — the Moonmire **amphibious** ambusher; the first water-capable mob,
+  establishing the water-navigation pattern the Lumen Fish (6f) reuses. A `Monster` with
+  `AmphibiousPathNavigation` + `setPathfindingMalus(WATER, 0)` (walks land and water), the
+  `#minecraft:can_breathe_under_water` tag (doesn't drown — that method is final), and `isPushedByFluid`
+  false (lurks). Lunges at players (`MeleeAttackGoal`); `#customServerAiStep` adds a transient **+30% speed
+  at night** (the project's `ResourceLocation`-keyed attribute-modifier pattern). Native low gravity. Drops
+  Raw Mirefish (cooks if on fire; + furnace/smoker/campfire recipes → Cooked Mirefish) / Lumen Algae / rare
+  Mire Tooth (+ spawn egg). Spawns in the Moonmire. Placeholder render = vanilla salmon. *Deferred (→ Phase
+  9):* the glowing plant-mimic **lure** visual. Verified: build green + a temp load-function set night and
+  summoned Mirelurkers so the amphibious nav + the night-speed modifier ran with zero exceptions (temp
+  datapack removed before commit).
 - **6f Lumen Fish** — the native aquatic ambient mob (the bible's "fish-like native mobs"). Small glowing
   schooling swimmer in Lumenwater pools / Moonmire; the in-world Mirefish source. (Depends on 6.0.)
 - **6g Sky Jelly** — floating air mob; bespoke vertical low-gravity drift (`FlyingMoveControl`). Harmless
@@ -772,8 +781,9 @@ return travel lands precisely.
     biggest art cost in the mod). Per-mob behaviour refinements deferred so far: the Lumen Grazer's
     **six-legged** model, its **faint night glow** (emissive render layer), and its **grass-grazing**
     block-eat (a custom `EatBlockGoal` targeting lumen grass); the Lantern Beetle's **moving light** (the live
-    flying beetle emitting light — needs dynamic entity lighting) and its winged model. (The *placed* Bottled
-    Lantern Beetle already works as a static lamp block — done in 6c.)
+    flying beetle emitting light — needs dynamic entity lighting) and its winged model (the *placed* Bottled
+    Lantern Beetle already works as a static lamp block — done in 6c); the Mirelurker's glowing **plant-mimic
+    lure** appendage (a render/behaviour feature).
 - See also the **⚠ per-biome terrain silhouette** task in the Phase 5 / 5d section — a dimension-wide
   noise-router pass best done once all six biomes exist.
 
