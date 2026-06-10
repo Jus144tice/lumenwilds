@@ -97,6 +97,14 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.SHADE_STALKER, 0x14121C, 0x2FD0C0, props),
             new Item.Properties());
 
+    /** Lantern Beetle products (6c): the bottled beetle (caught with a glass bottle) + spawn egg. */
+    public static final DeferredItem<Item> BOTTLED_LANTERN_BEETLE = ITEMS.registerSimpleItem("bottled_lantern_beetle");
+
+    public static final DeferredItem<DeferredSpawnEggItem> LANTERN_BEETLE_SPAWN_EGG = ITEMS.registerItem(
+            "lantern_beetle_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.LANTERN_BEETLE, 0x2A3A30, 0xCFE860, props),
+            new Item.Properties());
+
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
             "glowwood_boat",

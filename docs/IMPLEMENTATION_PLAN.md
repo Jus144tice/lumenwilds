@@ -552,9 +552,16 @@ wiring), which every later mob reuses. Each mob adds its own drop items to `ModI
   load-function summoned Stalkers in the bright daytime overworld (so `FleeBrightLightGoal` fired immediately,
   exercising its pathing) — zero exceptions (temp datapack removed before commit). *Reusable light-aware
   `Goal` established — later mobs (Sporeling, etc.) can share it.*
-- **6c Lantern Beetle** — flying ambience + early light. Circles flowers/glowvines/lumenbulbs, drawn to
-  Moonblossoms, moving light, bottleable → **Bottled Lantern Beetle** (places a temporary light). Drops Glow
-  Pollen (item exists).
+- **6c Lantern Beetle** ✅ **done** — flying ambience; the dimension's **first flying mob**, establishing the
+  reusable flight setup (`FlyingMoveControl(this, 20, true)` + `FlyingPathNavigation` + `FLYING_SPEED`) the
+  Sky Jelly / Glowmoth / Crag Wraith reuse. A non-breeding `Animal` that flies to Moonblossoms / Lumenbulbs /
+  Glowvines via the new reusable `entity.ai.FlyToBlocksGoal` (throttled box scan), wanders the air otherwise
+  (`WaterAvoidingRandomFlyingGoal`), and is **bottleable** — `#mobInteract` with a glass bottle catches it as
+  a **Bottled Lantern Beetle** (`ModItems.BOTTLED_LANTERN_BEETLE`). Drops Glow Pollen (rare). Spawns in
+  Glade/Forest/Stillbloom/Jungle. Placeholder render = vanilla silverfish. *Deferred (→ Phase 9):* the moving
+  light it emits (needs dynamic entity lighting), the bottled item's place-a-temp-light / release behaviour,
+  and the final winged model. Verified: build green + a temp load-function summoned Beetles — the flying
+  nav + goals ran with zero exceptions (temp datapack removed before commit).
 - **6d Sporeling** — Sporefall Jungle / Undercrown swarm. Attacks in groups; death → spore cloud (vision
   obscure + slowness = "Sporeblind"). Drops Spore Sac / Glowcap Spores.
 - **6e Mirelurker** — Moonmire ambush. Hides in shallow Lumenwater, anglerfish-style lure, lunges, stronger
@@ -755,7 +762,9 @@ return travel lands precisely.
     reuses the vanilla cow model) — the final bespoke models/animations/textures are a Phase 9 art pass (the
     biggest art cost in the mod). Per-mob behaviour refinements deferred so far: the Lumen Grazer's
     **six-legged** model, its **faint night glow** (emissive render layer), and its **grass-grazing**
-    block-eat (a custom `EatBlockGoal` targeting lumen grass).
+    block-eat (a custom `EatBlockGoal` targeting lumen grass); the Lantern Beetle's **moving light** (needs
+    dynamic entity lighting), its winged model, and the **Bottled Lantern Beetle** item's behaviour
+    (place-a-temporary-light / release-the-beetle — possibly a Phase 8 item pass).
 - See also the **⚠ per-biome terrain silhouette** task in the Phase 5 / 5d section — a dimension-wide
   noise-router pass best done once all six biomes exist.
 

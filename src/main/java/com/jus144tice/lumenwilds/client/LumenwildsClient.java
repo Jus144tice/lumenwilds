@@ -46,6 +46,7 @@ public final class LumenwildsClient {
     public static void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.LUMEN_GRAZER.get(), LumenGrazerRenderer::new);
         event.registerEntityRenderer(ModEntities.SHADE_STALKER.get(), ShadeStalkerRenderer::new);
+        event.registerEntityRenderer(ModEntities.LANTERN_BEETLE.get(), LanternBeetleRenderer::new);
     }
 
     @SubscribeEvent

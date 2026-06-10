@@ -5,6 +5,7 @@
 package com.jus144tice.lumenwilds.event;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
 import com.jus144tice.lumenwilds.registry.ModEntities;
@@ -32,6 +33,9 @@ public final class ModEntityEvents {
         event.put(ModEntities.LUMEN_GRAZER.get(), LumenGrazer.createAttributes().build());
         event.put(
                 ModEntities.SHADE_STALKER.get(), ShadeStalker.createAttributes().build());
+        event.put(
+                ModEntities.LANTERN_BEETLE.get(),
+                LanternBeetle.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -48,6 +52,13 @@ public final class ModEntityEvents {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // Lantern Beetle: spawns on the ground (like bees/parrots), then takes flight.
+        event.register(
+                ModEntities.LANTERN_BEETLE.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Animal::checkAnimalSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

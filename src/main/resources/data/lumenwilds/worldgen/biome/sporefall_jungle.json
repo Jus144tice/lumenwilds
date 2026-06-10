@@ -44,7 +44,9 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      { "type": "lumenwilds:lantern_beetle", "weight": 12, "minCount": 2, "maxCount": 4 }
+    ],
     "misc": [],
     "monster": [
       { "type": "lumenwilds:shade_stalker", "weight": 50, "minCount": 1, "maxCount": 3 }

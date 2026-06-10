@@ -5,6 +5,7 @@
 package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
 import net.minecraft.core.registries.Registries;
@@ -37,6 +38,13 @@ public final class ModEntities {
                     .sized(0.9F, 0.8F)
                     .clientTrackingRange(8)
                     .build("shade_stalker"));
+
+    /** Lantern Beetle — the small glowing flying ambience insect (Phase 6c). */
+    public static final DeferredHolder<EntityType<?>, EntityType<LanternBeetle>> LANTERN_BEETLE =
+            ENTITIES.register("lantern_beetle", () -> EntityType.Builder.of(LanternBeetle::new, MobCategory.CREATURE)
+                    .sized(0.5F, 0.4F)
+                    .clientTrackingRange(8)
+                    .build("lantern_beetle"));
 
     private ModEntities() {}
 }

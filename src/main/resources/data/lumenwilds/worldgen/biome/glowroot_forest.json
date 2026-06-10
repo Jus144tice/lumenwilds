@@ -43,7 +43,8 @@
     "ambient": [],
     "axolotls": [],
     "creature": [
-      { "type": "lumenwilds:lumen_grazer", "weight": 10, "minCount": 2, "maxCount": 4 }
+      { "type": "lumenwilds:lumen_grazer", "weight": 10, "minCount": 2, "maxCount": 4 },
+      { "type": "lumenwilds:lantern_beetle", "weight": 10, "minCount": 2, "maxCount": 3 }
     ],
     "misc": [],
     "monster": [
