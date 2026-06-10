@@ -86,6 +86,17 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.LUMEN_GRAZER, 0x3A5A6E, 0x8FE0C8, props),
             new Item.Properties());
 
+    /** Shade Stalker drops (6b): claw, dark hide, rare echo dust. */
+    public static final DeferredItem<Item> SHADE_CLAW = ITEMS.registerSimpleItem("shade_claw");
+
+    public static final DeferredItem<Item> DARK_HIDE = ITEMS.registerSimpleItem("dark_hide");
+    public static final DeferredItem<Item> ECHO_DUST = ITEMS.registerSimpleItem("echo_dust");
+
+    public static final DeferredItem<DeferredSpawnEggItem> SHADE_STALKER_SPAWN_EGG = ITEMS.registerItem(
+            "shade_stalker_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.SHADE_STALKER, 0x14121C, 0x2FD0C0, props),
+            new Item.Properties());
+
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
             "glowwood_boat",

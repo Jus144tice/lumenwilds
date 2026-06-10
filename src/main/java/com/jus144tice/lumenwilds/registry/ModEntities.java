@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
+import com.jus144tice.lumenwilds.entity.ShadeStalker;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -29,6 +30,13 @@ public final class ModEntities {
                     .sized(0.9F, 1.4F)
                     .clientTrackingRange(10)
                     .build("lumen_grazer"));
+
+    /** Shade Stalker — the main hostile surface predator (Phase 6b). */
+    public static final DeferredHolder<EntityType<?>, EntityType<ShadeStalker>> SHADE_STALKER =
+            ENTITIES.register("shade_stalker", () -> EntityType.Builder.of(ShadeStalker::new, MobCategory.MONSTER)
+                    .sized(0.9F, 0.8F)
+                    .clientTrackingRange(8)
+                    .build("shade_stalker"));
 
     private ModEntities() {}
 }

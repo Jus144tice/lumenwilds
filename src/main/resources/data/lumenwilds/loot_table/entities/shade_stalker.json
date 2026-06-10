@@ -1,0 +1,50 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:shade_claw",
+          "functions": [
+            { "function": "minecraft:set_count", "add": false, "count": { "type": "minecraft:uniform", "min": 0.0, "max": 2.0 } },
+            { "function": "minecraft:enchanted_count_increase", "enchantment": "minecraft:looting", "count": { "type": "minecraft:uniform", "min": 0.0, "max": 1.0 } }
+          ]
+        }
+      ]
+    },
+    {
+      "bonus_rolls": 0.0,
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:dark_hide",
+          "functions": [
+            { "function": "minecraft:set_count", "add": false, "count": { "type": "minecraft:uniform", "min": 0.0, "max": 1.0 } },
+            { "function": "minecraft:enchanted_count_increase", "enchantment": "minecraft:looting", "count": { "type": "minecraft:uniform", "min": 0.0, "max": 1.0 } }
+          ]
+        }
+      ]
+    },
+    {
+      "bonus_rolls": 0.0,
+      "rolls": 1.0,
+      "conditions": [
+        { "condition": "minecraft:random_chance", "chance": 0.08 }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:echo_dust",
+          "functions": [
+            { "function": "minecraft:enchanted_count_increase", "enchantment": "minecraft:looting", "count": { "type": "minecraft:uniform", "min": 0.0, "max": 1.0 } }
+          ]
+        }
+      ]
+    }
+  ],
+  "random_sequence": "lumenwilds:entities/shade_stalker"
+}

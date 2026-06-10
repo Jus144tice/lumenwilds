@@ -41,7 +41,9 @@
     "axolotls": [],
     "creature": [],
     "misc": [],
-    "monster": [],
+    "monster": [
+      { "type": "lumenwilds:shade_stalker", "weight": 70, "minCount": 2, "maxCount": 3 }
+    ],
     "underground_water_creature": [],
     "water_ambient": [],
     "water_creature": []

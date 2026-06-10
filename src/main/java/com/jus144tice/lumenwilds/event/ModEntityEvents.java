@@ -6,9 +6,11 @@ package com.jus144tice.lumenwilds.event;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
+import com.jus144tice.lumenwilds.entity.ShadeStalker;
 import com.jus144tice.lumenwilds.registry.ModEntities;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -28,6 +30,8 @@ public final class ModEntityEvents {
     @SubscribeEvent
     public static void onAttributeCreation(final EntityAttributeCreationEvent event) {
         event.put(ModEntities.LUMEN_GRAZER.get(), LumenGrazer.createAttributes().build());
+        event.put(
+                ModEntities.SHADE_STALKER.get(), ShadeStalker.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -37,6 +41,13 @@ public final class ModEntityEvents {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Animal::checkAnimalSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // Shade Stalker: standard hostile darkness rule (spawns in low light), so living light keeps it away.
+        event.register(
+                ModEntities.SHADE_STALKER.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

@@ -542,9 +542,16 @@ wiring), which every later mob reuses. Each mob adds its own drop items to `ModI
   vanilla cow model** (final six-legged model + night glow → Phase 9), and grass-grazing block-eat is
   deferred too. Verified: build green + a temp load-function summoned Grazers in a dev server — entity
   attributes + AI constructed with **zero exceptions** (temp datapack removed before commit).
-- **6b Shade Stalker** — the core hostile **and** the living-light mechanic. Ground ambush predator; spawns
-  in low light; hesitates/flees near bright natural light + Stillbloom Cores + Lumen lanterns. Drops Shade
-  Claw / Dark Hide / rare Echo Dust. *Establishes the reusable light-aware `Goal`.*
+- **6b Shade Stalker** ✅ **done** — the core hostile **and** the living-light mechanic. A `Monster` that
+  targets players (`NearestAttackableTargetGoal` + `HurtByTargetGoal` + `MeleeAttackGoal`, fast move speed)
+  but **flees bright light at top priority** via the new reusable `entity.ai.FleeBrightLightGoal` (fires
+  when `getMaxLocalRawBrightness` ≥ 11 — daylight, Stillbloom Cores, Lumen lanterns all ward it off, even
+  mid-chase). Native low gravity baked in. Spawns in low light (`Monster::checkMonsterSpawnRules`) in
+  Glowroot Forest / Lumen Glade / Sporefall Jungle / Undercrown Caverns. Drops Shade Claw / Dark Hide / rare
+  Echo Dust (+ spawn egg). Placeholder render reuses the vanilla spider model. Verified: build green + a temp
+  load-function summoned Stalkers in the bright daytime overworld (so `FleeBrightLightGoal` fired immediately,
+  exercising its pathing) — zero exceptions (temp datapack removed before commit). *Reusable light-aware
+  `Goal` established — later mobs (Sporeling, etc.) can share it.*
 - **6c Lantern Beetle** — flying ambience + early light. Circles flowers/glowvines/lumenbulbs, drawn to
   Moonblossoms, moving light, bottleable → **Bottled Lantern Beetle** (places a temporary light). Drops Glow
   Pollen (item exists).
