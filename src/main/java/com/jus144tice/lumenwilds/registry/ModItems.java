@@ -174,6 +174,16 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.GLOWMOTH, 0x4A3A5A, 0xD8E060, props),
             new Item.Properties());
 
+    /** Rootback drops (6i): plate + moonloam clumps (Living Fiber already exists); + spawn egg. */
+    public static final DeferredItem<Item> ROOTBACK_PLATE = ITEMS.registerSimpleItem("rootback_plate");
+
+    public static final DeferredItem<Item> MOONLOAM_CLUMPS = ITEMS.registerSimpleItem("moonloam_clumps");
+
+    public static final DeferredItem<DeferredSpawnEggItem> ROOTBACK_SPAWN_EGG = ITEMS.registerItem(
+            "rootback_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.ROOTBACK, 0x4A5E3A, 0x8FB060, props),
+            new Item.Properties());
+
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
             "glowwood_boat",

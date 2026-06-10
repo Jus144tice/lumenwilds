@@ -72,10 +72,11 @@ on death; the **Mirelurker** (6e) is the Moonmire **amphibious** ambusher — lu
 night (a transient speed modifier); the **Lumen Fish** (6f) is the native passive **schooling** swimmer of
 the glowing water — bucketable (catch it → a fish bucket) and the in-world source of edible Mirefish; the
 **Sky Jelly** (6g) is the floating air-ambience drifter — a harmless jellyfish-like mob that hovers on
-near-zero gravity and drops Air Gel; and the **Glowmoth** (6h) is the neutral flower **guardian** — it circles
+near-zero gravity and drops Air Gel; the **Glowmoth** (6h) is the neutral flower **guardian** — it circles
 flowers/lights but **turns hostile if you break a nearby Moonblossom/Stillbloom** (a `BlockEvent.BreakEvent`
-handler aggros nearby moths). What is deliberately *not* built yet: the other 2 mobs (Rootback, Crag Wraith),
-more structures, custom sky/fog. **All biomes share one terrain *height*** (only `depth` varies, for the cave
+handler aggros nearby moths); and the **Rootback** (6i) is the **massive** slow neutral "living-feature"
+turtle (100 HP, knockback-immune, retaliates only when hit, and *seeds flora* as it wanders). What is
+deliberately *not* built yet: the last mob (Crag Wraith), more structures, custom sky/fog. **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -180,7 +181,8 @@ as `File#member`.
   the Bottled Lantern Beetle is a *block*, `ModBlocks#BOTTLED_LANTERN_BEETLE`); `#SPORE_SAC`/`#GLOWCAP_SPORES`
   + `#SPORELING_SPAWN_EGG` (6d); `#MIRE_TOOTH`/`#LUMEN_ALGAE`/`#RAW_MIREFISH`/`#COOKED_MIREFISH` (foods) +
   `#MIRELURKER_SPAWN_EGG` (6e); `#LUMEN_FISH_BUCKET` (`MobBucketItem`) + `#LUMEN_FISH_SPAWN_EGG` (6f);
-  `#SKY_JELLY_SPAWN_EGG` (6g — drops the existing `#AIR_GEL`); `#GLOW_SCALES` + `#GLOWMOTH_SPAWN_EGG` (6h); boats
+  `#SKY_JELLY_SPAWN_EGG` (6g — drops the existing `#AIR_GEL`); `#GLOW_SCALES` + `#GLOWMOTH_SPAWN_EGG` (6h);
+  `#ROOTBACK_PLATE`/`#MOONLOAM_CLUMPS` + `#ROOTBACK_SPAWN_EGG` (6i); boats
   `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT`
   (`BoatItem` over `ModBoatTypes.glowwood()`); signs `#GLOWWOOD_SIGN` (`SignItem`)/`#GLOWWOOD_HANGING_SIGN`
   (`HangingSignItem`) — wall variants share these. A **static loop auto-registers a simple `BlockItem` for
@@ -203,9 +205,9 @@ as `File#member`.
   native fauna (Phase 6). `#LUMEN_GRAZER` (`CREATURE`, 6a), `#SHADE_STALKER` (`MONSTER`, 6b), `#LANTERN_BEETLE`
   (`CREATURE`, flying, 6c), `#SPORELING` (`MONSTER`, swarm, 6d), `#MIRELURKER` (`MONSTER`, amphibious, 6e),
   `#LUMEN_FISH` (`WATER_AMBIENT`, schooling fish, 6f), `#SKY_JELLY` (`CREATURE`, floating, 6g), `#GLOWMOTH`
-  (`CREATURE`, neutral flying guardian, 6h). Each entity also needs attributes + spawn placement
-  (`event.ModEntityEvents`), a renderer (`client.LumenwildsClient`), a loot table (`loot_table/entities/`),
-  and biome `spawners` entries.
+  (`CREATURE`, neutral flying guardian, 6h), `#ROOTBACK` (`CREATURE`, massive 3.0×2.2 turtle, 6i). Each entity
+  also needs attributes + spawn placement (`event.ModEntityEvents`), a renderer (`client.LumenwildsClient`),
+  a loot table (`loot_table/entities/`), and biome `spawners` entries.
 - Empty stubs (compile; carry phase TODOs). Wired to the bus already (registered empty): 
   [ModMobEffects](src/main/java/com/jus144tice/lumenwilds/registry/ModMobEffects.java) `#MOB_EFFECTS`,
   [ModBlockEntities](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) `#BLOCK_ENTITIES`,
@@ -323,6 +325,12 @@ as `File#member`.
   target) + `HurtByTargetGoal`. Turns hostile via **`event.GlowmothAggroEvents`** (a block-break handler that
   `setTarget`s nearby moths on whoever broke a guarded bloom). Drops Glow Scales. Placeholder render =
   vanilla endermite scaled 1.6.
+- [Rootback.java](src/main/java/com/jus144tice/lumenwilds/entity/Rootback.java) — `Animal`, the **massive**
+  (`3.0×2.2`) slow neutral "living-feature" turtle (6i). Tanky: 100 HP, knockback-immune, `STEP_HEIGHT` 1.5,
+  only retaliates (idle `MeleeAttackGoal` + `HurtByTargetGoal`, no auto-targeting). `#customServerAiStep`
+  occasionally **seeds a Glow Fern / Moonblossom** on nearby Lumenwilds soil — the "plants grow where it
+  rests" rule. Drops Rootback Plate / Living Fiber / Moonloam Clumps. Placeholder render = the cow model
+  scaled **3.4** (the turtle shell + shell-plants are Phase 9).
 
 ### world/ — dimension & worldgen keys (datapack-driven)
 - [LumenDimensionConstants.java](src/main/java/com/jus144tice/lumenwilds/world/LumenDimensionConstants.java)
@@ -431,8 +439,8 @@ as `File#member`.
   `MobRenderer`s; **placeholders reuse vanilla models** (Grazer → `CowModel`/`COW`; Shade Stalker →
   `SpiderModel`/`SPIDER`; Lantern Beetle → `SilverfishModel`/`SILVERFISH`; Sporeling → `SlimeModel`/`SLIME`;
   Mirelurker → `SalmonModel`/`SALMON`; Lumen Fish → `CodModel`/`COD`; Sky Jelly → `GhastModel`/`GHAST` scaled
-  0.35; Glowmoth → `EndermiteModel`/`ENDERMITE` scaled 1.6) with `textures/entity/<name>.png`. No bespoke
-  `LayerDefinition`s; final models + emissive glow → Phase 9.
+  0.35; Glowmoth → `EndermiteModel`/`ENDERMITE` scaled 1.6; Rootback → `CowModel`/`COW` scaled 3.4) with
+  `textures/entity/<name>.png`. No bespoke `LayerDefinition`s; final models + emissive glow → Phase 9.
 
 ### util/
 - [ResourceLocationHelper.java](src/main/java/com/jus144tice/lumenwilds/util/ResourceLocationHelper.java)
@@ -486,13 +494,13 @@ as `File#member`.
   + `entity.lumenwilds.*` mob names). Mob art (placeholders): `textures/entity/lumen_grazer.png` (64×32
   cow-layout) + `shade_stalker.png` (spider) + `lantern_beetle.png` (silverfish) + `sporeling.png` (slime,
   all 64×32) + `mirelurker.png` (salmon) + `lumen_fish.png` (cod), both 32×32, + `sky_jelly.png` (ghast) +
-  `glowmoth.png` (endermite), 64×32, under `textures/entity/`.
+  `glowmoth.png` (endermite) + `rootback.png` (cow), 64×32, under `textures/entity/`.
   Lumenwater (5e) has a particle-only `blockstates/lumenwater.json` + `models/block/lumenwater.json` (the
   fluid itself renders via the client `IClientFluidTypeExtensions`, not a block model) and a flat
   `lumenwater_bucket` item; it has **no fluid textures** of its own (reuses vanilla water, tinted).
 - `data/lumenwilds/`: `recipe/*` (incl. `cooked_grazer_meat` + `cooked_mirefish` furnace/smoker/campfire),
   `loot_table/blocks/*` + `loot_table/entities/*` (mob drops — `lumen_grazer` 6a, `shade_stalker` 6b,
-  `lantern_beetle` 6c, `sporeling` 6d, `mirelurker` 6e, `lumen_fish` 6f, `sky_jelly` 6g, `glowmoth` 6h), `dimension/lumenwilds.json` (custom noise gen +
+  `lantern_beetle` 6c, `sporeling` 6d, `mirelurker` 6e, `lumen_fish` 6f, `sky_jelly` 6g, `glowmoth` 6h, `rootback` 6i), `dimension/lumenwilds.json` (custom noise gen +
   a **`multi_noise` biome source** — humidity splits `lumen_glade`/`glowroot_forest`, a cold band carves out
   `glasspetal_crags`, a hot+humid band gives `sporefall_jungle`, a mild+wettest band gives `moonmire`, and a
   **deep `depth` band** gives `undercrown_caverns` [5d.5]; one parameter point added per 5d.x) +

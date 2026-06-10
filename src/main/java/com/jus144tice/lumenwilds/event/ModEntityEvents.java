@@ -10,6 +10,7 @@ import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenFish;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
 import com.jus144tice.lumenwilds.entity.Mirelurker;
+import com.jus144tice.lumenwilds.entity.Rootback;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
 import com.jus144tice.lumenwilds.entity.SkyJelly;
 import com.jus144tice.lumenwilds.entity.Sporeling;
@@ -47,6 +48,7 @@ public final class ModEntityEvents {
         event.put(ModEntities.LUMEN_FISH.get(), LumenFish.createAttributes().build());
         event.put(ModEntities.SKY_JELLY.get(), SkyJelly.createAttributes().build());
         event.put(ModEntities.GLOWMOTH.get(), Glowmoth.createAttributes().build());
+        event.put(ModEntities.ROOTBACK.get(), Rootback.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -102,6 +104,13 @@ public final class ModEntityEvents {
         // Glowmoth: spawns on the surface (then flies up to circle flowers/lights).
         event.register(
                 ModEntities.GLOWMOTH.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Animal::checkAnimalSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // Rootback: a large ground creature.
+        event.register(
+                ModEntities.ROOTBACK.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Animal::checkAnimalSpawnRules,

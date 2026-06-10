@@ -10,6 +10,7 @@ import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenFish;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
 import com.jus144tice.lumenwilds.entity.Mirelurker;
+import com.jus144tice.lumenwilds.entity.Rootback;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
 import com.jus144tice.lumenwilds.entity.SkyJelly;
 import com.jus144tice.lumenwilds.entity.Sporeling;
@@ -85,6 +86,13 @@ public final class ModEntities {
                     .sized(0.8F, 0.6F)
                     .clientTrackingRange(8)
                     .build("glowmoth"));
+
+    /** Rootback — the MASSIVE slow neutral "living-feature" turtle (Phase 6i); nearly a roaming landmark. */
+    public static final DeferredHolder<EntityType<?>, EntityType<Rootback>> ROOTBACK =
+            ENTITIES.register("rootback", () -> EntityType.Builder.of(Rootback::new, MobCategory.CREATURE)
+                    .sized(3.0F, 2.2F)
+                    .clientTrackingRange(12)
+                    .build("rootback"));
 
     private ModEntities() {}
 }

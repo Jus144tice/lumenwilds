@@ -611,8 +611,16 @@ wiring), which every later mob reuses. Each mob adds its own drop items to `ModI
   + a temp load-function summoned Glowmoths — the flight nav + `FlyToBlocksGoal` + idle attack/hurt goals ran
   with zero exceptions (the break-aggro itself needs a player → a `runClient` check). Temp datapack removed
   before commit.
-- **6i Rootback** — large neutral "living-feature" turtle; glowing shrubs on its shell; plants grow where it
-  rests. Drops Rootback Plate / Living Fiber (item exists) / Moonloam Clumps. (Most complex; showcase mob.)
+- **6i Rootback** ✅ **done** — the **massive** (`3.0×2.2` hitbox, cow model scaled 3.4) slow neutral
+  "living-feature" turtle. Tanky: 100 HP, knockback-immune (`KNOCKBACK_RESISTANCE` 1.0), `STEP_HEIGHT` 1.5,
+  very slow — and **neutral**: only retaliates when hit (an idle `MeleeAttackGoal` + `HurtByTargetGoal`, no
+  auto-targeting). The bible's "plants grow where it rests" is `#customServerAiStep` occasionally seeding a
+  Glow Fern / Moonblossom on nearby Lumenwilds soil as it wanders. Drops Rootback Plate / Living Fiber (item
+  existed) / Moonloam Clumps (+ spawn egg). Rare single spawns in Glowroot Forest / Stillbloom Basin / Lumen
+  Glade. Placeholder render = the cow model scaled 3.4. *Deferred (→ Phase 9):* the bespoke turtle-shell model
+  with its growing **shell-plants** render layer. Verified: build green + a temp load-function summoned the
+  massive Rootback — attributes (incl. `STEP_HEIGHT`), goals and the plant-seeding tick ran with zero
+  exceptions (temp datapack removed before commit).
 - **6j Crag Wraith** — Glasspetal Crags aerial threat; manta-like, dive attacks, dangerous ledge knockback,
   avoids enclosed spaces. Drops Wraith Membrane / Crystal Dust. (Most complex AI — last.)
 
@@ -804,7 +812,8 @@ return travel lands precisely.
     block-eat (a custom `EatBlockGoal` targeting lumen grass); the Lantern Beetle's **moving light** (the live
     flying beetle emitting light — needs dynamic entity lighting) and its winged model (the *placed* Bottled
     Lantern Beetle already works as a static lamp block — done in 6c); the Mirelurker's glowing **plant-mimic
-    lure** appendage (a render/behaviour feature).
+    lure** appendage (a render/behaviour feature); the Rootback's bespoke turtle-shell model with its growing
+    **shell-plants** render layer (it currently reuses a scaled cow model).
 - See also the **⚠ per-biome terrain silhouette** task in the Phase 5 / 5d section — a dimension-wide
   noise-router pass best done once all six biomes exist.
 
