@@ -15,6 +15,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
@@ -54,6 +55,12 @@ public final class LumenwildsClient {
         event.registerEntityRenderer(ModEntities.GLOWMOTH.get(), GlowmothRenderer::new);
         event.registerEntityRenderer(ModEntities.ROOTBACK.get(), RootbackRenderer::new);
         event.registerEntityRenderer(ModEntities.CRAG_WRAITH.get(), CragWraithRenderer::new);
+    }
+
+    /** Phase 7a: bind the bespoke Lumenwilds sky (Veyra moon + twilight dome) to the dimension. */
+    @SubscribeEvent
+    public static void onRegisterDimensionEffects(final RegisterDimensionSpecialEffectsEvent event) {
+        event.register(LumenDimensionEffects.EFFECTS_ID, new LumenDimensionEffects());
     }
 
     @SubscribeEvent

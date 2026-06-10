@@ -706,6 +706,31 @@ spores, and the signature ambient events. Mostly client rendering + a server eve
   documented side effects, or (b) ship Phase 7 at normal cycle length and treat 48k as a stretch goal.
   Decide and record the choice here before building it.
 
+### Decisions (recorded) & build order
+**Decisions (user, 2026-06-10):** (1) **Sky** — build the *full Veyra custom `renderSky`* now (best-effort;
+the look needs `runClient` to verify since sky rendering can't be validated headlessly). (2) **Day cycle** —
+**half-rate 48k**: a custom server-side time controller in `LumenEventManager` advances the Lumenwilds'
+apparent time at half rate, accepting the documented side effects (sleeping / daylight sensors / spawn
+timing).
+
+Built one increment at a time (like Phase 5d / 6), each compiling + boot-checked + committed:
+- **7a Custom sky (Veyra)** ✅ **done** — `client/LumenDimensionEffects` (`DimensionSpecialEffects`)
+  registered via `RegisterDimensionSpecialEffectsEvent` under `lumenwilds:lumenwilds`; `renderSky` draws the
+  deep-indigo→teal **twilight dome** + the oversized pale **Veyra** moon (radius 55 vs vanilla 20) + a weak
+  blurred sun, mirroring vanilla `LevelRenderer#renderSky` (1.21.1). `getBrightnessDependentFogColor` tints
+  fog teal-indigo; `getSunriseColor` null (no horizon band). `dimension_type.effects` → `lumenwilds:lumenwilds`,
+  `ambient_light` 0.2. Veyra texture placeholder (`textures/environment/veyra.png`). Verified: build green +
+  client boot loaded the mod with no `DimensionSpecialEffects`/texture errors. **The actual look is unverified
+  — needs a `runClient` pass through a portal** (sky rendering can't be checked headlessly).
+- **7b Particles** — `registry/ModParticles` + client providers (portal spores, drifting pollen, crystal
+  shimmer, beetle trails); wire into `animateTick`/biome ambient particles.
+- **7c Sounds** — `registry/ModSounds` + `sounds.json` + biome `ambient/mood/additions/music`. **Caveat:**
+  real `.ogg` assets can't be authored here — ship the registry + JSON wiring with placeholder/silent entries,
+  flag audio art as a Phase 9 asset task.
+- **7d Half-rate day cycle + ambient events** — `world/event/LumenEventManager` (`SavedData`) ticking the
+  dimension at half time-rate + the Sporefall / Moonwake / Deep Hush events, synced to clients via a
+  `PayloadRegistrar` packet.
+
 ### Seams
 new `client/LumenDimensionEffects` + particle/sound client init, `registry/ModParticles`,
 `registry/ModSounds`, new `world/event/LumenEventManager` + networking payload, biome `effects`,

@@ -1,5 +1,5 @@
 {
-  "__comment": "Placeholder Lumenwilds dimension type. Dim twilight feel via low ambient_light; reuses vanilla overworld effects for now. TODO (Phase 4): custom sky/fog effects id + tuned lighting/height.",
+  "__comment": "Lumenwilds dimension type. Dim twilight: raised ambient_light (0.2) so it reads as lit-but-dim; effects = lumenwilds:lumenwilds selects the bespoke sky (client LumenDimensionEffects: Veyra moon + twilight dome), Phase 7a.",
   "ultrawarm": false,
   "natural": true,
   "piglin_safe": false,
@@ -9,9 +9,9 @@
   "has_skylight": true,
   "has_ceiling": false,
   "coordinate_scale": 1.0,
-  "ambient_light": 0.1,
+  "ambient_light": 0.2,
   "logical_height": 384,
-  "effects": "minecraft:overworld",
+  "effects": "lumenwilds:lumenwilds",
   "infiniburn": "#minecraft:infiniburn_overworld",
   "min_y": -64,
   "height": 384,

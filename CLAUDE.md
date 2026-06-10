@@ -77,8 +77,14 @@ flowers/lights but **turns hostile if you break a nearby Moonblossom/Stillbloom*
 handler aggros nearby moths); the **Rootback** (6i) is the **massive** slow neutral "living-feature"
 turtle (100 HP, knockback-immune, retaliates only when hit, and *seeds flora* as it wanders); and the **Crag
 Wraith** (6j) is the Glasspetal Crags aerial threat — a fast flying hostile that dives at players with heavy
-knockback (deadly near the cliffs). **All 10 mobs are now in — Phase 6 complete.** What is deliberately *not*
-built yet: more structures, custom sky/fog/weather (Phase 7+). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+knockback (deadly near the cliffs). **All 10 mobs are now in — Phase 6 complete.** **Atmosphere is starting
+(Phase 7):** the dimension now has a **bespoke sky** (7a) — a client `DimensionSpecialEffects`
+(`client.LumenDimensionEffects`) bound to the dimension's effects id renders perpetual dim twilight (a
+deep-indigo→teal dome), a weak blurred sun, and **Veyra**, the oversized pale moon the world lives under;
+`dimension_type.effects` now points to `lumenwilds:lumenwilds` with raised `ambient_light` 0.2. *(Sky
+rendering can only be verified in-client — `runClient` through a portal — not on a headless server.)* What is
+deliberately *not* built yet: atmosphere particles/sounds/weather events + the half-rate day cycle (Phase
+7b–7d), more structures (Phase 8). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -441,8 +447,17 @@ as `File#member`.
   `#onClientSetup` → `Sheets.addWoodType(ModWoodTypes.GLOWWOOD)` (sign atlas material);
   `#onRegisterClientExtensions(RegisterClientExtensionsEvent)` → Lumenwater's `IClientFluidTypeExtensions`
   (reuses vanilla `water_still`/`water_flow` with a teal tint `0xFF36E0C0`);
-  `#onRegisterRenderers(EntityRenderersEvent.RegisterRenderers)` → mob renderers (Phase 6). (Boat layers are
-  NOT registered here — vanilla auto-registers them for every `Boat.Type`; doing it again crashed.)
+  `#onRegisterRenderers(EntityRenderersEvent.RegisterRenderers)` → mob renderers (Phase 6); and
+  `#onRegisterDimensionEffects(RegisterDimensionSpecialEffectsEvent)` → binds `LumenDimensionEffects` under
+  its `EFFECTS_ID` (Phase 7a). (Boat layers are NOT registered here — vanilla auto-registers them for every
+  `Boat.Type`; doing it again crashed.)
+- [LumenDimensionEffects.java](src/main/java/com/jus144tice/lumenwilds/client/LumenDimensionEffects.java) —
+  the bespoke sky (7a), a `DimensionSpecialEffects` registered for the `lumenwilds:lumenwilds` effects id
+  (`#EFFECTS_ID`, = `dimension_type.effects`). `#renderSky` fully replaces vanilla: a deep-indigo→teal
+  **twilight dome** (inline `TRIANGLE_FAN` disc), a weak blurred sun, and **Veyra** — an oversized pale moon
+  (`#VEYRA_RADIUS` 55 vs. vanilla 20) from `textures/environment/veyra.png`; structure mirrors vanilla
+  `LevelRenderer#renderSky` on 1.21.1. `#getBrightnessDependentFogColor` tints fog teal-indigo;
+  `#getSunriseColor` returns null (no horizon band). **Visual-only — verify via `runClient`, not a server.**
 - [LumenGrazerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/LumenGrazerRenderer.java) /
   [ShadeStalkerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/ShadeStalkerRenderer.java) —
   `MobRenderer`s; **placeholders reuse vanilla models** (Grazer → `CowModel`/`COW`; Shade Stalker →
@@ -505,6 +520,7 @@ as `File#member`.
   cow-layout) + `shade_stalker.png` (spider) + `lantern_beetle.png` (silverfish) + `sporeling.png` (slime,
   all 64×32) + `mirelurker.png` (salmon) + `lumen_fish.png` (cod), both 32×32, + `sky_jelly.png` (ghast) +
   `glowmoth.png` (endermite) + `rootback.png` (cow) + `crag_wraith.png` (ghast), 64×32, under `textures/entity/`.
+  Sky art (7a): `textures/environment/veyra.png` (64×64 pale-moon disc on transparent — the giant Veyra moon).
   Lumenwater (5e) has a particle-only `blockstates/lumenwater.json` + `models/block/lumenwater.json` (the
   fluid itself renders via the client `IClientFluidTypeExtensions`, not a block model) and a flat
   `lumenwater_bucket` item; it has **no fluid textures** of its own (reuses vanilla water, tinted).
@@ -514,7 +530,8 @@ as `File#member`.
   a **`multi_noise` biome source** — humidity splits `lumen_glade`/`glowroot_forest`, a cold band carves out
   `glasspetal_crags`, a hot+humid band gives `sporefall_jungle`, a mild+wettest band gives `moonmire`, and a
   **deep `depth` band** gives `undercrown_caverns` [5d.5]; one parameter point added per 5d.x) +
-  `dimension_type/lumenwilds.json`, and `worldgen/` — `noise_settings/lumenwilds.json` (bespoke terrain +
+  `dimension_type/lumenwilds.json` (`effects` → **`lumenwilds:lumenwilds`** selects the bespoke client sky,
+  `ambient_light` 0.2, 7a), and `worldgen/` — `noise_settings/lumenwilds.json` (bespoke terrain +
   surface rules; the router's **`depth` is y-varying** [5d.5] so cave biomes can layer under the surface —
   every other climate axis is still constant), `biome/lumen_glade.json` + `biome/glowroot_forest.json`
   (5d.1, dark-teal) + `biome/glasspetal_crags.json` (5d.2, blue-violet) + `biome/sporefall_jungle.json`
@@ -550,6 +567,19 @@ as `File#member`.
 
 ## Invariants & gotchas
 
+- **NEVER launch `runClient`/`runServer` while a dev client/server is already open on the same world.** Two
+  JVMs sharing `run/`'s region files throw `OverlappingFileLockException`, which surfaces downstream as
+  `IllegalStateException: Requested chunk unavailable during world generation` — a *fake* "worldgen crash"
+  that looks like a feature bug (it once falsely implicated `undercrown_pool`). Before any `runClient`/
+  `runServer`, kill stray dev JVMs (`Get-CimInstance Win32_Process | … 'forgeclientdev|forgeserverdev|
+  modFolders=lumenwilds'`) and confirm the user isn't mid-session. To validate worldgen, force-gen a **fresh
+  far region** single-instance (169 fresh Lumenwilds chunks generated clean this way — proof the lake pools
+  are fine).
+- **Client rendering (sky/particles/fog) can't be validated headlessly.** `DimensionSpecialEffects#renderSky`
+  (Phase 7a `LumenDimensionEffects`) only runs in-client after entering the dimension; a server (even with
+  force-gen) never calls it. Build + boot confirm registration/no-crash; the *look* needs `runClient` through
+  a portal. The effects id is keyed to `dimension_type.effects` (`lumenwilds:lumenwilds`), registered via
+  `RegisterDimensionSpecialEffectsEvent`.
 - **1.21.1 datapack folders are singular**: `recipe/`, `loot_table/`, `dimension/`, `dimension_type/`,
   `tags/block/`. Pack format **48**. Recipe result uses `{"id":…,"count":…}` (not `"item":`).
 - **Biome feature lists must share a globally-consistent order per step** (the engine topo-sorts all biomes'
