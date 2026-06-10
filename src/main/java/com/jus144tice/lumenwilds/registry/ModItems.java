@@ -160,6 +160,12 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.LUMEN_FISH, 0x2E6A7A, 0x8FE8D0, props),
             new Item.Properties());
 
+    /** Sky Jelly (6g): spawn egg (it drops the existing {@link #AIR_GEL}). */
+    public static final DeferredItem<DeferredSpawnEggItem> SKY_JELLY_SPAWN_EGG = ITEMS.registerItem(
+            "sky_jelly_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.SKY_JELLY, 0x7AB0D8, 0xCDEAF4, props),
+            new Item.Properties());
+
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
             "glowwood_boat",

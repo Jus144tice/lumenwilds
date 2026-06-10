@@ -593,8 +593,14 @@ wiring), which every later mob reuses. Each mob adds its own drop items to `ModI
   in Moonmire / Stillbloom Basin / Lumen Glade water. Placeholder render = vanilla cod. Verified: build green
   + a temp load-function filled a water pool and summoned Lumen Fish in it — schooling/swim nav + the
   can-breathe tag + bucketable construction all ran with zero exceptions (temp datapack removed before commit).
-- **6g Sky Jelly** — floating air mob; bespoke vertical low-gravity drift (`FlyingMoveControl`). Harmless
-  unless attacked. Drops Air Gel (item exists).
+- **6g Sky Jelly** ✅ **done** — the floating air-ambience mob. A harmless, non-breeding `Animal` that reuses
+  the Lantern Beetle's flight setup (`FlyingMoveControl` + `FlyingPathNavigation`) but with a **near-zero
+  `GRAVITY` (0.01)** so it hovers, drifting slowly (a low-speed `WaterAvoidingRandomFlyingGoal`) — reinforcing
+  the low-gravity feel. Drops Air Gel (item already existed). Spawns on the surface (then drifts up) in the
+  Glasspetal Crags / Glowroot Forest / Stillbloom Basin. Placeholder render = the vanilla **ghast** model
+  (floating body + tentacles = jellyfish) scaled to 0.35. Verified: build green + a temp load-function
+  summoned Sky Jellies in the air — the flight nav + drift goal ran (hovering) with zero exceptions (temp
+  datapack removed before commit). *Deferred (→ Phase 9):* the bespoke translucent jelly model + emissive glow.
 - **6h Glowmoth** — flower guardian. Circles bright flowers/lanterns; neutral until you break nearby
   Moonblossoms/Stillblooms → aggro. Drops Glow Scales.
 - **6i Rootback** — large neutral "living-feature" turtle; glowing shrubs on its shell; plants grow where it

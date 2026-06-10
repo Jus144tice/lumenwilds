@@ -10,6 +10,7 @@ import com.jus144tice.lumenwilds.entity.LumenFish;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
 import com.jus144tice.lumenwilds.entity.Mirelurker;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
+import com.jus144tice.lumenwilds.entity.SkyJelly;
 import com.jus144tice.lumenwilds.entity.Sporeling;
 import com.jus144tice.lumenwilds.registry.ModEntities;
 import net.minecraft.world.entity.SpawnPlacementTypes;
@@ -43,6 +44,7 @@ public final class ModEntityEvents {
         event.put(ModEntities.SPORELING.get(), Sporeling.createAttributes().build());
         event.put(ModEntities.MIRELURKER.get(), Mirelurker.createAttributes().build());
         event.put(ModEntities.LUMEN_FISH.get(), LumenFish.createAttributes().build());
+        event.put(ModEntities.SKY_JELLY.get(), SkyJelly.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -87,6 +89,13 @@ public final class ModEntityEvents {
                 SpawnPlacementTypes.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 WaterAnimal::checkSurfaceWaterAnimalSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // Sky Jelly: spawns on the surface (then drifts up into the air).
+        event.register(
+                ModEntities.SKY_JELLY.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Animal::checkAnimalSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

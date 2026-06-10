@@ -10,6 +10,7 @@ import com.jus144tice.lumenwilds.entity.LumenFish;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
 import com.jus144tice.lumenwilds.entity.Mirelurker;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
+import com.jus144tice.lumenwilds.entity.SkyJelly;
 import com.jus144tice.lumenwilds.entity.Sporeling;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -69,6 +70,13 @@ public final class ModEntities {
                     .sized(0.5F, 0.4F)
                     .clientTrackingRange(4)
                     .build("lumen_fish"));
+
+    /** Sky Jelly — the floating, drifting air ambience mob (Phase 6g). */
+    public static final DeferredHolder<EntityType<?>, EntityType<SkyJelly>> SKY_JELLY =
+            ENTITIES.register("sky_jelly", () -> EntityType.Builder.of(SkyJelly::new, MobCategory.CREATURE)
+                    .sized(1.2F, 1.2F)
+                    .clientTrackingRange(10)
+                    .build("sky_jelly"));
 
     private ModEntities() {}
 }

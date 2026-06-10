@@ -1,0 +1,67 @@
+/*
+ * Copyright 2026 The Lumenwilds contributors.
+ * Licensed under the Apache License, Version 2.0.
+ */
+package com.jus144tice.lumenwilds.entity;
+
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+
+/**
+ * Sky Jelly — a floating jellyfish-like air creature; pure sky ambience and a low-gravity material source
+ * (it drops Air Gel). Harmless: it just drifts slowly through the air, horizontally and vertically. With a
+ * near-zero {@code GRAVITY} attribute and the flying move control it effectively hovers, reinforcing the
+ * dimension's low-gravity feel. Non-breeding. Reuses the flight setup established by the Lantern Beetle (6c).
+ */
+public class SkyJelly extends Animal {
+
+    public SkyJelly(EntityType<? extends SkyJelly> type, Level level) {
+        super(type, level);
+        this.moveControl = new FlyingMoveControl(this, 20, true);
+    }
+
+    @Override
+    protected PathNavigation createNavigation(Level level) {
+        FlyingPathNavigation navigation = new FlyingPathNavigation(this, level);
+        navigation.setCanFloat(true);
+        navigation.setCanPassDoors(true);
+        return navigation;
+    }
+
+    @Override
+    protected void registerGoals() {
+        this.goalSelector.addGoal(0, new WaterAvoidingRandomFlyingGoal(this, 0.5)); // slow drift
+        this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 10.0F));
+    }
+
+    /** Hovers: near-zero gravity + slow flight. */
+    public static AttributeSupplier.Builder createAttributes() {
+        return Animal.createMobAttributes()
+                .add(Attributes.MAX_HEALTH, 6.0)
+                .add(Attributes.FLYING_SPEED, 0.3)
+                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.GRAVITY, 0.01);
+    }
+
+    @Override
+    public boolean isFood(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
+        return null; // does not breed
+    }
+}

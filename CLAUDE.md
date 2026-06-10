@@ -69,9 +69,10 @@ glowing insect that flies to flowers/Lumenbulbs (reusable `entity.ai.FlyToBlocks
 that aggro as a group and burst into a vision-clouding **spore cloud** (`AreaEffectCloud`, Darkness + Slowness)
 on death; the **Mirelurker** (6e) is the Moonmire **amphibious** ambusher — lurks in shallow Lumenwater
 (doesn't drown, treats water as walkable via `AmphibiousPathNavigation`), lunges at players, and is faster at
-night (a transient speed modifier); and the **Lumen Fish** (6f) is the native passive **schooling** swimmer of
-the glowing water — bucketable (catch it → a fish bucket) and the in-world source of edible Mirefish. What is
-deliberately *not* built yet: the other 4 mobs, more structures, custom sky/fog. **All biomes share one terrain *height*** (only `depth` varies, for the cave
+night (a transient speed modifier); the **Lumen Fish** (6f) is the native passive **schooling** swimmer of
+the glowing water — bucketable (catch it → a fish bucket) and the in-world source of edible Mirefish; and the
+**Sky Jelly** (6g) is the floating air-ambience drifter — a harmless jellyfish-like mob that hovers on
+near-zero gravity and drops Air Gel. What is deliberately *not* built yet: the other 3 mobs, more structures, custom sky/fog. **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -175,7 +176,8 @@ as `File#member`.
   `#SHADE_CLAW`/`#DARK_HIDE`/`#ECHO_DUST` + `#SHADE_STALKER_SPAWN_EGG` (6b); `#LANTERN_BEETLE_SPAWN_EGG` (6c —
   the Bottled Lantern Beetle is a *block*, `ModBlocks#BOTTLED_LANTERN_BEETLE`); `#SPORE_SAC`/`#GLOWCAP_SPORES`
   + `#SPORELING_SPAWN_EGG` (6d); `#MIRE_TOOTH`/`#LUMEN_ALGAE`/`#RAW_MIREFISH`/`#COOKED_MIREFISH` (foods) +
-  `#MIRELURKER_SPAWN_EGG` (6e); `#LUMEN_FISH_BUCKET` (`MobBucketItem`) + `#LUMEN_FISH_SPAWN_EGG` (6f); boats
+  `#MIRELURKER_SPAWN_EGG` (6e); `#LUMEN_FISH_BUCKET` (`MobBucketItem`) + `#LUMEN_FISH_SPAWN_EGG` (6f);
+  `#SKY_JELLY_SPAWN_EGG` (6g — drops the existing `#AIR_GEL`); boats
   `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT`
   (`BoatItem` over `ModBoatTypes.glowwood()`); signs `#GLOWWOOD_SIGN` (`SignItem`)/`#GLOWWOOD_HANGING_SIGN`
   (`HangingSignItem`) — wall variants share these. A **static loop auto-registers a simple `BlockItem` for
@@ -197,9 +199,9 @@ as `File#member`.
 - [ModEntities.java](src/main/java/com/jus144tice/lumenwilds/registry/ModEntities.java) — `#ENTITIES`; the
   native fauna (Phase 6). `#LUMEN_GRAZER` (`CREATURE`, 6a), `#SHADE_STALKER` (`MONSTER`, 6b), `#LANTERN_BEETLE`
   (`CREATURE`, flying, 6c), `#SPORELING` (`MONSTER`, swarm, 6d), `#MIRELURKER` (`MONSTER`, amphibious, 6e),
-  `#LUMEN_FISH` (`WATER_AMBIENT`, schooling fish, 6f). Each entity also needs attributes + spawn placement
-  (`event.ModEntityEvents`), a renderer (`client.LumenwildsClient`), a loot table (`loot_table/entities/`),
-  and biome `spawners` entries.
+  `#LUMEN_FISH` (`WATER_AMBIENT`, schooling fish, 6f), `#SKY_JELLY` (`CREATURE`, floating, 6g). Each entity
+  also needs attributes + spawn placement (`event.ModEntityEvents`), a renderer (`client.LumenwildsClient`),
+  a loot table (`loot_table/entities/`), and biome `spawners` entries.
 - Empty stubs (compile; carry phase TODOs). Wired to the bus already (registered empty): 
   [ModMobEffects](src/main/java/com/jus144tice/lumenwilds/registry/ModMobEffects.java) `#MOB_EFFECTS`,
   [ModBlockEntities](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) `#BLOCK_ENTITIES`,
@@ -306,6 +308,11 @@ as `File#member`.
   sounds. **Bucketable** (`#getBucketItemStack` → `ModItems.LUMEN_FISH_BUCKET`, a `MobBucketItem`). Drops Raw
   Mirefish (the edible-fish source). Native low gravity; in `#minecraft:can_breathe_under_water`. Spawns
   `IN_WATER` (`WaterAnimal::checkSurfaceWaterAnimalSpawnRules`). Placeholder render = vanilla cod.
+- [SkyJelly.java](src/main/java/com/jus144tice/lumenwilds/entity/SkyJelly.java) — `Animal`, the floating
+  air-ambience drifter (6g). Reuses the flight setup (`FlyingMoveControl` + `FlyingPathNavigation`) but with a
+  **near-zero `GRAVITY` (0.01)** so it hovers, and only a slow `WaterAvoidingRandomFlyingGoal` + a look goal —
+  harmless, non-breeding. Drops `AIR_GEL`. Placeholder render = vanilla ghast model scaled to 0.35 (see
+  `SkyJellyRenderer#scale`).
 
 ### world/ — dimension & worldgen keys (datapack-driven)
 - [LumenDimensionConstants.java](src/main/java/com/jus144tice/lumenwilds/world/LumenDimensionConstants.java)
@@ -410,8 +417,8 @@ as `File#member`.
   [ShadeStalkerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/ShadeStalkerRenderer.java) —
   `MobRenderer`s; **placeholders reuse vanilla models** (Grazer → `CowModel`/`COW`; Shade Stalker →
   `SpiderModel`/`SPIDER`; Lantern Beetle → `SilverfishModel`/`SILVERFISH`; Sporeling → `SlimeModel`/`SLIME`;
-  Mirelurker → `SalmonModel`/`SALMON`; Lumen Fish → `CodModel`/`COD`) with `textures/entity/<name>.png`. No
-  bespoke `LayerDefinition`s; final models + emissive glow → Phase 9.
+  Mirelurker → `SalmonModel`/`SALMON`; Lumen Fish → `CodModel`/`COD`; Sky Jelly → `GhastModel`/`GHAST` scaled
+  0.35) with `textures/entity/<name>.png`. No bespoke `LayerDefinition`s; final models + emissive glow → Phase 9.
 
 ### util/
 - [ResourceLocationHelper.java](src/main/java/com/jus144tice/lumenwilds/util/ResourceLocationHelper.java)
@@ -464,13 +471,14 @@ as `File#member`.
   `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}` + `fluid_type.lumenwilds.lumenwater`
   + `entity.lumenwilds.*` mob names). Mob art (placeholders): `textures/entity/lumen_grazer.png` (64×32
   cow-layout) + `shade_stalker.png` (spider) + `lantern_beetle.png` (silverfish) + `sporeling.png` (slime,
-  all 64×32) + `mirelurker.png` (salmon) + `lumen_fish.png` (cod), both 32×32, under `textures/entity/`.
+  all 64×32) + `mirelurker.png` (salmon) + `lumen_fish.png` (cod), both 32×32, + `sky_jelly.png` (ghast,
+  64×32) under `textures/entity/`.
   Lumenwater (5e) has a particle-only `blockstates/lumenwater.json` + `models/block/lumenwater.json` (the
   fluid itself renders via the client `IClientFluidTypeExtensions`, not a block model) and a flat
   `lumenwater_bucket` item; it has **no fluid textures** of its own (reuses vanilla water, tinted).
 - `data/lumenwilds/`: `recipe/*` (incl. `cooked_grazer_meat` + `cooked_mirefish` furnace/smoker/campfire),
   `loot_table/blocks/*` + `loot_table/entities/*` (mob drops — `lumen_grazer` 6a, `shade_stalker` 6b,
-  `lantern_beetle` 6c, `sporeling` 6d, `mirelurker` 6e, `lumen_fish` 6f), `dimension/lumenwilds.json` (custom noise gen +
+  `lantern_beetle` 6c, `sporeling` 6d, `mirelurker` 6e, `lumen_fish` 6f, `sky_jelly` 6g), `dimension/lumenwilds.json` (custom noise gen +
   a **`multi_noise` biome source** — humidity splits `lumen_glade`/`glowroot_forest`, a cold band carves out
   `glasspetal_crags`, a hot+humid band gives `sporefall_jungle`, a mild+wettest band gives `moonmire`, and a
   **deep `depth` band** gives `undercrown_caverns` [5d.5]; one parameter point added per 5d.x) +
