@@ -5,6 +5,7 @@
 package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.block.BottledLanternBeetleBlock;
 import com.jus144tice.lumenwilds.fluid.LumenwaterBlock;
 import com.jus144tice.lumenwilds.portal.LumenPortalBlock;
 import com.jus144tice.lumenwilds.world.LumenConfiguredFeatures;
@@ -286,6 +287,22 @@ public final class ModBlocks {
                     .strength(0.3F)
                     .lightLevel(state -> 15)
                     .sound(SoundType.GLASS));
+
+    /**
+     * Bottled Lantern Beetle (Phase 6c) — a caught {@code LanternBeetle} set down as a small glowing lamp
+     * (light 12). Sits on a flat surface (needs support below); see {@code block.BottledLanternBeetleBlock}.
+     * Obtained by right-clicking a Lantern Beetle with a glass bottle; its `BlockItem` is auto-registered.
+     */
+    public static final DeferredBlock<BottledLanternBeetleBlock> BOTTLED_LANTERN_BEETLE = BLOCKS.registerBlock(
+            "bottled_lantern_beetle",
+            BottledLanternBeetleBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_YELLOW)
+                    .strength(0.1F)
+                    .lightLevel(state -> 12)
+                    .noOcclusion()
+                    .sound(SoundType.GLASS)
+                    .pushReaction(PushReaction.DESTROY));
 
     // --- Resource / storage ---------------------------------------------------------------------
 

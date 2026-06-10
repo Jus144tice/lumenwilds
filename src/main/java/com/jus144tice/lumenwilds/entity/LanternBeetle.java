@@ -6,7 +6,6 @@ package com.jus144tice.lumenwilds.entity;
 
 import com.jus144tice.lumenwilds.entity.ai.FlyToBlocksGoal;
 import com.jus144tice.lumenwilds.registry.ModBlocks;
-import com.jus144tice.lumenwilds.registry.ModItems;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -96,7 +95,7 @@ public class LanternBeetle extends Animal {
         if (held.is(Items.GLASS_BOTTLE)) {
             if (!this.level().isClientSide) {
                 held.shrink(1);
-                ItemStack bottled = new ItemStack(ModItems.BOTTLED_LANTERN_BEETLE.get());
+                ItemStack bottled = new ItemStack(ModBlocks.BOTTLED_LANTERN_BEETLE.get());
                 if (held.isEmpty()) {
                     player.setItemInHand(hand, bottled);
                 } else if (!player.getInventory().add(bottled)) {

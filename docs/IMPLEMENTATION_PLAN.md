@@ -557,10 +557,11 @@ wiring), which every later mob reuses. Each mob adds its own drop items to `ModI
   Sky Jelly / Glowmoth / Crag Wraith reuse. A non-breeding `Animal` that flies to Moonblossoms / Lumenbulbs /
   Glowvines via the new reusable `entity.ai.FlyToBlocksGoal` (throttled box scan), wanders the air otherwise
   (`WaterAvoidingRandomFlyingGoal`), and is **bottleable** — `#mobInteract` with a glass bottle catches it as
-  a **Bottled Lantern Beetle** (`ModItems.BOTTLED_LANTERN_BEETLE`). Drops Glow Pollen (rare). Spawns in
-  Glade/Forest/Stillbloom/Jungle. Placeholder render = vanilla silverfish. *Deferred (→ Phase 9):* the moving
-  light it emits (needs dynamic entity lighting), the bottled item's place-a-temp-light / release behaviour,
-  and the final winged model. Verified: build green + a temp load-function summoned Beetles — the flying
+  a **Bottled Lantern Beetle** — a *block* (`ModBlocks.BOTTLED_LANTERN_BEETLE`, `block.BottledLanternBeetleBlock`):
+  a jar-sized glowing **lamp (light 12) you place on a flat surface** (needs support below, pops off if it's
+  removed). So the catch has a real use. Drops Glow Pollen (rare). Spawns in Glade/Forest/Stillbloom/Jungle.
+  Placeholder render = vanilla silverfish. *Deferred (→ Phase 9):* the moving light the live beetle emits
+  (needs dynamic entity lighting) and the final winged model. Verified: build green + a temp load-function summoned Beetles — the flying
   nav + goals ran with zero exceptions (temp datapack removed before commit).
 - **6d Sporeling** — Sporefall Jungle / Undercrown swarm. Attacks in groups; death → spore cloud (vision
   obscure + slowness = "Sporeblind"). Drops Spore Sac / Glowcap Spores.
@@ -762,9 +763,9 @@ return travel lands precisely.
     reuses the vanilla cow model) — the final bespoke models/animations/textures are a Phase 9 art pass (the
     biggest art cost in the mod). Per-mob behaviour refinements deferred so far: the Lumen Grazer's
     **six-legged** model, its **faint night glow** (emissive render layer), and its **grass-grazing**
-    block-eat (a custom `EatBlockGoal` targeting lumen grass); the Lantern Beetle's **moving light** (needs
-    dynamic entity lighting), its winged model, and the **Bottled Lantern Beetle** item's behaviour
-    (place-a-temporary-light / release-the-beetle — possibly a Phase 8 item pass).
+    block-eat (a custom `EatBlockGoal` targeting lumen grass); the Lantern Beetle's **moving light** (the live
+    flying beetle emitting light — needs dynamic entity lighting) and its winged model. (The *placed* Bottled
+    Lantern Beetle already works as a static lamp block — done in 6c.)
 - See also the **⚠ per-biome terrain silhouette** task in the Phase 5 / 5d section — a dimension-wide
   noise-router pass best done once all six biomes exist.
 

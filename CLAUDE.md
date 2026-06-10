@@ -136,7 +136,8 @@ as `File#member`.
   content:** `#MOONBLOSSOM` (`FlowerBlock`, night-vision), `#GLOW_FERN`/`#GLOW_ALGAE`/`#LUMEN_REEDS`
   (`TallGrassBlock` cross flora — the latter two are Moonmire's glowing swamp cover, 5d.4),
   `#STILLBLOOM_STEM`/`#STILLBLOOM_PETAL`/`#STILLBLOOM_CORE` (soft glowing cubes the `StillbloomFeature`
-  assembles into a giant flower, core light 12, 5d.6),
+  assembles into a giant flower, core light 12, 5d.6), `#BOTTLED_LANTERN_BEETLE` (`block.BottledLanternBeetleBlock`
+  — a placeable jar-shaped lamp, light 12, needs support below; the caught Lantern Beetle, 6c),
   `#GLOWWOOD_SAPLING`/`#GLOWROOT_SAPLING` (`SaplingBlock` + `TreeGrower`; the Glowroot grower's mega slot
   is the 2×2), `#GLOWROOT_LEAVES` (`LeavesBlock`, glow) — cross-model; `#LUMEN_CRYSTAL_ORE` +
   `#DEEP_LUMEN_CRYSTAL_ORE` (`DropExperienceBlock`, drop shards, glow); `#GLASSPETAL_CLUSTER`
@@ -165,8 +166,8 @@ as `File#member`.
   `#LIVING_FIBER`, `#LUMEN_FRUIT`, `#LUMEN_NECTAR`, `#AIR_GEL`, `#LUMENWATER_BUCKET` (`BucketItem` over
   `ModFluids.LUMENWATER`, 5e); **mob drops + spawn eggs (Phase 6):** `#RAW_GRAZER_MEAT`/`#COOKED_GRAZER_MEAT`
   (foods), `#GRAZER_HIDE`, `#GLOW_SINEW`, `#LUMEN_GRAZER_SPAWN_EGG` (`DeferredSpawnEggItem`) — all 6a;
-  `#SHADE_CLAW`/`#DARK_HIDE`/`#ECHO_DUST` + `#SHADE_STALKER_SPAWN_EGG` (6b); `#BOTTLED_LANTERN_BEETLE`
-  + `#LANTERN_BEETLE_SPAWN_EGG` (6c); boats
+  `#SHADE_CLAW`/`#DARK_HIDE`/`#ECHO_DUST` + `#SHADE_STALKER_SPAWN_EGG` (6b); `#LANTERN_BEETLE_SPAWN_EGG` (6c —
+  the Bottled Lantern Beetle is a *block*, `ModBlocks#BOTTLED_LANTERN_BEETLE`); boats
   `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT`
   (`BoatItem` over `ModBoatTypes.glowwood()`); signs `#GLOWWOOD_SIGN` (`SignItem`)/`#GLOWWOOD_HANGING_SIGN`
   (`HangingSignItem`) — wall variants share these. A **static loop auto-registers a simple `BlockItem` for
@@ -229,6 +230,13 @@ as `File#member`.
   `#createDestinationTransition(target, entity, approx, axis)`: find/build the exit portal and return a
   `DimensionTransition` placing the entity collision-free at the opening base (zeroed momentum).
 
+### block/ — custom block behaviours
+- [BottledLanternBeetleBlock.java](src/main/java/com/jus144tice/lumenwilds/block/BottledLanternBeetleBlock.java)
+  — the placed Bottled Lantern Beetle (6c): a jar-sized (`6×11×6`) glowing lamp that **must sit on a flat
+  surface** — `#canSurvive` needs a sturdy face below, `#updateShape` pops it off if support is removed
+  (lantern/candle pattern). `#CODEC`/`#codec`, `#getShape`. Registered as `ModBlocks#BOTTLED_LANTERN_BEETLE`
+  (light 12); obtained by bottling a `LanternBeetle`.
+
 ### fluid/ — Lumenwater (Phase 5e)
 - [LumenwaterBlock.java](src/main/java/com/jus144tice/lumenwilds/fluid/LumenwaterBlock.java) — the
   placeable Lumenwater `LiquidBlock`. `#CODEC` (typed `MapCodec<LiquidBlock>` but builds a `LumenwaterBlock`)
@@ -263,9 +271,10 @@ as `File#member`.
 - [LanternBeetle.java](src/main/java/com/jus144tice/lumenwilds/entity/LanternBeetle.java) — `Animal`, the
   first **flying** mob (6c). Establishes the flight setup: `FlyingMoveControl(this, 20, true)` +
   `FlyingPathNavigation` (`#createNavigation`) + `FLYING_SPEED`. Non-breeding (`#isFood` false,
-  `#getBreedOffspring` null). `#mobInteract` with a glass bottle → catches it as a Bottled Lantern Beetle
-  (consumes bottle, discards the mob). Goals: panic + `FlyToBlocksGoal` (flowers/lights) +
-  `WaterAvoidingRandomFlyingGoal`. (Moving-light emission deferred → Phase 9.)
+  `#getBreedOffspring` null). `#mobInteract` with a glass bottle → catches it (consumes bottle, discards the
+  mob) and yields the **Bottled Lantern Beetle block item** (`ModBlocks.BOTTLED_LANTERN_BEETLE`) — a placeable
+  glowing lamp. Goals: panic + `FlyToBlocksGoal` (flowers/lights) + `WaterAvoidingRandomFlyingGoal`.
+  (Moving-light emission deferred → Phase 9.)
 - [entity/ai/FlyToBlocksGoal.java](src/main/java/com/jus144tice/lumenwilds/entity/ai/FlyToBlocksGoal.java) —
   **reusable** flight goal: throttled scan of a small box for a block matching a `Predicate<BlockState>`
   (Moonblossom/Lumenbulb/Glowvine), then flies to hover above the nearest. Shared by the Lantern Beetle (and

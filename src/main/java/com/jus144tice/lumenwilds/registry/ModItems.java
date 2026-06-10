@@ -97,9 +97,11 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.SHADE_STALKER, 0x14121C, 0x2FD0C0, props),
             new Item.Properties());
 
-    /** Lantern Beetle products (6c): the bottled beetle (caught with a glass bottle) + spawn egg. */
-    public static final DeferredItem<Item> BOTTLED_LANTERN_BEETLE = ITEMS.registerSimpleItem("bottled_lantern_beetle");
-
+    /**
+     * Lantern Beetle products (6c): the spawn egg. The Bottled Lantern Beetle is a BLOCK
+     * ({@link ModBlocks#BOTTLED_LANTERN_BEETLE}) — a placeable glowing lamp — and its {@code BlockItem} is
+     * auto-registered by the loop below, so there is no standalone item here.
+     */
     public static final DeferredItem<DeferredSpawnEggItem> LANTERN_BEETLE_SPAWN_EGG = ITEMS.registerItem(
             "lantern_beetle_spawn_egg",
             props -> new DeferredSpawnEggItem(ModEntities.LANTERN_BEETLE, 0x2A3A30, 0xCFE860, props),
