@@ -56,9 +56,13 @@ it's naturally lit by dense Lumen Crystal Ore + **Glowvine veins** (an ore featu
 Lumenwater pools. **5d.6** added the **Stillbloom Basin** — the rare sanctuary: open fields of the new
 multi-block giant **Stillbloom** (stem + petal dome + glowing core, built by a custom `StillbloomFeature`),
 brightest/softest palette, placed at a hot+driest climate *corner* so it's rare. **All seven biomes are now
-in — Phase 5d complete.** What is deliberately *not* built yet: mobs, more structures, custom sky/fog.
-**All biomes share one terrain *height*** (only `depth` varies, for the cave layer) — per-biome terrain
-silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
+in — Phase 5d complete.** **Mobs are starting (Phase 6):** Lumenwater now *functions as water* (boats/
+farmland/fire/fish, via the `#minecraft:water` tag + FluidType caps — 6.0), and the first mob is in — the
+**Lumen Grazer** (6a), a peaceful herd herbivore that stands up the shared entity infrastructure
+(`ModEntities`, the `entity/` package, the attribute + spawn-placement events, the client renderer seam,
+loot/spawn-egg) reused by every later mob. What is deliberately *not* built yet: the other 9 mobs, more
+structures, custom sky/fog. **All biomes share one terrain *height*** (only `depth` varies, for the cave
+layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -155,7 +159,9 @@ as `File#member`.
   (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`, **durable: `stacksTo(1)
   .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
   `#LIVING_FIBER`, `#LUMEN_FRUIT`, `#LUMEN_NECTAR`, `#AIR_GEL`, `#LUMENWATER_BUCKET` (`BucketItem` over
-  `ModFluids.LUMENWATER`, 5e); boats `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT`
+  `ModFluids.LUMENWATER`, 5e); **mob drops + spawn eggs (Phase 6):** `#RAW_GRAZER_MEAT`/`#COOKED_GRAZER_MEAT`
+  (foods), `#GRAZER_HIDE`, `#GLOW_SINEW`, `#LUMEN_GRAZER_SPAWN_EGG` (`DeferredSpawnEggItem`) — all 6a; boats
+  `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT`
   (`BoatItem` over `ModBoatTypes.glowwood()`); signs `#GLOWWOOD_SIGN` (`SignItem`)/`#GLOWWOOD_HANGING_SIGN`
   (`HangingSignItem`) — wall variants share these. A **static loop auto-registers a simple `BlockItem` for
   every block except `LUMEN_PORTAL`, `LUMENWATER_BLOCK`, and the sign blocks** (runs after the standalone/sign
@@ -173,9 +179,12 @@ as `File#member`.
   `#LUMENWATER` (source) + `#LUMENWATER_FLOWING` (`BaseFlowingFluid`). `#props()` lazily wires
   type↔still↔flowing↔block↔bucket (avoids a static forward-ref). The fluid registers **before** blocks, so
   `ModBlocks.LUMENWATER_BLOCK`'s factory can call `LUMENWATER.get()`.
+- [ModEntities.java](src/main/java/com/jus144tice/lumenwilds/registry/ModEntities.java) — `#ENTITIES`; the
+  native fauna (Phase 6). `#LUMEN_GRAZER` (`EntityType<LumenGrazer>`, `CREATURE`). Each entity also needs
+  attributes + spawn placement (`event.ModEntityEvents`), a renderer (`client.LumenwildsClient`), a loot
+  table (`loot_table/entities/`), and biome `spawners` entries.
 - Empty stubs (compile; carry phase TODOs). Wired to the bus already (registered empty): 
   [ModMobEffects](src/main/java/com/jus144tice/lumenwilds/registry/ModMobEffects.java) `#MOB_EFFECTS`,
-  [ModEntities](src/main/java/com/jus144tice/lumenwilds/registry/ModEntities.java) `#ENTITIES`,
   [ModBlockEntities](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) `#BLOCK_ENTITIES`,
   [ModMenus](src/main/java/com/jus144tice/lumenwilds/registry/ModMenus.java) `#MENUS`,
   [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS`,
@@ -227,6 +236,15 @@ as `File#member`.
   on a Lumenbound Stone frame, seeds detection from the air at the clicked face (fallback: block above),
   delegates to `LumenPortalManager#tryActivatePortal`; on success consumes 1 durability via
   `hurtAndBreak`. Returns `PASS` on non-frame blocks. **Never checks lodestone.**
+
+### entity/ — native fauna (Phase 6)
+- [LumenGrazer.java](src/main/java/com/jus144tice/lumenwilds/entity/LumenGrazer.java) — `Animal`; the
+  peaceful herd herbivore (6a). `#registerGoals` (panic + breed/tempt on **Lumen Fruit** + a skittish
+  `AvoidEntityGoal<Player>` that the tempt out-prioritises + stroll/look), `#isFood` (Lumen Fruit),
+  `#createAttributes` (**native low gravity baked in: `Attributes.GRAVITY` base 0.056** ≈ 0.08×0.7),
+  `#getBreedOffspring`. Placeholder render reuses the vanilla cow model. The pattern (entity class +
+  `ModEntities` type + `ModEntityEvents` attributes/placement + renderer + loot + spawn egg + biome
+  `spawners`) is the template every later mob follows.
 
 ### world/ — dimension & worldgen keys (datapack-driven)
 - [LumenDimensionConstants.java](src/main/java/com/jus144tice/lumenwilds/world/LumenDimensionConstants.java)
@@ -315,13 +333,21 @@ as `File#member`.
 - [ModBlockEntityTypes.java](src/main/java/com/jus144tice/lumenwilds/event/ModBlockEntityTypes.java) —
   mod-bus `#addSignBlocks(BlockEntityTypeAddBlocksEvent)`: adds the Glowwood sign blocks to the vanilla
   `BlockEntityType.SIGN`/`HANGING_SIGN` (modded signs reuse the vanilla block entities).
+- [ModEntityEvents.java](src/main/java/com/jus144tice/lumenwilds/event/ModEntityEvents.java) — **mod-bus**
+  (Phase 6); `#onAttributeCreation(EntityAttributeCreationEvent)` builds each native mob's `AttributeSupplier`
+  (`event.put(...)`) and `#onRegisterSpawnPlacements(RegisterSpawnPlacementsEvent)` declares where on the
+  ground a type may spawn (`ON_GROUND` + `Animal::checkAnimalSpawnRules`). **Add each new mob in both.**
 
 ### client/ — `@EventBusSubscriber(value = Dist.CLIENT, bus = MOD)`, client-only
 - [LumenwildsClient.java](src/main/java/com/jus144tice/lumenwilds/client/LumenwildsClient.java) —
   `#onClientSetup` → `Sheets.addWoodType(ModWoodTypes.GLOWWOOD)` (sign atlas material);
   `#onRegisterClientExtensions(RegisterClientExtensionsEvent)` → Lumenwater's `IClientFluidTypeExtensions`
-  (reuses vanilla `water_still`/`water_flow` with a teal tint `0xFF36E0C0`). (Boat layers are NOT registered
-  here — vanilla auto-registers them for every `Boat.Type`; doing it again caused a duplicate-layer crash.)
+  (reuses vanilla `water_still`/`water_flow` with a teal tint `0xFF36E0C0`);
+  `#onRegisterRenderers(EntityRenderersEvent.RegisterRenderers)` → mob renderers (Phase 6). (Boat layers are
+  NOT registered here — vanilla auto-registers them for every `Boat.Type`; doing it again crashed.)
+- [LumenGrazerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/LumenGrazerRenderer.java) —
+  `MobRenderer` for the Grazer; **placeholder reuses the vanilla `CowModel` / `ModelLayers.COW`** (no bespoke
+  `LayerDefinition`) with `textures/entity/lumen_grazer.png`. Final six-legged model + night glow → Phase 9.
 
 ### util/
 - [ResourceLocationHelper.java](src/main/java/com/jus144tice/lumenwilds/util/ResourceLocationHelper.java)
@@ -371,11 +397,13 @@ as `File#member`.
 - `assets/lumenwilds/`: `blockstates/`, `models/block|item/`, `textures/block|item/` (flat-colour 16px
   placeholders), `textures/entity/{signs,signs/hanging,boat,chest_boat}/glowwood.png` + `textures/gui/
   hanging_signs/glowwood.png` (sign/boat placeholders), `lang/en_us.json` (display names +
-  `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}` + `fluid_type.lumenwilds.lumenwater`).
+  `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}` + `fluid_type.lumenwilds.lumenwater`
+  + `entity.lumenwilds.*` mob names). Mob art: `textures/entity/lumen_grazer.png` (64×32 cow-layout placeholder).
   Lumenwater (5e) has a particle-only `blockstates/lumenwater.json` + `models/block/lumenwater.json` (the
   fluid itself renders via the client `IClientFluidTypeExtensions`, not a block model) and a flat
   `lumenwater_bucket` item; it has **no fluid textures** of its own (reuses vanilla water, tinted).
-- `data/lumenwilds/`: `recipe/*`, `loot_table/blocks/*`, `dimension/lumenwilds.json` (custom noise gen +
+- `data/lumenwilds/`: `recipe/*` (incl. `cooked_grazer_meat` furnace/smoker/campfire, 6a), `loot_table/blocks/*`
+  + `loot_table/entities/*` (mob drops — `lumen_grazer`, 6a), `dimension/lumenwilds.json` (custom noise gen +
   a **`multi_noise` biome source** — humidity splits `lumen_glade`/`glowroot_forest`, a cold band carves out
   `glasspetal_crags`, a hot+humid band gives `sporefall_jungle`, a mild+wettest band gives `moonmire`, and a
   **deep `depth` band** gives `undercrown_caverns` [5d.5]; one parameter point added per 5d.x) +

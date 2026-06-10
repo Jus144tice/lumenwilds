@@ -532,9 +532,16 @@ wiring), which every later mob reuses. Each mob adds its own drop items to `ModI
   works, and (overworld + native) fish survive — while it stays anti-OP (no infinite source; overworld
   decay intact). Verified: build green + server boots to "Done" with the tag merge + FluidType loaded, no
   errors. (Behaviour in-world is a `runClient` check.) Unblocks the aquatic mobs (6e Mirelurker / 6f Lumen Fish).
-- **6a Lumen Grazer** — passive herd herbivore; *stands up the entity infrastructure.* Six-legged, grazes
-  lumen grass, travels in herds, flees players, faint night glow, breeds with Lumen Fruit. Drops Raw Grazer
-  Meat / Hide / rare Glow Sinew.
+- **6a Lumen Grazer** ✅ **done** — passive herd herbivore; *stood up the entity infrastructure* (the
+  `ModEntities` type, the `entity/` package, `event.ModEntityEvents` [attributes + spawn placement], the
+  `client.LumenwildsClient` renderer hook, `loot_table/entities/`, the spawn egg, biome `spawners`). The
+  `LumenGrazer` (`Animal`) flees players (skittish `AvoidEntityGoal`, out-prioritised by a Lumen-Fruit
+  tempt so it can still be bred), and carries **native low gravity permanently** via `Attributes.GRAVITY`
+  base 0.056 in its supplier. Drops Raw/Cooked Grazer Meat (foods + furnace/smoker/campfire recipes) / Hide
+  / rare Glow Sinew; spawns in Glade/Forest/Stillbloom (herds of 2–4). **Placeholder render reuses the
+  vanilla cow model** (final six-legged model + night glow → Phase 9), and grass-grazing block-eat is
+  deferred too. Verified: build green + a temp load-function summoned Grazers in a dev server — entity
+  attributes + AI constructed with **zero exceptions** (temp datapack removed before commit).
 - **6b Shade Stalker** — the core hostile **and** the living-light mechanic. Ground ambush predator; spawns
   in low light; hesitates/flees near bright natural light + Stillbloom Cores + Lumen lanterns. Drops Shade
   Claw / Dark Hide / rare Echo Dust. *Establishes the reusable light-aware `Goal`.*
@@ -737,6 +744,11 @@ return travel lands precisely.
     Nectar** harvesting (right-click a core with a glass bottle → nectar item), and the **active-core
     hostile-avoidance aura** (mobs shun lit cores — needs the Phase 6 mob AI). The safe-haven "greatly
     reduced spawns" is already honored (empty monster spawns); wire the explicit suppression when mobs land.
+  - **Mob art + behaviour (Phase 6 mobs):** every mob ships with a **placeholder model** (e.g. the Grazer
+    reuses the vanilla cow model) — the final bespoke models/animations/textures are a Phase 9 art pass (the
+    biggest art cost in the mod). Per-mob behaviour refinements deferred so far: the Lumen Grazer's
+    **six-legged** model, its **faint night glow** (emissive render layer), and its **grass-grazing**
+    block-eat (a custom `EatBlockGoal` targeting lumen grass).
 - See also the **⚠ per-biome terrain silhouette** task in the Phase 5 / 5d section — a dimension-wide
   noise-router pass best done once all six biomes exist.
 

@@ -6,12 +6,14 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.item.LumenStrikerItem;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.SignItem;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -53,6 +55,36 @@ public final class ModItems {
             "lumenwater_bucket",
             props -> new BucketItem(ModFluids.LUMENWATER.get(), props),
             new Item.Properties().craftRemainder(Items.BUCKET).stacksTo(1));
+
+    // --- Mob drops & spawn eggs (Phase 6) -------------------------------------------------------
+
+    /** Lumen Grazer drops (6a): raw/cooked meat (foods), hide (leather-like), rare glow sinew. */
+    public static final DeferredItem<Item> RAW_GRAZER_MEAT = ITEMS.registerItem(
+            "raw_grazer_meat",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(3)
+                            .saturationModifier(0.3F)
+                            .build()));
+
+    public static final DeferredItem<Item> COOKED_GRAZER_MEAT = ITEMS.registerItem(
+            "cooked_grazer_meat",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(8)
+                            .saturationModifier(0.8F)
+                            .build()));
+
+    public static final DeferredItem<Item> GRAZER_HIDE = ITEMS.registerSimpleItem("grazer_hide");
+    public static final DeferredItem<Item> GLOW_SINEW = ITEMS.registerSimpleItem("glow_sinew");
+
+    /** Lumen Grazer spawn egg — NeoForge deferred egg (the EntityType isn't built when the item registers). */
+    public static final DeferredItem<DeferredSpawnEggItem> LUMEN_GRAZER_SPAWN_EGG = ITEMS.registerItem(
+            "lumen_grazer_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.LUMEN_GRAZER, 0x3A5A6E, 0x8FE0C8, props),
+            new Item.Properties());
 
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
