@@ -5,6 +5,7 @@
 package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.entity.CragWraith;
 import com.jus144tice.lumenwilds.entity.Glowmoth;
 import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenFish;
@@ -93,6 +94,13 @@ public final class ModEntities {
                     .sized(3.0F, 2.2F)
                     .clientTrackingRange(12)
                     .build("rootback"));
+
+    /** Crag Wraith — the Glasspetal Crags aerial dive-attacker (Phase 6j). */
+    public static final DeferredHolder<EntityType<?>, EntityType<CragWraith>> CRAG_WRAITH =
+            ENTITIES.register("crag_wraith", () -> EntityType.Builder.of(CragWraith::new, MobCategory.MONSTER)
+                    .sized(1.4F, 0.7F)
+                    .clientTrackingRange(10)
+                    .build("crag_wraith"));
 
     private ModEntities() {}
 }

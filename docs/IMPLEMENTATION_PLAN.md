@@ -621,8 +621,15 @@ wiring), which every later mob reuses. Each mob adds its own drop items to `ModI
   with its growing **shell-plants** render layer. Verified: build green + a temp load-function summoned the
   massive Rootback — attributes (incl. `STEP_HEIGHT`), goals and the plant-seeding tick ran with zero
   exceptions (temp datapack removed before commit).
-- **6j Crag Wraith** — Glasspetal Crags aerial threat; manta-like, dive attacks, dangerous ledge knockback,
-  avoids enclosed spaces. Drops Wraith Membrane / Crystal Dust. (Most complex AI — last.)
+- **6j Crag Wraith** ✅ **done — Phase 6 complete (all 10 mobs).** The Glasspetal Crags aerial threat: a fast
+  flying `Monster` that hunts players from a long range (`FOLLOW_RANGE` 32) and dives at them (a fast flying
+  `MeleeAttackGoal`) with **heavy `ATTACK_KNOCKBACK` (1.5)** — deadly near the crags' ledges/ravines. Floaty
+  (low gravity), reuses the flight setup. Drops Wraith Membrane / Crystal Dust (+ spawn egg). Spawns in the
+  Glasspetal Crags. Placeholder render = the ghast model scaled/flattened ~0.7 (distinct from the Sky Jelly's
+  small pale ghast). *Deferred (→ Phase 9):* a true manta dive/sweep cycle, the "avoids enclosed areas"
+  preference, and the bespoke crystal-winged model. Verified: build green + a temp load-function summoned Crag
+  Wraiths — the flight nav + targeting + dive-attack goals ran with zero exceptions (temp datapack removed
+  before commit).
 
 ### Per-mob deliverables
 `EntityType` (`registry/ModEntities`), entity class (`entity/…` extending `Animal`/`PathfinderMob`/
@@ -813,7 +820,8 @@ return travel lands precisely.
     flying beetle emitting light — needs dynamic entity lighting) and its winged model (the *placed* Bottled
     Lantern Beetle already works as a static lamp block — done in 6c); the Mirelurker's glowing **plant-mimic
     lure** appendage (a render/behaviour feature); the Rootback's bespoke turtle-shell model with its growing
-    **shell-plants** render layer (it currently reuses a scaled cow model).
+    **shell-plants** render layer (it currently reuses a scaled cow model); the Crag Wraith's **manta model**,
+    a truer **dive/sweep** attack cycle, and the "avoids enclosed areas" preference.
 - See also the **⚠ per-biome terrain silhouette** task in the Phase 5 / 5d section — a dimension-wide
   noise-router pass best done once all six biomes exist.
 

@@ -53,6 +53,7 @@ public final class LumenwildsClient {
         event.registerEntityRenderer(ModEntities.SKY_JELLY.get(), SkyJellyRenderer::new);
         event.registerEntityRenderer(ModEntities.GLOWMOTH.get(), GlowmothRenderer::new);
         event.registerEntityRenderer(ModEntities.ROOTBACK.get(), RootbackRenderer::new);
+        event.registerEntityRenderer(ModEntities.CRAG_WRAITH.get(), CragWraithRenderer::new);
     }
 
     @SubscribeEvent

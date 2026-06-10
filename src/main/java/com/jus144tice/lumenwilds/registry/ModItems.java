@@ -184,6 +184,16 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.ROOTBACK, 0x4A5E3A, 0x8FB060, props),
             new Item.Properties());
 
+    /** Crag Wraith drops (6j): wraith membrane + crystal dust; + spawn egg. */
+    public static final DeferredItem<Item> WRAITH_MEMBRANE = ITEMS.registerSimpleItem("wraith_membrane");
+
+    public static final DeferredItem<Item> CRYSTAL_DUST = ITEMS.registerSimpleItem("crystal_dust");
+
+    public static final DeferredItem<DeferredSpawnEggItem> CRAG_WRAITH_SPAWN_EGG = ITEMS.registerItem(
+            "crag_wraith_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.CRAG_WRAITH, 0x2C2440, 0x9A6CE0, props),
+            new Item.Properties());
+
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
             "glowwood_boat",
