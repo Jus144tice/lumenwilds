@@ -563,8 +563,16 @@ wiring), which every later mob reuses. Each mob adds its own drop items to `ModI
   Placeholder render = vanilla silverfish. *Deferred (→ Phase 9):* the moving light the live beetle emits
   (needs dynamic entity lighting) and the final winged model. Verified: build green + a temp load-function summoned Beetles — the flying
   nav + goals ran with zero exceptions (temp datapack removed before commit).
-- **6d Sporeling** — Sporefall Jungle / Undercrown swarm. Attacks in groups; death → spore cloud (vision
-  obscure + slowness = "Sporeblind"). Drops Spore Sac / Glowcap Spores.
+- **6d Sporeling** ✅ **done** — the jungle/cave **swarm**. A weak `Monster` that targets players and aggros
+  as a group (`HurtByTargetGoal#setAlertOthers`); spawns in bigger groups (`minCount` 2–3). On death, `#die`
+  bursts a **spore cloud** — an `AreaEffectCloud` (radius 2.5, 80t, `SPORE_BLOSSOM_AIR` particle) applying
+  Slowness + Darkness (the bible's "Sporeblind"). Native low gravity. Drops Glowcap Spores + (rare) Spore Sac
+  (+ spawn egg). Spawns in Sporefall Jungle / Undercrown Caverns. Placeholder render = vanilla slime.
+  *Deferred (→ Phase 8):* a bespoke **Sporeblind** `MobEffect` with its own −visibility screen overlay
+  (currently vanilla Darkness stands in). *Note:* unlike the Shade Stalker it is **not** light-shy (the bible
+  makes only the Stalker flee light), so it does not use `FleeBrightLightGoal`. Verified: build green + a temp
+  load-function summoned **and killed** Sporelings so `die()` ran — the death `AreaEffectCloud` + effects
+  constructed with zero exceptions (temp datapack removed before commit). Establishes the death-cloud pattern.
 - **6e Mirelurker** — Moonmire ambush. Hides in shallow Lumenwater, anglerfish-style lure, lunges, stronger
   at night. Drops Mire Tooth / Lumen Algae / Raw Mirefish.
 - **6f Lumen Fish** — the native aquatic ambient mob (the bible's "fish-like native mobs"). Small glowing

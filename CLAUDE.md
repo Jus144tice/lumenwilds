@@ -62,10 +62,12 @@ peaceful herd herbivore) stood up the shared entity infrastructure (`ModEntities
 the attribute + spawn-placement events, the client renderer seam, loot/spawn-egg) reused by every later
 mob; the **Shade Stalker** (6b) is the core hostile — a fast dark ambush predator that **flees bright
 light** (daylight, Stillbloom Cores, Lumen lanterns) via the reusable `entity.ai.FleeBrightLightGoal`, so
-living light genuinely wards it off; and the **Lantern Beetle** (6c) is the first **flying** mob — a small
+living light genuinely wards it off; the **Lantern Beetle** (6c) is the first **flying** mob — a small
 glowing insect that flies to flowers/Lumenbulbs (reusable `entity.ai.FlyToBlocksGoal`) and is **bottleable**
-(glass bottle → Bottled Lantern Beetle), establishing the `FlyingMoveControl`/`FlyingPathNavigation` pattern
-the later flyers reuse. What is deliberately *not* built yet: the other 7 mobs, more structures, custom sky/fog. **All biomes share one terrain *height*** (only `depth` varies, for the cave
+(glass bottle → Bottled Lantern Beetle, a placeable glowing lamp block), establishing the `FlyingMoveControl`/
+`FlyingPathNavigation` pattern; and the **Sporeling** (6d) is the jungle/cave **swarm** — weak fungal mobs
+that aggro as a group and burst into a vision-clouding **spore cloud** (`AreaEffectCloud`, Darkness + Slowness)
+on death. What is deliberately *not* built yet: the other 6 mobs, more structures, custom sky/fog. **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -167,7 +169,8 @@ as `File#member`.
   `ModFluids.LUMENWATER`, 5e); **mob drops + spawn eggs (Phase 6):** `#RAW_GRAZER_MEAT`/`#COOKED_GRAZER_MEAT`
   (foods), `#GRAZER_HIDE`, `#GLOW_SINEW`, `#LUMEN_GRAZER_SPAWN_EGG` (`DeferredSpawnEggItem`) — all 6a;
   `#SHADE_CLAW`/`#DARK_HIDE`/`#ECHO_DUST` + `#SHADE_STALKER_SPAWN_EGG` (6b); `#LANTERN_BEETLE_SPAWN_EGG` (6c —
-  the Bottled Lantern Beetle is a *block*, `ModBlocks#BOTTLED_LANTERN_BEETLE`); boats
+  the Bottled Lantern Beetle is a *block*, `ModBlocks#BOTTLED_LANTERN_BEETLE`); `#SPORE_SAC`/`#GLOWCAP_SPORES`
+  + `#SPORELING_SPAWN_EGG` (6d); boats
   `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT`
   (`BoatItem` over `ModBoatTypes.glowwood()`); signs `#GLOWWOOD_SIGN` (`SignItem`)/`#GLOWWOOD_HANGING_SIGN`
   (`HangingSignItem`) — wall variants share these. A **static loop auto-registers a simple `BlockItem` for
@@ -188,8 +191,9 @@ as `File#member`.
   `ModBlocks.LUMENWATER_BLOCK`'s factory can call `LUMENWATER.get()`.
 - [ModEntities.java](src/main/java/com/jus144tice/lumenwilds/registry/ModEntities.java) — `#ENTITIES`; the
   native fauna (Phase 6). `#LUMEN_GRAZER` (`CREATURE`, 6a), `#SHADE_STALKER` (`MONSTER`, 6b), `#LANTERN_BEETLE`
-  (`CREATURE`, flying, 6c). Each entity also needs attributes + spawn placement (`event.ModEntityEvents`), a
-  renderer (`client.LumenwildsClient`), a loot table (`loot_table/entities/`), and biome `spawners` entries.
+  (`CREATURE`, flying, 6c), `#SPORELING` (`MONSTER`, swarm, 6d). Each entity also needs attributes + spawn
+  placement (`event.ModEntityEvents`), a renderer (`client.LumenwildsClient`), a loot table
+  (`loot_table/entities/`), and biome `spawners` entries.
 - Empty stubs (compile; carry phase TODOs). Wired to the bus already (registered empty): 
   [ModMobEffects](src/main/java/com/jus144tice/lumenwilds/registry/ModMobEffects.java) `#MOB_EFFECTS`,
   [ModBlockEntities](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) `#BLOCK_ENTITIES`,
@@ -279,6 +283,11 @@ as `File#member`.
   **reusable** flight goal: throttled scan of a small box for a block matching a `Predicate<BlockState>`
   (Moonblossom/Lumenbulb/Glowvine), then flies to hover above the nearest. Shared by the Lantern Beetle (and
   later the Glowmoth).
+- [Sporeling.java](src/main/java/com/jus144tice/lumenwilds/entity/Sporeling.java) — `Monster`, the
+  jungle/cave **swarm** (6d). Weak melee attacker that targets players; `HurtByTargetGoal#setAlertOthers`
+  makes the group aggro together. `#die` bursts a **spore cloud** — an `AreaEffectCloud` (radius 2.5, 80t,
+  spore particle) applying Slowness + Darkness (the bible's "Sporeblind"; the bespoke effect + overlay is
+  Phase 8). Native low gravity. Placeholder render = vanilla slime.
 
 ### world/ — dimension & worldgen keys (datapack-driven)
 - [LumenDimensionConstants.java](src/main/java/com/jus144tice/lumenwilds/world/LumenDimensionConstants.java)
@@ -382,8 +391,8 @@ as `File#member`.
 - [LumenGrazerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/LumenGrazerRenderer.java) /
   [ShadeStalkerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/ShadeStalkerRenderer.java) —
   `MobRenderer`s; **placeholders reuse vanilla models** (Grazer → `CowModel`/`COW`; Shade Stalker →
-  `SpiderModel`/`SPIDER`; Lantern Beetle → `SilverfishModel`/`SILVERFISH` — see `LanternBeetleRenderer`) with
-  `textures/entity/<name>.png`. No bespoke `LayerDefinition`s; final models + emissive glow → Phase 9.
+  `SpiderModel`/`SPIDER`; Lantern Beetle → `SilverfishModel`/`SILVERFISH`; Sporeling → `SlimeModel`/`SLIME`)
+  with `textures/entity/<name>.png`. No bespoke `LayerDefinition`s; final models + emissive glow → Phase 9.
 
 ### util/
 - [ResourceLocationHelper.java](src/main/java/com/jus144tice/lumenwilds/util/ResourceLocationHelper.java)
@@ -435,13 +444,13 @@ as `File#member`.
   hanging_signs/glowwood.png` (sign/boat placeholders), `lang/en_us.json` (display names +
   `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}` + `fluid_type.lumenwilds.lumenwater`
   + `entity.lumenwilds.*` mob names). Mob art (placeholders): `textures/entity/lumen_grazer.png` (64×32
-  cow-layout) + `textures/entity/shade_stalker.png` (64×32 spider-layout) + `textures/entity/lantern_beetle.png`
-  (64×32 silverfish-layout).
+  cow-layout) + `shade_stalker.png` (spider) + `lantern_beetle.png` (silverfish) + `sporeling.png` (slime) —
+  all 64×32 `textures/entity/`.
   Lumenwater (5e) has a particle-only `blockstates/lumenwater.json` + `models/block/lumenwater.json` (the
   fluid itself renders via the client `IClientFluidTypeExtensions`, not a block model) and a flat
   `lumenwater_bucket` item; it has **no fluid textures** of its own (reuses vanilla water, tinted).
 - `data/lumenwilds/`: `recipe/*` (incl. `cooked_grazer_meat` furnace/smoker/campfire, 6a), `loot_table/blocks/*`
-  + `loot_table/entities/*` (mob drops — `lumen_grazer` 6a, `shade_stalker` 6b, `lantern_beetle` 6c), `dimension/lumenwilds.json` (custom noise gen +
+  + `loot_table/entities/*` (mob drops — `lumen_grazer` 6a, `shade_stalker` 6b, `lantern_beetle` 6c, `sporeling` 6d), `dimension/lumenwilds.json` (custom noise gen +
   a **`multi_noise` biome source** — humidity splits `lumen_glade`/`glowroot_forest`, a cold band carves out
   `glasspetal_crags`, a hot+humid band gives `sporefall_jungle`, a mild+wettest band gives `moonmire`, and a
   **deep `depth` band** gives `undercrown_caverns` [5d.5]; one parameter point added per 5d.x) +

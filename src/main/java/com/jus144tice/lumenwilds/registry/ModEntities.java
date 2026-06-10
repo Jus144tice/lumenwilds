@@ -8,6 +8,7 @@ import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
+import com.jus144tice.lumenwilds.entity.Sporeling;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
@@ -45,6 +46,13 @@ public final class ModEntities {
                     .sized(0.5F, 0.4F)
                     .clientTrackingRange(8)
                     .build("lantern_beetle"));
+
+    /** Sporeling — the small hostile fungal swarm mob with a death spore cloud (Phase 6d). */
+    public static final DeferredHolder<EntityType<?>, EntityType<Sporeling>> SPORELING =
+            ENTITIES.register("sporeling", () -> EntityType.Builder.of(Sporeling::new, MobCategory.MONSTER)
+                    .sized(0.6F, 0.7F)
+                    .clientTrackingRange(8)
+                    .build("sporeling"));
 
     private ModEntities() {}
 }

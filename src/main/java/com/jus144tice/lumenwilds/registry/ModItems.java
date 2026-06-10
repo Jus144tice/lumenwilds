@@ -107,6 +107,16 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.LANTERN_BEETLE, 0x2A3A30, 0xCFE860, props),
             new Item.Properties());
 
+    /** Sporeling drops (6d): spore sac + glowcap spores; + spawn egg. */
+    public static final DeferredItem<Item> SPORE_SAC = ITEMS.registerSimpleItem("spore_sac");
+
+    public static final DeferredItem<Item> GLOWCAP_SPORES = ITEMS.registerSimpleItem("glowcap_spores");
+
+    public static final DeferredItem<DeferredSpawnEggItem> SPORELING_SPAWN_EGG = ITEMS.registerItem(
+            "sporeling_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.SPORELING, 0x3E5A34, 0x9ED85A, props),
+            new Item.Properties());
+
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
             "glowwood_boat",
