@@ -6,13 +6,16 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.item.LumenStrikerItem;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.item.SignItem;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -143,6 +146,18 @@ public final class ModItems {
     public static final DeferredItem<DeferredSpawnEggItem> MIRELURKER_SPAWN_EGG = ITEMS.registerItem(
             "mirelurker_spawn_egg",
             props -> new DeferredSpawnEggItem(ModEntities.MIRELURKER, 0x2A3E36, 0x5AC0A0, props),
+            new Item.Properties());
+
+    /** Lumen Fish (6f): a fish bucket (catch it with a water bucket) + spawn egg. */
+    public static final DeferredItem<MobBucketItem> LUMEN_FISH_BUCKET = ITEMS.registerItem(
+            "lumen_fish_bucket",
+            props ->
+                    new MobBucketItem(ModEntities.LUMEN_FISH.get(), Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, props),
+            new Item.Properties().stacksTo(1));
+
+    public static final DeferredItem<DeferredSpawnEggItem> LUMEN_FISH_SPAWN_EGG = ITEMS.registerItem(
+            "lumen_fish_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.LUMEN_FISH, 0x2E6A7A, 0x8FE8D0, props),
             new Item.Properties());
 
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------

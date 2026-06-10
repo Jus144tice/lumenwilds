@@ -584,8 +584,15 @@ wiring), which every later mob reuses. Each mob adds its own drop items to `ModI
   9):* the glowing plant-mimic **lure** visual. Verified: build green + a temp load-function set night and
   summoned Mirelurkers so the amphibious nav + the night-speed modifier ran with zero exceptions (temp
   datapack removed before commit).
-- **6f Lumen Fish** — the native aquatic ambient mob (the bible's "fish-like native mobs"). Small glowing
-  schooling swimmer in Lumenwater pools / Moonmire; the in-world Mirefish source. (Depends on 6.0.)
+- **6f Lumen Fish** ✅ **done** — the native aquatic ambient mob (the bible's "fish-like native mobs"). An
+  `AbstractSchoolingFish` (schooling + swim navigation + water survival for free; reuses cod sounds), so it
+  schools through the glowing water. **Bucketable** — `getBucketItemStack` → a `MobBucketItem`
+  (`ModItems.LUMEN_FISH_BUCKET`), so you can catch the glowing fish; safe because ENTITY_TYPE registers before
+  ITEM. Drops **Raw Mirefish** (the in-world edible-fish source, cooks if on fire). Native low gravity; added
+  to `#minecraft:can_breathe_under_water`. Spawns `IN_WATER` (`WaterAnimal::checkSurfaceWaterAnimalSpawnRules`)
+  in Moonmire / Stillbloom Basin / Lumen Glade water. Placeholder render = vanilla cod. Verified: build green
+  + a temp load-function filled a water pool and summoned Lumen Fish in it — schooling/swim nav + the
+  can-breathe tag + bucketable construction all ran with zero exceptions (temp datapack removed before commit).
 - **6g Sky Jelly** — floating air mob; bespoke vertical low-gravity drift (`FlyingMoveControl`). Harmless
   unless attacked. Drops Air Gel (item exists).
 - **6h Glowmoth** — flower guardian. Circles bright flowers/lanterns; neutral until you break nearby

@@ -1,6 +1,7 @@
 {
-  "__comment": "Phase 6e — the amphibious Mirelurker doesn't drown (lurks in shallow Lumenwater). Merges with vanilla (replace defaults false).",
+  "__comment": "Phase 6e/6f — the amphibious Mirelurker and the aquatic Lumen Fish breathe underwater. Merges with vanilla (replace defaults false).",
   "values": [
-    "lumenwilds:mirelurker"
+    "lumenwilds:mirelurker",
+    "lumenwilds:lumen_fish"
   ]
 }

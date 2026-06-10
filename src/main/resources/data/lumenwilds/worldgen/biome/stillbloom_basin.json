@@ -47,7 +47,9 @@
     "misc": [],
     "monster": [],
     "underground_water_creature": [],
-    "water_ambient": [],
+    "water_ambient": [
+      { "type": "lumenwilds:lumen_fish", "weight": 10, "minCount": 2, "maxCount": 4 }
+    ],
     "water_creature": []
   },
   "spawn_costs": {}

@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.entity.LanternBeetle;
+import com.jus144tice.lumenwilds.entity.LumenFish;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
 import com.jus144tice.lumenwilds.entity.Mirelurker;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
@@ -61,6 +62,13 @@ public final class ModEntities {
                     .sized(0.7F, 0.7F)
                     .clientTrackingRange(8)
                     .build("mirelurker"));
+
+    /** Lumen Fish — the native passive schooling swimmer of the glowing water (Phase 6f). */
+    public static final DeferredHolder<EntityType<?>, EntityType<LumenFish>> LUMEN_FISH =
+            ENTITIES.register("lumen_fish", () -> EntityType.Builder.of(LumenFish::new, MobCategory.WATER_AMBIENT)
+                    .sized(0.5F, 0.4F)
+                    .clientTrackingRange(4)
+                    .build("lumen_fish"));
 
     private ModEntities() {}
 }

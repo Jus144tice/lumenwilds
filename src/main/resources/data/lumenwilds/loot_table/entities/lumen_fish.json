@@ -1,0 +1,25 @@
+{
+  "__comment": "The Lumen Fish is the in-world source of edible Mirefish (cooks if it dies on fire).",
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:raw_mirefish",
+          "functions": [
+            {
+              "function": "minecraft:furnace_smelt",
+              "conditions": [
+                { "condition": "minecraft:entity_properties", "entity": "this", "predicate": { "flags": { "is_on_fire": true } } }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "random_sequence": "lumenwilds:entities/lumen_fish"
+}
