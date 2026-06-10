@@ -166,6 +166,14 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.SKY_JELLY, 0x7AB0D8, 0xCDEAF4, props),
             new Item.Properties());
 
+    /** Glowmoth (6h): glow scales drop + spawn egg. */
+    public static final DeferredItem<Item> GLOW_SCALES = ITEMS.registerSimpleItem("glow_scales");
+
+    public static final DeferredItem<DeferredSpawnEggItem> GLOWMOTH_SPAWN_EGG = ITEMS.registerItem(
+            "glowmoth_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.GLOWMOTH, 0x4A3A5A, 0xD8E060, props),
+            new Item.Properties());
+
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
             "glowwood_boat",

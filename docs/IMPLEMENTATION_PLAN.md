@@ -601,8 +601,16 @@ wiring), which every later mob reuses. Each mob adds its own drop items to `ModI
   (floating body + tentacles = jellyfish) scaled to 0.35. Verified: build green + a temp load-function
   summoned Sky Jellies in the air — the flight nav + drift goal ran (hovering) with zero exceptions (temp
   datapack removed before commit). *Deferred (→ Phase 9):* the bespoke translucent jelly model + emissive glow.
-- **6h Glowmoth** — flower guardian. Circles bright flowers/lanterns; neutral until you break nearby
-  Moonblossoms/Stillblooms → aggro. Drops Glow Scales.
+- **6h Glowmoth** ✅ **done** — the neutral flying flower **guardian**. Circles bright flowers + Lumen lights
+  (`FlyToBlocksGoal` over Moonblossom / Stillbloom Core / Lumenbulb / Bottled Lantern Beetle) and drifts; it's
+  harmless until provoked (an idle `MeleeAttackGoal` that only acts once it has a target + `HurtByTargetGoal`).
+  **The signature behaviour — turns hostile when you break its blooms — is a new `BlockEvent.BreakEvent`
+  handler** (`event.GlowmothAggroEvents`): breaking a Moonblossom or any Stillbloom part `setTarget`s every
+  Glowmoth within ~12 blocks onto the culprit. Drops Glow Scales (+ spawn egg). Spawns in Stillbloom Basin /
+  Sporefall Jungle / Glowroot Forest. Placeholder render = vanilla endermite scaled 1.6. Verified: build green
+  + a temp load-function summoned Glowmoths — the flight nav + `FlyToBlocksGoal` + idle attack/hurt goals ran
+  with zero exceptions (the break-aggro itself needs a player → a `runClient` check). Temp datapack removed
+  before commit.
 - **6i Rootback** — large neutral "living-feature" turtle; glowing shrubs on its shell; plants grow where it
   rests. Drops Rootback Plate / Living Fiber (item exists) / Moonloam Clumps. (Most complex; showcase mob.)
 - **6j Crag Wraith** — Glasspetal Crags aerial threat; manta-like, dive attacks, dangerous ledge knockback,

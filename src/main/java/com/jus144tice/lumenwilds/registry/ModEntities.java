@@ -5,6 +5,7 @@
 package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.entity.Glowmoth;
 import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenFish;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
@@ -77,6 +78,13 @@ public final class ModEntities {
                     .sized(1.2F, 1.2F)
                     .clientTrackingRange(10)
                     .build("sky_jelly"));
+
+    /** Glowmoth — the neutral flying flower guardian (Phase 6h). */
+    public static final DeferredHolder<EntityType<?>, EntityType<Glowmoth>> GLOWMOTH =
+            ENTITIES.register("glowmoth", () -> EntityType.Builder.of(Glowmoth::new, MobCategory.CREATURE)
+                    .sized(0.8F, 0.6F)
+                    .clientTrackingRange(8)
+                    .build("glowmoth"));
 
     private ModEntities() {}
 }

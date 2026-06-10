@@ -5,6 +5,7 @@
 package com.jus144tice.lumenwilds.event;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.entity.Glowmoth;
 import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenFish;
 import com.jus144tice.lumenwilds.entity.LumenGrazer;
@@ -45,6 +46,7 @@ public final class ModEntityEvents {
         event.put(ModEntities.MIRELURKER.get(), Mirelurker.createAttributes().build());
         event.put(ModEntities.LUMEN_FISH.get(), LumenFish.createAttributes().build());
         event.put(ModEntities.SKY_JELLY.get(), SkyJelly.createAttributes().build());
+        event.put(ModEntities.GLOWMOTH.get(), Glowmoth.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -93,6 +95,13 @@ public final class ModEntityEvents {
         // Sky Jelly: spawns on the surface (then drifts up into the air).
         event.register(
                 ModEntities.SKY_JELLY.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Animal::checkAnimalSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // Glowmoth: spawns on the surface (then flies up to circle flowers/lights).
+        event.register(
+                ModEntities.GLOWMOTH.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Animal::checkAnimalSpawnRules,

@@ -51,6 +51,7 @@ public final class LumenwildsClient {
         event.registerEntityRenderer(ModEntities.MIRELURKER.get(), MirelurkerRenderer::new);
         event.registerEntityRenderer(ModEntities.LUMEN_FISH.get(), LumenFishRenderer::new);
         event.registerEntityRenderer(ModEntities.SKY_JELLY.get(), SkyJellyRenderer::new);
+        event.registerEntityRenderer(ModEntities.GLOWMOTH.get(), GlowmothRenderer::new);
     }
 
     @SubscribeEvent
