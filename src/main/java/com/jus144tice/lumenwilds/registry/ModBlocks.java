@@ -184,13 +184,17 @@ public final class ModBlocks {
                     .sound(SoundType.GRASS)
                     .pushReaction(PushReaction.DESTROY));
 
-    // TODO: glowvine should become a climbable/decay vine block (LeavesBlock/GrowingPlantBlock-like).
+    // Renders as a passable glowing cross (a hanging vine), not a solid cube. Still a plain Block so the
+    // Undercrown ore-feature can embed it in cave rock; the full climbable/growable GrowingPlantBlock is
+    // a deferred Phase 9 behaviour task (see IMPLEMENTATION_PLAN).
     public static final DeferredBlock<Block> GLOWVINE = BLOCKS.registerSimpleBlock(
             "glowvine",
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GREEN)
                     .strength(0.2F)
                     .lightLevel(state -> 7)
+                    .noCollission()
+                    .noOcclusion()
                     .sound(SoundType.VINE));
 
     /** Moonblossom — a common glowing flower (light 9); brief night vision in suspicious stew/brewing. */
