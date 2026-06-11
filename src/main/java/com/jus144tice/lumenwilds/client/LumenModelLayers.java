@@ -22,6 +22,14 @@ public final class LumenModelLayers {
             new ModelLayerLocation(ResourceLocationHelper.modLoc("crag_wraith"), "main");
     public static final ModelLayerLocation LANTERN_BEETLE =
             new ModelLayerLocation(ResourceLocationHelper.modLoc("lantern_beetle"), "main");
+    public static final ModelLayerLocation SPORELING =
+            new ModelLayerLocation(ResourceLocationHelper.modLoc("sporeling"), "main");
+    public static final ModelLayerLocation SHADE_STALKER =
+            new ModelLayerLocation(ResourceLocationHelper.modLoc("shade_stalker"), "main");
+    public static final ModelLayerLocation LUMEN_GRAZER =
+            new ModelLayerLocation(ResourceLocationHelper.modLoc("lumen_grazer"), "main");
+    public static final ModelLayerLocation ROOTBACK =
+            new ModelLayerLocation(ResourceLocationHelper.modLoc("rootback"), "main");
 
     private LumenModelLayers() {}
 }

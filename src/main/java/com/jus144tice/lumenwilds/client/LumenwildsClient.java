@@ -60,6 +60,16 @@ public final class LumenwildsClient {
         event.registerLayerDefinition(
                 LumenModelLayers.LANTERN_BEETLE,
                 com.jus144tice.lumenwilds.client.model.LanternBeetleModel::createBodyLayer);
+        event.registerLayerDefinition(
+                LumenModelLayers.SPORELING, com.jus144tice.lumenwilds.client.model.SporelingModel::createBodyLayer);
+        event.registerLayerDefinition(
+                LumenModelLayers.SHADE_STALKER,
+                com.jus144tice.lumenwilds.client.model.ShadeStalkerModel::createBodyLayer);
+        event.registerLayerDefinition(
+                LumenModelLayers.LUMEN_GRAZER,
+                com.jus144tice.lumenwilds.client.model.LumenGrazerModel::createBodyLayer);
+        event.registerLayerDefinition(
+                LumenModelLayers.ROOTBACK, com.jus144tice.lumenwilds.client.model.RootbackModel::createBodyLayer);
     }
 
     @SubscribeEvent
