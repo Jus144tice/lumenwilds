@@ -849,6 +849,11 @@ at the slower cadence.
     (spacing 24/sep 8, step `underground_structures`) + `has_structure/undercrown_relics` (Undercrown Caverns).
     Verified: build green + `runServer` force-gen'd the Lumenwilds **and** `/place structure`d the relics —
     the deep gen point + carved hall + spawner + chests built with no chunk/build errors.
+- **8h Status effects → brewing** ✅ **done — Phase 8 complete.** `registry/ModPotions` registers a `Potion`
+  per 8a effect; `event/ModBrewing` (`RegisterBrewingRecipesEvent`) wires the mixes: awkward + **Air Gel** →
+  Lightfoot, + **Glow Pollen** → Glowmarked, + **Spore Sac** → Sporeblind, + **Living Fiber** → Rooted. The
+  drinkable/splash/lingering/tipped item variants are vanilla (auto); 16 potion lang keys added. Verified:
+  build green + `runServer` registered the potions + brewing mixes with no errors (brewing/drinking → `runClient`).
 
 ### Scope
 - **Structures** (overgrown/organic, never village-like):

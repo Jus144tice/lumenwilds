@@ -15,6 +15,7 @@ import com.jus144tice.lumenwilds.registry.ModItems;
 import com.jus144tice.lumenwilds.registry.ModMenus;
 import com.jus144tice.lumenwilds.registry.ModMobEffects;
 import com.jus144tice.lumenwilds.registry.ModParticles;
+import com.jus144tice.lumenwilds.registry.ModPotions;
 import com.jus144tice.lumenwilds.registry.ModSounds;
 import com.jus144tice.lumenwilds.registry.ModStructures;
 import com.jus144tice.lumenwilds.registry.ModWoodTypes;
@@ -59,6 +60,7 @@ public final class Lumenwilds {
         ModSounds.SOUNDS.register(modBus);
         ModParticles.PARTICLES.register(modBus);
         ModMobEffects.MOB_EFFECTS.register(modBus);
+        ModPotions.POTIONS.register(modBus);
         ModFluidTypes.FLUID_TYPES.register(modBus);
         ModFluids.FLUIDS.register(modBus);
         ModBlocks.BLOCKS.register(modBus);

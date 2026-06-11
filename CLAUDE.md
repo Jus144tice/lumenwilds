@@ -121,8 +121,11 @@ striker/frame ingredients), the in-world tutorial for reaching the dimension; an
 crowns, base loot chest), **Crag-Wraith-guarded** via the structure's `spawn_overrides`. What is deliberately
 *not* built yet: brewing/potions; and the **Undercrown Relics** (8g) — a buried Deep-Moonstone dungeon hall
 in the Undercrown Caverns (a Shade Stalker spawner + two chests of rare loot & Lumen-Anchor parts), placed at
-a **deep** Y. **All four Phase 8 structures are now in.** What is deliberately *not* built yet: brewing/potions
-(a small remaining Phase 8 item), the final art/audio pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+a **deep** Y. **All four Phase 8 structures are now in.** **Brewing is in (8h):** the four 8a effects are brewable —
+`registry.ModPotions` registers a Potion per effect and `event.ModBrewing` wires the mixes (awkward + Air Gel
+→ Lightfoot, + Glow Pollen → Glowmarked, + Spore Sac → Sporeblind, + Living Fiber → Rooted). **Phase 8 is
+complete.** What is deliberately *not* built yet: the final art/audio/polish pass (Phase 9) — and the
+visual-only deferrals logged throughout (final mob models, the Sporeblind overlay, real `.ogg` audio, etc.). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -179,9 +182,9 @@ as `File#member`.
 ### Entry point
 - [Lumenwilds.java](src/main/java/com/jus144tice/lumenwilds/Lumenwilds.java) — `@Mod` class.
   `#MOD_ID` (`"lumenwilds"`), `#MOD_NAME` (`"The Lumenwilds"`), `#LOGGER`. Ctor registers these
-  DeferredRegisters to the **mod bus**: `ModSounds`, `ModParticles`, `ModMobEffects`, `ModFluidTypes`,
-  `ModFluids`, `ModBlocks`, `ModItems`, `ModStructures` (`STRUCTURE_TYPES` + `STRUCTURE_PIECES`), `ModBlockEntities`,
-  `ModEntities`, `ModMenus`, `ModCreativeTabs`. Also calls `ModWoodTypes#init()` first (WoodType/
+  DeferredRegisters to the **mod bus**: `ModSounds`, `ModParticles`, `ModMobEffects`, `ModPotions`,
+  `ModFluidTypes`, `ModFluids`, `ModBlocks`, `ModItems`, `ModStructures` (`STRUCTURE_TYPES` + `STRUCTURE_PIECES`),
+  `ModBlockEntities`, `ModEntities`, `ModMenus`, `ModCreativeTabs`. Also calls `ModWoodTypes#init()` first (WoodType/
   BlockSetType must register before blocks build). `#onCommonSetup` logs only. **When you add a new
   (non-empty) DeferredRegister, register it here.**
 
@@ -260,6 +263,9 @@ as `File#member`.
   `#CRAG_WRAITH` (`MONSTER`, flying dive-attacker, 6j) — **all 10 live, Phase 6 done**. Each entity also needs
   attributes + spawn placement (`event.ModEntityEvents`), a renderer (`client.LumenwildsClient`), a loot table
   (`loot_table/entities/`), and biome `spawners` entries.
+- [ModPotions.java](src/main/java/com/jus144tice/lumenwilds/registry/ModPotions.java) — `#POTIONS`; a
+  brewable `Potion` per 8a effect (`#LIGHTFOOT`/`#GLOWMARKED`/`#SPOREBLIND`/`#ROOTED`, 8h). The drinkable/
+  splash/lingering/tipped item variants are vanilla; the brewing mixes are in `event.ModBrewing`.
 - [ModMobEffects.java](src/main/java/com/jus144tice/lumenwilds/registry/ModMobEffects.java) — `#MOB_EFFECTS`;
   the four status effects (Phase 8a), each a `effect.LumenMobEffect` (a trivial public-ctor `MobEffect`
   subclass — vanilla's ctor is protected). `#LIGHTFOOT` (+`JUMP_STRENGTH`/+`SAFE_FALL_DISTANCE`), `#GLOWMARKED`
@@ -577,6 +583,9 @@ as `File#member`.
 - [StillbloomInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/StillbloomInteractEvents.java)
   — `#onRightClickBlock(PlayerInteractEvent.RightClickBlock)` (8b): a glass bottle on a Stillbloom Core/Petal
   fills into `ModItems.LUMEN_NECTAR` (bloom not consumed — renewable, like honey).
+- [ModBrewing.java](src/main/java/com/jus144tice/lumenwilds/event/ModBrewing.java) — **mod-bus**
+  `#onRegisterBrewingRecipes(RegisterBrewingRecipesEvent)` (8h): `builder.addMix(awkward, ingredient, potion)`
+  for the four `ModPotions` (Air Gel / Glow Pollen / Spore Sac / Living Fiber).
 - [GlowmothAggroEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowmothAggroEvents.java) —
   `#onBlockBreak(BlockEvent.BreakEvent)` (6h): when a player breaks a guarded bloom (Moonblossom / any
   Stillbloom part), every `Glowmoth` within ~12 blocks `setTarget`s the culprit — the flower-guardian aggro.
