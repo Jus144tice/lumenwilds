@@ -119,7 +119,10 @@ Lumenwilds-portal site in the **Overworld** (broken Lumenbound Stone frame + rub
 striker/frame ingredients), the in-world tutorial for reaching the dimension; and the **Glasspetal Spires**
 (8f) — a cluster of tapering crystal towers in the Glasspetal Crags (Shimmerstone/crystal, Glasspetal-Cluster
 crowns, base loot chest), **Crag-Wraith-guarded** via the structure's `spawn_overrides`. What is deliberately
-*not* built yet: brewing/potions, the last structure (Undercrown Relics), the final art/audio pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+*not* built yet: brewing/potions; and the **Undercrown Relics** (8g) — a buried Deep-Moonstone dungeon hall
+in the Undercrown Caverns (a Shade Stalker spawner + two chests of rare loot & Lumen-Anchor parts), placed at
+a **deep** Y. **All four Phase 8 structures are now in.** What is deliberately *not* built yet: brewing/potions
+(a small remaining Phase 8 item), the final art/audio pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -283,8 +286,9 @@ as `File#member`.
   tree), `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom), `#ROOTSHRINE` +
   `#ROOTSHRINE_PIECE` (the small early-reward Rootshrine, 8d), `#LUMENBOUND_RUINS` + `#LUMENBOUND_RUINS_PIECE`
   (the Overworld ruined-portal tutorial site, 8e), and `#GLASSPETAL_SPIRES` + `#GLASSPETAL_SPIRES_PIECE` (the
-  crystal towers, 8f). All are structures (generate per-chunk via a bounding box). Structure instances + spawn
-  spacing (and Crag-Wraith `spawn_overrides`) are datapack JSON (`worldgen/structure*`); these are the code types.
+  crystal towers, 8f), and `#UNDERCROWN_RELICS` + `#UNDERCROWN_RELICS_PIECE` (the buried dungeon, 8g — placed at
+  a deep Y). All are structures (generate per-chunk via a bounding box). Structure instances + spawn spacing
+  (and Crag-Wraith `spawn_overrides`) are datapack JSON (`worldgen/structure*`); these are the code types.
 - [ModBiomes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBiomes.java) /
   [ModDimensions.java](src/main/java/com/jus144tice/lumenwilds/registry/ModDimensions.java) — thin
   re-exports of the worldgen/dimension `ResourceKey`s from `world/` (worldgen is datapack-driven, not a
@@ -495,6 +499,13 @@ as `File#member`.
   mixed Shimmerstone / Shimmerstone Bricks / Lumen Crystal Block crowned with a Glasspetal Cluster — and a
   base loot chest (`chests/glasspetal_spires`). Bound to `ModStructures#GLASSPETAL_SPIRES`; spawns in the
   Glasspetal Crags, **Crag-Wraith-guarded** via the structure JSON's `spawn_overrides` (not code).
+- [UndercrownRelicsStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/UndercrownRelicsStructure.java)
+  / [UndercrownRelicsPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/UndercrownRelicsPiece.java)
+  — the **Undercrown Relics** (8g), a buried dungeon hall. Unlike the surface structures, `#findGenerationPoint`
+  picks a **deep** Y (deterministic per chunk, well below the surface). `#postProcess` carves a Deep-Moonstone
+  shell around a 9×7×5 air chamber (tiled floor, four pillars, Lumenbulb lights), a central **mob spawner**
+  (`SpawnerBlockEntity#setEntityId` → Shade Stalker), and two loot chests (`chests/undercrown_relics`: rare
+  loot + Lumen-Anchor parts). Bound to `ModStructures#UNDERCROWN_RELICS`; spawns in the Undercrown Caverns.
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -703,8 +714,10 @@ as `File#member`.
   `structure/lumenbound_ruins.json` + `structure_set` (spacing 28/sep 8) in the **Overworld**
   (`has_structure/lumenbound_ruins` → `#minecraft:is_overworld`) with `chests/lumenbound_ruins` loot, and the
   **Glasspetal Spires** (8f) — `structure/glasspetal_spires.json` (with a `spawn_overrides.monster` →
-  `crag_wraith`) + `structure_set` (spacing 22/sep 7, in `glasspetal_crags`) + `chests/glasspetal_spires` loot
-  — each with its `tags/worldgen/biome/has_structure/<name>.json` biome tag. Hand-authored (not datagen).
+  `crag_wraith`) + `structure_set` (spacing 22/sep 7, in `glasspetal_crags`) + `chests/glasspetal_spires` loot,
+  and the **Undercrown Relics** (8g) — `structure/undercrown_relics.json` (step `underground_structures`) +
+  `structure_set` (spacing 24/sep 8, in `undercrown_caverns`) + `chests/undercrown_relics` loot — each with its
+  `tags/worldgen/biome/has_structure/<name>.json` biome tag. Hand-authored (not datagen).
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`; `tags/block/dirt.json`
   adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil); `tags/fluid/water.json`

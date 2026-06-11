@@ -15,6 +15,8 @@ import com.jus144tice.lumenwilds.world.structure.MegaGlowcapPiece;
 import com.jus144tice.lumenwilds.world.structure.MegaGlowcapStructure;
 import com.jus144tice.lumenwilds.world.structure.RootshrinePiece;
 import com.jus144tice.lumenwilds.world.structure.RootshrineStructure;
+import com.jus144tice.lumenwilds.world.structure.UndercrownRelicsPiece;
+import com.jus144tice.lumenwilds.world.structure.UndercrownRelicsStructure;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
@@ -69,6 +71,13 @@ public final class ModStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> GLASSPETAL_SPIRES_PIECE =
             STRUCTURE_PIECES.register(
                     "glasspetal_spires", () -> (StructurePieceType.ContextlessType) GlasspetalSpiresPiece::new);
+
+    public static final DeferredHolder<StructureType<?>, StructureType<UndercrownRelicsStructure>> UNDERCROWN_RELICS =
+            STRUCTURE_TYPES.register("undercrown_relics", () -> () -> UndercrownRelicsStructure.CODEC);
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> UNDERCROWN_RELICS_PIECE =
+            STRUCTURE_PIECES.register(
+                    "undercrown_relics", () -> (StructurePieceType.ContextlessType) UndercrownRelicsPiece::new);
 
     private ModStructures() {}
 }

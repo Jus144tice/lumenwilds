@@ -839,7 +839,16 @@ at the slower cadence.
     + `structure`/`structure_set` (spacing 22/sep 7) + `has_structure/glasspetal_spires` (Glasspetal Crags).
     Verified: build green + `runServer` (the spawn_overrides crag_wraith ref loaded at boot) force-gen'd the
     Crags **and** `/place structure`d the spires — built with no chunk/build errors.
-  - **next:** Undercrown Relics (the last one).
+  - **8g Undercrown Relics** ✅ **done — all 4 structures complete.** A buried dungeon hall in the Undercrown
+    Caverns: `world/structure/UndercrownRelicsStructure` + `Piece`. Unlike the surface structures,
+    `findGenerationPoint` picks a **deep** Y (deterministic per chunk, well below the surface). `postProcess`
+    carves a Deep-Moonstone shell around a 9×7×5 air chamber (tiled floor + four pillars + Lumenbulb lights),
+    a central **mob spawner** (`SpawnerBlockEntity.setEntityId` → Shade Stalker), and two loot chests
+    (`chests/undercrown_relics`: echo dust / shimmerstone / crystal + **a rare finished Lumen Anchor** + diamonds /
+    XP bottles / enchanted golden apple). `ModStructures#UNDERCROWN_RELICS` + `structure`/`structure_set`
+    (spacing 24/sep 8, step `underground_structures`) + `has_structure/undercrown_relics` (Undercrown Caverns).
+    Verified: build green + `runServer` force-gen'd the Lumenwilds **and** `/place structure`d the relics —
+    the deep gen point + carved hall + spawner + chests built with no chunk/build errors.
 
 ### Scope
 - **Structures** (overgrown/organic, never village-like):
