@@ -53,6 +53,13 @@ public final class LumenwildsClient {
     public static void onRegisterLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(
                 LumenModelLayers.SKY_JELLY, com.jus144tice.lumenwilds.client.model.SkyJellyModel::createBodyLayer);
+        event.registerLayerDefinition(
+                LumenModelLayers.GLOWMOTH, com.jus144tice.lumenwilds.client.model.GlowmothModel::createBodyLayer);
+        event.registerLayerDefinition(
+                LumenModelLayers.CRAG_WRAITH, com.jus144tice.lumenwilds.client.model.CragWraithModel::createBodyLayer);
+        event.registerLayerDefinition(
+                LumenModelLayers.LANTERN_BEETLE,
+                com.jus144tice.lumenwilds.client.model.LanternBeetleModel::createBodyLayer);
     }
 
     @SubscribeEvent

@@ -16,6 +16,12 @@ public final class LumenModelLayers {
 
     public static final ModelLayerLocation SKY_JELLY =
             new ModelLayerLocation(ResourceLocationHelper.modLoc("sky_jelly"), "main");
+    public static final ModelLayerLocation GLOWMOTH =
+            new ModelLayerLocation(ResourceLocationHelper.modLoc("glowmoth"), "main");
+    public static final ModelLayerLocation CRAG_WRAITH =
+            new ModelLayerLocation(ResourceLocationHelper.modLoc("crag_wraith"), "main");
+    public static final ModelLayerLocation LANTERN_BEETLE =
+            new ModelLayerLocation(ResourceLocationHelper.modLoc("lantern_beetle"), "main");
 
     private LumenModelLayers() {}
 }
