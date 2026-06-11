@@ -5,6 +5,8 @@
 package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.world.structure.GlasspetalSpiresPiece;
+import com.jus144tice.lumenwilds.world.structure.GlasspetalSpiresStructure;
 import com.jus144tice.lumenwilds.world.structure.GlowrootTreePiece;
 import com.jus144tice.lumenwilds.world.structure.GlowrootTreeStructure;
 import com.jus144tice.lumenwilds.world.structure.LumenboundRuinsPiece;
@@ -60,6 +62,13 @@ public final class ModStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> LUMENBOUND_RUINS_PIECE =
             STRUCTURE_PIECES.register(
                     "lumenbound_ruins", () -> (StructurePieceType.ContextlessType) LumenboundRuinsPiece::new);
+
+    public static final DeferredHolder<StructureType<?>, StructureType<GlasspetalSpiresStructure>> GLASSPETAL_SPIRES =
+            STRUCTURE_TYPES.register("glasspetal_spires", () -> () -> GlasspetalSpiresStructure.CODEC);
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> GLASSPETAL_SPIRES_PIECE =
+            STRUCTURE_PIECES.register(
+                    "glasspetal_spires", () -> (StructurePieceType.ContextlessType) GlasspetalSpiresPiece::new);
 
     private ModStructures() {}
 }

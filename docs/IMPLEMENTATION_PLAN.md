@@ -830,7 +830,16 @@ at the slower cadence.
     `structure`/`structure_set` (spacing 28/sep 8) + `has_structure/lumenbound_ruins` → `#minecraft:is_overworld`.
     Verified: build green + `runServer` force-gen'd the Overworld **and** `/place structure`d the ruins — the
     broken frame + chest loot built with no chunk/build errors.
-  - **next:** Glasspetal Spires → Undercrown Relics.
+  - **8f Glasspetal Spires** ✅ **done** — a cluster of tapering crystal towers in the Glasspetal Crags:
+    `world/structure/GlasspetalSpiresStructure` + `Piece`. `postProcess` grows a main spire + two satellites
+    (tapering discs of mixed Shimmerstone / Shimmerstone Bricks / Lumen Crystal Block, each crowned with a
+    Glasspetal Cluster) + a base loot chest (`chests/glasspetal_spires`: crystal shards / dust / clusters /
+    shimmerstone / amethyst / wraith membrane). **Crag-Wraith-guarded** via the structure JSON's
+    `spawn_overrides.monster` (the clean, data-driven way — no code spawning). `ModStructures#GLASSPETAL_SPIRES`
+    + `structure`/`structure_set` (spacing 22/sep 7) + `has_structure/glasspetal_spires` (Glasspetal Crags).
+    Verified: build green + `runServer` (the spawn_overrides crag_wraith ref loaded at boot) force-gen'd the
+    Crags **and** `/place structure`d the spires — built with no chunk/build errors.
+  - **next:** Undercrown Relics (the last one).
 
 ### Scope
 - **Structures** (overgrown/organic, never village-like):

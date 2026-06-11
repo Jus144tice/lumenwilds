@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": { "type": "minecraft:uniform", "min": 2.0, "max": 4.0 },
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_shard", "weight": 12, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 6.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:crystal_dust", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 4.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:glasspetal_cluster", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:shimmerstone", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 6.0 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:amethyst_shard", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 4.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:wraith_membrane", "weight": 4, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_block", "weight": 3 }
+      ]
+    }
+  ],
+  "random_sequence": "lumenwilds:chests/glasspetal_spires"
+}
