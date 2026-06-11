@@ -692,7 +692,12 @@ as `File#member`.
 - `assets/lumenwilds/`: `blockstates/`, `models/block|item/`, `textures/block|item/` (**Phase 9 world-art pass:
   all ~53 base block textures AND all ~35 item textures are now patterned procedural art — plant shapes, crystal
   facets, stone speckle, brick/tile, wood grain; item icons (foods, mob drops, tools, buckets, boats, signs) —
-  not flat colours**; `glowvine` is a passable glowing **cross** (vine) model, not a cube),
+  not flat colours**; `glowvine` is a passable glowing **cross** (vine) model, not a cube; **Phase 9c world
+  glow**: `models/block/_emissive_cube.json` / `_emissive_cube_soft.json` / `_emissive_cross.json` are emissive
+  parents (NeoForge `neoforge_data` `block_light` — 15 fullbright / 7 soft / 13 cross) that the glowing blocks
+  inherit so they render **bright in the dark**: Lumenbulb / Lumen Crystal Block / Stillbloom Core (fullbright),
+  the two ores (soft), and the flora Moonblossom / Glow Fern / Glow Algae / Lumen Reeds / Glowvine (cross). Light
+  emission stays via each block's `lightLevel` (ores bumped 4→6 so the Undercrown is lit by dense ore)),
   `textures/entity/{signs,signs/hanging,boat,chest_boat}/glowwood.png` + `textures/gui/
   hanging_signs/glowwood.png` (sign/boat placeholders), `lang/en_us.json` (display names +
   `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}` + `fluid_type.lumenwilds.lumenwater`

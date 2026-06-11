@@ -1,0 +1,20 @@
+{
+  "__comment": "Phase 9c emissive parent — a full cube whose faces render FULLBRIGHT (neoforge_data block_light 15). Glowing solid blocks (Lumenbulb, Lumen Crystal Block, Stillbloom Core) inherit this with textures.all so their glow pops regardless of ambient light.",
+  "parent": "minecraft:block/block",
+  "textures": { "particle": "#all" },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "neoforge_data": { "block_light": 15, "sky_light": 15 },
+      "faces": {
+        "down":  { "uv": [0, 0, 16, 16], "texture": "#all", "cullface": "down" },
+        "up":    { "uv": [0, 0, 16, 16], "texture": "#all", "cullface": "up" },
+        "north": { "uv": [0, 0, 16, 16], "texture": "#all", "cullface": "north" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#all", "cullface": "south" },
+        "west":  { "uv": [0, 0, 16, 16], "texture": "#all", "cullface": "west" },
+        "east":  { "uv": [0, 0, 16, 16], "texture": "#all", "cullface": "east" }
+      }
+    }
+  ]
+}

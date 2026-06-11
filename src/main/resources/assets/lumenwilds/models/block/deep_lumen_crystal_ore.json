@@ -1,6 +1,4 @@
 {
-  "parent": "minecraft:block/cube_all",
-  "textures": {
-    "all": "lumenwilds:block/deep_lumen_crystal_ore"
-  }
+  "parent": "lumenwilds:block/_emissive_cube_soft",
+  "textures": { "all": "lumenwilds:block/deep_lumen_crystal_ore" }
 }

@@ -342,7 +342,7 @@ public final class ModBlocks {
                     .mapColor(MapColor.STONE)
                     .strength(3.0F, 3.0F)
                     .requiresCorrectToolForDrops()
-                    .lightLevel(state -> 4)
+                    .lightLevel(state -> 6)
                     .sound(SoundType.STONE));
 
     public static final DeferredBlock<DropExperienceBlock> DEEP_LUMEN_CRYSTAL_ORE = BLOCKS.registerBlock(
@@ -352,7 +352,7 @@ public final class ModBlocks {
                     .mapColor(MapColor.DEEPSLATE)
                     .strength(4.5F, 3.0F)
                     .requiresCorrectToolForDrops()
-                    .lightLevel(state -> 4)
+                    .lightLevel(state -> 6)
                     .sound(SoundType.DEEPSLATE));
 
     /**

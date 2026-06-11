@@ -1,7 +1,4 @@
 {
-  "parent": "minecraft:block/cross",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "cross": "lumenwilds:block/lumen_reeds"
-  }
+  "parent": "lumenwilds:block/_emissive_cross",
+  "textures": { "cross": "lumenwilds:block/lumen_reeds" }
 }

@@ -1,0 +1,30 @@
+{
+  "__comment": "Phase 9c emissive parent for cross-model flora — vanilla block/cross geometry, but each diagonal element renders at block_light 13 (a strong glow) so the bioluminescent plants (Moonblossom, Glow Fern/Algae, Lumen Reeds, Glowvine) glow in the dark. Inherit with textures.cross.",
+  "ambientocclusion": false,
+  "render_type": "minecraft:cutout",
+  "textures": { "particle": "#cross" },
+  "elements": [
+    {
+      "from": [0.8, 0, 8],
+      "to": [15.2, 16, 8],
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true },
+      "neoforge_data": { "block_light": 13, "sky_light": 13 },
+      "shade": false,
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#cross" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#cross" }
+      }
+    },
+    {
+      "from": [8, 0, 0.8],
+      "to": [8, 16, 15.2],
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true },
+      "neoforge_data": { "block_light": 13, "sky_light": 13 },
+      "shade": false,
+      "faces": {
+        "west": { "uv": [0, 0, 16, 16], "texture": "#cross" },
+        "east": { "uv": [0, 0, 16, 16], "texture": "#cross" }
+      }
+    }
+  ]
+}
