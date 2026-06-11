@@ -1,14 +1,5 @@
 {
-  "__comment": "Moonmire glowing pool (Phase 5d.4) — the vanilla lake feature filled with Lumenwater (so it glows), walled by moonloam. Placed frequently in the swamp to read as a wetland of luminous channels.",
-  "type": "minecraft:lake",
-  "config": {
-    "barrier": {
-      "type": "minecraft:simple_state_provider",
-      "state": { "Name": "lumenwilds:moonloam" }
-    },
-    "fluid": {
-      "type": "minecraft:simple_state_provider",
-      "state": { "Name": "lumenwilds:lumenwater", "Properties": { "level": "0" } }
-    }
-  }
+  "__comment": "Moonmire/Undercrown glowing Lumenwater pool. A small CHUNK-SAFE custom feature (world.feature.LumenwaterPoolFeature) replacing the vanilla minecraft:lake, which wrote across chunk borders and crashed chunk-gen ('Requested chunk unavailable'). Carves a shallow Moonloam basin filled with Lumenwater; max reach 4 blocks.",
+  "type": "lumenwilds:lumenwater_pool",
+  "config": {}
 }

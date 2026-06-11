@@ -286,7 +286,9 @@ as `File#member`.
 - [ModFeatures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFeatures.java) — `#FEATURES`
   (custom `Feature` types), bus-wired. `#GLOWROOT_TREE_2X2` (`GlowrootTreeFeature`) — the ordinary 2×2
   Glowroot tree (the mega tree is a structure; both share `world.feature.GlowrootShape`); `#STILLBLOOM`
-  (`StillbloomFeature`) — the giant Stillbloom flower (5d.6).
+  (`StillbloomFeature`) — the giant Stillbloom flower (5d.6); `#LUMENWATER_POOL`
+  (`world.feature.LumenwaterPoolFeature`) — a small **chunk-safe** Moonloam+Lumenwater basin replacing the
+  vanilla `lake` (which crashed chunk-gen near borders — the Moonmire/Undercrown pools).
 - [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
   `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` + `#GLOWROOT_TREE_PIECE` (the mega Glowroot
   tree), `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom), `#ROOTSHRINE` +
@@ -717,7 +719,8 @@ as `File#member`.
   overworld music for the open ones) + the existing `mood_sound`. Worldgen continues: `noise/hills.json`,
   `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`,
   `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2`
-  [custom feature], `patch_glasspetal` [5d.2], `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, `lake`] +
+  [custom feature], `patch_glasspetal` [5d.2], `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
+  chunk-safe pool feature** — was a crashing vanilla `lake`] +
   `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine` [5d.5] + placed-only `undercrown_crystal`/
   `undercrown_pool`, `stillbloom` [5d.6, custom feature]; placed-only `glowroot_forest_trees`
   [forest-density 2×2]), and **two town-sized structures** — `structure/glowroot_tree.json`
@@ -758,14 +761,17 @@ as `File#member`.
   dependency). Verify a mixin actually *applies* at runtime (boot log: `SpongePowered MIXIN Subsystem …`,
   and no `InvalidInjectionException`) — a green compile only proves it parsed. The half-rate clock (7d.1) was
   confirmed by a temp `ServerTickEvent` logger showing Lumenwilds dayTime advancing at half the Overworld's.
-- **NEVER launch `runClient`/`runServer` while a dev client/server is already open on the same world.** Two
-  JVMs sharing `run/`'s region files throw `OverlappingFileLockException`, which surfaces downstream as
-  `IllegalStateException: Requested chunk unavailable during world generation` — a *fake* "worldgen crash"
-  that looks like a feature bug (it once falsely implicated `undercrown_pool`). Before any `runClient`/
-  `runServer`, kill stray dev JVMs (`Get-CimInstance Win32_Process | … 'forgeclientdev|forgeserverdev|
-  modFolders=lumenwilds'`) and confirm the user isn't mid-session. To validate worldgen, force-gen a **fresh
-  far region** single-instance (169 fresh Lumenwilds chunks generated clean this way — proof the lake pools
-  are fine).
+- **`Requested chunk unavailable during world generation` has TWO causes — don't conflate them.** (1) The
+  vanilla **`minecraft:lake` feature is not chunk-safe**: it writes up to ~16 blocks from origin, which with
+  `in_square` placement reaches a not-yet-generated neighbour and crashes chunk-gen — *position-dependent*, so
+  a small force-gen can miss it (it crashed a real playthrough in the Moonmire/Undercrown pools). **Fixed** by
+  replacing the lake with `world.feature.LumenwaterPoolFeature` (bounded to ±4, chunk-safe by construction).
+  **Lesson: never use `minecraft:lake`; write a bounded custom feature.** (2) Two dev JVMs on the same `run/`
+  world throw `OverlappingFileLockException`, which *also* surfaces as "chunk unavailable" — so always kill
+  stray dev JVMs (`Get-CimInstance Win32_Process | … 'forgeclientdev|forgeserverdev|modFolders=lumenwilds'`)
+  before `runClient`/`runServer`, and verify the user isn't mid-session. To validate worldgen, force-gen a
+  **large fresh far region** single-instance (a small one can miss position-dependent feature bugs — use 16×16+
+  chunks).
 - **Client rendering (sky/particles/fog) can't be validated headlessly.** `DimensionSpecialEffects#renderSky`
   (Phase 7a `LumenDimensionEffects`) only runs in-client after entering the dimension; a server (even with
   force-gen) never calls it. Build + boot confirm registration/no-crash; the *look* needs `runClient` through

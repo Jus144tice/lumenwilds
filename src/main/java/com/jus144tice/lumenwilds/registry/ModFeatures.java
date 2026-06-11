@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.world.feature.GlowrootTreeFeature;
+import com.jus144tice.lumenwilds.world.feature.LumenwaterPoolFeature;
 import com.jus144tice.lumenwilds.world.feature.StillbloomFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -30,6 +31,13 @@ public final class ModFeatures {
     /** The giant Stillbloom flower (Phase 5d.6) — stem column + petal dome + glowing core. */
     public static final DeferredHolder<Feature<?>, StillbloomFeature> STILLBLOOM =
             FEATURES.register("stillbloom", () -> new StillbloomFeature(NoneFeatureConfiguration.CODEC));
+
+    /**
+     * Small chunk-safe Lumenwater pool (replaces the vanilla {@code lake}, which crashed chunk-gen near
+     * chunk borders). Used by the Moonmire + Undercrown pool configured features.
+     */
+    public static final DeferredHolder<Feature<?>, LumenwaterPoolFeature> LUMENWATER_POOL =
+            FEATURES.register("lumenwater_pool", () -> new LumenwaterPoolFeature(NoneFeatureConfiguration.CODEC));
 
     private ModFeatures() {}
 }
