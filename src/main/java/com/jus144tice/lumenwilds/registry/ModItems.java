@@ -7,6 +7,8 @@ package com.jus144tice.lumenwilds.registry;
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.item.LumenStrikerItem;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.BucketItem;
@@ -48,10 +50,41 @@ public final class ModItems {
     public static final DeferredItem<Item> GLOW_POLLEN = ITEMS.registerSimpleItem("glow_pollen");
     public static final DeferredItem<Item> LIVING_FIBER = ITEMS.registerSimpleItem("living_fiber");
 
-    // Foods are plain items for now; nutrition/effects come later (TODO: FoodProperties).
-    public static final DeferredItem<Item> LUMEN_FRUIT = ITEMS.registerSimpleItem("lumen_fruit");
-    public static final DeferredItem<Item> LUMEN_NECTAR = ITEMS.registerSimpleItem("lumen_nectar");
+    // Foods (Phase 8b). Lumen Fruit → brief night vision; Lumen Nectar → brief regeneration.
+    public static final DeferredItem<Item> LUMEN_FRUIT = ITEMS.registerItem(
+            "lumen_fruit",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(4)
+                            .saturationModifier(0.3F)
+                            .effect(new MobEffectInstance(MobEffects.NIGHT_VISION, 140, 0), 1.0F)
+                            .build()));
+
+    public static final DeferredItem<Item> LUMEN_NECTAR = ITEMS.registerItem(
+            "lumen_nectar",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(0.2F)
+                            .effect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F)
+                            .build()));
+
     public static final DeferredItem<Item> AIR_GEL = ITEMS.registerSimpleItem("air_gel");
+
+    /** Glowcap Stew (8b) — bowl + glowcap + lumen fruit + moonblossom; fills hunger + night vision, returns a bowl. */
+    public static final DeferredItem<Item> GLOWCAP_STEW = ITEMS.registerItem(
+            "glowcap_stew",
+            Item::new,
+            new Item.Properties()
+                    .stacksTo(1)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(6)
+                            .saturationModifier(0.6F)
+                            .usingConvertsTo(Items.BOWL)
+                            .effect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0), 1.0F)
+                            .build()));
 
     /** Lumenwater bucket (Phase 5e) — picks up/places the {@link ModFluids#LUMENWATER} source. */
     public static final DeferredItem<BucketItem> LUMENWATER_BUCKET = ITEMS.registerItem(

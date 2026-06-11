@@ -793,8 +793,13 @@ at the slower cadence.
   −`JUMP_STRENGTH`). Icons + lang added. Verified: build green + `runServer` summoned a cow and applied all
   four (incl. Glowmarked→glow) with no registry/attribute errors. *Deferred → Phase 9: the Sporeblind
   screen-overlay render + a custom Glowmarked color (currently the vanilla white outline).*
-- **8b Food** — `DataComponents.FOOD` on Lumen Fruit / Grazer Meat / Glowcap Stew / Lumen Nectar + recipes;
-  foods apply 8a/vanilla effects (night vision, regen).
+- **8b Food** ✅ **done** — `DataComponents.FOOD`: **Lumen Fruit** (nutrition 4, brief Night Vision),
+  **Lumen Nectar** (nutrition 2, brief Regeneration — **collected from a Stillbloom with a glass bottle** via
+  `event/StillbloomInteractEvents`, renewable), **Glowcap Stew** (`ModItems#GLOWCAP_STEW`, nutrition 6 + Night
+  Vision, `usingConvertsTo(BOWL)`; shapeless recipe bowl + giant_glowcap_block + lumen_fruit + moonblossom).
+  Grazer/Mirefish meats were already foods (6a/6e). Verified: build green + `runServer` loaded all recipes
+  (incl. `glowcap_stew`) with no unknown-item errors; the items register. *The eat-effects + nectar collection
+  are gameplay → `runClient`.*
 - **8c Lumen Anchor** — the portal-link block + `BlockEntity` + `LumenPortalTeleporter` integration.
 - **8d+ Structures** — **code-based (procedural `Structure`/`StructurePiece`, like the mega tree)**, NOT
   Jigsaw `.nbt`: `.nbt` templates need an in-game structure-block editor (can't author headlessly), and we

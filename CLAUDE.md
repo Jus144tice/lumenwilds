@@ -103,8 +103,12 @@ read for the visuals. **The whole atmosphere (Phase 7) is now in.** **Phase 8 is
 (8a):** `registry.ModMobEffects` adds four `effect.LumenMobEffect`s — **Lightfoot** (beneficial: +jump,
 +safe-fall), **Glowmarked** (neutral: target glows, via `event.LumenEffectEvents` toggling `setGlowingTag`),
 **Sporeblind** (harmful: a spore-clouded slow — what the Sporeling death cloud now applies), **Rooted**
-(harmful: heavy slow + no jump), all attribute-driven. What is deliberately *not* built yet: food/brewing,
-the Lumen Anchor, structures (rest of Phase 8), the final art/audio pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+(harmful: heavy slow + no jump), all attribute-driven. **Food is in (8b):** Lumen Fruit (→ brief night
+vision) and Lumen Nectar (→ brief regeneration) are now real foods (`DataComponents.FOOD`), the latter
+**collected from a Stillbloom with a glass bottle** (`event.StillbloomInteractEvents`); and **Glowcap Stew**
+(`ModItems#GLOWCAP_STEW`, bowl + glowcap + lumen fruit + moonblossom → hunger + night vision, returns the
+bowl). What is deliberately *not* built yet: brewing/potions, the Lumen Anchor, structures (rest of Phase 8),
+the final art/audio pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -202,7 +206,10 @@ as `File#member`.
 - [ModItems.java](src/main/java/com/jus144tice/lumenwilds/registry/ModItems.java) — `#ITEMS`
   (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`, **durable: `stacksTo(1)
   .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
-  `#LIVING_FIBER`, `#LUMEN_FRUIT`, `#LUMEN_NECTAR`, `#AIR_GEL`, `#LUMENWATER_BUCKET` (`BucketItem` over
+  `#LIVING_FIBER`, `#LUMEN_FRUIT` (**food**, 8b — brief night vision), `#LUMEN_NECTAR` (**food**, 8b — brief
+  regen; collected from a Stillbloom with a bottle via `event.StillbloomInteractEvents`), `#AIR_GEL`,
+  `#GLOWCAP_STEW` (**food**, 8b — bowl + glowcap + lumen fruit + moonblossom → hunger + night vision, returns
+  a bowl via `usingConvertsTo`), `#LUMENWATER_BUCKET` (`BucketItem` over
   `ModFluids.LUMENWATER`, 5e); **mob drops + spawn eggs (Phase 6):** `#RAW_GRAZER_MEAT`/`#COOKED_GRAZER_MEAT`
   (foods), `#GRAZER_HIDE`, `#GLOW_SINEW`, `#LUMEN_GRAZER_SPAWN_EGG` (`DeferredSpawnEggItem`) — all 6a;
   `#SHADE_CLAW`/`#DARK_HIDE`/`#ECHO_DUST` + `#SHADE_STALKER_SPAWN_EGG` (6b); `#LANTERN_BEETLE_SPAWN_EGG` (6c —
@@ -509,6 +516,9 @@ as `File#member`.
 - [LumenEffectEvents.java](src/main/java/com/jus144tice/lumenwilds/event/LumenEffectEvents.java) — drives
   `ModMobEffects.GLOWMARKED`'s outline (8a): `setGlowingTag(true/false)` on `MobEffectEvent.Added` /
   `Expired` / `Remove` (not per-tick). The flag syncs to clients → vanilla glowing outline.
+- [StillbloomInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/StillbloomInteractEvents.java)
+  — `#onRightClickBlock(PlayerInteractEvent.RightClickBlock)` (8b): a glass bottle on a Stillbloom Core/Petal
+  fills into `ModItems.LUMEN_NECTAR` (bloom not consumed — renewable, like honey).
 - [GlowmothAggroEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowmothAggroEvents.java) —
   `#onBlockBreak(BlockEvent.BreakEvent)` (6h): when a player breaks a guarded bloom (Moonblossom / any
   Stillbloom part), every `Glowmoth` within ~12 blocks `setTarget`s the culprit — the flower-guardian aggro.
@@ -616,7 +626,8 @@ as `File#member`.
   Lumenwater (5e) has a particle-only `blockstates/lumenwater.json` + `models/block/lumenwater.json` (the
   fluid itself renders via the client `IClientFluidTypeExtensions`, not a block model) and a flat
   `lumenwater_bucket` item; it has **no fluid textures** of its own (reuses vanilla water, tinted).
-- `data/lumenwilds/`: `recipe/*` (incl. `cooked_grazer_meat` + `cooked_mirefish` furnace/smoker/campfire),
+- `data/lumenwilds/`: `recipe/*` (incl. `cooked_grazer_meat` + `cooked_mirefish` furnace/smoker/campfire,
+  `glowcap_stew` shapeless [8b]),
   `loot_table/blocks/*` + `loot_table/entities/*` (mob drops — `lumen_grazer` 6a, `shade_stalker` 6b,
   `lantern_beetle` 6c, `sporeling` 6d, `mirelurker` 6e, `lumen_fish` 6f, `sky_jelly` 6g, `glowmoth` 6h, `rootback` 6i, `crag_wraith` 6j), `dimension/lumenwilds.json` (custom noise gen +
   a **`multi_noise` biome source** — humidity splits `lumen_glade`/`glowroot_forest`, a cold band carves out

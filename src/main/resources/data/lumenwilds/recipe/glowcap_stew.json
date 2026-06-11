@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "food",
+  "ingredients": [
+    { "item": "minecraft:bowl" },
+    { "item": "lumenwilds:giant_glowcap_block" },
+    { "item": "lumenwilds:lumen_fruit" },
+    { "item": "lumenwilds:moonblossom" }
+  ],
+  "result": { "id": "lumenwilds:glowcap_stew", "count": 1 }
+}
