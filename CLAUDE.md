@@ -93,9 +93,14 @@ author audio, so the soundscape is built from vanilla sound events.* **The half-
 the dimension runs a **48,000-tick day** (twice the Overworld) — the project's first **Mixin** flips the
 Lumenwilds `ServerLevel` to tick its own clock and decouples that clock from the Overworld at 0.5 day-time/
 tick (`mixin/`, `world/time/`, `event.LumenTimeEvents`), reusing NeoForge's per-dimension time sync.
-*(Verified headlessly: Lumenwilds dayTime advances at exactly half the Overworld's.)* What is deliberately
-*not* built yet: the ambient weather **events** (Sporefall / Moonwake / Deep Hush — Phase 7d.2), more
-structures (Phase 8). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+*(Verified headlessly: Lumenwilds dayTime advances at exactly half the Overworld's.)* **Ambient events are in
+(7d.2) — Phase 7 complete:** a transient `world.event.LumenEventManager` (ticked per Lumenwilds tick by
+`event.LumenEventDriver`) schedules one ambient event at a time — **Sporefall** (boosted Sporeling spawns in
+the jungle + dense spore particles), **Moonwake** (night-only: brighter Veyra + extra Lantern Beetles), **Deep
+Hush** (more hostiles near deep players) — and syncs the active event to clients via a `network`
+`CustomPacketPayload` (`LumenEventPayload` → `LumenEventClientState`), which the sky + `client.LumenEventClientEffects`
+read for the visuals. **The whole atmosphere (Phase 7) is now in.** What is deliberately *not* built yet:
+more structures, food/brewing/the Lumen Anchor (Phase 8), the final art/audio pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -457,6 +462,24 @@ as `File#member`.
   `neoforge.mods.toml`. **No annotation processor or refmap needed** — NeoForge's runtime is mojmap, so mixins
   apply by source name (sponge-mixin 0.8.7 is provided transitively; the config has no `refmap` key).
 
+### network/ + world/event/ — ambient events (Phase 7d.2)
+- [world/event/LumenEvent.java](src/main/java/com/jus144tice/lumenwilds/world/event/LumenEvent.java) — the
+  event enum: `NONE` / `SPOREFALL` / `MOONWAKE` / `DEEP_HUSH` (`#id`/`#byId` for networking).
+- [world/event/LumenEventManager.java](src/main/java/com/jus144tice/lumenwilds/world/event/LumenEventManager.java)
+  — the server scheduler (transient static state, reset on server stop). `#tick` advances the timer and runs
+  `#applyOngoing` (per-event **boosted spawns** near players: Sporefall→Sporelings in the jungle,
+  Moonwake→Lantern Beetles, Deep Hush→Shade Stalkers underground, all capped + placement-checked); `#roll`
+  picks the next event (Moonwake is night-only, using the Lumenwilds' half-rate clock); `#setActive` logs +
+  `PacketDistributor.sendToPlayersInDimension(LumenEventPayload)`. **Timing constants** (`INITIAL_DELAY`,
+  `COOLDOWN/EVENT_MIN/MAX`) tune the cadence.
+- [network/LumenEventPayload.java](src/main/java/com/jus144tice/lumenwilds/network/LumenEventPayload.java) —
+  `CustomPacketPayload` record (`eventId`, `ticksRemaining`) + `#TYPE`/`#CODEC`.
+- [network/ModNetworking.java](src/main/java/com/jus144tice/lumenwilds/network/ModNetworking.java) — mod-bus
+  `#onRegisterPayloads(RegisterPayloadHandlersEvent)` → `registrar.playToClient(...)`; the client handler
+  writes `LumenEventClientState`.
+- [network/LumenEventClientState.java](src/main/java/com/jus144tice/lumenwilds/network/LumenEventClientState.java)
+  — a **common** (no client imports) holder of the active event, read by the sky + `client.LumenEventClientEffects`.
+
 ### event/ — `@EventBusSubscriber` (game bus), auto-registered
 - [CommonEvents.java](src/main/java/com/jus144tice/lumenwilds/event/CommonEvents.java) —
   `#onPlayerLoggedIn` + `#onPlayerRespawn` → `LowGravityHandler#refresh` (rebuilt player entities lose
@@ -472,6 +495,9 @@ as `File#member`.
   flips `tickTime` on (via `LumenwildsTickTime`) and decouples its day clock at `#LUMENWILDS_DAY_TIME_PER_TICK`
   (0.5 → a 48,000-tick day) via `LumenwildsTimeData`. The two Mixins do the bytecode work; NeoForge's
   per-dimension time sync carries it to clients. *Side effect: sleeping doesn't advance Lumenwilds time.*
+- [LumenEventDriver.java](src/main/java/com/jus144tice/lumenwilds/event/LumenEventDriver.java) — ticks
+  `world.event.LumenEventManager` each Lumenwilds `LevelTickEvent.Post` (7d.2); `#onServerStopping` resets it
+  (state is transient per session).
 - [GlowmothAggroEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowmothAggroEvents.java) —
   `#onBlockBreak(BlockEvent.BreakEvent)` (6h): when a player breaks a guarded bloom (Moonblossom / any
   Stillbloom part), every `Glowmoth` within ~12 blocks `setTarget`s the culprit — the flower-guardian aggro.
@@ -503,6 +529,10 @@ as `File#member`.
   the three atmosphere particles, **reusing vanilla classes** (Lumen Spore → `EndRodParticle.Provider`, Glow
   Pollen → `SuspendedTownParticle.Provider`, Crystal Shimmer → `GlowParticle.GlowSquidProvider`); sprites from
   `assets/lumenwilds/particles/<name>.json` → `textures/particle/<name>.png`. (Visuals verify via `runClient`.)
+- [LumenEventClientEffects.java](src/main/java/com/jus144tice/lumenwilds/client/LumenEventClientEffects.java) —
+  client `ClientTickEvent.Post` (7d.2): while an event is active (per `network.LumenEventClientState`) and the
+  player's in the Lumenwilds, sprinkles event particles (Sporefall→spores, Moonwake→pollen, Deep Hush→shimmer).
+  `LumenDimensionEffects#renderSky` also reads that state to **brighten Veyra during a Moonwake**.
 - [LumenGrazerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/LumenGrazerRenderer.java) /
   [ShadeStalkerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/ShadeStalkerRenderer.java) —
   `MobRenderer`s; **placeholders reuse vanilla models** (Grazer → `CowModel`/`COW`; Shade Stalker →

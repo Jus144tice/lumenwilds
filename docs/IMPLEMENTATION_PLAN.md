@@ -752,9 +752,17 @@ Built one increment at a time (like Phase 5d / 6), each compiling + boot-checked
   AP/refmap needed** (NeoForge mojmap runtime). **Verified headlessly:** a temp `ServerTickEvent` logger showed
   Lumenwilds dayTime advancing at exactly 0.5×/tick vs the Overworld's 1.0×/tick. *Documented side effects:
   sleeping doesn't advance Lumenwilds time; gameTime stays shared (only the day cycle decouples).*
-- **7d.2 Ambient events** (next) — `world/event/LumenEventManager` (`SavedData`) ticking the dimension +
-  the Sporefall / Moonwake / Deep Hush events (visual + gameplay shifts), synced to clients via a
-  `PayloadRegistrar` packet.
+- **7d.2 Ambient events** ✅ **done — Phase 7 complete.** `world/event/LumenEventManager` (transient
+  per-session state, not `SavedData` — ambient events needn't survive a restart; persistence is an easy later
+  add) ticked per Lumenwilds tick by `event/LumenEventDriver`. Schedules one event at a time on a timer:
+  **Sporefall** (boosted Sporeling spawns in the jungle + dense spore particles), **Moonwake** (night-only:
+  brighter Veyra + extra Lantern Beetles), **Deep Hush** (more hostiles near deep players). The active event
+  syncs to clients via a `PayloadRegistrar` packet (`network/LumenEventPayload` → `LumenEventClientState`),
+  read by `LumenDimensionEffects` (Moonwake brightening) + `client/LumenEventClientEffects` (particles).
+  Verified headlessly: `runServer` logged the scheduler rolling its first event (`Lumen event → SPOREFALL …`),
+  packet registered, no errors. *Deferred → Phase 9 (visual/audio polish, needs runClient/assets): plant
+  pulsing, brighter Lumenwater, muffled/expanded soundscapes per event, the sky-darken; the server scheduling
+  + spawns + client particle/Veyra hooks are the in-engine seam.*
 
 ### Seams
 new `client/LumenDimensionEffects` + particle/sound client init, `registry/ModParticles`,

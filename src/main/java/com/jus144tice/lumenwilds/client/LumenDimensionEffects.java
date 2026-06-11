@@ -4,7 +4,9 @@
  */
 package com.jus144tice.lumenwilds.client;
 
+import com.jus144tice.lumenwilds.network.LumenEventClientState;
 import com.jus144tice.lumenwilds.util.ResourceLocationHelper;
+import com.jus144tice.lumenwilds.world.event.LumenEvent;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -131,8 +133,13 @@ public class LumenDimensionEffects extends DimensionSpecialEffects {
         sun.addVertex(skyMatrix, -SUN_RADIUS, 100.0F, SUN_RADIUS).setUv(0.0F, 1.0F);
         BufferUploader.drawWithShader(sun.buildOrThrow());
 
-        // Veyra — the oversized pale blue-white moon (opposite the sun).
-        RenderSystem.setShaderColor(0.85F, 0.92F, 1.0F, 1.0F);
+        // Veyra — the oversized pale blue-white moon (opposite the sun). Brighter during a Moonwake (7d.2).
+        boolean moonwake = LumenEventClientState.active() == LumenEvent.MOONWAKE;
+        if (moonwake) {
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        } else {
+            RenderSystem.setShaderColor(0.85F, 0.92F, 1.0F, 1.0F);
+        }
         RenderSystem.setShaderTexture(0, VEYRA);
         BufferBuilder moon = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         moon.addVertex(skyMatrix, -VEYRA_RADIUS, -100.0F, VEYRA_RADIUS).setUv(0.0F, 1.0F);
