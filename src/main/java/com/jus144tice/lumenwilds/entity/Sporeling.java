@@ -4,6 +4,7 @@
  */
 package com.jus144tice.lumenwilds.entity;
 
+import com.jus144tice.lumenwilds.registry.ModMobEffects;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -70,7 +71,7 @@ public class Sporeling extends Monster {
             cloud.setRadiusOnUse(-0.25F);
             cloud.setWaitTime(0);
             cloud.setParticle(ParticleTypes.SPORE_BLOSSOM_AIR);
-            cloud.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 100, 0));
+            cloud.addEffect(new MobEffectInstance(ModMobEffects.SPOREBLIND, 120, 0)); // the real "Sporeblind" (8a)
             cloud.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 60, 0));
             this.level().addFreshEntity(cloud);
         }

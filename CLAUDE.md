@@ -99,8 +99,12 @@ tick (`mixin/`, `world/time/`, `event.LumenTimeEvents`), reusing NeoForge's per-
 the jungle + dense spore particles), **Moonwake** (night-only: brighter Veyra + extra Lantern Beetles), **Deep
 Hush** (more hostiles near deep players) — and syncs the active event to clients via a `network`
 `CustomPacketPayload` (`LumenEventPayload` → `LumenEventClientState`), which the sky + `client.LumenEventClientEffects`
-read for the visuals. **The whole atmosphere (Phase 7) is now in.** What is deliberately *not* built yet:
-more structures, food/brewing/the Lumen Anchor (Phase 8), the final art/audio pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+read for the visuals. **The whole atmosphere (Phase 7) is now in.** **Phase 8 is starting — status effects
+(8a):** `registry.ModMobEffects` adds four `effect.LumenMobEffect`s — **Lightfoot** (beneficial: +jump,
++safe-fall), **Glowmarked** (neutral: target glows, via `event.LumenEffectEvents` toggling `setGlowingTag`),
+**Sporeblind** (harmful: a spore-clouded slow — what the Sporeling death cloud now applies), **Rooted**
+(harmful: heavy slow + no jump), all attribute-driven. What is deliberately *not* built yet: food/brewing,
+the Lumen Anchor, structures (rest of Phase 8), the final art/audio pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -234,8 +238,12 @@ as `File#member`.
   `#CRAG_WRAITH` (`MONSTER`, flying dive-attacker, 6j) — **all 10 live, Phase 6 done**. Each entity also needs
   attributes + spawn placement (`event.ModEntityEvents`), a renderer (`client.LumenwildsClient`), a loot table
   (`loot_table/entities/`), and biome `spawners` entries.
+- [ModMobEffects.java](src/main/java/com/jus144tice/lumenwilds/registry/ModMobEffects.java) — `#MOB_EFFECTS`;
+  the four status effects (Phase 8a), each a `effect.LumenMobEffect` (a trivial public-ctor `MobEffect`
+  subclass — vanilla's ctor is protected). `#LIGHTFOOT` (+`JUMP_STRENGTH`/+`SAFE_FALL_DISTANCE`), `#GLOWMARKED`
+  (no attrs — glow via `event.LumenEffectEvents`), `#SPOREBLIND` (−`MOVEMENT_SPEED`; the Sporeling cloud
+  applies it), `#ROOTED` (−`MOVEMENT_SPEED` & −`JUMP_STRENGTH`). Icons: `textures/mob_effect/<name>.png`.
 - Empty stubs (compile; carry phase TODOs). Wired to the bus already (registered empty): 
-  [ModMobEffects](src/main/java/com/jus144tice/lumenwilds/registry/ModMobEffects.java) `#MOB_EFFECTS`,
   [ModBlockEntities](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) `#BLOCK_ENTITIES`,
   [ModMenus](src/main/java/com/jus144tice/lumenwilds/registry/ModMenus.java) `#MENUS`,
   [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS` (still empty — the
@@ -333,8 +341,8 @@ as `File#member`.
 - [Sporeling.java](src/main/java/com/jus144tice/lumenwilds/entity/Sporeling.java) — `Monster`, the
   jungle/cave **swarm** (6d). Weak melee attacker that targets players; `HurtByTargetGoal#setAlertOthers`
   makes the group aggro together. `#die` bursts a **spore cloud** — an `AreaEffectCloud` (radius 2.5, 80t,
-  spore particle) applying Slowness + Darkness (the bible's "Sporeblind"; the bespoke effect + overlay is
-  Phase 8). Native low gravity. Placeholder render = vanilla slime.
+  spore particle) applying **`ModMobEffects.SPOREBLIND`** (the real effect, 8a) + Darkness (the visibility
+  overlay is Phase 9). Native low gravity. Placeholder render = vanilla slime.
 - [Mirelurker.java](src/main/java/com/jus144tice/lumenwilds/entity/Mirelurker.java) — `Monster`, the Moonmire
   **amphibious** ambusher (6e); the first water-capable mob. `#createNavigation` = `AmphibiousPathNavigation`
   + `setPathfindingMalus(WATER, 0)` so it walks land and water freely; doesn't drown (via the
@@ -498,6 +506,9 @@ as `File#member`.
 - [LumenEventDriver.java](src/main/java/com/jus144tice/lumenwilds/event/LumenEventDriver.java) — ticks
   `world.event.LumenEventManager` each Lumenwilds `LevelTickEvent.Post` (7d.2); `#onServerStopping` resets it
   (state is transient per session).
+- [LumenEffectEvents.java](src/main/java/com/jus144tice/lumenwilds/event/LumenEffectEvents.java) — drives
+  `ModMobEffects.GLOWMARKED`'s outline (8a): `setGlowingTag(true/false)` on `MobEffectEvent.Added` /
+  `Expired` / `Remove` (not per-tick). The flag syncs to clients → vanilla glowing outline.
 - [GlowmothAggroEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowmothAggroEvents.java) —
   `#onBlockBreak(BlockEvent.BreakEvent)` (6h): when a player breaks a guarded bloom (Moonblossom / any
   Stillbloom part), every `Glowmoth` within ~12 blocks `setTarget`s the culprit — the flower-guardian aggro.
@@ -600,7 +611,8 @@ as `File#member`.
   `glowmoth.png` (endermite) + `rootback.png` (cow) + `crag_wraith.png` (ghast), 64×32, under `textures/entity/`.
   Sky art (7a): `textures/environment/veyra.png` (64×64 pale-moon disc on transparent — the giant Veyra moon).
   Particles (7b): `particles/{lumen_spore,glow_pollen,crystal_shimmer}.json` (texture lists) +
-  `textures/particle/<name>.png` (8×8 soft glow dots).
+  `textures/particle/<name>.png` (8×8 soft glow dots). Status-effect icons (8a):
+  `textures/mob_effect/{lightfoot,glowmarked,sporeblind,rooted}.png` (18×18) + `effect.lumenwilds.*` lang.
   Lumenwater (5e) has a particle-only `blockstates/lumenwater.json` + `models/block/lumenwater.json` (the
   fluid itself renders via the client `IClientFluidTypeExtensions`, not a block model) and a flat
   `lumenwater_bucket` item; it has **no fluid textures** of its own (reuses vanilla water, tinted).

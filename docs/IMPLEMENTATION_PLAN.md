@@ -784,6 +784,23 @@ at the slower cadence.
 
 **Goal:** reasons to explore and a survivable, progression-rich loop.
 
+**Build order (increments, like Phase 5d/6/7):**
+- **8a Status effects** ✅ **done** — `registry/ModMobEffects` + the 4 effects via `effect/LumenMobEffect`
+  (public-ctor `MobEffect` subclass). **Lightfoot** (beneficial: +`JUMP_STRENGTH` +`SAFE_FALL_DISTANCE`),
+  **Glowmarked** (neutral: glow via `event/LumenEffectEvents` toggling `setGlowingTag` on effect add/remove —
+  reuses the vanilla outline, no custom render), **Sporeblind** (harmful: −`MOVEMENT_SPEED`; the Sporeling
+  death cloud now applies it instead of vanilla Slowness), **Rooted** (harmful: −`MOVEMENT_SPEED` &
+  −`JUMP_STRENGTH`). Icons + lang added. Verified: build green + `runServer` summoned a cow and applied all
+  four (incl. Glowmarked→glow) with no registry/attribute errors. *Deferred → Phase 9: the Sporeblind
+  screen-overlay render + a custom Glowmarked color (currently the vanilla white outline).*
+- **8b Food** — `DataComponents.FOOD` on Lumen Fruit / Grazer Meat / Glowcap Stew / Lumen Nectar + recipes;
+  foods apply 8a/vanilla effects (night vision, regen).
+- **8c Lumen Anchor** — the portal-link block + `BlockEntity` + `LumenPortalTeleporter` integration.
+- **8d+ Structures** — **code-based (procedural `Structure`/`StructurePiece`, like the mega tree)**, NOT
+  Jigsaw `.nbt`: `.nbt` templates need an in-game structure-block editor (can't author headlessly), and we
+  already have the procedural pattern. One structure per increment: Rootshrine → Lumenbound Ruins →
+  Glasspetal Spires → Undercrown Relics.
+
 ### Scope
 - **Structures** (overgrown/organic, never village-like):
   - **Lumenbound Ruins** (ruined portal sites: partial Lumenbound Stone frames, broken Lumen Portal
