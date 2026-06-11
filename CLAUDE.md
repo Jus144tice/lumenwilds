@@ -632,8 +632,14 @@ as `File#member`.
   `RootbackModel` (domed turtle, built ~3×2 to fill the hitbox), `MirelurkerModel` (anglerfish + glowing lure),
   `LumenFishModel` (small fish). [LumenModelLayers.java](src/main/java/com/jus144tice/lumenwilds/client/LumenModelLayers.java)
   declares each `ModelLayerLocation`, registered in `LumenwildsClient#onRegisterLayerDefinitions` and baked in
-  the renderer. *(Visual-only — verify via `runClient`; geometry/proportions iterate from there. Emissive glow
-  layers + final pixel-art textures are still to come.)*
+  the renderer. Textures carry per-box region coloring + a mood-matched **face** (ominous on hostiles, friendly
+  on passives; the Sky Jelly is faceless). *(Visual-only — verify via `runClient`; iterate from there.)*
+- **Emissive glow (Phase 9c, "native living light"):**
+  [client/layer/LumenEmissiveLayer.java](src/main/java/com/jus144tice/lumenwilds/client/layer/LumenEmissiveLayer.java)
+  extends vanilla `EyesLayer` (model re-rendered fullbright + additive), driven by a per-mob
+  `textures/entity/<name>_glow.png` (glowing regions bright on black). Added to 9 mobs in one place via
+  `LumenwildsClient#onAddLayers` (`EntityRenderersEvent.AddLayers` + the `#addGlow` helper). **The Shade Stalker
+  is deliberately excluded** — a jump-scare ambusher that flees light; a glow would betray its position.
 
 ### util/
 - [ResourceLocationHelper.java](src/main/java/com/jus144tice/lumenwilds/util/ResourceLocationHelper.java)

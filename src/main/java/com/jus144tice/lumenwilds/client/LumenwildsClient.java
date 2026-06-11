@@ -5,15 +5,21 @@
 package com.jus144tice.lumenwilds.client;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.client.layer.LumenEmissiveLayer;
 import com.jus144tice.lumenwilds.registry.ModEntities;
 import com.jus144tice.lumenwilds.registry.ModFluidTypes;
 import com.jus144tice.lumenwilds.registry.ModParticles;
 import com.jus144tice.lumenwilds.registry.ModWoodTypes;
+import com.jus144tice.lumenwilds.util.ResourceLocationHelper;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.particle.EndRodParticle;
 import net.minecraft.client.particle.GlowParticle;
 import net.minecraft.client.particle.SuspendedTownParticle;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -88,6 +94,34 @@ public final class LumenwildsClient {
         event.registerEntityRenderer(ModEntities.GLOWMOTH.get(), GlowmothRenderer::new);
         event.registerEntityRenderer(ModEntities.ROOTBACK.get(), RootbackRenderer::new);
         event.registerEntityRenderer(ModEntities.CRAG_WRAITH.get(), CragWraithRenderer::new);
+    }
+
+    /**
+     * Phase 9c — the bioluminescence pass ("native living light"). Adds a {@link LumenEmissiveLayer} (a glow
+     * texture rendered fullbright) to each glowing mob, in one place via {@code AddLayers}. The <b>Shade
+     * Stalker is deliberately excluded</b> — it's a jump-scare ambusher that flees light, so an emissive glow
+     * would betray its position.
+     */
+    @SubscribeEvent
+    public static void onAddLayers(final EntityRenderersEvent.AddLayers event) {
+        addGlow(event, ModEntities.SKY_JELLY.get(), "sky_jelly");
+        addGlow(event, ModEntities.MIRELURKER.get(), "mirelurker");
+        addGlow(event, ModEntities.LANTERN_BEETLE.get(), "lantern_beetle");
+        addGlow(event, ModEntities.GLOWMOTH.get(), "glowmoth");
+        addGlow(event, ModEntities.SPORELING.get(), "sporeling");
+        addGlow(event, ModEntities.LUMEN_FISH.get(), "lumen_fish");
+        addGlow(event, ModEntities.LUMEN_GRAZER.get(), "lumen_grazer");
+        addGlow(event, ModEntities.ROOTBACK.get(), "rootback");
+        addGlow(event, ModEntities.CRAG_WRAITH.get(), "crag_wraith");
+    }
+
+    private static <T extends Mob, M extends EntityModel<T>> void addGlow(
+            final EntityRenderersEvent.AddLayers event, final EntityType<T> type, final String name) {
+        LivingEntityRenderer<T, M> renderer = event.getRenderer(type);
+        if (renderer != null) {
+            renderer.addLayer(new LumenEmissiveLayer<>(
+                    renderer, ResourceLocationHelper.modLoc("textures/entity/" + name + "_glow.png")));
+        }
     }
 
     /** Phase 7a: bind the bespoke Lumenwilds sky (Veyra moon + twilight dome) to the dimension. */
