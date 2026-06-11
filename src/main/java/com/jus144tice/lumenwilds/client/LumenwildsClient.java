@@ -70,6 +70,10 @@ public final class LumenwildsClient {
                 com.jus144tice.lumenwilds.client.model.LumenGrazerModel::createBodyLayer);
         event.registerLayerDefinition(
                 LumenModelLayers.ROOTBACK, com.jus144tice.lumenwilds.client.model.RootbackModel::createBodyLayer);
+        event.registerLayerDefinition(
+                LumenModelLayers.MIRELURKER, com.jus144tice.lumenwilds.client.model.MirelurkerModel::createBodyLayer);
+        event.registerLayerDefinition(
+                LumenModelLayers.LUMEN_FISH, com.jus144tice.lumenwilds.client.model.LumenFishModel::createBodyLayer);
     }
 
     @SubscribeEvent

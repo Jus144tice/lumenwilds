@@ -4,25 +4,23 @@
  */
 package com.jus144tice.lumenwilds.client;
 
+import com.jus144tice.lumenwilds.client.model.LumenFishModel;
 import com.jus144tice.lumenwilds.entity.LumenFish;
 import com.jus144tice.lumenwilds.util.ResourceLocationHelper;
-import net.minecraft.client.model.CodModel;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * Renders the Lumen Fish. <b>Placeholder:</b> reuses the vanilla {@link CodModel} (the already-registered
- * {@code ModelLayers.COD}) with a glowing Lumenwilds texture — a small fish stands in for the final
- * bioluminescent swimmer (Phase 9 art).
+ * Renders the Lumen Fish with the bespoke {@link LumenFishModel} (Phase 9b — a small glowing schooling fish,
+ * replacing the cod placeholder).
  */
-public class LumenFishRenderer extends MobRenderer<LumenFish, CodModel<LumenFish>> {
+public class LumenFishRenderer extends MobRenderer<LumenFish, LumenFishModel> {
 
     private static final ResourceLocation TEXTURE = ResourceLocationHelper.modLoc("textures/entity/lumen_fish.png");
 
     public LumenFishRenderer(EntityRendererProvider.Context context) {
-        super(context, new CodModel<>(context.bakeLayer(ModelLayers.COD)), 0.2F);
+        super(context, new LumenFishModel(context.bakeLayer(LumenModelLayers.LUMEN_FISH)), 0.2F);
     }
 
     @Override

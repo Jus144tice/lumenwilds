@@ -623,19 +623,17 @@ as `File#member`.
   client `ClientTickEvent.Post` (7d.2): while an event is active (per `network.LumenEventClientState`) and the
   player's in the Lumenwilds, sprinkles event particles (Sporefall→spores, Moonwake→pollen, Deep Hush→shimmer).
   `LumenDimensionEffects#renderSky` also reads that state to **brighten Veyra during a Moonwake**.
-- [LumenGrazerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/LumenGrazerRenderer.java) /
-  [ShadeStalkerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/ShadeStalkerRenderer.java) —
-  `MobRenderer`s; **placeholders reuse vanilla models** (Grazer → `CowModel`/`COW`; Shade Stalker →
-  `SpiderModel`/`SPIDER`; Lantern Beetle → `SilverfishModel`/`SILVERFISH`; Sporeling → `SlimeModel`/`SLIME`;
-  Mirelurker → `SalmonModel`/`SALMON`; Lumen Fish → `CodModel`/`COD`;
-  Glowmoth → `EndermiteModel`/`ENDERMITE` scaled 1.6; Rootback → `CowModel`/`COW` scaled 3.4; Crag
-  Wraith → `GhastModel`/`GHAST` scaled ~0.7) with `textures/entity/<name>.png`. **Phase 9b is replacing these
-  with bespoke models, one at a time** — the first is the **Sky Jelly** (`client.model.SkyJellyModel`, a real
-  jellyfish: bell dome + swaying tentacles), no longer a placeholder.
+- The 10 `MobRenderer`s (`LumenGrazerRenderer`, `ShadeStalkerRenderer`, …) each bake a **bespoke model**
+  (Phase 9b — the vanilla-model placeholders are gone): `textures/entity/<name>.png`.
 - **Bespoke models (Phase 9b):** [client/model/](src/main/java/com/jus144tice/lumenwilds/client/model/) holds
-  the custom `HierarchicalModel`s; [LumenModelLayers.java](src/main/java/com/jus144tice/lumenwilds/client/LumenModelLayers.java)
+  one custom `HierarchicalModel` per mob — `SkyJellyModel` (bell + tentacles), `GlowmothModel` (moth + 2 wing
+  pairs), `CragWraithModel` (manta + wings/tail), `LanternBeetleModel` (shell + 6 legs + glow abdomen),
+  `SporelingModel` (body + mushroom cap), `ShadeStalkerModel` (sleek 4-legged), `LumenGrazerModel` (**6 legs**),
+  `RootbackModel` (domed turtle, built ~3×2 to fill the hitbox), `MirelurkerModel` (anglerfish + glowing lure),
+  `LumenFishModel` (small fish). [LumenModelLayers.java](src/main/java/com/jus144tice/lumenwilds/client/LumenModelLayers.java)
   declares each `ModelLayerLocation`, registered in `LumenwildsClient#onRegisterLayerDefinitions` and baked in
-  the mob's renderer. *(Visual-only — verify via `runClient`; geometry/proportions iterate from there.)*
+  the renderer. *(Visual-only — verify via `runClient`; geometry/proportions iterate from there. Emissive glow
+  layers + final pixel-art textures are still to come.)*
 
 ### util/
 - [ResourceLocationHelper.java](src/main/java/com/jus144tice/lumenwilds/util/ResourceLocationHelper.java)

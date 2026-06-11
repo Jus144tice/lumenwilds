@@ -30,6 +30,10 @@ public final class LumenModelLayers {
             new ModelLayerLocation(ResourceLocationHelper.modLoc("lumen_grazer"), "main");
     public static final ModelLayerLocation ROOTBACK =
             new ModelLayerLocation(ResourceLocationHelper.modLoc("rootback"), "main");
+    public static final ModelLayerLocation MIRELURKER =
+            new ModelLayerLocation(ResourceLocationHelper.modLoc("mirelurker"), "main");
+    public static final ModelLayerLocation LUMEN_FISH =
+            new ModelLayerLocation(ResourceLocationHelper.modLoc("lumen_fish"), "main");
 
     private LumenModelLayers() {}
 }
