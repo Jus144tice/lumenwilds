@@ -12,6 +12,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -110,6 +112,19 @@ public class LumenPortalBlock extends Block implements Portal {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        // Occasional eerie portal hum (vanilla sound asset for now; bespoke audio is a Phase 9 .ogg task).
+        if (random.nextInt(100) == 0) {
+            level.playLocalSound(
+                    pos.getX() + 0.5,
+                    pos.getY() + 0.5,
+                    pos.getZ() + 0.5,
+                    SoundEvents.PORTAL_AMBIENT,
+                    SoundSource.BLOCKS,
+                    0.5F,
+                    random.nextFloat() * 0.4F + 0.8F,
+                    false);
+        }
+
         // Drifting Lumen Spores rising out of the portal (the bespoke atmosphere particle, Phase 7b).
         for (int i = 0; i < 2; i++) {
             double x = pos.getX() + random.nextDouble();

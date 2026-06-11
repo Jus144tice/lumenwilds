@@ -4,6 +4,9 @@
   "temperature": 0.4,
   "downfall": 0.5,
   "effects": {
+    "ambient_sound": "minecraft:ambient.nether_wastes.loop",
+    "additions_sound": { "sound": "minecraft:ambient.nether_wastes.additions", "tick_chance": 0.0111 },
+    "music": { "sound": "minecraft:music.nether.nether_wastes", "min_delay": 12000, "max_delay": 24000, "replace_current_music": false },
     "particle": {
       "options": { "type": "lumenwilds:lumen_spore" },
       "probability": 0.004

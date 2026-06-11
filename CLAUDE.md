@@ -85,8 +85,12 @@ deep-indigo→teal dome), a weak blurred sun, and **Veyra**, the oversized pale 
 rendering can only be verified in-client — `runClient` through a portal — not on a headless server.)*
 **Atmosphere particles are in (7b):** three bespoke `SimpleParticleType`s (`ModParticles` — `lumen_spore`,
 `glow_pollen`, `crystal_shimmer`, render factories reusing vanilla particle classes) drift through the world
-as biome ambience (`effects.particle` per biome) and rise from the portal. What is deliberately *not* built
-yet: atmosphere sounds + weather events + the half-rate day cycle (Phase 7c–7d), more structures (Phase 8). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+as biome ambience (`effects.particle` per biome) and rise from the portal. **Soundscapes are in (7c):** every
+biome carries a vanilla-sourced `ambient_sound`/`additions_sound`/`music` (the Nether ambience loops —
+warped/crimson/basalt/soul-sand/nether-wastes — read as alien; calm overworld music for the open biomes), and
+the portal hums (`PORTAL_AMBIENT`). *Bespoke recorded SFX (custom `.ogg`) is a Phase 9 asset task — I can't
+author audio, so the soundscape is built from vanilla sound events.* What is deliberately *not* built yet:
+weather events + the half-rate day cycle (Phase 7d), more structures (Phase 8). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -224,7 +228,9 @@ as `File#member`.
   [ModMobEffects](src/main/java/com/jus144tice/lumenwilds/registry/ModMobEffects.java) `#MOB_EFFECTS`,
   [ModBlockEntities](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) `#BLOCK_ENTITIES`,
   [ModMenus](src/main/java/com/jus144tice/lumenwilds/registry/ModMenus.java) `#MENUS`,
-  [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS`.
+  [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS` (still empty — the
+  7c soundscape is built from **vanilla** sound events; bespoke recorded `.ogg` SFX → Phase 9, then register
+  custom events here + a `sounds.json`).
 - [ModParticles.java](src/main/java/com/jus144tice/lumenwilds/registry/ModParticles.java) — `#PARTICLES`
   (atmosphere, Phase 7b); `#LUMEN_SPORE` (signature drifting glow mote — biome ambience + the portal),
   `#GLOW_POLLEN` (flower-biome float), `#CRYSTAL_SHIMMER` (Crags sparkle), all `SimpleParticleType`. Client
@@ -250,7 +256,8 @@ as `File#member`.
   (`HORIZONTAL_AXIS` state), per-axis `#getShape`, `#entityInside` → `Entity#setAsInsidePortal(this,pos)`
   (engine drives dwell/teleport/cooldown), `#getPortalTransitionTime` (players 80t, else 0),
   `#getPortalDestination` (resolves overworld↔lumenwilds, 1:1-scaled target, delegates placement),
-  `#getLocalTransition` = `NONE` (no Nether nausea), `#animateTick` (teal `GLOW` spores, placeholder).
+  `#getLocalTransition` = `NONE` (no Nether nausea), `#animateTick` (rises `ModParticles.LUMEN_SPORE` + an
+  occasional `PORTAL_AMBIENT` hum, 7b/7c).
 - [LumenPortalShape.java](src/main/java/com/jus144tice/lumenwilds/portal/LumenPortalShape.java) — frame
   detection, a focused port of vanilla `PortalShape` keyed on **our** frame/interior (NOT the shared
   NeoForge `isPortalFrame` predicate — see [gotchas](#invariants--gotchas)). `#MIN/MAX_WIDTH`,
@@ -549,7 +556,10 @@ as `File#member`.
   (5d.1, dark-teal) + `biome/glasspetal_crags.json` (5d.2, blue-violet) + `biome/sporefall_jungle.json`
   (5d.3, lush green + warped_spore particle) + `biome/moonmire.json` (5d.4, dark glowing swamp) +
   `biome/undercrown_caverns.json` (5d.5, deep cave biome) + `biome/stillbloom_basin.json` (5d.6, rare bright
-  sanctuary), `noise/hills.json`, `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`,
+  sanctuary). **Every biome's `effects` now also carries (7b) an ambient `particle` and (7c) a vanilla-sourced
+  soundscape** — `ambient_sound`/`additions_sound`/`music` (Nether ambience loops for the alien biomes, calm
+  overworld music for the open ones) + the existing `mood_sound`. Worldgen continues: `noise/hills.json`,
+  `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`,
   `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2`
   [custom feature], `patch_glasspetal` [5d.2], `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, `lake`] +
   `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine` [5d.5] + placed-only `undercrown_crystal`/

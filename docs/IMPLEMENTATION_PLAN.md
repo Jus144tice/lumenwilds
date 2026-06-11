@@ -732,9 +732,16 @@ Built one increment at a time (like Phase 5d / 6), each compiling + boot-checked
   `stillbloom_basin` → pollen). Verified: build green + `runServer` loaded all five biomes clean (the particle
   ids resolve against the registry server-side). *Beetle/Glowmoth trails + Sporefall weather particles →
   later (7d / Phase 9). The actual particle look needs `runClient`.*
-- **7c Sounds** — `registry/ModSounds` + `sounds.json` + biome `ambient/mood/additions/music`. **Caveat:**
-  real `.ogg` assets can't be authored here — ship the registry + JSON wiring with placeholder/silent entries,
-  flag audio art as a Phase 9 asset task.
+- **7c Sounds** ✅ **done** — the dimension's **soundscape, built from vanilla sound events** (real `.ogg`
+  audio can't be authored here, so no custom events / silent placeholders — vanilla gives audible, alien
+  ambience now). Every biome's `effects` gets `ambient_sound` + `additions_sound` + `music`: the Nether
+  ambience loops read as alien — Glowroot Forest → `warped_forest`, Glasspetal Crags → `basalt_deltas`,
+  Sporefall Jungle → `crimson_forest`, Moonmire → `soul_sand_valley`, Undercrown → `nether_wastes`; the open
+  biomes (Lumen Glade, Stillbloom Basin) get calm overworld music. The Lumen Portal `animateTick` now also
+  emits an occasional `PORTAL_AMBIENT` hum. Verified: build green + `runServer` loaded all 7 biomes clean (the
+  sound ids resolve against the registry server-side). *Deferred → Phase 9 (asset task): bespoke recorded SFX
+  (`.ogg`) for the portal/striker/mobs + biome ambience — register custom events in `ModSounds` + a
+  `sounds.json`, then swap the vanilla ids for the custom ones.*
 - **7d Half-rate day cycle + ambient events** — `world/event/LumenEventManager` (`SavedData`) ticking the
   dimension at half time-rate + the Sporefall / Moonwake / Deep Hush events, synced to clients via a
   `PayloadRegistrar` packet.

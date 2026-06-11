@@ -4,6 +4,7 @@
   "temperature": 0.8,
   "downfall": 0.0,
   "effects": {
+    "music": { "sound": "minecraft:music.overworld.flower_forest", "min_delay": 12000, "max_delay": 24000, "replace_current_music": false },
     "particle": {
       "options": { "type": "lumenwilds:glow_pollen" },
       "probability": 0.006
