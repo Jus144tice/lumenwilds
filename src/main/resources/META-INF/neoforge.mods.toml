@@ -5,6 +5,10 @@ loaderVersion = "[4,)"
 license = "Apache-2.0"
 issueTrackerURL = "https://github.com/Jus144tice/lumenwilds/issues"
 
+# Mixins (Phase 7d) — gives the Lumenwilds its own half-rate day clock (see mixin/ + world/time/).
+[[mixins]]
+config = "lumenwilds.mixins.json"
+
 [[mods]]
 modId = "lumenwilds"
 version = "${file.jarVersion}"

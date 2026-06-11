@@ -742,8 +742,18 @@ Built one increment at a time (like Phase 5d / 6), each compiling + boot-checked
   sound ids resolve against the registry server-side). *Deferred → Phase 9 (asset task): bespoke recorded SFX
   (`.ogg`) for the portal/striker/mobs + biome ambience — register custom events in `ModSounds` + a
   `sounds.json`, then swap the vanilla ids for the custom ones.*
-- **7d Half-rate day cycle + ambient events** — `world/event/LumenEventManager` (`SavedData`) ticking the
-  dimension at half time-rate + the Sporefall / Moonwake / Deep Hush events, synced to clients via a
+- **7d.1 Half-rate day cycle** ✅ **done** — the Lumenwilds runs a **48,000-tick day** (twice the Overworld).
+  Engine reality (see the Phase 7 finding): non-Overworld dims don't tick their own clock (`tickTime = false`)
+  and mirror the Overworld via `DerivedLevelData` (whose `setDayTime` is a no-op) — so this needs the project's
+  first **Mixin**. `ServerLevelMixin` makes `tickTime` settable; `DerivedLevelDataMixin` gives the Lumenwilds
+  an independent day clock (`@Inject` HEAD on the day-time getters/setters when decoupled); `event.LumenTimeEvents`
+  flips both on `LevelEvent.Load` and decouples at 0.5 day-time/tick. Reuses NeoForge's per-dimension time sync
+  (`ClientboundCustomSetTimePayload` carries the rate, so NeoForge clients interpolate smoothly). **No mixin
+  AP/refmap needed** (NeoForge mojmap runtime). **Verified headlessly:** a temp `ServerTickEvent` logger showed
+  Lumenwilds dayTime advancing at exactly 0.5×/tick vs the Overworld's 1.0×/tick. *Documented side effects:
+  sleeping doesn't advance Lumenwilds time; gameTime stays shared (only the day cycle decouples).*
+- **7d.2 Ambient events** (next) — `world/event/LumenEventManager` (`SavedData`) ticking the dimension +
+  the Sporefall / Moonwake / Deep Hush events (visual + gameplay shifts), synced to clients via a
   `PayloadRegistrar` packet.
 
 ### Seams

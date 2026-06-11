@@ -89,8 +89,13 @@ as biome ambience (`effects.particle` per biome) and rise from the portal. **Sou
 biome carries a vanilla-sourced `ambient_sound`/`additions_sound`/`music` (the Nether ambience loops —
 warped/crimson/basalt/soul-sand/nether-wastes — read as alien; calm overworld music for the open biomes), and
 the portal hums (`PORTAL_AMBIENT`). *Bespoke recorded SFX (custom `.ogg`) is a Phase 9 asset task — I can't
-author audio, so the soundscape is built from vanilla sound events.* What is deliberately *not* built yet:
-weather events + the half-rate day cycle (Phase 7d), more structures (Phase 8). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+author audio, so the soundscape is built from vanilla sound events.* **The half-rate day cycle is in (7d.1):**
+the dimension runs a **48,000-tick day** (twice the Overworld) — the project's first **Mixin** flips the
+Lumenwilds `ServerLevel` to tick its own clock and decouples that clock from the Overworld at 0.5 day-time/
+tick (`mixin/`, `world/time/`, `event.LumenTimeEvents`), reusing NeoForge's per-dimension time sync.
+*(Verified headlessly: Lumenwilds dayTime advances at exactly half the Overworld's.)* What is deliberately
+*not* built yet: the ambient weather **events** (Sporefall / Moonwake / Deep Hush — Phase 7d.2), more
+structures (Phase 8). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -434,6 +439,24 @@ as `File#member`.
   `#onChangedDimension(player)`, `#remove(livingEntity)`. Native-mob gravity comes via their attribute
   suppliers in Phase 6, so this hook is player-only.
 
+### mixin/ + world/time/ — the half-rate day clock (Phase 7d.1; the project's only Mixins)
+- [ServerLevelMixin.java](src/main/java/com/jus144tice/lumenwilds/mixin/ServerLevelMixin.java) —
+  `@Mixin(ServerLevel.class)`; `@Shadow @Final @Mutable boolean tickTime` + a `@Unique` setter
+  (`LumenwildsTickTime`). Vanilla builds only the Overworld with `tickTime = true`; this lets the Lumenwilds
+  be switched on so its `tickTime()` (own clock) runs.
+- [DerivedLevelDataMixin.java](src/main/java/com/jus144tice/lumenwilds/mixin/DerivedLevelDataMixin.java) —
+  `@Mixin(DerivedLevelData.class)` implementing `LumenwildsTimeData`. Non-Overworld dims mirror the Overworld
+  through `DerivedLevelData` (its `setDayTime` is a **no-op** — the reason a custom clock was impossible).
+  When `#lumenwilds$decouple`d, `@Inject(HEAD, cancellable)` on the day-time getters/setters
+  (`getDayTime`/`setDayTime`/`getDayTimePerTick`/`setDayTimePerTick`/`getDayTimeFraction`/`setDayTimeFraction`)
+  reads/writes private fields instead. `gameTime` stays derived (only the day cycle diverges).
+- [world/time/LumenwildsTickTime.java](src/main/java/com/jus144tice/lumenwilds/world/time/LumenwildsTickTime.java)
+  + [LumenwildsTimeData.java](src/main/java/com/jus144tice/lumenwilds/world/time/LumenwildsTimeData.java) —
+  the duck-type interfaces the Mixins implement so non-mixin code can drive them.
+- **Mixin tooling:** `src/main/resources/lumenwilds.mixins.json` (config) + a top-level `[[mixins]]` in
+  `neoforge.mods.toml`. **No annotation processor or refmap needed** — NeoForge's runtime is mojmap, so mixins
+  apply by source name (sponge-mixin 0.8.7 is provided transitively; the config has no `refmap` key).
+
 ### event/ — `@EventBusSubscriber` (game bus), auto-registered
 - [CommonEvents.java](src/main/java/com/jus144tice/lumenwilds/event/CommonEvents.java) —
   `#onPlayerLoggedIn` + `#onPlayerRespawn` → `LowGravityHandler#refresh` (rebuilt player entities lose
@@ -444,6 +467,11 @@ as `File#member`.
 - [ProjectileArcHandler.java](src/main/java/com/jus144tice/lumenwilds/event/ProjectileArcHandler.java) —
   `#onEntityTick(EntityTickEvent.Post)`: restores `#FLATTEN_FRACTION` (0.4) of per-tick gravity to
   `AbstractArrow`/`ThrowableProjectile` in-dimension (server-side), for subtly flatter arcs.
+- [LumenTimeEvents.java](src/main/java/com/jus144tice/lumenwilds/event/LumenTimeEvents.java) — the
+  **half-rate day cycle** activator (7d.1). `#onLevelLoad(LevelEvent.Load)`: for the Lumenwilds `ServerLevel`,
+  flips `tickTime` on (via `LumenwildsTickTime`) and decouples its day clock at `#LUMENWILDS_DAY_TIME_PER_TICK`
+  (0.5 → a 48,000-tick day) via `LumenwildsTimeData`. The two Mixins do the bytecode work; NeoForge's
+  per-dimension time sync carries it to clients. *Side effect: sleeping doesn't advance Lumenwilds time.*
 - [GlowmothAggroEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowmothAggroEvents.java) —
   `#onBlockBreak(BlockEvent.BreakEvent)` (6h): when a player breaks a guarded bloom (Moonblossom / any
   Stillbloom part), every `Glowmoth` within ~12 blocks `setTarget`s the culprit — the flower-guardian aggro.
@@ -526,7 +554,10 @@ as `File#member`.
 
 - [META-INF/neoforge.mods.toml](src/main/resources/META-INF/neoforge.mods.toml) — mod metadata; only
   `neoforge` + `minecraft` deps (required); `enumExtensions = "META-INF/enumextensions.json"` (Glowwood
-  `Boat.Type`). `pack.mcmeta` → `pack_format` 48.
+  `Boat.Type`); `[[mixins]] config = "lumenwilds.mixins.json"` (the 7d.1 day-clock mixins). `pack.mcmeta` →
+  `pack_format` 48.
+- `lumenwilds.mixins.json` (resource root) — the Mixin config (`package` = `…lumenwilds.mixin`, JAVA_21, no
+  `refmap`); lists `ServerLevelMixin` + `DerivedLevelDataMixin`.
 - `META-INF/enumextensions.json` — the Glowwood `Boat.Type` entry (constant name `lumenwilds_glowwood` is
   a Java identifier; the constructor's name string `lumenwilds:glowwood` drives textures). See `ModBoatTypes`.
 - `assets/lumenwilds/`: `blockstates/`, `models/block|item/`, `textures/block|item/` (flat-colour 16px
@@ -589,6 +620,12 @@ as `File#member`.
 
 ## Invariants & gotchas
 
+- **Mixins on NeoForge 1.21.1 need no AP/refmap.** The runtime is mojmap, so mixins apply by source name —
+  just write the class, list it in `lumenwilds.mixins.json` (no `refmap` key), and add `[[mixins]] config=…`
+  to `neoforge.mods.toml`. `org.spongepowered.asm.mixin.*` is on the compile classpath via NeoForge (no extra
+  dependency). Verify a mixin actually *applies* at runtime (boot log: `SpongePowered MIXIN Subsystem …`,
+  and no `InvalidInjectionException`) — a green compile only proves it parsed. The half-rate clock (7d.1) was
+  confirmed by a temp `ServerTickEvent` logger showing Lumenwilds dayTime advancing at half the Overworld's.
 - **NEVER launch `runClient`/`runServer` while a dev client/server is already open on the same world.** Two
   JVMs sharing `run/`'s region files throw `OverlappingFileLockException`, which surfaces downstream as
   `IllegalStateException: Requested chunk unavailable during world generation` — a *fake* "worldgen crash"

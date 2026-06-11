@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "minVersion": "0.8.5",
+  "package": "com.jus144tice.lumenwilds.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "DerivedLevelDataMixin",
+    "ServerLevelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
