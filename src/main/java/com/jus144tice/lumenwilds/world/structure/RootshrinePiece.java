@@ -83,7 +83,10 @@ public class RootshrinePiece extends StructurePiece {
 
         BlockState moonstone = ModBlocks.MOONSTONE.get().defaultBlockState();
         BlockState log = ModBlocks.GLOWROOT_LOG.get().defaultBlockState();
-        BlockState leaves = ModBlocks.GLOWROOT_LEAVES.get().defaultBlockState();
+        BlockState leaves = ModBlocks.GLOWROOT_LEAVES
+                .get()
+                .defaultBlockState()
+                .setValue(net.minecraft.world.level.block.LeavesBlock.PERSISTENT, true);
         BlockState bulb = ModBlocks.LUMENBULB.get().defaultBlockState();
         BlockState vine = ModBlocks.GLOWVINE.get().defaultBlockState();
 

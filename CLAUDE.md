@@ -800,6 +800,13 @@ as `File#member`.
   `minecraft:water`; glowing Lumenwater is confined to the small `LumenwaterPoolFeature` pools. Same caution for
   any high-`lightLevel` block used as a worldgen bulk fill. **Headless repro:** a `/fill` of equal volumes +
   watch `Can't keep up` — light cost isolates cleanly this way (no player needed).
+- **Custom/procedural-tree leaves MUST be `LeavesBlock.PERSISTENT = true`.** Non-persistent leaves whose real
+  distance to a log exceeds 7 **decay and drop items**; the Glowroot trees (big spreading + mega canopies,
+  dense in the Glowroot Forest) flooded the world with **>20,000 item entities** that tanked the server (setting
+  `DISTANCE=1` at placement does NOT help — vanilla recomputes it). `world.feature.GlowrootShape#leaves` +
+  `RootshrinePiece` now set `PERSISTENT`. Vanilla `minecraft:tree` features (Glowwood) are fine — they keep
+  leaves within distance 7. **Headless repro:** force-load a forest region, let it tick, watch for a climbing
+  `minecraft:item` count (a temp per-tick entity-census logger by `EntityType` names a runaway spawner fast).
 - **Client rendering (sky/particles/fog) can't be validated headlessly.** `DimensionSpecialEffects#renderSky`
   (Phase 7a `LumenDimensionEffects`) only runs in-client after entering the dimension; a server (even with
   force-gen) never calls it. Build + boot confirm registration/no-crash; the *look* needs `runClient` through

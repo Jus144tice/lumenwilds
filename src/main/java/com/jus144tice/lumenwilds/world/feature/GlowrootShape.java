@@ -254,6 +254,9 @@ public final class GlowrootShape {
     }
 
     private static BlockState leaves() {
-        return ModBlocks.GLOWROOT_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 1);
+        // PERSISTENT so they never decay: the big spreading/mega Glowroot canopies put many leaves >7 blocks
+        // from a log, and decaying leaves drop items — a dense forest of these flooded the world with
+        // thousands of item entities and tanked the server (Phase 9 fix).
+        return ModBlocks.GLOWROOT_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
     }
 }
