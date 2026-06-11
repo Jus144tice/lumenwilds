@@ -690,9 +690,10 @@ as `File#member`.
 - `META-INF/enumextensions.json` — the Glowwood `Boat.Type` entry (constant name `lumenwilds_glowwood` is
   a Java identifier; the constructor's name string `lumenwilds:glowwood` drives textures). See `ModBoatTypes`.
 - `assets/lumenwilds/`: `blockstates/`, `models/block|item/`, `textures/block|item/` (**Phase 9 world-art pass:
-  all ~53 base block textures are now patterned procedural art — plant shapes, crystal facets, stone speckle,
-  brick/tile, wood grain — not flat colours**; `glowvine` is a passable glowing **cross** (vine) model, not a
-  cube), `textures/entity/{signs,signs/hanging,boat,chest_boat}/glowwood.png` + `textures/gui/
+  all ~53 base block textures AND all ~35 item textures are now patterned procedural art — plant shapes, crystal
+  facets, stone speckle, brick/tile, wood grain; item icons (foods, mob drops, tools, buckets, boats, signs) —
+  not flat colours**; `glowvine` is a passable glowing **cross** (vine) model, not a cube),
+  `textures/entity/{signs,signs/hanging,boat,chest_boat}/glowwood.png` + `textures/gui/
   hanging_signs/glowwood.png` (sign/boat placeholders), `lang/en_us.json` (display names +
   `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}` + `fluid_type.lumenwilds.lumenwater`
   + `entity.lumenwilds.*` mob names). Mob art (placeholders): `textures/entity/lumen_grazer.png` (64×32
