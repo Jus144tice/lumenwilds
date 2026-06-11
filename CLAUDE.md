@@ -107,8 +107,13 @@ read for the visuals. **The whole atmosphere (Phase 7) is now in.** **Phase 8 is
 vision) and Lumen Nectar (→ brief regeneration) are now real foods (`DataComponents.FOOD`), the latter
 **collected from a Stillbloom with a glass bottle** (`event.StillbloomInteractEvents`); and **Glowcap Stew**
 (`ModItems#GLOWCAP_STEW`, bowl + glowcap + lumen fruit + moonblossom → hunger + night vision, returns the
-bowl). What is deliberately *not* built yet: brewing/potions, the Lumen Anchor, structures (rest of Phase 8),
-the final art/audio pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+bowl). **The Lumen Anchor is in (8c):** a portal-link device — `block.LumenAnchorBlock` (a `BaseEntityBlock`)
++ `block.LumenAnchorBlockEntity` (stores a partner `GlobalPos`); right-click two anchors with the Lumen
+Striker to pair them, and a linked anchor near a portal makes return travel land **precisely** at its partner
+(`portal.LumenAnchorLinks` overrides the scaled find-or-build in `LumenPortalBlock#getPortalDestination`).
+Crafted from Shimmerstone + Lumen Crystal Block + Echo Dust + Lumenbound Stone; it's the first `ModBlockEntities`
+content. What is deliberately *not* built yet: brewing/potions, structures (rest of Phase 8), the final
+art/audio pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -173,7 +178,8 @@ as `File#member`.
 
 ### registry/ — all registered content
 - [ModBlocks.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBlocks.java) — `#BLOCKS`
-  (`DeferredRegister.Blocks`), ~77 blocks. Core: `#LUMENBOUND_STONE` (portal frame), `#LUMEN_PORTAL`
+  (`DeferredRegister.Blocks`), ~78 blocks. Core: `#LUMENBOUND_STONE` (portal frame), `#LUMEN_ANCHOR`
+  (`block.LumenAnchorBlock`, portal-link device w/ a block entity, 8c), `#LUMEN_PORTAL`
   (`LumenPortalBlock`, non-solid/glowing), `#MOONLOAM`, `#LUMEN_GRASS_BLOCK`, `#MOONSTONE`/`#COBBLED_MOONSTONE`,
   `#GLOWROOT_LOG` (`RotatedPillarBlock`), `#GLOWVINE`, `#LUMENBULB`, `#LUMEN_CRYSTAL_BLOCK`. **Phase 5
   content:** `#MOONBLOSSOM` (`FlowerBlock`, night-vision), `#GLOW_FERN`/`#GLOW_ALGAE`/`#LUMEN_REEDS`
@@ -250,8 +256,9 @@ as `File#member`.
   subclass — vanilla's ctor is protected). `#LIGHTFOOT` (+`JUMP_STRENGTH`/+`SAFE_FALL_DISTANCE`), `#GLOWMARKED`
   (no attrs — glow via `event.LumenEffectEvents`), `#SPOREBLIND` (−`MOVEMENT_SPEED`; the Sporeling cloud
   applies it), `#ROOTED` (−`MOVEMENT_SPEED` & −`JUMP_STRENGTH`). Icons: `textures/mob_effect/<name>.png`.
+- [ModBlockEntities.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) —
+  `#BLOCK_ENTITIES`; `#LUMEN_ANCHOR` (`BlockEntityType` for `block.LumenAnchorBlockEntity`, 8c) — the first BE.
 - Empty stubs (compile; carry phase TODOs). Wired to the bus already (registered empty): 
-  [ModBlockEntities](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) `#BLOCK_ENTITIES`,
   [ModMenus](src/main/java/com/jus144tice/lumenwilds/registry/ModMenus.java) `#MENUS`,
   [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS` (still empty — the
   7c soundscape is built from **vanilla** sound events; bespoke recorded `.ogg` SFX → Phase 9, then register
@@ -295,6 +302,10 @@ as `File#member`.
 - [LumenPortalTeleporter.java](src/main/java/com/jus144tice/lumenwilds/portal/LumenPortalTeleporter.java) —
   `#createDestinationTransition(target, entity, approx, axis)`: find/build the exit portal and return a
   `DimensionTransition` placing the entity collision-free at the opening base (zeroed momentum).
+- [LumenAnchorLinks.java](src/main/java/com/jus144tice/lumenwilds/portal/LumenAnchorLinks.java) — `#findLinkedTarget(sourceLevel, portalPos, destination)`
+  (8c): scans a small box around the source portal for a linked `LumenAnchorBlockEntity` whose partner is in
+  the destination dim; if found, `LumenPortalBlock#getPortalDestination` uses that exact `approx` instead of
+  the 1:1-scaled position — so an anchored return lands precisely.
 
 ### block/ — custom block behaviours
 - [BottledLanternBeetleBlock.java](src/main/java/com/jus144tice/lumenwilds/block/BottledLanternBeetleBlock.java)
@@ -302,6 +313,14 @@ as `File#member`.
   surface** — `#canSurvive` needs a sturdy face below, `#updateShape` pops it off if support is removed
   (lantern/candle pattern). `#CODEC`/`#codec`, `#getShape`. Registered as `ModBlocks#BOTTLED_LANTERN_BEETLE`
   (light 12); obtained by bottling a `LanternBeetle`.
+- [LumenAnchorBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenAnchorBlock.java) — the Lumen
+  Anchor (8c), a `BaseEntityBlock` (`#getRenderShape` = MODEL so it still draws normally). `#useItemOn`: with
+  the Lumen Striker in hand, picks/links anchors — a transient per-player `#PENDING` map holds the first pick,
+  the second click `#link`s both block entities (`setLink` loads the partner's chunk via `getBlockEntity`).
+  `ModBlocks#LUMEN_ANCHOR` (light 7).
+- [LumenAnchorBlockEntity.java](src/main/java/com/jus144tice/lumenwilds/block/LumenAnchorBlockEntity.java) —
+  stores the partner `GlobalPos` (`#getLinkedTo`/`#setLinkedTo`, saved as `LinkDim`+`LinkPos` NBT). The
+  project's first block entity (`ModBlockEntities#LUMEN_ANCHOR`).
 
 ### fluid/ — Lumenwater (Phase 5e)
 - [LumenwaterBlock.java](src/main/java/com/jus144tice/lumenwilds/fluid/LumenwaterBlock.java) — the
@@ -627,7 +646,7 @@ as `File#member`.
   fluid itself renders via the client `IClientFluidTypeExtensions`, not a block model) and a flat
   `lumenwater_bucket` item; it has **no fluid textures** of its own (reuses vanilla water, tinted).
 - `data/lumenwilds/`: `recipe/*` (incl. `cooked_grazer_meat` + `cooked_mirefish` furnace/smoker/campfire,
-  `glowcap_stew` shapeless [8b]),
+  `glowcap_stew` shapeless [8b], `lumen_anchor` shaped [8c]),
   `loot_table/blocks/*` + `loot_table/entities/*` (mob drops — `lumen_grazer` 6a, `shade_stalker` 6b,
   `lantern_beetle` 6c, `sporeling` 6d, `mirelurker` 6e, `lumen_fish` 6f, `sky_jelly` 6g, `glowmoth` 6h, `rootback` 6i, `crag_wraith` 6j), `dimension/lumenwilds.json` (custom noise gen +
   a **`multi_noise` biome source** — humidity splits `lumen_glade`/`glowroot_forest`, a cold band carves out

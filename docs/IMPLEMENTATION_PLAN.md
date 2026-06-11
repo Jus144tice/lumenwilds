@@ -800,7 +800,16 @@ at the slower cadence.
   Grazer/Mirefish meats were already foods (6a/6e). Verified: build green + `runServer` loaded all recipes
   (incl. `glowcap_stew`) with no unknown-item errors; the items register. *The eat-effects + nectar collection
   are gameplay → `runClient`.*
-- **8c Lumen Anchor** — the portal-link block + `BlockEntity` + `LumenPortalTeleporter` integration.
+- **8c Lumen Anchor** ✅ **done** — the portal-link device. `block/LumenAnchorBlock` (a `BaseEntityBlock`,
+  `getRenderShape` MODEL) + `block/LumenAnchorBlockEntity` (stores a partner `GlobalPos`). **Linking:**
+  right-click two anchors with the Lumen Striker (`useItemOn`; transient per-player pick, then sets both BEs —
+  `getBlockEntity` loads the partner's chunk for cross-dim writes). **Routing:** `portal/LumenAnchorLinks#findLinkedTarget`
+  scans near the source portal for a linked anchor → `LumenPortalBlock#getPortalDestination` uses the partner
+  position instead of the 1:1-scaled find-or-build. Registered `ModBlocks#LUMEN_ANCHOR` + the first
+  `ModBlockEntities#LUMEN_ANCHOR`. Recipe (Shimmerstone + Lumen Crystal Block + Echo Dust + Lumenbound Stone),
+  drop-self loot, pickaxe tag, light 7, glowing-core texture. Verified: build green + `runServer` registered
+  the BE type, loaded the recipe (1380), and `setblock`-placed an anchor (BE created) with no errors. *The
+  linking interaction + precise-return teleport are gameplay → `runClient`.*
 - **8d+ Structures** — **code-based (procedural `Structure`/`StructurePiece`, like the mega tree)**, NOT
   Jigsaw `.nbt`: `.nbt` templates need an in-game structure-block editor (can't author headlessly), and we
   already have the procedural pattern. One structure per increment: Rootshrine → Lumenbound Ruins →

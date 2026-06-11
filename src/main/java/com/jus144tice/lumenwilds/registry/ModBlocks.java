@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.block.BottledLanternBeetleBlock;
+import com.jus144tice.lumenwilds.block.LumenAnchorBlock;
 import com.jus144tice.lumenwilds.fluid.LumenwaterBlock;
 import com.jus144tice.lumenwilds.portal.LumenPortalBlock;
 import com.jus144tice.lumenwilds.world.LumenConfiguredFeatures;
@@ -72,6 +73,20 @@ public final class ModBlocks {
                     .mapColor(MapColor.STONE)
                     .strength(4.0F, 8.0F)
                     .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE));
+
+    /**
+     * Lumen Anchor (Phase 8c) — the portal-link device ({@link LumenAnchorBlock} + a block entity). Link two
+     * with the Lumen Striker so return travel lands precisely. Glows faintly.
+     */
+    public static final DeferredBlock<LumenAnchorBlock> LUMEN_ANCHOR = BLOCKS.registerBlock(
+            "lumen_anchor",
+            LumenAnchorBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(4.0F, 8.0F)
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 7)
                     .sound(SoundType.STONE));
 
     /**

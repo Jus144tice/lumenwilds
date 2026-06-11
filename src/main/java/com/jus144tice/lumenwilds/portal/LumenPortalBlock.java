@@ -99,7 +99,11 @@ public class LumenPortalBlock extends Block implements Portal {
         }
         double scale = DimensionType.getTeleportationScale(level.dimensionType(), target.dimensionType());
         WorldBorder border = target.getWorldBorder();
-        BlockPos approx = border.clampToBounds(entity.getX() * scale, entity.getY(), entity.getZ() * scale);
+        // A linked Lumen Anchor near the source portal overrides the scaled find-or-build with a precise target (8c).
+        BlockPos linked = LumenAnchorLinks.findLinkedTarget(level, pos, targetKey);
+        BlockPos approx = linked != null
+                ? linked
+                : border.clampToBounds(entity.getX() * scale, entity.getY(), entity.getZ() * scale);
         Direction.Axis axis =
                 entity.level().getBlockState(pos).getOptionalValue(AXIS).orElse(Direction.Axis.X);
         return LumenPortalTeleporter.createDestinationTransition(target, entity, approx, axis);

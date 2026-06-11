@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [" S ", "CEC", " B "],
+  "key": {
+    "S": { "item": "lumenwilds:shimmerstone" },
+    "C": { "item": "lumenwilds:lumen_crystal_block" },
+    "E": { "item": "lumenwilds:echo_dust" },
+    "B": { "item": "lumenwilds:lumenbound_stone" }
+  },
+  "result": { "id": "lumenwilds:lumen_anchor", "count": 1 }
+}
