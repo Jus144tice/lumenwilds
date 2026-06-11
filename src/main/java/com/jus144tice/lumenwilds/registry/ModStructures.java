@@ -9,6 +9,8 @@ import com.jus144tice.lumenwilds.world.structure.GlowrootTreePiece;
 import com.jus144tice.lumenwilds.world.structure.GlowrootTreeStructure;
 import com.jus144tice.lumenwilds.world.structure.MegaGlowcapPiece;
 import com.jus144tice.lumenwilds.world.structure.MegaGlowcapStructure;
+import com.jus144tice.lumenwilds.world.structure.RootshrinePiece;
+import com.jus144tice.lumenwilds.world.structure.RootshrineStructure;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
@@ -43,6 +45,12 @@ public final class ModStructures {
 
     public static final DeferredHolder<StructurePieceType, StructurePieceType> MEGA_GLOWCAP_PIECE =
             STRUCTURE_PIECES.register("mega_glowcap", () -> (StructurePieceType.ContextlessType) MegaGlowcapPiece::new);
+
+    public static final DeferredHolder<StructureType<?>, StructureType<RootshrineStructure>> ROOTSHRINE =
+            STRUCTURE_TYPES.register("rootshrine", () -> () -> RootshrineStructure.CODEC);
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> ROOTSHRINE_PIECE =
+            STRUCTURE_PIECES.register("rootshrine", () -> (StructurePieceType.ContextlessType) RootshrinePiece::new);
 
     private ModStructures() {}
 }

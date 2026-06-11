@@ -112,8 +112,11 @@ bowl). **The Lumen Anchor is in (8c):** a portal-link device — `block.LumenAnc
 Striker to pair them, and a linked anchor near a portal makes return travel land **precisely** at its partner
 (`portal.LumenAnchorLinks` overrides the scaled find-or-build in `LumenPortalBlock#getPortalDestination`).
 Crafted from Shimmerstone + Lumen Crystal Block + Echo Dust + Lumenbound Stone; it's the first `ModBlockEntities`
-content. What is deliberately *not* built yet: brewing/potions, structures (rest of Phase 8), the final
-art/audio pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+content. **Structures are starting (8d):** the **Rootshrine** — a small early-reward shrine (a Moonstone floor
+under a cage of arching Glowroot-log roots + a loot chest), a procedural `world.structure.RootshrinePiece`
+like the mega tree, generating in the Glowroot Forest. What is deliberately *not* built yet: brewing/potions,
+the other 3 structures (Lumenbound Ruins / Glasspetal Spires / Undercrown Relics), the final art/audio pass
+(Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -274,9 +277,10 @@ as `File#member`.
   (`StillbloomFeature`) — the giant Stillbloom flower (5d.6).
 - [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
   `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` + `#GLOWROOT_TREE_PIECE` (the mega Glowroot
-  tree) and `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom). Both are
-  structures (span chunks, no feature size cap). Structure instances + spawn spacing are datapack JSON
-  (`worldgen/structure*`); these are the code types.
+  tree), `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom), and `#ROOTSHRINE` +
+  `#ROOTSHRINE_PIECE` (the small early-reward Rootshrine, 8d). All are structures (generate per-chunk via a
+  bounding box). Structure instances + spawn spacing are datapack JSON (`worldgen/structure*`); these are the
+  code types.
 - [ModBiomes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBiomes.java) /
   [ModDimensions.java](src/main/java/com/jus144tice/lumenwilds/registry/ModDimensions.java) — thin
   re-exports of the worldgen/dimension `ResourceKey`s from `world/` (worldgen is datapack-driven, not a
@@ -453,7 +457,7 @@ as `File#member`.
   only the interface and ore idea are shared; the silhouette is its own mushroom, NOT the tree). `#Params`
   + preset `#MEGA`. **Tune the giant mushroom here.**
 
-### world/structure/ — the two town-sized giants (Phases 5c-2, 5d.3+)
+### world/structure/ — procedural structures (Phases 5c-2, 5d.3, 8d+)
 - [GlowrootTreeStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/GlowrootTreeStructure.java)
   — `Structure` (`#CODEC` via `simpleCodec`); `#findGenerationPoint` places one `GlowrootTreePiece` at the
   surface chunk centre. Bound to `ModStructures#GLOWROOT_TREE`.
@@ -467,6 +471,13 @@ as `File#member`.
   the **mega Glowcap** giant mushroom (same structure/piece plumbing as the Glowroot mega, position-seeded
   RNG + box-clipped `Placer`). The piece runs `MegaGlowcapShape.generate(..., MEGA)`; geometry/size live in
   `MegaGlowcapShape#MEGA`. Bound to `ModStructures#MEGA_GLOWCAP`. Spawns in the Sporefall Jungle only.
+- [RootshrineStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/RootshrineStructure.java)
+  / [RootshrinePiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/RootshrinePiece.java) — the
+  **Rootshrine** (8d), a small early-reward shrine. Same plumbing as the giants but the geometry is built
+  inline in `#postProcess` (no shared Shape): a Moonstone floor disc, four Glowroot-log roots arching to a
+  shared peak (the "inside giant roots" cage) + leaf cap / hanging Glowvine / Lumenbulb lights, and a central
+  pedestal **loot chest** (`setLootTable` → `chests/rootshrine`). Bound to `ModStructures#ROOTSHRINE`; spawns
+  in the Glowroot Forest.
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -669,9 +680,10 @@ as `File#member`.
   `undercrown_pool`, `stillbloom` [5d.6, custom feature]; placed-only `glowroot_forest_trees`
   [forest-density 2×2]), and **two town-sized structures** — `structure/glowroot_tree.json`
   + `structure_set/glowroot_tree.json` (spacing 20/sep 7, in `lumen_glade`) and `structure/mega_glowcap.json`
-  + `structure_set/mega_glowcap.json` (spacing 20/sep 7, distinct salt, in `sporefall_jungle`), each with its
-  `tags/worldgen/biome/has_structure/<name>.json` biome tag. Hand-authored (not datagen); the other 3 biomes
-  arrive in 5d.4–5d.6.
+  + `structure_set/mega_glowcap.json` (spacing 20/sep 7, distinct salt, in `sporefall_jungle`), plus the
+  **Rootshrine** (8d) — `structure/rootshrine.json` + `structure_set/rootshrine.json` (spacing 14/sep 5, in
+  `glowroot_forest`) with a `chests/rootshrine` loot table — each with its
+  `tags/worldgen/biome/has_structure/<name>.json` biome tag. Hand-authored (not datagen).
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`; `tags/block/dirt.json`
   adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil); `tags/fluid/water.json`

@@ -812,8 +812,16 @@ at the slower cadence.
   linking interaction + precise-return teleport are gameplay → `runClient`.*
 - **8d+ Structures** — **code-based (procedural `Structure`/`StructurePiece`, like the mega tree)**, NOT
   Jigsaw `.nbt`: `.nbt` templates need an in-game structure-block editor (can't author headlessly), and we
-  already have the procedural pattern. One structure per increment: Rootshrine → Lumenbound Ruins →
-  Glasspetal Spires → Undercrown Relics.
+  already have the procedural pattern. One structure per increment:
+  - **8d Rootshrine** ✅ **done** — a small early-reward shrine: `world/structure/RootshrineStructure` +
+    `RootshrinePiece` (geometry built inline in `postProcess` — Moonstone floor disc, four Glowroot-log roots
+    arching to a peak [the "inside giant roots" cage] + leaf cap / Glowvine / Lumenbulb lights, a central
+    pedestal **loot chest** via `setLootTable` → `chests/rootshrine`). `ModStructures#ROOTSHRINE` +
+    `structure`/`structure_set` (spacing 14/sep 5) + `has_structure/rootshrine` tag (Glowroot Forest) + the
+    chest loot (early forage/crafting items). Verified: build green + `runServer` force-gen'd a Lumenwilds
+    region **and** `/place structure`d the Rootshrine — `postProcess` (root dome + chest loot) ran with no
+    chunk-unavailable/build errors. *Visual/loot-feel → runClient.*
+  - **next:** Lumenbound Ruins → Glasspetal Spires → Undercrown Relics.
 
 ### Scope
 - **Structures** (overgrown/organic, never village-like):
