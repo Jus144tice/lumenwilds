@@ -4,6 +4,10 @@
   "temperature": 0.7,
   "downfall": 0.5,
   "effects": {
+    "particle": {
+      "options": { "type": "lumenwilds:lumen_spore" },
+      "probability": 0.004
+    },
     "fog_color": 3502202,
     "sky_color": 3829386,
     "water_color": 1994360,

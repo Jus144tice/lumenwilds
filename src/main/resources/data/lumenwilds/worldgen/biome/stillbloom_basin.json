@@ -4,6 +4,10 @@
   "temperature": 0.8,
   "downfall": 0.0,
   "effects": {
+    "particle": {
+      "options": { "type": "lumenwilds:glow_pollen" },
+      "probability": 0.006
+    },
     "fog_color": 9418968,
     "sky_color": 10405092,
     "water_color": 7325912,

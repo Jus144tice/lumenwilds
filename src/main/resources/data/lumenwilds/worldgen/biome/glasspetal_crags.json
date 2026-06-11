@@ -4,6 +4,10 @@
   "temperature": 0.3,
   "downfall": 0.3,
   "effects": {
+    "particle": {
+      "options": { "type": "lumenwilds:crystal_shimmer" },
+      "probability": 0.006
+    },
     "fog_color": 2760266,
     "sky_color": 2366014,
     "water_color": 3359936,

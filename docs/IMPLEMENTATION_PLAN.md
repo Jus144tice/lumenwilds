@@ -722,8 +722,16 @@ Built one increment at a time (like Phase 5d / 6), each compiling + boot-checked
   `ambient_light` 0.2. Veyra texture placeholder (`textures/environment/veyra.png`). Verified: build green +
   client boot loaded the mod with no `DimensionSpecialEffects`/texture errors. **The actual look is unverified
   — needs a `runClient` pass through a portal** (sky rendering can't be checked headlessly).
-- **7b Particles** — `registry/ModParticles` + client providers (portal spores, drifting pollen, crystal
-  shimmer, beetle trails); wire into `animateTick`/biome ambient particles.
+- **7b Particles** ✅ **done** — `registry/ModParticles` registers three `SimpleParticleType`s: `lumen_spore`
+  (signature drifting glow mote), `glow_pollen` (flower-biome float), `crystal_shimmer` (Crags sparkle).
+  Client render factories (`LumenwildsClient#onRegisterParticleProviders`) **reuse vanilla particle classes**
+  (`EndRodParticle.Provider` / `SuspendedTownParticle.Provider` / `GlowParticle.GlowSquidProvider`) with
+  `particles/<name>.json` + `textures/particle/<name>.png` sprites. Wired in: the portal `animateTick` now
+  emits `lumen_spore` (replacing the vanilla `GLOW` placeholder), and five biomes get an `effects.particle`
+  ambient (`lumen_glade`/`glowroot_forest`/`undercrown_caverns` → spore, `glasspetal_crags` → shimmer,
+  `stillbloom_basin` → pollen). Verified: build green + `runServer` loaded all five biomes clean (the particle
+  ids resolve against the registry server-side). *Beetle/Glowmoth trails + Sporefall weather particles →
+  later (7d / Phase 9). The actual particle look needs `runClient`.*
 - **7c Sounds** — `registry/ModSounds` + `sounds.json` + biome `ambient/mood/additions/music`. **Caveat:**
   real `.ogg` assets can't be authored here — ship the registry + JSON wiring with placeholder/silent entries,
   flag audio art as a Phase 9 asset task.

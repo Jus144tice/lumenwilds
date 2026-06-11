@@ -4,12 +4,12 @@
  */
 package com.jus144tice.lumenwilds.portal;
 
+import com.jus144tice.lumenwilds.registry.ModParticles;
 import com.jus144tice.lumenwilds.world.LumenDimensionConstants;
 import com.mojang.serialization.MapCodec;
 import javax.annotation.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -110,7 +110,7 @@ public class LumenPortalBlock extends Block implements Portal {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        // Drifting teal spores (placeholder particle; custom portal spores arrive in Phase 7).
+        // Drifting Lumen Spores rising out of the portal (the bespoke atmosphere particle, Phase 7b).
         for (int i = 0; i < 2; i++) {
             double x = pos.getX() + random.nextDouble();
             double y = pos.getY() + random.nextDouble();
@@ -118,7 +118,7 @@ public class LumenPortalBlock extends Block implements Portal {
             double vx = (random.nextDouble() - 0.5) * 0.2;
             double vy = random.nextDouble() * 0.1;
             double vz = (random.nextDouble() - 0.5) * 0.2;
-            level.addParticle(ParticleTypes.GLOW, x, y, z, vx, vy, vz);
+            level.addParticle(ModParticles.LUMEN_SPORE.get(), x, y, z, vx, vy, vz);
         }
     }
 }

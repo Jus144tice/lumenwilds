@@ -82,9 +82,11 @@ knockback (deadly near the cliffs). **All 10 mobs are now in — Phase 6 complet
 (`client.LumenDimensionEffects`) bound to the dimension's effects id renders perpetual dim twilight (a
 deep-indigo→teal dome), a weak blurred sun, and **Veyra**, the oversized pale moon the world lives under;
 `dimension_type.effects` now points to `lumenwilds:lumenwilds` with raised `ambient_light` 0.2. *(Sky
-rendering can only be verified in-client — `runClient` through a portal — not on a headless server.)* What is
-deliberately *not* built yet: atmosphere particles/sounds/weather events + the half-rate day cycle (Phase
-7b–7d), more structures (Phase 8). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+rendering can only be verified in-client — `runClient` through a portal — not on a headless server.)*
+**Atmosphere particles are in (7b):** three bespoke `SimpleParticleType`s (`ModParticles` — `lumen_spore`,
+`glow_pollen`, `crystal_shimmer`, render factories reusing vanilla particle classes) drift through the world
+as biome ambience (`effects.particle` per biome) and rise from the portal. What is deliberately *not* built
+yet: atmosphere sounds + weather events + the half-rate day cycle (Phase 7c–7d), more structures (Phase 8). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -222,8 +224,12 @@ as `File#member`.
   [ModMobEffects](src/main/java/com/jus144tice/lumenwilds/registry/ModMobEffects.java) `#MOB_EFFECTS`,
   [ModBlockEntities](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) `#BLOCK_ENTITIES`,
   [ModMenus](src/main/java/com/jus144tice/lumenwilds/registry/ModMenus.java) `#MENUS`,
-  [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS`,
-  [ModParticles](src/main/java/com/jus144tice/lumenwilds/registry/ModParticles.java) `#PARTICLES`.
+  [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS`.
+- [ModParticles.java](src/main/java/com/jus144tice/lumenwilds/registry/ModParticles.java) — `#PARTICLES`
+  (atmosphere, Phase 7b); `#LUMEN_SPORE` (signature drifting glow mote — biome ambience + the portal),
+  `#GLOW_POLLEN` (flower-biome float), `#CRYSTAL_SHIMMER` (Crags sparkle), all `SimpleParticleType`. Client
+  render factories + sprites are wired in `client.LumenwildsClient`; usage is the portal `animateTick` + biome
+  `effects.particle`.
 - [ModFeatures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFeatures.java) — `#FEATURES`
   (custom `Feature` types), bus-wired. `#GLOWROOT_TREE_2X2` (`GlowrootTreeFeature`) — the ordinary 2×2
   Glowroot tree (the mega tree is a structure; both share `world.feature.GlowrootShape`); `#STILLBLOOM`
@@ -458,6 +464,10 @@ as `File#member`.
   (`#VEYRA_RADIUS` 55 vs. vanilla 20) from `textures/environment/veyra.png`; structure mirrors vanilla
   `LevelRenderer#renderSky` on 1.21.1. `#getBrightnessDependentFogColor` tints fog teal-indigo;
   `#getSunriseColor` returns null (no horizon band). **Visual-only — verify via `runClient`, not a server.**
+- `LumenwildsClient#onRegisterParticleProviders(RegisterParticleProvidersEvent)` (7b) — render factories for
+  the three atmosphere particles, **reusing vanilla classes** (Lumen Spore → `EndRodParticle.Provider`, Glow
+  Pollen → `SuspendedTownParticle.Provider`, Crystal Shimmer → `GlowParticle.GlowSquidProvider`); sprites from
+  `assets/lumenwilds/particles/<name>.json` → `textures/particle/<name>.png`. (Visuals verify via `runClient`.)
 - [LumenGrazerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/LumenGrazerRenderer.java) /
   [ShadeStalkerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/ShadeStalkerRenderer.java) —
   `MobRenderer`s; **placeholders reuse vanilla models** (Grazer → `CowModel`/`COW`; Shade Stalker →
@@ -521,6 +531,8 @@ as `File#member`.
   all 64×32) + `mirelurker.png` (salmon) + `lumen_fish.png` (cod), both 32×32, + `sky_jelly.png` (ghast) +
   `glowmoth.png` (endermite) + `rootback.png` (cow) + `crag_wraith.png` (ghast), 64×32, under `textures/entity/`.
   Sky art (7a): `textures/environment/veyra.png` (64×64 pale-moon disc on transparent — the giant Veyra moon).
+  Particles (7b): `particles/{lumen_spore,glow_pollen,crystal_shimmer}.json` (texture lists) +
+  `textures/particle/<name>.png` (8×8 soft glow dots).
   Lumenwater (5e) has a particle-only `blockstates/lumenwater.json` + `models/block/lumenwater.json` (the
   fluid itself renders via the client `IClientFluidTypeExtensions`, not a block model) and a flat
   `lumenwater_bucket` item; it has **no fluid textures** of its own (reuses vanilla water, tinted).

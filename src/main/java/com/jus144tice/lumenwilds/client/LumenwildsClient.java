@@ -7,7 +7,11 @@ package com.jus144tice.lumenwilds.client;
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.registry.ModEntities;
 import com.jus144tice.lumenwilds.registry.ModFluidTypes;
+import com.jus144tice.lumenwilds.registry.ModParticles;
 import com.jus144tice.lumenwilds.registry.ModWoodTypes;
+import net.minecraft.client.particle.EndRodParticle;
+import net.minecraft.client.particle.GlowParticle;
+import net.minecraft.client.particle.SuspendedTownParticle;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
@@ -16,6 +20,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterDimensionSpecialEffectsEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 
@@ -61,6 +66,19 @@ public final class LumenwildsClient {
     @SubscribeEvent
     public static void onRegisterDimensionEffects(final RegisterDimensionSpecialEffectsEvent event) {
         event.register(LumenDimensionEffects.EFFECTS_ID, new LumenDimensionEffects());
+    }
+
+    /**
+     * Phase 7b: render factories for the atmosphere particles. <b>Placeholders reuse vanilla render classes</b>
+     * (the same approach as the mob model placeholders): Lumen Spore → {@link EndRodParticle} (slow glowing
+     * drift), Glow Pollen → {@link SuspendedTownParticle} (gentle float), Crystal Shimmer →
+     * {@link GlowParticle} glow-squid sparkle. Each pulls its sprite from {@code particles/<name>.json}.
+     */
+    @SubscribeEvent
+    public static void onRegisterParticleProviders(final RegisterParticleProvidersEvent event) {
+        event.registerSpriteSet(ModParticles.LUMEN_SPORE.get(), EndRodParticle.Provider::new);
+        event.registerSpriteSet(ModParticles.GLOW_POLLEN.get(), SuspendedTownParticle.Provider::new);
+        event.registerSpriteSet(ModParticles.CRYSTAL_SHIMMER.get(), GlowParticle.GlowSquidProvider::new);
     }
 
     @SubscribeEvent
