@@ -4,31 +4,23 @@
  */
 package com.jus144tice.lumenwilds.client;
 
+import com.jus144tice.lumenwilds.client.model.SkyJellyModel;
 import com.jus144tice.lumenwilds.entity.SkyJelly;
 import com.jus144tice.lumenwilds.util.ResourceLocationHelper;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.model.GhastModel;
-import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * Renders the Sky Jelly. <b>Placeholder:</b> reuses the vanilla {@link GhastModel} (the already-registered
- * {@code ModelLayers.GHAST}) — its floating body + hanging tentacles read as a jellyfish — scaled way down
- * (a ghast is ~4 blocks) with a translucent-teal texture. Final bespoke model + emissive glow → Phase 9.
+ * Renders the Sky Jelly with the bespoke {@link SkyJellyModel} (Phase 9b — the first real model, replacing the
+ * scaled-ghast placeholder). Texture {@code textures/entity/sky_jelly.png}.
  */
-public class SkyJellyRenderer extends MobRenderer<SkyJelly, GhastModel<SkyJelly>> {
+public class SkyJellyRenderer extends MobRenderer<SkyJelly, SkyJellyModel> {
 
     private static final ResourceLocation TEXTURE = ResourceLocationHelper.modLoc("textures/entity/sky_jelly.png");
 
     public SkyJellyRenderer(EntityRendererProvider.Context context) {
-        super(context, new GhastModel<>(context.bakeLayer(ModelLayers.GHAST)), 0.5F);
-    }
-
-    @Override
-    protected void scale(SkyJelly entity, PoseStack pose, float partialTick) {
-        pose.scale(0.35F, 0.35F, 0.35F);
+        super(context, new SkyJellyModel(context.bakeLayer(LumenModelLayers.SKY_JELLY)), 0.4F);
     }
 
     @Override

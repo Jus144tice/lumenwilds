@@ -625,10 +625,15 @@ as `File#member`.
   [ShadeStalkerRenderer.java](src/main/java/com/jus144tice/lumenwilds/client/ShadeStalkerRenderer.java) —
   `MobRenderer`s; **placeholders reuse vanilla models** (Grazer → `CowModel`/`COW`; Shade Stalker →
   `SpiderModel`/`SPIDER`; Lantern Beetle → `SilverfishModel`/`SILVERFISH`; Sporeling → `SlimeModel`/`SLIME`;
-  Mirelurker → `SalmonModel`/`SALMON`; Lumen Fish → `CodModel`/`COD`; Sky Jelly → `GhastModel`/`GHAST` scaled
-  0.35; Glowmoth → `EndermiteModel`/`ENDERMITE` scaled 1.6; Rootback → `CowModel`/`COW` scaled 3.4; Crag
-  Wraith → `GhastModel`/`GHAST` scaled ~0.7) with `textures/entity/<name>.png`. No bespoke `LayerDefinition`s;
-  final models + emissive glow → Phase 9.
+  Mirelurker → `SalmonModel`/`SALMON`; Lumen Fish → `CodModel`/`COD`;
+  Glowmoth → `EndermiteModel`/`ENDERMITE` scaled 1.6; Rootback → `CowModel`/`COW` scaled 3.4; Crag
+  Wraith → `GhastModel`/`GHAST` scaled ~0.7) with `textures/entity/<name>.png`. **Phase 9b is replacing these
+  with bespoke models, one at a time** — the first is the **Sky Jelly** (`client.model.SkyJellyModel`, a real
+  jellyfish: bell dome + swaying tentacles), no longer a placeholder.
+- **Bespoke models (Phase 9b):** [client/model/](src/main/java/com/jus144tice/lumenwilds/client/model/) holds
+  the custom `HierarchicalModel`s; [LumenModelLayers.java](src/main/java/com/jus144tice/lumenwilds/client/LumenModelLayers.java)
+  declares each `ModelLayerLocation`, registered in `LumenwildsClient#onRegisterLayerDefinitions` and baked in
+  the mob's renderer. *(Visual-only — verify via `runClient`; geometry/proportions iterate from there.)*
 
 ### util/
 - [ResourceLocationHelper.java](src/main/java/com/jus144tice/lumenwilds/util/ResourceLocationHelper.java)

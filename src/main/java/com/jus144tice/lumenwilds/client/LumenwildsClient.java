@@ -48,6 +48,13 @@ public final class LumenwildsClient {
         event.enqueueWork(() -> Sheets.addWoodType(ModWoodTypes.GLOWWOOD));
     }
 
+    /** Phase 9b: register the bespoke entity-model layer definitions (one per mob as they're authored). */
+    @SubscribeEvent
+    public static void onRegisterLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(
+                LumenModelLayers.SKY_JELLY, com.jus144tice.lumenwilds.client.model.SkyJellyModel::createBodyLayer);
+    }
+
     @SubscribeEvent
     public static void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.LUMEN_GRAZER.get(), LumenGrazerRenderer::new);
