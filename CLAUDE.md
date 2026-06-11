@@ -724,8 +724,11 @@ as `File#member`.
   surface rules; the router's **`depth` is y-varying** [5d.5] so cave biomes layer under the surface, and
   **`temperature` + `vegetation` are shifted-noise** (Phase 9 fix — they were `0.0` constants, which pinned the
   whole surface to one biome; now all 7 biomes spread) — `continents`/`erosion`/`ridges` stay constant since no
-  biome differentiates on them; **`default_fluid` is `lumenwilds:lumenwater`** so seas/aquifers are glowing
-  Lumenwater, not vanilla water), `biome/lumen_glade.json` + `biome/glowroot_forest.json`
+  biome differentiates on them; **`default_fluid` is `minecraft:water`** — it was briefly `lumenwater`, but
+  Lumenwater's `FluidType` **emits light 4**, so filling every aquifer/sea with it floods the light engine with
+  millions of sources and tanks the server on chunk loads (an 18k-block fill = an 11.5s tick spike vs. instant
+  for water); glowing Lumenwater stays in the **Moonmire/Undercrown pools** [`LumenwaterPoolFeature`], small
+  volumes), `biome/lumen_glade.json` + `biome/glowroot_forest.json`
   (5d.1, dark-teal) + `biome/glasspetal_crags.json` (5d.2, blue-violet) + `biome/sporefall_jungle.json`
   (5d.3, lush green + warped_spore particle) + `biome/moonmire.json` (5d.4, dark glowing swamp) +
   `biome/undercrown_caverns.json` (5d.5, deep cave biome) + `biome/stillbloom_basin.json` (5d.6, rare bright
@@ -790,6 +793,13 @@ as `File#member`.
   before `runClient`/`runServer`, and verify the user isn't mid-session. To validate worldgen, force-gen a
   **large fresh far region** single-instance (a small one can miss position-dependent feature bugs — use 16×16+
   chunks).
+- **Never make a light-emitting block/fluid the bulk/default terrain material.** Lumenwater's `FluidType` emits
+  light 4; setting it as the `noise_settings` `default_fluid` filled every aquifer/sea with light sources and
+  flooded the light engine — the server ran **up to 31s behind while walking**, and an isolation test (fill
+  18k blocks) measured an **11.5s tick spike for Lumenwater vs. instant for vanilla water**. `default_fluid` is
+  `minecraft:water`; glowing Lumenwater is confined to the small `LumenwaterPoolFeature` pools. Same caution for
+  any high-`lightLevel` block used as a worldgen bulk fill. **Headless repro:** a `/fill` of equal volumes +
+  watch `Can't keep up` — light cost isolates cleanly this way (no player needed).
 - **Client rendering (sky/particles/fog) can't be validated headlessly.** `DimensionSpecialEffects#renderSky`
   (Phase 7a `LumenDimensionEffects`) only runs in-client after entering the dimension; a server (even with
   force-gen) never calls it. Build + boot confirm registration/no-crash; the *look* needs `runClient` through

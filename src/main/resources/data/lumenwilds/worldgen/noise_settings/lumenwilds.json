@@ -2,7 +2,7 @@
   "__comment": "Bespoke Lumenwilds terrain (Phase 5a). Default block = moonstone; rolling hills/cliffs from a y-gradient + multi-octave 'hills' noise centred ~y88, with shallow water in the low spots. Surface rules layer lumen grass -> moonloam -> moonstone, with deep moonstone below ~y0. Climate/aquifer/vein router inputs are 0 (single biome for now); dramatic vertical landforms (root bridges, crags, caverns) come via features/biomes in later 5x passes.",
   "aquifers_enabled": false,
   "default_block": { "Name": "lumenwilds:moonstone" },
-  "default_fluid": { "Name": "lumenwilds:lumenwater", "Properties": { "level": "0" } },
+  "default_fluid": { "Name": "minecraft:water", "Properties": { "level": "0" } },
   "disable_mob_generation": false,
   "legacy_random_source": false,
   "ore_veins_enabled": false,
