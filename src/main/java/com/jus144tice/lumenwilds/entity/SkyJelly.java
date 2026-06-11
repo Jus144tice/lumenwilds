@@ -4,6 +4,7 @@
  */
 package com.jus144tice.lumenwilds.entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -42,17 +43,37 @@ public class SkyJelly extends Animal {
 
     @Override
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new WaterAvoidingRandomFlyingGoal(this, 0.5)); // slow drift
+        this.goalSelector.addGoal(0, new WaterAvoidingRandomFlyingGoal(this, 1.0)); // drift around
         this.goalSelector.addGoal(1, new LookAtPlayerGoal(this, Player.class, 10.0F));
     }
 
-    /** Hovers: near-zero gravity + slow flight. */
+    /** Hovers + drifts: near-zero gravity, gentle flight, lifted off the ground by buoyancy in {@link #aiStep}. */
     public static AttributeSupplier.Builder createAttributes() {
         return Animal.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0)
-                .add(Attributes.FLYING_SPEED, 0.3)
-                .add(Attributes.MOVEMENT_SPEED, 0.1)
+                .add(Attributes.FLYING_SPEED, 0.6)
+                .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.GRAVITY, 0.01);
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        // Buoyancy: drift upward while the ground is close, so the jelly floats a few blocks aloft and roams
+        // there instead of resting on the surface.
+        if (!this.level().isClientSide() && groundWithin(5)) {
+            this.setDeltaMovement(this.getDeltaMovement().add(0.0, 0.05, 0.0));
+        }
+    }
+
+    private boolean groundWithin(int blocks) {
+        BlockPos pos = this.blockPosition();
+        for (int i = 1; i <= blocks; i++) {
+            if (!this.level().getBlockState(pos.below(i)).isAir()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
