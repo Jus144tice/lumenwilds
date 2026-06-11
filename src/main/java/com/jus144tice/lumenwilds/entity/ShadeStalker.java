@@ -12,7 +12,6 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
@@ -21,9 +20,11 @@ import net.minecraft.world.level.Level;
 
 /**
  * Shade Stalker — the Lumenwilds' main hostile surface predator (a thin dark quadruped with glowing eyes).
- * A fast ground ambusher that targets players in the dark, but embodies the dimension's core rule: it
- * <b>flees bright light</b> (daylight, Stillbloom Cores, Lumen lanterns) via {@link FleeBrightLightGoal},
- * which out-prioritises its attack — so living light genuinely wards it off, even mid-chase.
+ * A true ambush predator: in the dark, with no prey, it <b>holds still and lurks</b> (no idle wandering —
+ * only its head tracks), then <b>lunges fast</b> when a player comes within range. It embodies the dimension's
+ * core rule: it <b>flees bright light</b> (daylight, Stillbloom Cores, Lumen lanterns) via
+ * {@link FleeBrightLightGoal} at top priority — darting fast to the nearest shade, so living light genuinely
+ * wards it off even mid-chase. Net feel: dart to shade → wait → pounce.
  *
  * <p>Native to the dimension, so it carries low gravity permanently (reduced {@code GRAVITY} base).</p>
  */
@@ -36,10 +37,13 @@ public class ShadeStalker extends Monster {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        // The signature: flee bright light above everything else — lanterns / cores / daylight ward it off.
-        this.goalSelector.addGoal(1, new FleeBrightLightGoal(this, 1.3, 11));
-        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.0, false));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomStrollGoal(this, 0.8));
+        // The signature: flee bright light above everything else (FAST — it bolts to the nearest shade);
+        // lanterns / cores / daylight ward it off, even mid-chase.
+        this.goalSelector.addGoal(1, new FleeBrightLightGoal(this, 1.5, 11));
+        // Stalk-and-ambush: once it spots prey it lunges fast. There is deliberately NO idle wander goal — in
+        // the dark, with no prey, the Shade Stalker holds still and lurks (only its head tracks via the look
+        // goals), then strikes. So it reads as: dart to shade → wait → pounce.
+        this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.4, false));
         this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
 
