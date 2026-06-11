@@ -58,7 +58,7 @@ public class RootbackModel extends HierarchicalModel<Rootback> {
                         .addBox(-17.0F, -7.0F, -19.0F, 34.0F, 7.0F, 38.0F) // mid
                         .texOffs(120, 120)
                         .addBox(-11.0F, -12.0F, -13.0F, 22.0F, 5.0F, 26.0F), // peak
-                PartPose.offset(0.0F, 6.0F, 0.0F));
+                PartPose.offset(0.0F, 13.0F, 0.0F)); // rim bottom (y19) overlaps the belly top (y18) — no gap
 
         part.addOrReplaceChild(
                 "head",
