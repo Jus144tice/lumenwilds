@@ -114,9 +114,11 @@ Striker to pair them, and a linked anchor near a portal makes return travel land
 Crafted from Shimmerstone + Lumen Crystal Block + Echo Dust + Lumenbound Stone; it's the first `ModBlockEntities`
 content. **Structures are starting (8d):** the **Rootshrine** — a small early-reward shrine (a Moonstone floor
 under a cage of arching Glowroot-log roots + a loot chest), a procedural `world.structure.RootshrinePiece`
-like the mega tree, generating in the Glowroot Forest. What is deliberately *not* built yet: brewing/potions,
-the other 3 structures (Lumenbound Ruins / Glasspetal Spires / Undercrown Relics), the final art/audio pass
-(Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
+like the mega tree, generating in the Glowroot Forest; and the **Lumenbound Ruins** (8e) — a ruined
+Lumenwilds-portal site in the **Overworld** (broken Lumenbound Stone frame + rubble + a chest of
+striker/frame ingredients), the in-world tutorial for reaching the dimension. What is deliberately *not* built
+yet: brewing/potions, the other 2 structures (Glasspetal Spires / Undercrown Relics), the final art/audio
+pass (Phase 9). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
@@ -277,10 +279,10 @@ as `File#member`.
   (`StillbloomFeature`) — the giant Stillbloom flower (5d.6).
 - [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
   `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` + `#GLOWROOT_TREE_PIECE` (the mega Glowroot
-  tree), `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom), and `#ROOTSHRINE` +
-  `#ROOTSHRINE_PIECE` (the small early-reward Rootshrine, 8d). All are structures (generate per-chunk via a
-  bounding box). Structure instances + spawn spacing are datapack JSON (`worldgen/structure*`); these are the
-  code types.
+  tree), `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom), `#ROOTSHRINE` +
+  `#ROOTSHRINE_PIECE` (the small early-reward Rootshrine, 8d), and `#LUMENBOUND_RUINS` + `#LUMENBOUND_RUINS_PIECE`
+  (the Overworld ruined-portal tutorial site, 8e). All are structures (generate per-chunk via a bounding box).
+  Structure instances + spawn spacing are datapack JSON (`worldgen/structure*`); these are the code types.
 - [ModBiomes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBiomes.java) /
   [ModDimensions.java](src/main/java/com/jus144tice/lumenwilds/registry/ModDimensions.java) — thin
   re-exports of the worldgen/dimension `ResourceKey`s from `world/` (worldgen is datapack-driven, not a
@@ -478,6 +480,13 @@ as `File#member`.
   shared peak (the "inside giant roots" cage) + leaf cap / hanging Glowvine / Lumenbulb lights, and a central
   pedestal **loot chest** (`setLootTable` → `chests/rootshrine`). Bound to `ModStructures#ROOTSHRINE`; spawns
   in the Glowroot Forest.
+- [LumenboundRuinsStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/LumenboundRuinsStructure.java)
+  / [LumenboundRuinsPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/LumenboundRuinsPiece.java)
+  — the **Lumenbound Ruins** (8e), a ruined portal site in the **Overworld** (not the Lumenwilds — it's the
+  discovery/tutorial). `#postProcess` builds a broken 4×5 Lumenbound Stone frame (random axis, ~30% missing,
+  rest weathered into mossy/cracked stone) around a 2×3 hole, a ragged base, scattered rubble, and a
+  half-buried **chest of striker + frame ingredients** (`chests/lumenbound_ruins`). Bound to
+  `ModStructures#LUMENBOUND_RUINS`.
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -682,8 +691,10 @@ as `File#member`.
   + `structure_set/glowroot_tree.json` (spacing 20/sep 7, in `lumen_glade`) and `structure/mega_glowcap.json`
   + `structure_set/mega_glowcap.json` (spacing 20/sep 7, distinct salt, in `sporefall_jungle`), plus the
   **Rootshrine** (8d) — `structure/rootshrine.json` + `structure_set/rootshrine.json` (spacing 14/sep 5, in
-  `glowroot_forest`) with a `chests/rootshrine` loot table — each with its
-  `tags/worldgen/biome/has_structure/<name>.json` biome tag. Hand-authored (not datagen).
+  `glowroot_forest`) with a `chests/rootshrine` loot table, and the **Lumenbound Ruins** (8e) —
+  `structure/lumenbound_ruins.json` + `structure_set` (spacing 28/sep 8) in the **Overworld**
+  (`has_structure/lumenbound_ruins` → `#minecraft:is_overworld`) with `chests/lumenbound_ruins` loot — each
+  with its `tags/worldgen/biome/has_structure/<name>.json` biome tag. Hand-authored (not datagen).
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`; `tags/block/dirt.json`
   adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil); `tags/fluid/water.json`

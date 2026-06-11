@@ -7,6 +7,8 @@ package com.jus144tice.lumenwilds.registry;
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.world.structure.GlowrootTreePiece;
 import com.jus144tice.lumenwilds.world.structure.GlowrootTreeStructure;
+import com.jus144tice.lumenwilds.world.structure.LumenboundRuinsPiece;
+import com.jus144tice.lumenwilds.world.structure.LumenboundRuinsStructure;
 import com.jus144tice.lumenwilds.world.structure.MegaGlowcapPiece;
 import com.jus144tice.lumenwilds.world.structure.MegaGlowcapStructure;
 import com.jus144tice.lumenwilds.world.structure.RootshrinePiece;
@@ -51,6 +53,13 @@ public final class ModStructures {
 
     public static final DeferredHolder<StructurePieceType, StructurePieceType> ROOTSHRINE_PIECE =
             STRUCTURE_PIECES.register("rootshrine", () -> (StructurePieceType.ContextlessType) RootshrinePiece::new);
+
+    public static final DeferredHolder<StructureType<?>, StructureType<LumenboundRuinsStructure>> LUMENBOUND_RUINS =
+            STRUCTURE_TYPES.register("lumenbound_ruins", () -> () -> LumenboundRuinsStructure.CODEC);
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> LUMENBOUND_RUINS_PIECE =
+            STRUCTURE_PIECES.register(
+                    "lumenbound_ruins", () -> (StructurePieceType.ContextlessType) LumenboundRuinsPiece::new);
 
     private ModStructures() {}
 }

@@ -821,7 +821,16 @@ at the slower cadence.
     chest loot (early forage/crafting items). Verified: build green + `runServer` force-gen'd a Lumenwilds
     region **and** `/place structure`d the Rootshrine — `postProcess` (root dome + chest loot) ran with no
     chunk-unavailable/build errors. *Visual/loot-feel → runClient.*
-  - **next:** Lumenbound Ruins → Glasspetal Spires → Undercrown Relics.
+  - **8e Lumenbound Ruins** ✅ **done** — a ruined Lumenwilds-portal site in the **Overworld** (the discovery/
+    tutorial, not the Lumenwilds): `world/structure/LumenboundRuinsStructure` + `Piece`. `postProcess` builds a
+    broken 4×5 Lumenbound Stone frame (random axis, ~30% missing, rest weathered to mossy/cracked stone) around
+    a 2×3 hole, a ragged base, scattered rubble, and a half-buried **chest of striker + frame ingredients**
+    (amethyst / glow ink sac / iron / glowstone + Lumenbound Stone + a rare finished Lumen Striker) →
+    `chests/lumenbound_ruins`, so a finder can bootstrap their own portal. `ModStructures#LUMENBOUND_RUINS` +
+    `structure`/`structure_set` (spacing 28/sep 8) + `has_structure/lumenbound_ruins` → `#minecraft:is_overworld`.
+    Verified: build green + `runServer` force-gen'd the Overworld **and** `/place structure`d the ruins — the
+    broken frame + chest loot built with no chunk/build errors.
+  - **next:** Glasspetal Spires → Undercrown Relics.
 
 ### Scope
 - **Structures** (overgrown/organic, never village-like):
