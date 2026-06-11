@@ -902,7 +902,39 @@ return travel lands precisely.
 
 ## Phase 9 — Polish, balance & compat
 
-**Goal:** ship-quality.
+**Goal:** ship-quality — and, first, a **look-and-feel pass** so the dimension is testable without
+placeholder-model confusion.
+
+### Build order (increments) — visuals first
+The user wants to polish the look/feel before a full playthrough (placeholder models make testing hard). So
+Phase 9 front-loads the visual work, then the systems/balance work. **Constraint (be honest):** like the sky
+(7a), client visuals can't be validated headlessly, and final hand-painted pixel-art is a human task — but I
+*can* write bespoke entity-model **geometry** (Java `EntityModel`/`LayerDefinition`), **emissive glow** render
+layers, and improved **procedural textures**, then iterate against the user's `runClient` checks.
+
+- **9a Mob glow pass** — emissive bioluminescence render layers for the 10 mobs (the dimension's identity:
+  "native living light") + themed glow textures. Lower-risk, high-impact; makes every creature read as alive.
+- **9b Bespoke mob models** — custom-geometry `EntityModel`s replacing the vanilla placeholders (cow→grazer,
+  ghast→jelly/wraith, endermite→moth, cow→turtle, etc.), in priority order (winged/shelled offenders first),
+  iterated via `runClient`. Folds in the per-mob deferrals below (Grazer six legs, Beetle/Wraith wings,
+  Rootback shell + shell-plants layer, Mirelurker lure, etc.).
+- **9c Block/world emissive pass** — glow textures for the light blocks (Lumenbulb, Lumen Crystal, ores,
+  Glowroot, Stillbloom Core, Glasspetal) + sky/fog/particle tuning once the user has seen 7a–7d in `runClient`.
+- **9d Deferred 5d flora/terrain refinements** — the carried-over biome items (see the list below): Glowcap
+  gills, climbable Glowvine, Cracked Moonstone + sideways Glasspetal, Moonmud + Bogroot + Spore Pads,
+  Undercrown root pillars / cave flora / massive caverns, Stillbloom outcrops + core aura, Lumenwater
+  textures, the ⚠ per-biome terrain silhouette.
+- **9e Behaviour refinements** — Grazer grass-eat goal, Beetle moving-light, Wraith dive/sweep cycle +
+  "avoids enclosed", Stillbloom hostile-avoidance aura, etc. (the non-visual halves of the mob deferrals).
+- **9f Datagen coverage + advancements** — regenerate assets/recipes/loot/tags/lang from code; advancements
+  for the bible's progression (first portal, native light, each biome, Lumen Anchor, Stillbloom Core).
+- **9g Balance pass** — light levels, spawn rates/difficulty curve, food/effect values, ore/structure
+  frequency, event cadence.
+- **9h Config + JEI compat** — config (event freq, gravity toggle, cycle length), JEI integration, mod-clash
+  checks.
+- **9i Performance** — profile worldgen (mega trees / density functions), particle/sky cost, event ticking.
+- **9j Audio finalization** — real `.ogg` SFX/ambience replacing the vanilla-sound placeholders (human/
+  collaborative; register the custom `ModSounds` events + a `sounds.json` and swap the vanilla ids).
 
 ### Scope
 - Full **datagen coverage** so assets/recipes/loot/tags/lang/advancements regenerate from code; reconcile
