@@ -2,7 +2,7 @@
   "__comment": "Bespoke Lumenwilds terrain (Phase 5a). Default block = moonstone; rolling hills/cliffs from a y-gradient + multi-octave 'hills' noise centred ~y88, with shallow water in the low spots. Surface rules layer lumen grass -> moonloam -> moonstone, with deep moonstone below ~y0. Climate/aquifer/vein router inputs are 0 (single biome for now); dramatic vertical landforms (root bridges, crags, caverns) come via features/biomes in later 5x passes.",
   "aquifers_enabled": false,
   "default_block": { "Name": "lumenwilds:moonstone" },
-  "default_fluid": { "Name": "minecraft:water", "Properties": { "level": "0" } },
+  "default_fluid": { "Name": "lumenwilds:lumenwater", "Properties": { "level": "0" } },
   "disable_mob_generation": false,
   "legacy_random_source": false,
   "ore_veins_enabled": false,
@@ -19,8 +19,26 @@
     "fluid_level_floodedness": 0.0,
     "fluid_level_spread": 0.0,
     "lava": 0.0,
-    "temperature": 0.0,
-    "vegetation": 0.0,
+    "temperature": {
+      "__comment": "Real varying climate (Phase 9 fix) so the MultiNoise biome source actually spreads all 7 biomes — was a 0.0 constant, which pinned the whole surface to one biome (Lumen Glade). Mirrors vanilla overworld temperature: shifted noise at biome scale (xz_scale 0.25).",
+      "type": "minecraft:shifted_noise",
+      "noise": "minecraft:temperature",
+      "shift_x": "minecraft:shift_x",
+      "shift_y": 0.0,
+      "shift_z": "minecraft:shift_z",
+      "xz_scale": 0.25,
+      "y_scale": 0.0
+    },
+    "vegetation": {
+      "__comment": "Humidity axis — same shifted noise, drives the humid/dry biome split (Glade vs Forest, Moonmire, Basin).",
+      "type": "minecraft:shifted_noise",
+      "noise": "minecraft:vegetation",
+      "shift_x": "minecraft:shift_x",
+      "shift_y": 0.0,
+      "shift_z": "minecraft:shift_z",
+      "xz_scale": 0.25,
+      "y_scale": 0.0
+    },
     "continents": 0.0,
     "erosion": 0.0,
     "depth": {

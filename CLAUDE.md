@@ -715,8 +715,11 @@ as `File#member`.
   **deep `depth` band** gives `undercrown_caverns` [5d.5]; one parameter point added per 5d.x) +
   `dimension_type/lumenwilds.json` (`effects` → **`lumenwilds:lumenwilds`** selects the bespoke client sky,
   `ambient_light` 0.2, 7a), and `worldgen/` — `noise_settings/lumenwilds.json` (bespoke terrain +
-  surface rules; the router's **`depth` is y-varying** [5d.5] so cave biomes can layer under the surface —
-  every other climate axis is still constant), `biome/lumen_glade.json` + `biome/glowroot_forest.json`
+  surface rules; the router's **`depth` is y-varying** [5d.5] so cave biomes layer under the surface, and
+  **`temperature` + `vegetation` are shifted-noise** (Phase 9 fix — they were `0.0` constants, which pinned the
+  whole surface to one biome; now all 7 biomes spread) — `continents`/`erosion`/`ridges` stay constant since no
+  biome differentiates on them; **`default_fluid` is `lumenwilds:lumenwater`** so seas/aquifers are glowing
+  Lumenwater, not vanilla water), `biome/lumen_glade.json` + `biome/glowroot_forest.json`
   (5d.1, dark-teal) + `biome/glasspetal_crags.json` (5d.2, blue-violet) + `biome/sporefall_jungle.json`
   (5d.3, lush green + warped_spore particle) + `biome/moonmire.json` (5d.4, dark glowing swamp) +
   `biome/undercrown_caverns.json` (5d.5, deep cave biome) + `biome/stillbloom_basin.json` (5d.6, rare bright
@@ -745,7 +748,10 @@ as `File#member`.
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`; `tags/block/dirt.json`
   adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil); `tags/fluid/water.json`
   adds Lumenwater (source + flowing) to `#minecraft:water` so it behaves as water (Phase 6.0);
-  `tags/entity_type/can_breathe_under_water.json` adds the Mirelurker + Lumen Fish (6e/6f, so they don't drown).
+  `tags/entity_type/can_breathe_under_water.json` adds the Mirelurker + Lumen Fish (6e/6f, so they don't drown);
+  `tags/block/animals_spawnable_on.json` (Phase 9 fix) adds `lumen_grass_block` + `moonloam` so the native
+  fauna (`Animal::checkAnimalSpawnRules` needs the block below in that tag) actually spawn on the Lumenwilds
+  surface — without it, the surface is `lumen_grass_block` (not in vanilla's tag) and **no animals spawned at all**.
 
 ## Adding content — quick recipes
 
