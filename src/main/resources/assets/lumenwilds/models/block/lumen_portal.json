@@ -1,6 +1,18 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "render_type": "minecraft:translucent",
   "textures": {
-    "all": "lumenwilds:block/lumen_portal"
-  }
+    "portal": "lumenwilds:block/lumen_portal",
+    "particle": "lumenwilds:block/lumen_portal"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 6],
+      "to": [16, 16, 10],
+      "neoforge_data": { "block_light": 15 },
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#portal" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#portal" }
+      }
+    }
+  ]
 }

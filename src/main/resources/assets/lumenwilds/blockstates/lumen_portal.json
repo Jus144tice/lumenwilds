@@ -1,7 +1,6 @@
 {
   "variants": {
-    "": {
-      "model": "lumenwilds:block/lumen_portal"
-    }
+    "axis=x": { "model": "lumenwilds:block/lumen_portal" },
+    "axis=z": { "model": "lumenwilds:block/lumen_portal", "y": 90 }
   }
 }

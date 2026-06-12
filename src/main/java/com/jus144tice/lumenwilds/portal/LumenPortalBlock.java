@@ -40,7 +40,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * like the Nether portal, but routed to {@code lumenwilds:lumenwilds} and back.</p>
  *
  * <p>Travel is deliberately calm: {@link #getLocalTransition()} returns {@link Portal.Transition#NONE}
- * (no nausea/"purple" Nether feel). The teal screen overlay is a separate client effect (Phase 7).</p>
+ * (no nausea/"purple" Nether feel). The "you're teleporting" feedback is instead a bespoke teal screen
+ * overlay that builds over the dwell — {@code client.LumenPortalOverlay} — plus the animated swirl block
+ * texture/model, so it's obvious the portal is charging without the Nether's wobble.</p>
  */
 public class LumenPortalBlock extends Block implements Portal {
 

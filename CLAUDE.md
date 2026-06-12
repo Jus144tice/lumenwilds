@@ -315,8 +315,10 @@ as `File#member`.
   (`HORIZONTAL_AXIS` state), per-axis `#getShape`, `#entityInside` → `Entity#setAsInsidePortal(this,pos)`
   (engine drives dwell/teleport/cooldown), `#getPortalTransitionTime` (players 80t, else 0),
   `#getPortalDestination` (resolves overworld↔lumenwilds, 1:1-scaled target, delegates placement),
-  `#getLocalTransition` = `NONE` (no Nether nausea), `#animateTick` (rises `ModParticles.LUMEN_SPORE` + an
-  occasional `PORTAL_AMBIENT` hum, 7b/7c).
+  `#getLocalTransition` = `NONE` (no Nether nausea — the "teleporting" feedback is `client.LumenPortalOverlay`
+  instead), `#animateTick` (rises `ModParticles.LUMEN_SPORE` + an occasional `PORTAL_AMBIENT` hum, 7b/7c).
+  Renders as an **animated translucent teal portal-plane** (axis-oriented `blockstates/lumen_portal.json` → a
+  thin emissive plane model; `textures/block/lumen_portal.png` is a 16-frame swirl + `.mcmeta`), not a cube.
 - [LumenPortalShape.java](src/main/java/com/jus144tice/lumenwilds/portal/LumenPortalShape.java) — frame
   detection, a focused port of vanilla `PortalShape` keyed on **our** frame/interior (NOT the shared
   NeoForge `isPortalFrame` predicate — see [gotchas](#invariants--gotchas)). `#MIN/MAX_WIDTH`,
@@ -633,6 +635,12 @@ as `File#member`.
   client `ClientTickEvent.Post` (7d.2): while an event is active (per `network.LumenEventClientState`) and the
   player's in the Lumenwilds, sprinkles event particles (Sporefall→spores, Moonwake→pollen, Deep Hush→shimmer).
   `LumenDimensionEffects#renderSky` also reads that state to **brighten Veyra during a Moonwake**.
+- [LumenPortalOverlay.java](src/main/java/com/jus144tice/lumenwilds/client/LumenPortalOverlay.java) — the
+  portal "you're teleporting" screen effect (the deferred Phase-7 teal overlay). `ClientTickEvent.Post` ramps a
+  static `#intensity` up while the local player stands in a `LumenPortalBlock` (checks feet+eye block) over the
+  ~80-tick dwell and fades it fast on exit; `RenderGuiEvent.Post` draws two opposite-scrolling teal swirl veils
+  (`textures/gui/lumen_portal_overlay.png`) over the screen at alpha ∝ intensity — calm (no nausea wobble), just
+  a rising glow. Pairs with the animated swirl block texture/model. **Client-visual — verify via `runClient`.**
 - The 10 `MobRenderer`s (`LumenGrazerRenderer`, `ShadeStalkerRenderer`, …) each bake a **bespoke model**
   (Phase 9b — the vanilla-model placeholders are gone): `textures/entity/<name>.png`.
 - **Bespoke models (Phase 9b):** [client/model/](src/main/java/com/jus144tice/lumenwilds/client/model/) holds
