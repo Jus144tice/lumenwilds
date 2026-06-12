@@ -345,7 +345,8 @@ as `File#member`.
 ### block/ — custom block behaviours
 - [LumenCoralBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenCoralBlock.java) — the glowing
   underwater Lumen Coral frond (Phase 9). A waterlogged (`SimpleWaterloggedBlock`) no-collision cross plant:
-  `#WATERLOGGED`, `#getStateForPlacement` (waterlogs in a full water source), `#getFluidState`, `#canSurvive`
+  `#WATERLOGGED`, `#getStateForPlacement` (waterlogs in a full water source), `#getFluidState` (returns
+  **Lumenwater**, not vanilla water, so the frond's cell matches the teal sea instead of a clear-blue seam), `#canSurvive`
   (sturdy face below), `#updateShape` (pops off if support lost). Unlike vanilla coral it doesn't die out of
   water. `ModBlocks#LUMEN_CORAL`; grown by `world.feature.LumenReefFeature`.
 - [BottledLanternBeetleBlock.java](src/main/java/com/jus144tice/lumenwilds/block/BottledLanternBeetleBlock.java)

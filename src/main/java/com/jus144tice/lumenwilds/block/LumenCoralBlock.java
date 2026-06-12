@@ -4,6 +4,7 @@
  */
 package com.jus144tice.lumenwilds.block;
 
+import com.jus144tice.lumenwilds.registry.ModFluids;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -17,7 +18,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -56,7 +56,9 @@ public class LumenCoralBlock extends Block implements SimpleWaterloggedBlock {
 
     @Override
     protected FluidState getFluidState(BlockState state) {
-        return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        // Log with Lumenwater (the dimension's native sea), not vanilla water, so the frond's own cell matches
+        // the surrounding teal sea instead of showing a clear-blue pocket with a flowing seam.
+        return state.getValue(WATERLOGGED) ? ModFluids.LUMENWATER.get().getSource(false) : super.getFluidState(state);
     }
 
     @Override
@@ -74,7 +76,8 @@ public class LumenCoralBlock extends Block implements SimpleWaterloggedBlock {
             BlockPos pos,
             BlockPos neighborPos) {
         if (state.getValue(WATERLOGGED)) {
-            level.scheduleTick(pos, Fluids.WATER, Fluids.WATER.getTickDelay(level));
+            var lumenwater = ModFluids.LUMENWATER.get();
+            level.scheduleTick(pos, lumenwater, lumenwater.getTickDelay(level));
         }
         return !state.canSurvive(level, pos)
                 ? net.minecraft.world.level.block.Blocks.AIR.defaultBlockState()

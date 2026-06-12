@@ -4,7 +4,7 @@
   "config": {
     "tries": 48,
     "xz_spread": 7,
-    "y_spread": 3,
+    "y_spread": 1,
     "feature": {
       "feature": {
         "type": "minecraft:simple_block",
@@ -22,6 +22,11 @@
             "type": "minecraft:would_survive",
             "state": { "Name": "lumenwilds:glasspetal_cluster", "Properties": { "facing": "up", "waterlogged": "false" } }
           }
+        },
+        {
+          "__comment": "Dry land only — the spot must currently be air, not Lumenwater (no submerged clusters).",
+          "type": "minecraft:block_predicate_filter",
+          "predicate": { "type": "minecraft:matching_blocks", "blocks": "minecraft:air" }
         }
       ]
     }
