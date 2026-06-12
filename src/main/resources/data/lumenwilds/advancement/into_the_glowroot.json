@@ -1,0 +1,42 @@
+{
+  "display": {
+    "icon": {
+      "id": "lumenwilds:glowroot_log",
+      "count": 1
+    },
+    "title": {
+      "text": "Into the Glowroot Forest"
+    },
+    "description": {
+      "text": "Stand beneath the giant self-lit Glowroots."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "lumenwilds:glowroot_forest"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ],
+  "sends_telemetry_event": false,
+  "parent": "lumenwilds:root"
+}

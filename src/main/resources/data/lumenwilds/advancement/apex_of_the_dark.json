@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": {
+      "id": "lumenwilds:shade_claw",
+      "count": 1
+    },
+    "title": {
+      "text": "Apex of the Dark"
+    },
+    "description": {
+      "text": "Claim a Shade Claw from the twilight's ambush hunter."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:shade_claw"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ],
+  "sends_telemetry_event": false,
+  "parent": "lumenwilds:native_fauna"
+}

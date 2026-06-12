@@ -1,0 +1,42 @@
+{
+  "display": {
+    "icon": {
+      "id": "lumenwilds:deep_lumen_crystal_ore",
+      "count": 1
+    },
+    "title": {
+      "text": "Beneath the Crown"
+    },
+    "description": {
+      "text": "Descend into the ore-lit Undercrown Caverns."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "lumenwilds:undercrown_caverns"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ],
+  "sends_telemetry_event": false,
+  "parent": "lumenwilds:root"
+}

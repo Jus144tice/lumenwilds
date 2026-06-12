@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": {
+      "id": "lumenwilds:lumenbound_stone",
+      "count": 1
+    },
+    "title": {
+      "text": "The Lumenwilds"
+    },
+    "description": {
+      "text": "Step through a Lumen Portal into the bioluminescent wilds."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "background": "minecraft:textures/gui/advancements/backgrounds/end.png"
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:changed_dimension",
+      "conditions": {
+        "to": "lumenwilds:lumenwilds"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ],
+  "sends_telemetry_event": false
+}

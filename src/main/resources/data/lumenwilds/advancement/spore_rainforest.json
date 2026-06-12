@@ -1,0 +1,42 @@
+{
+  "display": {
+    "icon": {
+      "id": "lumenwilds:giant_glowcap_block",
+      "count": 1
+    },
+    "title": {
+      "text": "Spore Rainforest"
+    },
+    "description": {
+      "text": "Enter the dense Sporefall Jungle."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "biomes": "lumenwilds:sporefall_jungle"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ],
+  "sends_telemetry_event": false,
+  "parent": "lumenwilds:root"
+}

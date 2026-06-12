@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": {
+      "id": "lumenwilds:lumen_anchor",
+      "count": 1
+    },
+    "title": {
+      "text": "Anchored"
+    },
+    "description": {
+      "text": "Craft a Lumen Anchor to make portal travel land true."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:lumen_anchor"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ],
+  "sends_telemetry_event": false,
+  "parent": "lumenwilds:living_light"
+}

@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": {
+      "id": "lumenwilds:lumenbulb",
+      "count": 1
+    },
+    "title": {
+      "text": "Living Light"
+    },
+    "description": {
+      "text": "Obtain a Lumenbulb \u2014 light that grows."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:lumenbulb"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ],
+  "sends_telemetry_event": false,
+  "parent": "lumenwilds:root"
+}
