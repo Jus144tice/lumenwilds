@@ -766,7 +766,9 @@ as `File#member`.
   `beneath_the_crown`, `sanctuary`). Triggers: `changed_dimension` / `inventory_changed` / `location`+biome;
   direct-text titles (no lang keys). Hand-authored.
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
-- `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`; `tags/block/dirt.json`
+- `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves` (glowwood + glowroot) +
+  `logs.json` (all `_log`/`_wood` blocks — **required for leaf decay to recognise the trunk**, Phase 9d fix);
+  `tags/block/dirt.json`
   adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil); `tags/fluid/water.json`
   adds Lumenwater (source + flowing) to `#minecraft:water` so it behaves as water (Phase 6.0);
   `tags/entity_type/can_breathe_under_water.json` adds the Mirelurker + Lumen Fish (6e/6f, so they don't drown);
@@ -812,9 +814,20 @@ as `File#member`.
   `minecraft:water`; glowing Lumenwater is confined to the small `LumenwaterPoolFeature` pools. Same caution for
   any high-`lightLevel` block used as a worldgen bulk fill. **Headless repro:** a `/fill` of equal volumes +
   watch `Can't keep up` — light cost isolates cleanly this way (no player needed).
+- **Custom logs MUST be in `#minecraft:logs` or ALL leaves decay (incl. ones touching the trunk).**
+  `LeavesBlock`'s distance check (`getDistanceAt`) only counts a neighbour as "distance 0" if it `is(BlockTags.LOGS)`
+  — there is no Forge hook for it. Our Glowwood/Glowroot logs were never added to that tag, so every leaf computed
+  `DISTANCE 7` and decayed regardless of proximity — the user watched leaves vanish *next to* trunks, and the
+  dimension-wide mass decay drove an item flood (the "E: ramping" lag). Fix: `data/minecraft/tags/block/logs.json`
+  lists `glowwood_log`/`glowwood_wood`/`stripped_glowwood_log`/`stripped_glowwood_wood`/`glowroot_log`, and
+  `ModTagProvider` adds any `_log`/`_wood` block to `BlockTags.LOGS` (non-exclusive with axe). `glowroot_leaves`
+  was also missing from `#minecraft:leaves` — added. **Verify leaf SURVIVAL by counting leaf BLOCKS, not items:**
+  with leaf decay now dropping mostly nothing, an item census reads `items=0` whether leaves survive OR silently
+  vanish — that false signal once "verified" a still-broken fix. **Verified (the right way):** a temp census
+  `setChunkForced`'d a 12×12 region, ticked 6000t → `leaves=12424 logs=6328` dead-flat (0 decay), `items=0`.
 - **Tree leaves: non-persistent + a real leaves loot table + canopy geometry sized so leaves stay within 6 of
-  a log.** Two compounding bugs flooded the world with leaf-block items (>20,000 entities, ~0.94 TPS): (a) our
-  leaf loot tables were **drop-self**, so any decaying leaf dropped the leaf *block*; and (b) the custom
+  a log.** Two further compounding bugs flooded the world with leaf-block items (>20,000 entities, ~0.94 TPS): (a)
+  our leaf loot tables were **drop-self**, so any decaying leaf dropped the leaf *block*; and (b) the custom
   Glowroot canopies put leaves **>6 leaf-steps from a log**, so they decayed *on generation* (no player). The
   decay rule: a leaf survives only if a log is within **6 orthogonal leaf-steps**; worst-case for a leaf sphere
   radius R around one log is `R·√3`, for a leaf disc around the trunk `(R−trunkRadius)·√2`. Fixes — keep
@@ -824,10 +837,7 @@ as `File#member`.
   `DISTANCE 7`; `glowwood_tree.json`/`glowroot_tree.json` `foliage_provider` `"persistent": "false"`); (3)
   `GlowrootShape.MEGA`/`MEDIUM` params sized to keep every leaf within 6 — **end-blob ≤3, along-blob ≤4 (on a
   log line), crown horiz ≤ trunkRadius+4** — so the wide canopy comes from log-supported branch blobs, not a
-  giant trunk-only crown. **Headless repro:** force-load a forest region + `/place structure …glowroot_tree`,
-  tick it, watch for a climbing `minecraft:item` count (a temp per-tick entity-census logger by `EntityType`,
-  with `minecraft:item` broken down by item, names the source fast; a 90s window can MISS a slow leak).
-  **Verified:** force-gen'd Glade+Forest + a placed mega Glowroot tree, ticked 3+ min → `items=0` throughout.
+  giant trunk-only crown. **(None of this matters until the logs are in `#minecraft:logs` — see above.)**
 - **Client rendering (sky/particles/fog) can't be validated headlessly.** `DimensionSpecialEffects#renderSky`
   (Phase 7a `LumenDimensionEffects`) only runs in-client after entering the dimension; a server (even with
   force-gen) never calls it. Build + boot confirm registration/no-crash; the *look* needs `runClient` through

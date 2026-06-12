@@ -32,6 +32,9 @@ public class ModTagProvider extends BlockTagsProvider {
         var shovel = tag(BlockTags.MINEABLE_WITH_SHOVEL);
         var hoe = tag(BlockTags.MINEABLE_WITH_HOE);
         var leaves = tag(BlockTags.LEAVES);
+        // #minecraft:logs is what LeavesBlock's distance check reads to find a trunk; without our logs in
+        // it, every leaf computes DISTANCE 7 and decays — even one touching the trunk. Keep it populated.
+        var logs = tag(BlockTags.LOGS);
 
         // Classify by name so new stone/wood blocks are covered automatically.
         for (var holder : ModBlocks.BLOCKS.getEntries()) {
@@ -40,6 +43,10 @@ public class ModTagProvider extends BlockTagsProvider {
             }
             net.minecraft.world.level.block.Block block = holder.get();
             String name = holder.getId().getPath();
+            // Non-exclusive: logs/wood are both axe-mineable AND #minecraft:logs (for leaf decay).
+            if (name.endsWith("_log") || name.endsWith("_wood")) {
+                logs.add(block);
+            }
             if (name.endsWith("leaves")) {
                 hoe.add(block);
                 leaves.add(block);
