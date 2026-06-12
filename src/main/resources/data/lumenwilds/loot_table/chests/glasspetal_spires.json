@@ -2,16 +2,38 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": { "type": "minecraft:uniform", "min": 2.0, "max": 4.0 },
+      "__comment": "Guaranteed crystal prize (Crag-Wraith-guarded — earn it).",
+      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_shard", "weight": 12, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 6.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:crystal_dust", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 4.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:glasspetal_cluster", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:shimmerstone", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 6.0 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:amethyst_shard", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 4.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:wraith_membrane", "weight": 4, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_block", "weight": 3 }
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_block", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 4.0 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 4, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 4, "functions": [ { "function": "minecraft:enchant_randomly", "options": "#minecraft:on_random_loot" } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_anchor", "weight": 2 }
+      ]
+    },
+    {
+      "__comment": "Crystal-highlands harvest.",
+      "rolls": { "type": "minecraft:uniform", "min": 3.0, "max": 4.0 },
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_shard", "weight": 12, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 3.0, "max": 8.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:crystal_dust", "weight": 9, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:glasspetal_cluster", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 4.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:shimmerstone", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 3.0, "max": 8.0 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:amethyst_shard", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:wraith_membrane", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] }
+      ]
+    },
+    {
+      "__comment": "Treasure.",
+      "rolls": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 },
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:experience_bottle", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:diamond_pickaxe", "weight": 2, "functions": [ { "function": "minecraft:enchant_with_levels", "levels": { "type": "minecraft:uniform", "min": 20.0, "max": 30.0 } } ] },
+        { "type": "minecraft:empty", "weight": 4 }
       ]
     }
   ],

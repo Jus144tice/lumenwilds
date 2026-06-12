@@ -1,0 +1,14 @@
+{
+  "__comment": "Adds the Lumen Reef placed feature to every surface biome (Phase 9 drawing-board) so glowing coral grows on the seabed of any sea. A NeoForge biome modifier avoids editing each biome's feature list (and the feature-order topo-sort). The Undercrown is excluded — its pools aren't ocean-floor seas.",
+  "type": "neoforge:add_features",
+  "biomes": [
+    "lumenwilds:lumen_glade",
+    "lumenwilds:glowroot_forest",
+    "lumenwilds:glasspetal_crags",
+    "lumenwilds:sporefall_jungle",
+    "lumenwilds:moonmire",
+    "lumenwilds:stillbloom_basin"
+  ],
+  "features": "lumenwilds:lumen_reef",
+  "step": "vegetal_decoration"
+}

@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.world.feature.GlowrootTreeFeature;
+import com.jus144tice.lumenwilds.world.feature.LumenReefFeature;
 import com.jus144tice.lumenwilds.world.feature.LumenwaterPoolFeature;
 import com.jus144tice.lumenwilds.world.feature.StillbloomFeature;
 import net.minecraft.core.registries.Registries;
@@ -38,6 +39,10 @@ public final class ModFeatures {
      */
     public static final DeferredHolder<Feature<?>, LumenwaterPoolFeature> LUMENWATER_POOL =
             FEATURES.register("lumenwater_pool", () -> new LumenwaterPoolFeature(NoneFeatureConfiguration.CODEC));
+
+    /** A Lumen Reef — glowing coral mounds + fronds on the submerged seabed (Phase 9 drawing-board). */
+    public static final DeferredHolder<Feature<?>, LumenReefFeature> LUMEN_REEF =
+            FEATURES.register("lumen_reef", () -> new LumenReefFeature(NoneFeatureConfiguration.CODEC));
 
     private ModFeatures() {}
 }

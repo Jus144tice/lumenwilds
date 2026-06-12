@@ -52,7 +52,7 @@ public class ModTagProvider extends BlockTagsProvider {
                 leaves.add(block);
             } else if (name.contains("glowwood") || name.contains("glowroot") || name.contains("glowcap")) {
                 axe.add(block);
-            } else if (name.equals("moonloam") || name.equals("lumen_grass_block")) {
+            } else if (name.equals("moonloam") || name.equals("lumen_grass_block") || name.equals("lumensand")) {
                 shovel.add(block);
             } else if (name.contains("moonstone")
                     || name.endsWith("_ore")

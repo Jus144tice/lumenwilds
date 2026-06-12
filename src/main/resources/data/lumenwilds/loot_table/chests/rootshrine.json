@@ -2,16 +2,39 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "rolls": { "type": "minecraft:uniform", "min": 2.0, "max": 4.0 },
+      "__comment": "Guaranteed signature reward — every Rootshrine gives one good thing.",
+      "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_fruit", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 4.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:glow_pollen", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:living_fiber", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 4.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_shard", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_nectar", "weight": 4 },
-        { "type": "minecraft:item", "name": "lumenwilds:glowroot_sapling", "weight": 4, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:bone_meal", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 4.0 } } ] }
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_nectar", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:glowcap_stew", "weight": 5 },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_block", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:book", "weight": 4, "functions": [ { "function": "minecraft:enchant_randomly" } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:glowroot_sapling", "weight": 4, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] }
+      ]
+    },
+    {
+      "__comment": "Themed harvest of the forest.",
+      "rolls": { "type": "minecraft:uniform", "min": 3.0, "max": 4.0 },
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_fruit", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:living_fiber", "weight": 9, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_shard", "weight": 9, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:glow_pollen", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:cooked_grazer_meat", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:moonblossom", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] }
+      ]
+    },
+    {
+      "__comment": "A stack of building blocks or a small treasure.",
+      "rolls": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 },
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "lumenwilds:glowwood_planks", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 4.0, "max": 10.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:lumenbulb", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:moonstone_bricks", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 4.0, "max": 8.0 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] }
       ]
     }
   ],

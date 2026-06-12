@@ -7,6 +7,7 @@ package com.jus144tice.lumenwilds.registry;
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.block.BottledLanternBeetleBlock;
 import com.jus144tice.lumenwilds.block.LumenAnchorBlock;
+import com.jus144tice.lumenwilds.block.LumenCoralBlock;
 import com.jus144tice.lumenwilds.fluid.LumenwaterBlock;
 import com.jus144tice.lumenwilds.portal.LumenPortalBlock;
 import com.jus144tice.lumenwilds.world.LumenConfiguredFeatures;
@@ -246,6 +247,38 @@ public final class ModBlocks {
                     .lightLevel(state -> 4)
                     .sound(SoundType.GRASS)
                     .replaceable()
+                    .pushReaction(PushReaction.DESTROY));
+
+    // --- Underwater life — the Lumenwater seabed (Phase 9 drawing-board) -------------------------
+
+    /** Lumensand — the glowing seabed of the Lumenwater seas (placed underwater by the surface rule). */
+    public static final DeferredBlock<Block> LUMENSAND = BLOCKS.registerSimpleBlock(
+            "lumensand",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(0.5F)
+                    .lightLevel(state -> 6)
+                    .sound(SoundType.SAND));
+
+    /** Lumen Coral Block — a solid, brightly glowing coral (reef mounds + building). */
+    public static final DeferredBlock<Block> LUMEN_CORAL_BLOCK = BLOCKS.registerSimpleBlock(
+            "lumen_coral_block",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(1.0F)
+                    .lightLevel(state -> 10)
+                    .sound(SoundType.CORAL_BLOCK));
+
+    /** Lumen Coral — a glowing waterlogged frond growing on the reef (see {@link LumenCoralBlock}). */
+    public static final DeferredBlock<LumenCoralBlock> LUMEN_CORAL = BLOCKS.registerBlock(
+            "lumen_coral",
+            LumenCoralBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .noCollission()
+                    .instabreak()
+                    .lightLevel(state -> 9)
+                    .sound(SoundType.WET_GRASS)
                     .pushReaction(PushReaction.DESTROY));
 
     // --- Stillbloom Basin — the giant Stillbloom flower (Phase 5d.6) ----------------------------

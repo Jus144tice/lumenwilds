@@ -195,7 +195,7 @@
                 },
                 "then_run": { "type": "minecraft:block", "result_state": { "Name": "lumenwilds:lumen_grass_block" } }
               },
-              { "type": "minecraft:block", "result_state": { "Name": "lumenwilds:moonloam" } }
+              { "type": "minecraft:block", "result_state": { "Name": "lumenwilds:lumensand" } }
             ]
           }
         }

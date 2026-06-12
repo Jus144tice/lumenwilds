@@ -212,7 +212,11 @@ as `File#member`.
   (`AmethystClusterBlock`, directional/waterloggable, glow 7 — the Glasspetal Crags crystal, 5d.2);
   `#GIANT_GLOWCAP_BLOCK` (glow 9) + `#GIANT_GLOWCAP_STEM` (`HugeMushroomBlock` — the Sporefall Jungle giant
   mushroom, placed by the vanilla `huge_brown_mushroom` feature, 5d.3); `#LUMENWATER_BLOCK`
-  (`fluid.LumenwaterBlock`, the Lumenwater liquid block — **no BlockItem, `noLootTable`**, 5e). **Phase 4 sets**
+  (`fluid.LumenwaterBlock`, the Lumenwater liquid block — **no BlockItem, `noLootTable`**, 5e). **Underwater life
+  (Phase 9 drawing-board):** `#LUMENSAND` (soft-glowing seabed, light 6 — placed under water by the surface rule
+  instead of dead moonloam), `#LUMEN_CORAL_BLOCK` (solid bright coral, light 10 — reef mounds + building), and
+  `#LUMEN_CORAL` (`block.LumenCoralBlock` — a waterlogged glowing cross frond, light 9); grown on the seabed by
+  the `world.feature.LumenReefFeature`. **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
   `#GLOWWOOD_LEAVES`, stairs/slab/fence/fence_gate/door/trapdoor/button/pressure_plate + signs
@@ -295,7 +299,9 @@ as `File#member`.
   Glowroot tree (the mega tree is a structure; both share `world.feature.GlowrootShape`); `#STILLBLOOM`
   (`StillbloomFeature`) — the giant Stillbloom flower (5d.6); `#LUMENWATER_POOL`
   (`world.feature.LumenwaterPoolFeature`) — a small **chunk-safe** Moonloam+Lumenwater basin replacing the
-  vanilla `lake` (which crashed chunk-gen near borders — the Moonmire/Undercrown pools).
+  vanilla `lake` (which crashed chunk-gen near borders — the Moonmire/Undercrown pools); `#LUMEN_REEF`
+  (`world.feature.LumenReefFeature`) — glowing coral mounds + fronds on the submerged seabed (Phase 9, added to
+  the surface biomes' seas via a NeoForge `biome_modifier`).
 - [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
   `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` + `#GLOWROOT_TREE_PIECE` (the mega Glowroot
   tree), `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom), `#ROOTSHRINE` +
@@ -337,6 +343,11 @@ as `File#member`.
   the 1:1-scaled position — so an anchored return lands precisely.
 
 ### block/ — custom block behaviours
+- [LumenCoralBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenCoralBlock.java) — the glowing
+  underwater Lumen Coral frond (Phase 9). A waterlogged (`SimpleWaterloggedBlock`) no-collision cross plant:
+  `#WATERLOGGED`, `#getStateForPlacement` (waterlogs in a full water source), `#getFluidState`, `#canSurvive`
+  (sturdy face below), `#updateShape` (pops off if support lost). Unlike vanilla coral it doesn't die out of
+  water. `ModBlocks#LUMEN_CORAL`; grown by `world.feature.LumenReefFeature`.
 - [BottledLanternBeetleBlock.java](src/main/java/com/jus144tice/lumenwilds/block/BottledLanternBeetleBlock.java)
   — the placed Bottled Lantern Beetle (6c): a jar-sized (`6×11×6`) glowing lamp that **must sit on a flat
   surface** — `#canSurvive` needs a sturdy face below, `#updateShape` pops it off if support is removed
@@ -478,6 +489,10 @@ as `File#member`.
   `Feature<NoneFeatureConfiguration>` (5d.6); `#place` builds a 3–8-tall giant Stillbloom (stem column +
   petal disc dome + glowing core) into air/replaceable space, stopping if it hits solid. Bound to
   `ModFeatures#STILLBLOOM`.
+- [LumenReefFeature.java](src/main/java/com/jus144tice/lumenwilds/world/feature/LumenReefFeature.java) —
+  `Feature<NoneFeatureConfiguration>` (Phase 9); `#place` grows a small reef on the submerged seabed — coral-block
+  mounds capped by fronds + sand accents — only if `#isWater` at the origin (so it no-ops on dry land). Bound to
+  `ModFeatures#LUMEN_REEF`; placed on `OCEAN_FLOOR_WG` in the surface biomes via the `lumen_reef` biome modifier.
 - [MegaGlowcapShape.java](src/main/java/com/jus144tice/lumenwilds/world/feature/MegaGlowcapShape.java) —
   the procedural geometry for the **mega Glowcap** mushroom structure: a flared solid stem + a broad domed
   cap *shell* (hollow underside) of glowing cap blocks + a Lumen-Crystal-Ore cluster beneath (`#seedOreColumn`,
@@ -764,7 +779,8 @@ as `File#member`.
   [custom feature], `patch_glasspetal` [5d.2], `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
   chunk-safe pool feature** — was a crashing vanilla `lake`] +
   `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine` [5d.5] + placed-only `undercrown_crystal`/
-  `undercrown_pool`, `stillbloom` [5d.6, custom feature]; placed-only `glowroot_forest_trees`
+  `undercrown_pool`, `stillbloom` [5d.6, custom feature], `lumen_reef` [Phase 9, custom seabed-coral feature on
+  `OCEAN_FLOOR_WG`]; placed-only `glowroot_forest_trees`
   [forest-density 2×2]), and **two town-sized structures** — `structure/glowroot_tree.json`
   + `structure_set/glowroot_tree.json` (spacing 20/sep 7, in `lumen_glade`) and `structure/mega_glowcap.json`
   + `structure_set/mega_glowcap.json` (spacing 20/sep 7, distinct salt, in `sporefall_jungle`), plus the
@@ -782,6 +798,12 @@ as `File#member`.
   biome-reach goal per biome (`into_the_glowroot`, `crystal_highlands`, `spore_rainforest`, `the_glowing_mire`,
   `beneath_the_crown`, `sanctuary`). Triggers: `changed_dimension` / `inventory_changed` / `location`+biome;
   direct-text titles (no lang keys). Hand-authored.
+- `data/lumenwilds/neoforge/biome_modifier/lumen_reef.json` — the project's **first NeoForge biome modifier**
+  (`neoforge:add_features`): injects the `lumen_reef` placed feature into the 6 surface biomes at
+  `vegetal_decoration` (avoids editing each biome's feature list + the order topo-sort). The chest loot tables
+  (`loot_table/chests/*`, Phase 9) are now **tiered** — a guaranteed signature reward pool (enchanted gear/books,
+  Lumen Anchor, striker, crystal blocks) + themed mid loot + treasure scaled by structure difficulty (no more
+  all-filler chests). Underwater the surface rule places **`lumensand`** as the seabed (was dead moonloam).
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves` (glowwood + glowroot) +
   `logs.json` (all `_log`/`_wood` blocks — **required for leaf decay to recognise the trunk**, Phase 9d fix);

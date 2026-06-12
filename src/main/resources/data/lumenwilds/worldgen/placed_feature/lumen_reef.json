@@ -1,0 +1,13 @@
+{
+  "__comment": "Lumen Reefs (Phase 9 drawing-board) — glowing coral on the submerged seabed. Placed on the ocean floor (origin = first water block above the floor); the feature self-checks for water, so on dry land it just no-ops. Several attempts per chunk so reefs cluster in the seas.",
+  "feature": "lumenwilds:lumen_reef",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": { "type": "minecraft:weighted_list", "distribution": [ { "data": 4, "weight": 3 }, { "data": 6, "weight": 2 }, { "data": 2, "weight": 1 } ] }
+    },
+    { "type": "minecraft:in_square" },
+    { "type": "minecraft:heightmap", "heightmap": "OCEAN_FLOOR_WG" },
+    { "type": "minecraft:biome" }
+  ]
+}

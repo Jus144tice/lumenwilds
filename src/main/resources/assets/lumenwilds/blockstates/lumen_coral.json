@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "waterlogged=true": {
+      "model": "lumenwilds:block/lumen_coral"
+    },
+    "waterlogged=false": {
+      "model": "lumenwilds:block/lumen_coral"
+    }
+  }
+}
