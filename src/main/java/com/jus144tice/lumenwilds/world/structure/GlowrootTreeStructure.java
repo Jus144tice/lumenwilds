@@ -33,7 +33,7 @@ public class GlowrootTreeStructure extends Structure {
         int z = chunk.getMiddleBlockZ();
         int y = context.chunkGenerator()
                 .getFirstOccupiedHeight(
-                        x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), context.randomState());
+                        x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
         BlockPos origin = new BlockPos(x, y, z);
         return Optional.of(
                 new Structure.GenerationStub(origin, builder -> builder.addPiece(new GlowrootTreePiece(origin))));

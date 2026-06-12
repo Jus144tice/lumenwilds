@@ -531,10 +531,14 @@ as `File#member`.
   `ModStructures#LUMENBOUND_RUINS`.
 - [GlasspetalSpiresStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/GlasspetalSpiresStructure.java)
   / [GlasspetalSpiresPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/GlasspetalSpiresPiece.java)
-  — the **Glasspetal Spires** (8f). `#postProcess` grows a main spire + two satellites — tapering discs of
-  mixed Shimmerstone / Shimmerstone Bricks / Lumen Crystal Block crowned with a Glasspetal Cluster — and a
-  base loot chest (`chests/glasspetal_spires`). Bound to `ModStructures#GLASSPETAL_SPIRES`; spawns in the
-  Glasspetal Crags, **Crag-Wraith-guarded** via the structure JSON's `spawn_overrides` (not code).
+  — the **Glasspetal Spires** (8f; reworked Phase 9). `#postProcess` grows a main spire + satellites — tapering
+  discs of mixed Shimmerstone / Shimmerstone Bricks / Lumen Crystal Block crowned with Glasspetal Clusters — and a
+  base loot chest (`chests/glasspetal_spires`). Rolls a **size tier** (regular / large / rare MASSIVE, like the
+  trees) so the Crags vary; the box is sized for the massive case + position-seeded RNG picks the actual size.
+  Each spire **roots into the terrain** via `#fillFoundation` (fills Shimmerstone DOWN through water/air to solid)
+  so nothing floats — and the structure anchors to **`OCEAN_FLOOR_WG`** (ground, not the water surface — see the
+  floating-structure gotcha). Bound to `ModStructures#GLASSPETAL_SPIRES`; spawns in the Glasspetal Crags,
+  **Crag-Wraith-guarded** via the structure JSON's `spawn_overrides` (not code).
 - [UndercrownRelicsStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/UndercrownRelicsStructure.java)
   / [UndercrownRelicsPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/UndercrownRelicsPiece.java)
   — the **Undercrown Relics** (8g), a buried dungeon hall. Unlike the surface structures, `#findGenerationPoint`
@@ -758,7 +762,8 @@ as `File#member`.
   [Phase 9 drawing-board]: a gentle y-gradient (zero ~y70, just above sea 63) + three `lumenwilds:hills` octaves —
   BIG (xz 0.35, regional plateaus/basins ≈ continents), MID (xz 1.0, main local relief), SHARP (xz 2.2, rugged
   cliff faces) — swings the surface ~y0..170: deep **Lumenwater seas** in the basins, high cliffs on the rises.
-  **Noise CAVES** (a `lumenwilds:caverns` 3D-noise carve, depth-gated below ~y45) hollow the deep into the
+  **Noise CAVES** (a `lumenwilds:caverns` 3D-noise carve, strength −8.5, depth-gated below ~y52 → ~28% of the deep
+  hollow, meeting the surface biomes' vanilla carvers so you can cave down) hollow the deep into the
   **Undercrown** — folded INSIDE the `interpolated`/`squeeze` tree (adding it OUTSIDE does NOT carve — see gotcha).
   **`aquifers_enabled` is now `true`** so those deep caves are AIR caverns with Lumenwater POOLS at the local water
   table (not flooded); `lava` router is the constant `0.0` (water-only — any non-zero value enables aquifer lava;
@@ -858,6 +863,13 @@ as `File#member`.
   chunk-by-chunk and light is computed once at gen (static blocks = ~0 per-tick cost). Note aquifers-on here uses
   LESS Lumenwater than aquifers-off-flooded (pools at the water table vs. fully-flooded sub-sea caves). **Lesson:
   bounded worldgen fluid is free; avoid only the single-tick bulk `/fill`.**
+- **Surface structures must anchor to `OCEAN_FLOOR_WG`, not `WORLD_SURFACE_WG` — the latter includes fluid, so
+  they generate on the SEA SURFACE and float.** All the procedural structures (`GlowrootTree`/`MegaGlowcap`/
+  `Rootshrine`/`GlasspetalSpires`/`LumenboundRuins`) now use `getFirstOccupiedHeight(..., OCEAN_FLOOR_WG, ...)`
+  (`UndercrownRelics` keeps WORLD_SURFACE only as a deep-Y reference — it's buried). For wide/multi-part
+  structures on the dramatic cliffy terrain, anchoring alone isn't enough — also **root each part DOWN to the
+  ground** (`GlasspetalSpiresPiece#fillFoundation`: fill from the base down through replaceable blocks until
+  solid) or the base floats over slopes/water.
 - **Noise CAVES must be folded INSIDE the `interpolated`/`squeeze` final-density tree, not added outside it.**
   Adding a carve term as `add(squeeze(interpolated(base)), caveCarve)` does NOT carve — even a constant `-2.0`
   left the deep solid (the engine only honours the interpolated cell tree for terrain). Fold it in:

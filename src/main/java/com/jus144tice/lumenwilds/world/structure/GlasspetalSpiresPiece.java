@@ -27,18 +27,22 @@ import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSeriali
 import net.minecraft.world.level.storage.loot.LootTable;
 
 /**
- * The Glasspetal Spires piece (Phase 8f). {@link #postProcess} grows a cluster of tapering crystal towers
- * from a position-seeded RNG (writing only inside {@code writeBox}): a tall main spire + two satellites of
- * mixed Shimmerstone / Shimmerstone Bricks / Lumen Crystal Block, crowned with a Glasspetal Cluster, with a
- * loot chest tucked into the main spire's base ({@code chests/glasspetal_spires}).
+ * The Glasspetal Spires piece (Phase 8f; reworked Phase 9). {@link #postProcess} grows a cluster of tapering
+ * crystal towers from a position-seeded RNG (writing only inside {@code writeBox}): a main spire + satellites
+ * of mixed Shimmerstone / Shimmerstone Bricks / Lumen Crystal Block, crowned with Glasspetal Clusters, with a
+ * loot chest at the main spire's foot ({@code chests/glasspetal_spires}). Each instance rolls a <b>size tier</b>
+ * — regular / large / rare MASSIVE (like the Glowroot/Glowwood trees) — so the Crags vary. Every spire roots into
+ * the terrain with a foundation that fills DOWN through water/air to solid ground, so nothing floats on the sea.
  */
 public class GlasspetalSpiresPiece extends StructurePiece {
 
     private static final ResourceKey<LootTable> LOOT =
             ResourceKey.create(Registries.LOOT_TABLE, ResourceLocationHelper.modLoc("chests/glasspetal_spires"));
 
-    private static final int REACH = 8;
-    private static final int MAIN_HEIGHT = 16;
+    // The box is sized for the MASSIVE case (the position-seeded RNG picks the actual size in postProcess).
+    private static final int MAX_REACH = 22;
+    private static final int MAX_HEIGHT = 66;
+    private static final int FOUNDATION = 22;
 
     private final BlockPos origin;
 
@@ -54,12 +58,12 @@ public class GlasspetalSpiresPiece extends StructurePiece {
 
     private static BoundingBox boxAround(BlockPos o) {
         return new BoundingBox(
-                o.getX() - REACH,
-                o.getY() - 3,
-                o.getZ() - REACH,
-                o.getX() + REACH,
-                o.getY() + MAIN_HEIGHT + 3,
-                o.getZ() + REACH);
+                o.getX() - MAX_REACH,
+                o.getY() - FOUNDATION,
+                o.getZ() - MAX_REACH,
+                o.getX() + MAX_REACH,
+                o.getY() + MAX_HEIGHT,
+                o.getZ() + MAX_REACH);
     }
 
     @Override
@@ -81,12 +85,41 @@ public class GlasspetalSpiresPiece extends StructurePiece {
         RandomSource rand = RandomSource.create(
                 origin.getX() * 341873128712L ^ origin.getZ() * 132897987541L ^ (long) origin.getY());
 
-        spire(level, writeBox, rand, origin, MAIN_HEIGHT, 3);
-        spire(level, writeBox, rand, origin.offset(5, 0, 2), 9, 2);
-        spire(level, writeBox, rand, origin.offset(-4, 0, -3), 11, 2);
+        // Size tier: regular (70%) / large (25%) / MASSIVE (5%).
+        int tier = rand.nextInt(100);
+        int mainHeight;
+        int baseR;
+        int satellites;
+        int spread;
+        if (tier < 70) {
+            mainHeight = 13 + rand.nextInt(6); // 13–18
+            baseR = 3;
+            satellites = 2 + rand.nextInt(2);
+            spread = 5;
+        } else if (tier < 95) {
+            mainHeight = 24 + rand.nextInt(9); // 24–32
+            baseR = 4 + rand.nextInt(2);
+            satellites = 3 + rand.nextInt(2);
+            spread = 7;
+        } else {
+            mainHeight = 45 + rand.nextInt(18); // 45–62, the rare giant
+            baseR = 7 + rand.nextInt(3);
+            satellites = 5 + rand.nextInt(3);
+            spread = 11;
+        }
+
+        spire(level, writeBox, rand, origin, mainHeight, baseR);
+        for (int i = 0; i < satellites; i++) {
+            double ang = rand.nextDouble() * Math.PI * 2.0;
+            int dx = (int) Math.round(Math.cos(ang) * (spread * (0.5 + rand.nextDouble() * 0.5)));
+            int dz = (int) Math.round(Math.sin(ang) * (spread * (0.5 + rand.nextDouble() * 0.5)));
+            int h = (int) (mainHeight * (0.4 + rand.nextDouble() * 0.4));
+            int r = Math.max(2, baseR - 1 - rand.nextInt(2));
+            spire(level, writeBox, rand, origin.offset(dx, 0, dz), h, r);
+        }
 
         // Loot chest tucked at the foot of the main spire (carve a one-block alcove first).
-        BlockPos chestPos = origin.offset(3, 0, 0);
+        BlockPos chestPos = origin.offset(baseR, 1, 0);
         set(level, writeBox, chestPos, Blocks.AIR.defaultBlockState());
         set(level, writeBox, chestPos.below(), ModBlocks.SHIMMERSTONE.get().defaultBlockState());
         BlockState chest = Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, Direction.EAST);
@@ -116,13 +149,37 @@ public class GlasspetalSpiresPiece extends StructurePiece {
                 }
             }
         }
-        // Glasspetal crown (the cluster's default state faces up).
+        // Crown: a Glasspetal Cluster on a Lumen Crystal cap.
+        set(level, box, base.above(height), crystal);
         set(
                 level,
                 box,
                 base.above(height + 1),
                 ModBlocks.GLASSPETAL_CLUSTER.get().defaultBlockState());
-        set(level, box, base.above(height), ModBlocks.LUMEN_CRYSTAL_BLOCK.get().defaultBlockState());
+
+        // Foundation: root the base disc DOWN through water/air to solid ground (no floating on the sea).
+        for (int dx = -baseR; dx <= baseR; dx++) {
+            for (int dz = -baseR; dz <= baseR; dz++) {
+                if (dx * dx + dz * dz <= baseR * baseR + 1) {
+                    fillFoundation(level, box, base.getX() + dx, base.getY(), base.getZ() + dz, shimmer);
+                }
+            }
+        }
+    }
+
+    /** Fills shimmerstone from just below {@code fromY} down through replaceable blocks until it hits solid ground. */
+    private static void fillFoundation(WorldGenLevel level, BoundingBox box, int x, int fromY, int z, BlockState fill) {
+        BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
+        for (int dy = 1; dy <= FOUNDATION; dy++) {
+            p.set(x, fromY - dy, z);
+            if (!box.isInside(p)) {
+                break;
+            }
+            if (!level.getBlockState(p).canBeReplaced()) {
+                break; // reached solid ground
+            }
+            level.setBlock(p, fill, 2);
+        }
     }
 
     private static void set(WorldGenLevel level, BoundingBox box, BlockPos p, BlockState state) {
