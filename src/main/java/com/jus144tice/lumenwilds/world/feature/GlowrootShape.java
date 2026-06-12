@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Shared procedural geometry for Glowroot trees — a tapering trunk, arching buttress roots, deep
- * taproots, spreading leafy branches, and a broad dual-dome canopy (optionally a Lumen-Crystal-Ore root
+ * taproots, and a broad, full canopy built from tiers of leafy branches (optionally a Lumen-Crystal-Ore root
  * cluster). One algorithm drives BOTH the rare {@code MEGA} variant (the town-sized
  * {@code world.structure} version) and the ordinary {@code MEDIUM} 2×2 tree (a normal worldgen feature),
  * just with different {@link Params}, so they read as the same species at every scale and don't look
@@ -48,24 +48,21 @@ public final class GlowrootShape {
             int rootLen,
             int rootLenRand,
             double rootThick,
-            int branches,
+            int branches, // branches PER canopy tier
             int branchesRand,
             int branchLen,
             int branchLenRand,
             double branchThick,
             int alongBlob,
             int endBlob,
-            int crownHoriz,
-            int crownVert,
             boolean ore) {}
 
-    // alongBlob/endBlob/crownHoriz tuned so every leaf is within 6 leaf-steps of a log (see #leaves()):
-    // end-blob ≤3, along-blob ≤4 (on a log line), crown horiz ≤ trunkRadius+4. The wide canopy comes from the
-    // log-supported branch blobs, not a giant trunk-only crown.
-    public static final Params MEGA =
-            new Params(10.0, 72, 18, 32, 12, 6, 14, 8, 3.2, 16, 8, 16, 8, 2.6, 4, 2, 14, 10, true);
+    // The canopy is built from TIERS of branches (see #buildCanopy) — every leaf blob is seated on a branch-log,
+    // and blob radius is capped at 3 so a leaf is at most 3·√3≈5.2 orthogonal leaf-steps from that log (≤6 → 0
+    // gen-decay). A big, full canopy comes from MANY overlapping branch-blobs across tiers, NOT a trunk-only dome.
+    public static final Params MEGA = new Params(10.0, 72, 18, 32, 12, 6, 14, 8, 3.2, 10, 6, 16, 8, 2.6, 3, 3, true);
 
-    public static final Params MEDIUM = new Params(2.0, 14, 8, 6, 4, 3, 4, 3, 1.6, 6, 4, 5, 3, 1.6, 2, 2, 6, 4, false);
+    public static final Params MEDIUM = new Params(2.0, 14, 8, 6, 4, 3, 5, 3, 1.6, 5, 3, 5, 3, 1.6, 2, 2, false);
 
     /** Builds a Glowroot tree of the given size at {@code origin} (the surface block above the ground). */
     public static void generate(Placer placer, RandomSource rand, BlockPos origin, Params p) {
@@ -81,7 +78,7 @@ public final class GlowrootShape {
         if (p.ore()) {
             seedOreColumn(placer, rand, cx, baseY, cz, p);
         }
-        buildBranchesAndCrown(placer, rand, cx, baseY, cz, height, log, p);
+        buildCanopy(placer, rand, cx, baseY, cz, height, log, p);
     }
 
     private static void buildTrunk(Placer placer, int cx, int baseY, int cz, int height, BlockState log, Params p) {
@@ -183,50 +180,67 @@ public final class GlowrootShape {
         }
     }
 
-    private static void buildBranchesAndCrown(
+    /**
+     * Builds the canopy as a stack of branch tiers threading the upper trunk. Each tier sends out branches at
+     * staggered angles; the middle tiers reach widest (a rounded dome), the top tapers. Every branch drops
+     * radius-≤3 leaf blobs along its length and a blob at the tip — each blob seated on the branch-log it was
+     * just drawn over — so all leaves stay within ~5 leaf-steps of a log (0 gen-decay) while the overlapping
+     * blobs across tiers fill a wide, full canopy.
+     */
+    private static void buildCanopy(
             Placer placer, RandomSource random, int cx, int baseY, int cz, int height, BlockState log, Params p) {
-        int branches = p.branches() + random.nextInt(p.branchesRand());
-        int firstBranchY = baseY + (int) (height * 0.40);
         int top = baseY + height;
-        for (int k = 0; k < branches; k++) {
-            double ang = (k / (double) branches) * Math.PI * 2.0 + random.nextDouble() * 0.6;
-            double dirX = Math.cos(ang);
-            double dirZ = Math.sin(ang);
-            double x = cx;
-            double z = cz;
-            double y = firstBranchY + random.nextInt(Math.max(1, top - firstBranchY));
-            int len = p.branchLen() + random.nextInt(p.branchLenRand());
-            for (int i = 0; i < len; i++) {
-                x += dirX;
-                z += dirZ;
-                double frac = i / (double) len;
-                y += frac < 0.4 ? 0.8 : (frac < 0.75 ? 0.15 : -0.2);
-                double r = Math.max(1.0, p.branchThick() - frac * (p.branchThick() * 0.7));
-                fillDisc(placer, (int) Math.round(x), (int) Math.round(y), (int) Math.round(z), r, log, false);
-                if (frac > 0.4 && i % 2 == 0) {
-                    leafBlob(placer, (int) Math.round(x), (int) Math.round(y), (int) Math.round(z), p.alongBlob());
-                }
+        int canopyBase = baseY + (int) (height * 0.45);
+        int tiers = Math.max(2, height / 18);
+        for (int tier = 0; tier < tiers; tier++) {
+            double tierFrac = tiers == 1 ? 0.5 : tier / (double) (tiers - 1); // 0 = canopy bottom, 1 = top
+            int tierY = canopyBase + (int) ((top - canopyBase) * tierFrac);
+            double reachFactor = 0.55 + 0.45 * Math.sin(tierFrac * Math.PI); // middle tiers widest -> dome
+            int branchesThisTier = p.branches() + random.nextInt(p.branchesRand());
+            double angleOffset = random.nextDouble() * Math.PI * 2.0 + tier * 0.7; // stagger tiers
+            for (int k = 0; k < branchesThisTier; k++) {
+                double ang = (k / (double) branchesThisTier) * Math.PI * 2.0 + angleOffset + random.nextDouble() * 0.4;
+                growBranch(placer, random, cx, tierY, cz, ang, reachFactor, log, p);
             }
-            leafBlob(
-                    placer,
-                    (int) Math.round(x),
-                    (int) Math.round(y),
-                    (int) Math.round(z),
-                    p.endBlob() + random.nextInt(2));
         }
-        crown(placer, cx, baseY + (int) (height * 0.86), cz, p.crownHoriz(), p.crownVert());
-        crown(placer, cx, baseY + (int) (height * 0.72), cz, (int) (p.crownHoriz() * 0.75), (int)
-                (p.crownVert() * 0.7));
+        // Cap the very top so the trunk crown isn't bald (the trunk-top log seats this blob).
+        leafBlob(placer, cx, top, cz, Math.min(3, p.endBlob() + 1));
     }
 
-    private static void crown(Placer placer, int cx, int cy, int cz, int horiz, int vert) {
-        if (vert <= 0 || horiz <= 0) {
-            return;
+    private static void growBranch(
+            Placer placer,
+            RandomSource random,
+            int cx,
+            int startY,
+            int cz,
+            double ang,
+            double reachFactor,
+            BlockState log,
+            Params p) {
+        double dirX = Math.cos(ang);
+        double dirZ = Math.sin(ang);
+        double x = cx;
+        double z = cz;
+        double y = startY;
+        int len = Math.max(3, (int) Math.round((p.branchLen() + random.nextInt(p.branchLenRand())) * reachFactor));
+        int alongR = Math.min(3, p.alongBlob());
+        for (int i = 0; i < len; i++) {
+            x += dirX;
+            z += dirZ;
+            double frac = i / (double) len;
+            y += frac < 0.35 ? 0.7 : (frac < 0.7 ? 0.2 : -0.15); // arch up then level then slight droop
+            double r = Math.max(1.0, p.branchThick() - frac * (p.branchThick() * 0.7));
+            fillDisc(placer, (int) Math.round(x), (int) Math.round(y), (int) Math.round(z), r, log, false);
+            if (frac > 0.25 && i % 2 == 0) {
+                leafBlob(placer, (int) Math.round(x), (int) Math.round(y), (int) Math.round(z), alongR);
+            }
         }
-        for (int dy = -vert; dy <= vert; dy++) {
-            double layerR = horiz * Math.sqrt(Math.max(0.0, 1.0 - (double) (dy * dy) / (double) (vert * vert)));
-            fillDisc(placer, cx, cy + dy, cz, layerR, leaves(), true);
-        }
+        leafBlob(
+                placer,
+                (int) Math.round(x),
+                (int) Math.round(y),
+                (int) Math.round(z),
+                Math.min(3, p.endBlob() + random.nextInt(2)));
     }
 
     private static void leafBlob(Placer placer, int cx, int cy, int cz, int radius) {
@@ -258,10 +272,11 @@ public final class GlowrootShape {
 
     private static BlockState leaves() {
         // NON-persistent (normal decay when the logs are cut), placed at DISTANCE 7 so vanilla recomputes the
-        // real leaf→log distance. The Params are sized so every leaf is within 6 leaf-steps of a log (end-blob
-        // r≤3 → 3·√3≈5.2; along-blob r≤4 on a log line → 4·√2≈5.7; crown r ≤ trunkRadius+4 → 4·√2≈5.7), so
-        // ZERO leaves decay on generation — they only decay if you cut the supporting logs. Decay is harmless
-        // because the leaf loot table is a real leaves table (saplings/sticks/mostly nothing), not drop-self.
+        // real leaf→log distance. Every leaf blob in #buildCanopy is seated on a branch-log and is radius ≤3, so
+        // the farthest leaf is ≤3·√3≈5.2 orthogonal leaf-steps from that log (≤6) → ZERO leaves decay on
+        // generation; they only decay if you cut the supporting logs. Requires the logs to be in #minecraft:logs
+        // (data/minecraft/tags/block/logs.json) — without that the distance check finds no trunk and ALL decay.
+        // Decay is harmless: the leaf loot is a real leaves table (saplings/sticks/mostly nothing), not drop-self.
         return ModBlocks.GLOWROOT_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 7);
     }
 }

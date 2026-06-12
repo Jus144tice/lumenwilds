@@ -462,10 +462,13 @@ as `File#member`.
 
 ### world/feature/ — Glowroot tree geometry (Phase 5c-3)
 - [GlowrootShape.java](src/main/java/com/jus144tice/lumenwilds/world/feature/GlowrootShape.java) — the
-  **shared** procedural Glowroot tree (trunk/roots/branches/dual-dome canopy + optional ore). `#generate`
-  draws into a `#Placer` (abstracts structure box-clipping vs. feature direct writes); `#Params` size
-  knobs with presets `#MEGA` (the structure giant) and `#MEDIUM` (the ordinary 2×2 feature). **Tune tree
-  shape here** — both variants share it.
+  **shared** procedural Glowroot tree (trunk/roots + a full canopy built from tiers of leafy branches via
+  `#buildCanopy`/`#growBranch` + optional ore). `#generate` draws into a `#Placer` (abstracts structure
+  box-clipping vs. feature direct writes); `#Params` size knobs with presets `#MEGA` (the structure giant) and
+  `#MEDIUM` (the ordinary 2×2 feature). **Tune tree shape here** — both variants share it. Canopy invariant:
+  every leaf blob is seated on a branch-log and capped at radius 3 (≤5.2 leaf-steps from a log → 0 gen-decay);
+  lushness comes from MANY overlapping branch-blobs across tiers, not a trunk-centred dome (census-verified:
+  28.6k leaves dead-flat incl. a MEGA tree). Needs the logs in `#minecraft:logs` (see the leaf-decay gotcha).
 - [GlowrootTreeFeature.java](src/main/java/com/jus144tice/lumenwilds/world/feature/GlowrootTreeFeature.java)
   — `Feature<NoneFeatureConfiguration>` for the ordinary 2×2 Glowroot tree; `#place` runs
   `GlowrootShape.generate(..., MEDIUM)`. Bound to `ModFeatures#GLOWROOT_TREE_2X2`.
