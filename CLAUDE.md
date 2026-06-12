@@ -731,11 +731,12 @@ as `File#member`.
   surface rules; the router's **`depth` is y-varying** [5d.5] so cave biomes layer under the surface, and
   **`temperature` + `vegetation` are shifted-noise** (Phase 9 fix — they were `0.0` constants, which pinned the
   whole surface to one biome; now all 7 biomes spread) — `continents`/`erosion`/`ridges` stay constant since no
-  biome differentiates on them; **`default_fluid` is `minecraft:water`** — it was briefly `lumenwater`, but
-  Lumenwater's `FluidType` **emits light 4**, so filling every aquifer/sea with it floods the light engine with
-  millions of sources and tanks the server on chunk loads (an 18k-block fill = an 11.5s tick spike vs. instant
-  for water); glowing Lumenwater stays in the **Moonmire/Undercrown pools** [`LumenwaterPoolFeature`], small
-  volumes), `biome/lumen_glade.json` + `biome/glowroot_forest.json`
+  biome differentiates on them; **`default_fluid` is `lumenwilds:lumenwater`** (light 4) so the dimension's seas/
+  ponds glow teal — **safe because `aquifers_enabled` is `false`**, bounding Lumenwater to surface water placed
+  chunk-by-chunk (re-measured post-leaf-fix: a region flooded to sea_level 110 → 11.2k Lumenwater blocks ticked at
+  water-baseline speed; the old "light floods the engine" fear was the leaf-decay flood + a pathological single-tick
+  `/fill`, see the gotcha). Glowing Lumenwater also fills the **Moonmire/Undercrown pools** [`LumenwaterPoolFeature`]),
+  `biome/lumen_glade.json` + `biome/glowroot_forest.json`
   (5d.1, dark-teal) + `biome/glasspetal_crags.json` (5d.2, blue-violet) + `biome/sporefall_jungle.json`
   (5d.3, lush green + warped_spore particle) + `biome/moonmire.json` (5d.4, dark glowing swamp) +
   `biome/undercrown_caverns.json` (5d.5, deep cave biome) + `biome/stillbloom_basin.json` (5d.6, rare bright
@@ -807,13 +808,18 @@ as `File#member`.
   before `runClient`/`runServer`, and verify the user isn't mid-session. To validate worldgen, force-gen a
   **large fresh far region** single-instance (a small one can miss position-dependent feature bugs — use 16×16+
   chunks).
-- **Never make a light-emitting block/fluid the bulk/default terrain material.** Lumenwater's `FluidType` emits
-  light 4; setting it as the `noise_settings` `default_fluid` filled every aquifer/sea with light sources and
-  flooded the light engine — the server ran **up to 31s behind while walking**, and an isolation test (fill
-  18k blocks) measured an **11.5s tick spike for Lumenwater vs. instant for vanilla water**. `default_fluid` is
-  `minecraft:water`; glowing Lumenwater is confined to the small `LumenwaterPoolFeature` pools. Same caution for
-  any high-`lightLevel` block used as a worldgen bulk fill. **Headless repro:** a `/fill` of equal volumes +
-  watch `Can't keep up` — light cost isolates cleanly this way (no player needed).
+- **Light-emitting default fluid is fine HERE (aquifers off) — the danger is bulk single-tick placement, not
+  the fluid being default.** `default_fluid` **is `lumenwilds:lumenwater`** (light 4) — the dimension's seas/ponds
+  glow teal. This was re-measured after the leaf-flood fix: the FluidType danger only bites when (a) `aquifers_enabled`
+  is **true** (millions of underground source blocks) or (b) you `/fill` a huge contiguous volume in one tick (the
+  old "11.5s spike" test — a pathological burst that inserts 18k light sources in a single tick). This dimension has
+  **`aquifers_enabled: false`**, so worldgen Lumenwater is bounded to surface seas and placed chunk-by-chunk across
+  many ticks. **Verified:** force-gen'd a 12×12 region flooded to `sea_level 110` → **11,200** Lumenwater blocks at
+  light 4, steady tick **~0.9–2.6 ms — identical to the water baseline** (1 "Can't keep up", the one-time gen). The
+  earlier "31s behind while walking" was the **leaf-decay flood**, not the fluid. Lesson refined: don't enable
+  aquifers with a light-emitting default fluid, and don't `/fill` bulk light sources — but a bounded surface fluid is
+  free. **Headless repro:** a temp `ServerTickEvent.Pre/Post` timer + `setChunkForced` a region + vary
+  `default_fluid`/`sea_level`/`lightLevel`; compare mean/max tick ms.
 - **Custom logs MUST be in `#minecraft:logs` or ALL leaves decay (incl. ones touching the trunk).**
   `LeavesBlock`'s distance check (`getDistanceAt`) only counts a neighbour as "distance 0" if it `is(BlockTags.LOGS)`
   — there is no Forge hook for it. Our Glowwood/Glowroot logs were never added to that tag, so every leaf computed
