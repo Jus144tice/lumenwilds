@@ -827,6 +827,7 @@ as `File#member`.
   giant trunk-only crown. **Headless repro:** force-load a forest region + `/place structure …glowroot_tree`,
   tick it, watch for a climbing `minecraft:item` count (a temp per-tick entity-census logger by `EntityType`,
   with `minecraft:item` broken down by item, names the source fast; a 90s window can MISS a slow leak).
+  **Verified:** force-gen'd Glade+Forest + a placed mega Glowroot tree, ticked 3+ min → `items=0` throughout.
 - **Client rendering (sky/particles/fog) can't be validated headlessly.** `DimensionSpecialEffects#renderSky`
   (Phase 7a `LumenDimensionEffects`) only runs in-client after entering the dimension; a server (even with
   force-gen) never calls it. Build + boot confirm registration/no-crash; the *look* needs `runClient` through

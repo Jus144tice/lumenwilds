@@ -86,7 +86,7 @@ public class LumenboundRuinsPiece extends StructurePiece {
         BlockState lumenbound = ModBlocks.LUMENBOUND_STONE.get().defaultBlockState();
         BlockState cobbled = ModBlocks.COBBLED_MOONSTONE.get().defaultBlockState();
         BlockState mossy = Blocks.MOSSY_STONE_BRICKS.defaultBlockState();
-        BlockState cracked = Blocks.CRACKED_STONE_BRICKS.defaultBlockState();
+        BlockState cracked = ModBlocks.CRACKED_MOONSTONE_BRICKS.get().defaultBlockState(); // themed (Phase 9d)
         BlockState mossyCobble = Blocks.MOSSY_COBBLESTONE.defaultBlockState();
 
         // 1) Base platform — a ragged disc one below the frame, half the blocks weathered.
