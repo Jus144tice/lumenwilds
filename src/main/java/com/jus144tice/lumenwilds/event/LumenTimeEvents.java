@@ -28,9 +28,6 @@ import net.neoforged.neoforge.event.level.LevelEvent;
 @EventBusSubscriber(modid = Lumenwilds.MOD_ID)
 public final class LumenTimeEvents {
 
-    /** 0.5 day-time units per game tick → a 48,000-tick Lumenwilds day (twice the Overworld). */
-    private static final float LUMENWILDS_DAY_TIME_PER_TICK = 0.5F;
-
     private LumenTimeEvents() {}
 
     @SubscribeEvent
@@ -39,7 +36,10 @@ public final class LumenTimeEvents {
                 && level.dimension().equals(LumenDimensionConstants.LUMENWILDS_LEVEL)) {
             ((LumenwildsTickTime) level).lumenwilds$setTickTime(true);
             if (level.getLevelData() instanceof LumenwildsTimeData data && !data.lumenwilds$isDecoupled()) {
-                data.lumenwilds$decouple(level.getDayTime(), LUMENWILDS_DAY_TIME_PER_TICK);
+                // Day-cycle rate is config-driven (Phase 9h); default 0.5 = the 48k half-rate day.
+                float perTick =
+                        (float) (double) com.jus144tice.lumenwilds.config.LumenConfig.DAY_CYCLE_MULTIPLIER.get();
+                data.lumenwilds$decouple(level.getDayTime(), perTick);
             }
         }
     }

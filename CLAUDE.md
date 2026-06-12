@@ -185,8 +185,15 @@ as `File#member`.
   DeferredRegisters to the **mod bus**: `ModSounds`, `ModParticles`, `ModMobEffects`, `ModPotions`,
   `ModFluidTypes`, `ModFluids`, `ModBlocks`, `ModItems`, `ModStructures` (`STRUCTURE_TYPES` + `STRUCTURE_PIECES`),
   `ModBlockEntities`, `ModEntities`, `ModMenus`, `ModCreativeTabs`. Also calls `ModWoodTypes#init()` first (WoodType/
-  BlockSetType must register before blocks build). `#onCommonSetup` logs only. **When you add a new
-  (non-empty) DeferredRegister, register it here.**
+  BlockSetType must register before blocks build). Also `container.registerConfig(COMMON, LumenConfig.SPEC)`
+  (Phase 9h). `#onCommonSetup` logs only. **When you add a new (non-empty) DeferredRegister, register it here.**
+
+### config/ — gameplay config (Phase 9h)
+- [LumenConfig.java](src/main/java/com/jus144tice/lumenwilds/config/LumenConfig.java) — a `COMMON`
+  `ModConfigSpec` (`#SPEC`), registered in the `Lumenwilds` ctor. `#GRAVITY_STRENGTH` (0.1–1.0, read by
+  `effects.LowGravityHandler#apply`), `#AMBIENT_EVENTS` (toggle, read by `world.event.LumenEventManager#roll`),
+  `#DAY_CYCLE_MULTIPLIER` (0.1–2.0, read by `event.LumenTimeEvents` — 0.5 = the 48k half-rate day). Read at
+  runtime so an edit applies on the next dimension entry / world load.
 
 ### registry/ — all registered content
 - [ModBlocks.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBlocks.java) — `#BLOCKS`
@@ -753,6 +760,11 @@ as `File#member`.
   and the **Undercrown Relics** (8g) — `structure/undercrown_relics.json` (step `underground_structures`) +
   `structure_set` (spacing 24/sep 8, in `undercrown_caverns`) + `chests/undercrown_relics` loot — each with its
   `tags/worldgen/biome/has_structure/<name>.json` biome tag. Hand-authored (not datagen).
+- `data/lumenwilds/advancement/*` — the **progression tree (Phase 9f)**: `root` (enter the dimension) →
+  `living_light`→`anchored`, `the_wilds_provide`→`soothing_nectar`, `native_fauna`→`apex_of_the_dark`, and a
+  biome-reach goal per biome (`into_the_glowroot`, `crystal_highlands`, `spore_rainforest`, `the_glowing_mire`,
+  `beneath_the_crown`, `sanctuary`). Triggers: `changed_dimension` / `inventory_changed` / `location`+biome;
+  direct-text titles (no lang keys). Hand-authored.
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves`; `tags/block/dirt.json`
   adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil); `tags/fluid/water.json`

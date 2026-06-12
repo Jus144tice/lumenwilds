@@ -71,6 +71,9 @@ public final class LumenEventManager {
     }
 
     private static LumenEvent roll(ServerLevel level) {
+        if (!com.jus144tice.lumenwilds.config.LumenConfig.AMBIENT_EVENTS.get()) {
+            return LumenEvent.NONE; // ambient events disabled in config (Phase 9h)
+        }
         int r = level.getRandom().nextInt(100);
         if (level.isNight() && r < 25) {
             return LumenEvent.MOONWAKE; // calm bright nights, night-only

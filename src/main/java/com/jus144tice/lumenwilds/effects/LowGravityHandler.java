@@ -53,8 +53,6 @@ public final class LowGravityHandler {
     private static final ResourceLocation SAFE_FALL_ID = ResourceLocationHelper.modLoc("lumenwilds_safe_fall");
     private static final ResourceLocation FALL_DAMAGE_ID = ResourceLocationHelper.modLoc("lumenwilds_soft_landing");
 
-    private static final AttributeModifier GRAVITY_MOD = new AttributeModifier(
-            GRAVITY_ID, GRAVITY_MULTIPLIER - 1.0D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
     private static final AttributeModifier SAFE_FALL_MOD =
             new AttributeModifier(SAFE_FALL_ID, SAFE_FALL_BONUS, AttributeModifier.Operation.ADD_VALUE);
     private static final AttributeModifier FALL_DAMAGE_MOD =
@@ -83,7 +81,12 @@ public final class LowGravityHandler {
     }
 
     private static void apply(LivingEntity entity) {
-        put(entity, Attributes.GRAVITY, GRAVITY_MOD);
+        // Gravity strength is config-driven (Phase 9h), so build the modifier at apply-time from the loaded value.
+        double gravity = com.jus144tice.lumenwilds.config.LumenConfig.GRAVITY_STRENGTH.get();
+        put(
+                entity,
+                Attributes.GRAVITY,
+                new AttributeModifier(GRAVITY_ID, gravity - 1.0D, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
         put(entity, Attributes.SAFE_FALL_DISTANCE, SAFE_FALL_MOD);
         put(entity, Attributes.FALL_DAMAGE_MULTIPLIER, FALL_DAMAGE_MOD);
     }

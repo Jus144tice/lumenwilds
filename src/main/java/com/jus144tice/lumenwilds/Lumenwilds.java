@@ -4,6 +4,7 @@
  */
 package com.jus144tice.lumenwilds;
 
+import com.jus144tice.lumenwilds.config.LumenConfig;
 import com.jus144tice.lumenwilds.registry.ModBlockEntities;
 import com.jus144tice.lumenwilds.registry.ModBlocks;
 import com.jus144tice.lumenwilds.registry.ModCreativeTabs;
@@ -78,6 +79,9 @@ public final class Lumenwilds {
         // world package and are registered via DataPack JSON, not a DeferredRegister.
 
         modBus.addListener(this::onCommonSetup);
+
+        // Gameplay config (Phase 9h): gravity strength, ambient events, day-cycle rate.
+        container.registerConfig(net.neoforged.fml.config.ModConfig.Type.COMMON, LumenConfig.SPEC);
 
         LOGGER.info("[{}] DeferredRegisters wired to the mod event bus.", MOD_ID);
     }
