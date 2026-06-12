@@ -59,10 +59,13 @@ public final class GlowrootShape {
             int crownVert,
             boolean ore) {}
 
+    // alongBlob/endBlob/crownHoriz tuned so every leaf is within 6 leaf-steps of a log (see #leaves()):
+    // end-blob ≤3, along-blob ≤4 (on a log line), crown horiz ≤ trunkRadius+4. The wide canopy comes from the
+    // log-supported branch blobs, not a giant trunk-only crown.
     public static final Params MEGA =
-            new Params(10.0, 72, 18, 32, 12, 6, 14, 8, 3.2, 16, 8, 16, 8, 2.6, 4, 5, 24, 10, true);
+            new Params(10.0, 72, 18, 32, 12, 6, 14, 8, 3.2, 16, 8, 16, 8, 2.6, 4, 2, 14, 10, true);
 
-    public static final Params MEDIUM = new Params(2.0, 14, 8, 6, 4, 3, 4, 3, 1.6, 6, 4, 5, 3, 1.6, 2, 3, 6, 4, false);
+    public static final Params MEDIUM = new Params(2.0, 14, 8, 6, 4, 3, 4, 3, 1.6, 6, 4, 5, 3, 1.6, 2, 2, 6, 4, false);
 
     /** Builds a Glowroot tree of the given size at {@code origin} (the surface block above the ground). */
     public static void generate(Placer placer, RandomSource rand, BlockPos origin, Params p) {
@@ -254,9 +257,11 @@ public final class GlowrootShape {
     }
 
     private static BlockState leaves() {
-        // PERSISTENT so they never decay: the big spreading/mega Glowroot canopies put many leaves >7 blocks
-        // from a log, and decaying leaves drop items — a dense forest of these flooded the world with
-        // thousands of item entities and tanked the server (Phase 9 fix).
-        return ModBlocks.GLOWROOT_LEAVES.get().defaultBlockState().setValue(LeavesBlock.PERSISTENT, true);
+        // NON-persistent (normal decay when the logs are cut), placed at DISTANCE 7 so vanilla recomputes the
+        // real leaf→log distance. The Params are sized so every leaf is within 6 leaf-steps of a log (end-blob
+        // r≤3 → 3·√3≈5.2; along-blob r≤4 on a log line → 4·√2≈5.7; crown r ≤ trunkRadius+4 → 4·√2≈5.7), so
+        // ZERO leaves decay on generation — they only decay if you cut the supporting logs. Decay is harmless
+        // because the leaf loot table is a real leaves table (saplings/sticks/mostly nothing), not drop-self.
+        return ModBlocks.GLOWROOT_LEAVES.get().defaultBlockState().setValue(LeavesBlock.DISTANCE, 7);
     }
 }

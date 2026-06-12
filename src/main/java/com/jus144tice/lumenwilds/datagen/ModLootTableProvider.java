@@ -64,6 +64,13 @@ public final class ModLootTableProvider {
                     add(
                             block,
                             b -> createOreDrop(b, ModItems.LUMEN_CRYSTAL_SHARD.get())); // ore → shard (+silk/fortune)
+                } else if (block instanceof net.minecraft.world.level.block.LeavesBlock) {
+                    // Real leaves loot (NOT drop-self): shears/silk → block, else sapling/stick/mostly nothing.
+                    // Drop-self on decaying leaves floods the world with leaf-block items (see CLAUDE.md).
+                    Block sapling = name.startsWith("glowwood")
+                            ? ModBlocks.GLOWWOOD_SAPLING.get()
+                            : ModBlocks.GLOWROOT_SAPLING.get();
+                    add(block, b -> createLeavesDrops(b, sapling, NORMAL_LEAVES_SAPLING_CHANCES));
                 } else {
                     dropSelf(block); // standing/ceiling signs drop their own (Sign/HangingSign)Item
                 }

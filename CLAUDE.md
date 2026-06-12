@@ -800,18 +800,21 @@ as `File#member`.
   `minecraft:water`; glowing Lumenwater is confined to the small `LumenwaterPoolFeature` pools. Same caution for
   any high-`lightLevel` block used as a worldgen bulk fill. **Headless repro:** a `/fill` of equal volumes +
   watch `Can't keep up` — light cost isolates cleanly this way (no player needed).
-- **ALL Lumenwilds tree leaves are `PERSISTENT` (both code-placed AND the vanilla `tree` JSON configs).**
-  Our leaf blocks use a **drop-self** loot table, so any leaf that **decays drops the leaf block itself** →
-  item flood. Two waves: (1) the custom Glowroot trees (big spreading + mega canopies, dense in the Glowroot
-  Forest) put leaves >7 from a log → **>20,000 item entities**, ~0.94 TPS; (2) even the small radius-2 vanilla
-  `minecraft:tree` configs (Glowwood, 1×1 Glowroot) leaked **glowwood_leaves** slowly. Fixes: `world.feature.
-  GlowrootShape#leaves` + `RootshrinePiece` set `PERSISTENT` in code; `configured_feature/glowwood_tree.json`
-  + `glowroot_tree.json` set `"persistent": "true"` in the `foliage_provider`. (Setting `DISTANCE=1` does NOT
-  help — vanilla recomputes distance; only `PERSISTENT` stops decay.) **Lesson: if leaves drop-self, they MUST
-  be persistent, or give them a real `minecraft:leaves`-style loot table.** **Headless repro:** force-load a
-  forest region, tick it, watch for a climbing `minecraft:item` count — a temp per-tick entity-census logger
-  (count by `EntityType`, and break `minecraft:item` down by item) names the runaway source fast; note a 90s
-  window can MISS a slow leak (the radius-2 trees), so run several minutes or trust the structural fix.
+- **Tree leaves: non-persistent + a real leaves loot table + canopy geometry sized so leaves stay within 6 of
+  a log.** Two compounding bugs flooded the world with leaf-block items (>20,000 entities, ~0.94 TPS): (a) our
+  leaf loot tables were **drop-self**, so any decaying leaf dropped the leaf *block*; and (b) the custom
+  Glowroot canopies put leaves **>6 leaf-steps from a log**, so they decayed *on generation* (no player). The
+  decay rule: a leaf survives only if a log is within **6 orthogonal leaf-steps**; worst-case for a leaf sphere
+  radius R around one log is `R·√3`, for a leaf disc around the trunk `(R−trunkRadius)·√2`. Fixes — keep
+  vanilla's normal "decay when logs are cut" mechanic AND zero gen-decay: (1) **proper loot tables**
+  `loot_table/blocks/glowwood_leaves.json` + `glowroot_leaves.json` (shears/silk → block, else sapling ~5% /
+  stick / mostly nothing — never the block); (2) leaves **non-persistent** (`GlowrootShape#leaves` sets
+  `DISTANCE 7`; `glowwood_tree.json`/`glowroot_tree.json` `foliage_provider` `"persistent": "false"`); (3)
+  `GlowrootShape.MEGA`/`MEDIUM` params sized to keep every leaf within 6 — **end-blob ≤3, along-blob ≤4 (on a
+  log line), crown horiz ≤ trunkRadius+4** — so the wide canopy comes from log-supported branch blobs, not a
+  giant trunk-only crown. **Headless repro:** force-load a forest region + `/place structure …glowroot_tree`,
+  tick it, watch for a climbing `minecraft:item` count (a temp per-tick entity-census logger by `EntityType`,
+  with `minecraft:item` broken down by item, names the source fast; a 90s window can MISS a slow leak).
 - **Client rendering (sky/particles/fog) can't be validated headlessly.** `DimensionSpecialEffects#renderSky`
   (Phase 7a `LumenDimensionEffects`) only runs in-client after entering the dimension; a server (even with
   force-gen) never calls it. Build + boot confirm registration/no-crash; the *look* needs `runClient` through

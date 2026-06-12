@@ -16,7 +16,7 @@
       "type": "minecraft:simple_state_provider",
       "state": {
         "Name": "lumenwilds:glowwood_leaves",
-        "Properties": { "distance": "1", "persistent": "true", "waterlogged": "false" }
+        "Properties": { "distance": "7", "persistent": "false", "waterlogged": "false" }
       }
     },
     "force_dirt": false,
