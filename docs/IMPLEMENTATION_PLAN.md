@@ -912,6 +912,16 @@ Phase 9 front-loads the visual work, then the systems/balance work. **Constraint
 *can* write bespoke entity-model **geometry** (Java `EntityModel`/`LayerDefinition`), **emissive glow** render
 layers, and improved **procedural textures**, then iterate against the user's `runClient` checks.
 
+**Progress (live):** ✅ **9a** mob glow, ✅ **9b** all 10 bespoke models + faces/textures, ✅ **9c** block
+emissive glow (sky/fog/particle visual tuning still TODO), ✅ **world-art** all ~53 blocks + 35 items + every
+remaining placeholder (lumenbound_stone), ✅ **9f** advancements (13-node tree) + recipe/lang completeness
+verified, ✅ **9h** config (gravity/events/day-cycle; JEI still TODO), ✅ **9i** the major perf bugs (light-
+emitting Lumenwater, leaf-decay item floods — fixed with non-persistent leaves + real loot + canopy math), and
+**9d** the first deferred material (Cracked Moonstone/Deep bricks). Also fixed, during testing: biomes weren't
+spreading (constant climate), no wildlife (spawn tag), no Lumenwater, grass grid. **Remaining:** sky/particle
+look-pass, more **9d** flora/terrain (climbable Glowvine, Moonmud, root pillars…), **9e** behaviour, **9g**
+balance, **9h** JEI, **9j** real `.ogg` audio.
+
 - **9a Mob glow pass** — emissive bioluminescence render layers for the 10 mobs (the dimension's identity:
   "native living light") + themed glow textures. Lower-risk, high-impact; makes every creature read as alive.
 - **9b Bespoke mob models** — custom-geometry `EntityModel`s replacing the vanilla placeholders (cow→grazer,
