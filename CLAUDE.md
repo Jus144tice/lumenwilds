@@ -800,13 +800,18 @@ as `File#member`.
   `minecraft:water`; glowing Lumenwater is confined to the small `LumenwaterPoolFeature` pools. Same caution for
   any high-`lightLevel` block used as a worldgen bulk fill. **Headless repro:** a `/fill` of equal volumes +
   watch `Can't keep up` — light cost isolates cleanly this way (no player needed).
-- **Custom/procedural-tree leaves MUST be `LeavesBlock.PERSISTENT = true`.** Non-persistent leaves whose real
-  distance to a log exceeds 7 **decay and drop items**; the Glowroot trees (big spreading + mega canopies,
-  dense in the Glowroot Forest) flooded the world with **>20,000 item entities** that tanked the server (setting
-  `DISTANCE=1` at placement does NOT help — vanilla recomputes it). `world.feature.GlowrootShape#leaves` +
-  `RootshrinePiece` now set `PERSISTENT`. Vanilla `minecraft:tree` features (Glowwood) are fine — they keep
-  leaves within distance 7. **Headless repro:** force-load a forest region, let it tick, watch for a climbing
-  `minecraft:item` count (a temp per-tick entity-census logger by `EntityType` names a runaway spawner fast).
+- **ALL Lumenwilds tree leaves are `PERSISTENT` (both code-placed AND the vanilla `tree` JSON configs).**
+  Our leaf blocks use a **drop-self** loot table, so any leaf that **decays drops the leaf block itself** →
+  item flood. Two waves: (1) the custom Glowroot trees (big spreading + mega canopies, dense in the Glowroot
+  Forest) put leaves >7 from a log → **>20,000 item entities**, ~0.94 TPS; (2) even the small radius-2 vanilla
+  `minecraft:tree` configs (Glowwood, 1×1 Glowroot) leaked **glowwood_leaves** slowly. Fixes: `world.feature.
+  GlowrootShape#leaves` + `RootshrinePiece` set `PERSISTENT` in code; `configured_feature/glowwood_tree.json`
+  + `glowroot_tree.json` set `"persistent": "true"` in the `foliage_provider`. (Setting `DISTANCE=1` does NOT
+  help — vanilla recomputes distance; only `PERSISTENT` stops decay.) **Lesson: if leaves drop-self, they MUST
+  be persistent, or give them a real `minecraft:leaves`-style loot table.** **Headless repro:** force-load a
+  forest region, tick it, watch for a climbing `minecraft:item` count — a temp per-tick entity-census logger
+  (count by `EntityType`, and break `minecraft:item` down by item) names the runaway source fast; note a 90s
+  window can MISS a slow leak (the radius-2 trees), so run several minutes or trust the structural fix.
 - **Client rendering (sky/particles/fog) can't be validated headlessly.** `DimensionSpecialEffects#renderSky`
   (Phase 7a `LumenDimensionEffects`) only runs in-client after entering the dimension; a server (even with
   force-gen) never calls it. Build + boot confirm registration/no-crash; the *look* needs `runClient` through
