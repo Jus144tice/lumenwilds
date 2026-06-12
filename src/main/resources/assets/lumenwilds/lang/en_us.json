@@ -171,5 +171,7 @@
   "fluid_type.lumenwilds.lumenwater": "Lumenwater",
   "itemGroup.lumenwilds": "The Lumenwilds",
   "lumenwilds.portal.entering": "Entering the Lumenwilds",
-  "lumenwilds.portal.leaving": "Leaving the Lumenwilds"
+  "lumenwilds.portal.leaving": "Leaving the Lumenwilds",
+  "block.lumenwilds.cracked_moonstone_bricks": "Cracked Moonstone Bricks",
+  "block.lumenwilds.cracked_deep_moonstone_bricks": "Cracked Deep Moonstone Bricks"
 }

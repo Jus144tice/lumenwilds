@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": {
+    "item": "lumenwilds:deep_moonstone_bricks"
+  },
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:cracked_deep_moonstone_bricks"
+  }
+}

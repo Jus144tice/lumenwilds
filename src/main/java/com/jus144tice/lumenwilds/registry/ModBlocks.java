@@ -514,6 +514,7 @@ public final class ModBlocks {
     public static final DeferredBlock<Block> MOONSTONE_BRICKS = moonCube("moonstone_bricks");
     public static final DeferredBlock<Block> CHISELED_MOONSTONE = moonCube("chiseled_moonstone");
     public static final DeferredBlock<Block> MOONSTONE_TILES = moonCube("moonstone_tiles");
+    public static final DeferredBlock<Block> CRACKED_MOONSTONE_BRICKS = moonCube("cracked_moonstone_bricks");
 
     public static final DeferredBlock<StairBlock> MOONSTONE_STAIRS = moonStairs("moonstone_stairs", MOONSTONE);
     public static final DeferredBlock<SlabBlock> MOONSTONE_SLAB = moonSlab("moonstone_slab");
@@ -545,6 +546,7 @@ public final class ModBlocks {
     public static final DeferredBlock<Block> POLISHED_DEEP_MOONSTONE = deepCube("polished_deep_moonstone");
     public static final DeferredBlock<Block> DEEP_MOONSTONE_BRICKS = deepCube("deep_moonstone_bricks");
     public static final DeferredBlock<Block> DEEP_MOONSTONE_TILES = deepCube("deep_moonstone_tiles");
+    public static final DeferredBlock<Block> CRACKED_DEEP_MOONSTONE_BRICKS = deepCube("cracked_deep_moonstone_bricks");
 
     public static final DeferredBlock<StairBlock> COBBLED_DEEP_MOONSTONE_STAIRS =
             deepStairs("cobbled_deep_moonstone_stairs", COBBLED_DEEP_MOONSTONE);

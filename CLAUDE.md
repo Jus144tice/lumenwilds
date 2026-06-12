@@ -217,8 +217,8 @@ as `File#member`.
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
   `#GLOWWOOD_LEAVES`, stairs/slab/fence/fence_gate/door/trapdoor/button/pressure_plate + signs
   `#GLOWWOOD_SIGN`/`#GLOWWOOD_WALL_SIGN`/`#GLOWWOOD_HANGING_SIGN`/`#GLOWWOOD_WALL_HANGING_SIGN` — all using
-  `ModWoodTypes.GLOWWOOD`/`GLOWWOOD_SET`); Moonstone set (smooth/bricks/chiseled/tiles + stairs/slabs/
-  walls); Deep Moonstone (deepslate-analog: cobbled/polished/bricks/tiles + shapes); Shimmerstone
+  `ModWoodTypes.GLOWWOOD`/`GLOWWOOD_SET`); Moonstone set (smooth/bricks/chiseled/tiles/**cracked_bricks** + stairs/slabs/
+  walls); Deep Moonstone (deepslate-analog: cobbled/polished/bricks/tiles/**cracked_bricks** + shapes); Shimmerstone
   (polished/bricks/tiles/pillar/glass + shapes); Sporeglass (`TransparentBlock`) + pane (`IronBarsBlock`).
   **Add a block here → it auto-gets a BlockItem in `ModItems` (loop); add asset + loot via datagen.**
 - [ModWoodTypes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModWoodTypes.java) — bespoke
