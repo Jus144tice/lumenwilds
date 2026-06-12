@@ -730,22 +730,27 @@ as `File#member`.
   `glasspetal_crags`, a hot+humid band gives `sporefall_jungle`, a mild+wettest band gives `moonmire`, and a
   **deep `depth` band** gives `undercrown_caverns` [5d.5]; one parameter point added per 5d.x) +
   `dimension_type/lumenwilds.json` (`effects` → **`lumenwilds:lumenwilds`** selects the bespoke client sky,
-  `ambient_light` 0.2, 7a), and `worldgen/` — `noise_settings/lumenwilds.json` (bespoke terrain +
-  surface rules; the router's **`depth` is y-varying** [5d.5] so cave biomes layer under the surface, and
-  **`temperature` + `vegetation` are shifted-noise** (Phase 9 fix — they were `0.0` constants, which pinned the
-  whole surface to one biome; now all 7 biomes spread) — `continents`/`erosion`/`ridges` stay constant since no
-  biome differentiates on them; **`default_fluid` is `lumenwilds:lumenwater`** (light 4) so the dimension's seas/
-  ponds glow teal — **safe because `aquifers_enabled` is `false`**, bounding Lumenwater to surface water placed
-  chunk-by-chunk (re-measured post-leaf-fix: a region flooded to sea_level 110 → 11.2k Lumenwater blocks ticked at
-  water-baseline speed; the old "light floods the engine" fear was the leaf-decay flood + a pathological single-tick
-  `/fill`, see the gotcha). Glowing Lumenwater also fills the **Moonmire/Undercrown pools** [`LumenwaterPoolFeature`]),
+  `ambient_light` 0.2, 7a), and `worldgen/` — `noise_settings/lumenwilds.json` (bespoke **alien cliffy terrain**
+  [Phase 9 drawing-board]: a gentle y-gradient (zero ~y70, just above sea 63) + three `lumenwilds:hills` octaves —
+  BIG (xz 0.35, regional plateaus/basins ≈ continents), MID (xz 1.0, main local relief), SHARP (xz 2.2, rugged
+  cliff faces) — swings the surface ~y0..170: deep **Lumenwater seas** in the basins, high cliffs on the rises.
+  **Noise CAVES** (a `lumenwilds:caverns` 3D-noise carve, depth-gated below ~y45) hollow the deep into the
+  **Undercrown** — folded INSIDE the `interpolated`/`squeeze` tree (adding it OUTSIDE does NOT carve — see gotcha).
+  **`aquifers_enabled` is now `true`** so those deep caves are AIR caverns with Lumenwater POOLS at the local water
+  table (not flooded); `lava` router is the constant `0.0` (water-only — any non-zero value enables aquifer lava;
+  lava is then only the engine's global floor at y<-54, below the Undercrown). The router's **`depth` is y-varying**
+  [5d.5] so cave biomes layer under the surface, and **`temperature` + `vegetation` are shifted-noise** (all 7
+  biomes spread); `continents`/`erosion`/`ridges` stay constant. **`default_fluid` is `lumenwilds:lumenwater`**
+  (light 4) so seas/ponds/pools glow teal — safe at this scale (re-measured post-leaf-fix; see the fluid gotcha).
+  Glowing Lumenwater also fills the **Moonmire** surface pools [`LumenwaterPoolFeature`]),
   `biome/lumen_glade.json` + `biome/glowroot_forest.json`
   (5d.1, dark-teal) + `biome/glasspetal_crags.json` (5d.2, blue-violet) + `biome/sporefall_jungle.json`
   (5d.3, lush green + warped_spore particle) + `biome/moonmire.json` (5d.4, dark glowing swamp) +
   `biome/undercrown_caverns.json` (5d.5, deep cave biome) + `biome/stillbloom_basin.json` (5d.6, rare bright
   sanctuary). **Every biome's `effects` now also carries (7b) an ambient `particle` and (7c) a vanilla-sourced
   soundscape** — `ambient_sound`/`additions_sound`/`music` (Nether ambience loops for the alien biomes, calm
-  overworld music for the open ones) + the existing `mood_sound`. Worldgen continues: `noise/hills.json`,
+  overworld music for the open ones) + the existing `mood_sound`. Worldgen continues: `noise/hills.json` (terrain
+  relief) + `noise/caverns.json` (the deep cave-carve 3D noise, Phase 9),
   `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`,
   `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2`
   [custom feature], `patch_glasspetal` [5d.2], `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
@@ -811,18 +816,31 @@ as `File#member`.
   before `runClient`/`runServer`, and verify the user isn't mid-session. To validate worldgen, force-gen a
   **large fresh far region** single-instance (a small one can miss position-dependent feature bugs — use 16×16+
   chunks).
-- **Light-emitting default fluid is fine HERE (aquifers off) — the danger is bulk single-tick placement, not
-  the fluid being default.** `default_fluid` **is `lumenwilds:lumenwater`** (light 4) — the dimension's seas/ponds
-  glow teal. This was re-measured after the leaf-flood fix: the FluidType danger only bites when (a) `aquifers_enabled`
-  is **true** (millions of underground source blocks) or (b) you `/fill` a huge contiguous volume in one tick (the
-  old "11.5s spike" test — a pathological burst that inserts 18k light sources in a single tick). This dimension has
-  **`aquifers_enabled: false`**, so worldgen Lumenwater is bounded to surface seas and placed chunk-by-chunk across
-  many ticks. **Verified:** force-gen'd a 12×12 region flooded to `sea_level 110` → **11,200** Lumenwater blocks at
-  light 4, steady tick **~0.9–2.6 ms — identical to the water baseline** (1 "Can't keep up", the one-time gen). The
-  earlier "31s behind while walking" was the **leaf-decay flood**, not the fluid. Lesson refined: don't enable
-  aquifers with a light-emitting default fluid, and don't `/fill` bulk light sources — but a bounded surface fluid is
-  free. **Headless repro:** a temp `ServerTickEvent.Pre/Post` timer + `setChunkForced` a region + vary
-  `default_fluid`/`sea_level`/`lightLevel`; compare mean/max tick ms.
+- **Light-emitting default fluid is fine HERE — even with aquifers ON — the real danger is bulk single-tick
+  placement, not the fluid being default.** `default_fluid` **is `lumenwilds:lumenwater`** (light 4); seas/ponds/
+  cave-pools glow teal. The old "11.5s spike" fear was a pathological `/fill` of 18k contiguous blocks in ONE tick;
+  the "31s behind while walking" was the **leaf-decay flood**, not the fluid. Re-measured post-leaf-fix with a temp
+  `ServerTickEvent.Pre/Post` timer + `setChunkForced`: a 12×12 region flooded to `sea_level 110` → **11.2k** light-4
+  Lumenwater blocks, steady tick **~0.9–2.6 ms = water baseline** (1 "Can't keep up", the one-time gen). And the full
+  worldgen with **`aquifers_enabled: true`** (dramatic terrain + big seas + cave pools, ~140k+ surface Lumenwater +
+  cave pools per region) still gen'd in ~5s/144 chunks with 1 "Can't keep up" — because worldgen places fluid
+  chunk-by-chunk and light is computed once at gen (static blocks = ~0 per-tick cost). Note aquifers-on here uses
+  LESS Lumenwater than aquifers-off-flooded (pools at the water table vs. fully-flooded sub-sea caves). **Lesson:
+  bounded worldgen fluid is free; avoid only the single-tick bulk `/fill`.**
+- **Noise CAVES must be folded INSIDE the `interpolated`/`squeeze` final-density tree, not added outside it.**
+  Adding a carve term as `add(squeeze(interpolated(base)), caveCarve)` does NOT carve — even a constant `-2.0`
+  left the deep solid (the engine only honours the interpolated cell tree for terrain). Fold it in:
+  `squeeze(0.64 * interpolated(blend_density(add(base, caveCarve))))`, where `caveCarve = mul(depthMask(0 above
+  ~y45 → 1 deep), mul(-6, max(0, caverns_noise - 0.1)))`. **Verified** by counting deep *non-solid* (air+fluid),
+  not air alone — sub-sea-level caves FLOOD with the default fluid, so an air-only census reads 0 even when caves
+  carve fine (a 11.6% deep-hollow region was 779 air + 260k fluid until aquifers were enabled).
+- **Aquifers: `lava` router `0.0` = water-only; ANY non-zero constant ENABLES aquifer lava (counter-intuitively,
+  more negative = MORE lava).** With `0.0`, lava is only the engine's global floor at y<-54 (below the Undercrown
+  play zone -20..-40, harmless). `aquifers_enabled: true` turns the deep noise caves into AIR caverns + Lumenwater
+  pools (the bible's Undercrown) instead of flooding.
+- **Dev worlds use a RANDOM seed each `runServer` — pin `level-seed` in `run/server.properties` before comparing
+  terrain numbers across builds** (absolute height/sea/cave counts swing wildly by seed; I burned several runs
+  comparing different worlds before pinning the seed).
 - **Custom logs MUST be in `#minecraft:logs` or ALL leaves decay (incl. ones touching the trunk).**
   `LeavesBlock`'s distance check (`getDistanceAt`) only counts a neighbour as "distance 0" if it `is(BlockTags.LOGS)`
   — there is no Forge hook for it. Our Glowwood/Glowroot logs were never added to that tag, so every leaf computed

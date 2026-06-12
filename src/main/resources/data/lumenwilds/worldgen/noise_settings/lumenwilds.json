@@ -1,6 +1,6 @@
 {
-  "__comment": "Bespoke Lumenwilds terrain (Phase 5a). Default block = moonstone; rolling hills/cliffs from a y-gradient + multi-octave 'hills' noise centred ~y88, with shallow water in the low spots. Surface rules layer lumen grass -> moonloam -> moonstone, with deep moonstone below ~y0. Climate/aquifer/vein router inputs are 0 (single biome for now); dramatic vertical landforms (root bridges, crags, caverns) come via features/biomes in later 5x passes.",
-  "aquifers_enabled": false,
+  "__comment": "Bespoke Lumenwilds terrain. Default block = moonstone; default fluid = glowing Lumenwater (light 4, safe: aquifers off). Alien cliffy relief (Phase 9 drawing-board, see __terrain_comment) with deep Lumenwater seas in the basins, and depth-gated noise CAVES hollowing the deep (the Undercrown). Surface rules layer lumen grass -> moonloam -> moonstone, deep moonstone below ~y0. Climate router: temperature+vegetation are real shifted-noise (7-biome spread); depth is y-varying (cave biome under the surface).",
+  "aquifers_enabled": true,
   "default_block": { "Name": "lumenwilds:moonstone" },
   "default_fluid": { "Name": "lumenwilds:lumenwater", "Properties": { "level": "0" } },
   "disable_mob_generation": false,
@@ -15,12 +15,23 @@
     "size_vertical": 2
   },
   "noise_router": {
-    "barrier": 0.0,
-    "fluid_level_floodedness": 0.0,
-    "fluid_level_spread": 0.0,
+    "__aquifer_comment": "Aquifers ON (Phase 9 drawing-board) so the deep noise caves are AIR caverns with Lumenwater POOLS at the local water table (the bible's Undercrown) instead of fully flooding below sea level. Water-only: the lava router is a POSITIVE constant (1.0) — measured inverted, a negative value paradoxically MAKES more lava (-1 -> 751, -10 -> 3396 deep lava blocks; +1 -> ~0). Vanilla-style barrier/floodedness/spread noises control where pools sit.",
+    "barrier": { "type": "minecraft:noise", "noise": "minecraft:aquifer_barrier", "xz_scale": 1.0, "y_scale": 0.5 },
+    "fluid_level_floodedness": {
+      "type": "minecraft:noise",
+      "noise": "minecraft:aquifer_fluid_level_floodedness",
+      "xz_scale": 1.0,
+      "y_scale": 0.67
+    },
+    "fluid_level_spread": {
+      "type": "minecraft:noise",
+      "noise": "minecraft:aquifer_fluid_level_spread",
+      "xz_scale": 1.0,
+      "y_scale": 0.7142857142857143
+    },
     "lava": 0.0,
     "temperature": {
-      "__comment": "Real varying climate (Phase 9 fix) so the MultiNoise biome source actually spreads all 7 biomes — was a 0.0 constant, which pinned the whole surface to one biome (Lumen Glade). Mirrors vanilla overworld temperature: shifted noise at biome scale (xz_scale 0.25).",
+      "__comment": "Real varying climate so the MultiNoise biome source spreads all 7 biomes (was a 0.0 constant -> one biome). Shifted noise at biome scale.",
       "type": "minecraft:shifted_noise",
       "noise": "minecraft:temperature",
       "shift_x": "minecraft:shift_x",
@@ -30,7 +41,7 @@
       "y_scale": 0.0
     },
     "vegetation": {
-      "__comment": "Humidity axis — same shifted noise, drives the humid/dry biome split (Glade vs Forest, Moonmire, Basin).",
+      "__comment": "Humidity axis — drives the humid/dry biome split (Glade vs Forest, Moonmire, Basin).",
       "type": "minecraft:shifted_noise",
       "noise": "minecraft:vegetation",
       "shift_x": "minecraft:shift_x",
@@ -42,7 +53,7 @@
     "continents": 0.0,
     "erosion": 0.0,
     "depth": {
-      "__comment": "y-varying depth so the MultiNoise biome source can layer the Undercrown Caverns cave biome UNDER the surface biomes (Phase 5d.5). ~0 at/above the surface (y88, surface biomes win), rising to 1 deep (y-40, the deep-depth Undercrown point wins). This is the ONLY climate axis that varies; the surface biomes all sit at depth 0 so their distribution is unchanged.",
+      "__comment": "y-varying depth so the MultiNoise biome source layers the Undercrown Caverns cave biome UNDER the surface biomes. ~0 at/above the surface, rising to 1 deep (the deep-depth Undercrown point wins).",
       "type": "minecraft:y_clamped_gradient",
       "from_y": 88,
       "to_y": -40,
@@ -53,23 +64,35 @@
     "vein_toggle": 0.0,
     "vein_ridged": 0.0,
     "vein_gap": 0.0,
+    "__terrain_comment": "base = a gentle y-gradient (zero ~y70, just above sea 63 so basins reach water) + three 'hills' octaves: BIG (xz 0.35) regional plateaus/basins, MID (xz 1.0, main local relief), SHARP (xz 2.2) rugged cliff faces -> surface swings ~y25..170 (deep Lumenwater seas in basins, high cliffs on rises). CAVES: a depth-gated carve is folded INTO the interpolated base (vanilla sloped-cheese style — adding it OUTSIDE the squeeze/interpolated tree does NOT carve): below ~y45 the 'caverns' 3D noise (period ~32) subtracts density where open, hollowing real caverns through the deep (the Undercrown). final = squeeze(0.64 * interpolated(blend_density(base + caveCarve))).",
     "initial_density_without_jaggedness": {
       "type": "minecraft:add",
       "argument1": {
         "type": "minecraft:y_clamped_gradient",
-        "from_y": 40,
-        "to_y": 136,
-        "from_value": 1.5,
-        "to_value": -1.5
+        "from_y": 10,
+        "to_y": 130,
+        "from_value": 1.6,
+        "to_value": -1.6
       },
       "argument2": {
-        "type": "minecraft:mul",
-        "argument1": 0.8,
+        "type": "minecraft:add",
+        "argument1": {
+          "type": "minecraft:mul",
+          "argument1": 0.9,
+          "argument2": { "type": "minecraft:noise", "noise": "lumenwilds:hills", "xz_scale": 0.35, "y_scale": 0.0 }
+        },
         "argument2": {
-          "type": "minecraft:noise",
-          "noise": "lumenwilds:hills",
-          "xz_scale": 1.0,
-          "y_scale": 0.0
+          "type": "minecraft:add",
+          "argument1": {
+            "type": "minecraft:mul",
+            "argument1": 1.0,
+            "argument2": { "type": "minecraft:noise", "noise": "lumenwilds:hills", "xz_scale": 1.0, "y_scale": 0.0 }
+          },
+          "argument2": {
+            "type": "minecraft:mul",
+            "argument1": 0.5,
+            "argument2": { "type": "minecraft:noise", "noise": "lumenwilds:hills", "xz_scale": 2.2, "y_scale": 0.0 }
+          }
         }
       }
     },
@@ -85,20 +108,57 @@
             "argument": {
               "type": "minecraft:add",
               "argument1": {
-                "type": "minecraft:y_clamped_gradient",
-                "from_y": 40,
-                "to_y": 136,
-                "from_value": 1.5,
-                "to_value": -1.5
+                "type": "minecraft:add",
+                "argument1": {
+                  "type": "minecraft:y_clamped_gradient",
+                  "from_y": 10,
+                  "to_y": 130,
+                  "from_value": 1.6,
+                  "to_value": -1.6
+                },
+                "argument2": {
+                  "type": "minecraft:add",
+                  "argument1": {
+                    "type": "minecraft:mul",
+                    "argument1": 0.9,
+                    "argument2": { "type": "minecraft:noise", "noise": "lumenwilds:hills", "xz_scale": 0.35, "y_scale": 0.0 }
+                  },
+                  "argument2": {
+                    "type": "minecraft:add",
+                    "argument1": {
+                      "type": "minecraft:mul",
+                      "argument1": 1.0,
+                      "argument2": { "type": "minecraft:noise", "noise": "lumenwilds:hills", "xz_scale": 1.0, "y_scale": 0.0 }
+                    },
+                    "argument2": {
+                      "type": "minecraft:mul",
+                      "argument1": 0.5,
+                      "argument2": { "type": "minecraft:noise", "noise": "lumenwilds:hills", "xz_scale": 2.2, "y_scale": 0.0 }
+                    }
+                  }
+                }
               },
               "argument2": {
                 "type": "minecraft:mul",
-                "argument1": 0.8,
+                "argument1": {
+                  "type": "minecraft:y_clamped_gradient",
+                  "from_y": 45,
+                  "to_y": -5,
+                  "from_value": 0.0,
+                  "to_value": 1.0
+                },
                 "argument2": {
-                  "type": "minecraft:noise",
-                  "noise": "lumenwilds:hills",
-                  "xz_scale": 1.0,
-                  "y_scale": 0.0
+                  "type": "minecraft:mul",
+                  "argument1": -6.0,
+                  "argument2": {
+                    "type": "minecraft:max",
+                    "argument1": 0.0,
+                    "argument2": {
+                      "type": "minecraft:add",
+                      "argument1": -0.1,
+                      "argument2": { "type": "minecraft:noise", "noise": "lumenwilds:caverns", "xz_scale": 1.0, "y_scale": 1.0 }
+                    }
+                  }
                 }
               }
             }
