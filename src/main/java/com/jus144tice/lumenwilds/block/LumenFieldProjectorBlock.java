@@ -5,14 +5,17 @@
 package com.jus144tice.lumenwilds.block;
 
 import com.jus144tice.lumenwilds.registry.ModBlockEntities;
+import com.jus144tice.lumenwilds.registry.ModParticles;
 import com.mojang.serialization.MapCodec;
 import java.util.List;
 import javax.annotation.Nullable;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -111,6 +114,32 @@ public class LumenFieldProjectorBlock extends BaseEntityBlock {
                 be.clearField(level);
             }
             super.onRemove(state, level, pos, newState, movedByPiston);
+        }
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        // Active feedback so a placed projector reads as alive: a glint streaming out of its working face + a
+        // rare soft chime. The column itself carries the main particles (the field cells' animateTick).
+        boolean ascend = state.getValue(MODE) == Mode.ASCEND;
+        SimpleParticleType mote = ascend ? ModParticles.ASCENSION_MOTE.get() : ModParticles.DESCENT_MOTE.get();
+        double faceY = ascend ? pos.getY() + 1.0 : pos.getY();
+        double vy = ascend ? 0.16 : -0.16;
+        for (int i = 0; i < 2; i++) {
+            double x = pos.getX() + 0.3 + random.nextDouble() * 0.4;
+            double z = pos.getZ() + 0.3 + random.nextDouble() * 0.4;
+            level.addParticle(mote, x, faceY, z, 0.0, vy, 0.0);
+        }
+        if (random.nextInt(80) == 0) {
+            level.playLocalSound(
+                    pos.getX() + 0.5,
+                    pos.getY() + 0.5,
+                    pos.getZ() + 0.5,
+                    SoundEvents.AMETHYST_BLOCK_RESONATE,
+                    SoundSource.BLOCKS,
+                    0.2F,
+                    ascend ? 1.4F : 0.7F,
+                    false);
         }
     }
 

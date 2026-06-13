@@ -9,6 +9,7 @@ import com.jus144tice.lumenwilds.registry.ModBlocks;
 import com.jus144tice.lumenwilds.registry.ModEntities;
 import com.jus144tice.lumenwilds.registry.ModStructures;
 import com.jus144tice.lumenwilds.util.ResourceLocationHelper;
+import com.jus144tice.lumenwilds.world.LumenBiomeBootstrap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -116,6 +117,52 @@ public class VestigeMinePiece extends StructurePiece {
         machinery(level, writeBox, rand);
         shafts(level, writeBox);
         dais(level, writeBox, rand);
+        flavor(level, writeBox, rand);
+    }
+
+    /**
+     * Biome-specific accents so a mine reads as part of where it was dug: <b>Crags</b> bristle with Glasspetal
+     * crystal + crystal-block seams; <b>Moonmire</b> mines have seeped Lumenwater pools; <b>forest/jungle</b>
+     * mines are invaded by Glowroot-log roots breaking through the walls. All pop-safe (no plants on bare stone).
+     */
+    private void flavor(WorldGenLevel level, BoundingBox box, RandomSource rand) {
+        var biome = level.getBiome(origin);
+        if (biome.is(LumenBiomeBootstrap.GLASSPETAL_CRAGS)) {
+            BlockState cluster = ModBlocks.GLASSPETAL_CLUSTER.get().defaultBlockState();
+            BlockState crystal = ModBlocks.LUMEN_CRYSTAL_BLOCK.get().defaultBlockState();
+            for (int dx = -HALF_W + 1; dx <= HALF_W - 1; dx++) {
+                for (int dz = -HALF_L + 1; dz <= HALF_L - 1; dz++) {
+                    if (rand.nextInt(10) == 0) {
+                        set(level, box, origin.offset(dx, 1, dz), cluster);
+                    }
+                }
+            }
+            set(level, box, origin.offset(0, 1, 3), crystal);
+            set(level, box, new BlockPos(origin.getX() - 2, surfaceY + 1, origin.getZ()), cluster);
+            set(level, box, new BlockPos(origin.getX() + 2, surfaceY + 1, origin.getZ()), cluster);
+        } else if (biome.is(LumenBiomeBootstrap.MOONMIRE)) {
+            BlockState water = ModBlocks.LUMENWATER_BLOCK.get().defaultBlockState();
+            BlockState crystal = ModBlocks.LUMEN_CRYSTAL_BLOCK.get().defaultBlockState();
+            // Seeped pools flush with the chamber floor in the corners (never in the shaft columns).
+            int[][] corners = {{-HALF_W + 2, -HALF_L + 2}, {HALF_W - 2, HALF_L - 3}, {-HALF_W + 2, HALF_L - 3}};
+            for (int[] c : corners) {
+                set(level, box, origin.offset(c[0], 0, c[1]), water);
+                set(level, box, origin.offset(c[0] + 1, 0, c[1]), water);
+            }
+            set(level, box, origin.offset(3, 0, -3), crystal);
+        } else if (biome.is(LumenBiomeBootstrap.GLOWROOT_FOREST) || biome.is(LumenBiomeBootstrap.SPOREFALL_JUNGLE)) {
+            BlockState root = ModBlocks.GLOWROOT_LOG.get().defaultBlockState();
+            BlockState leaves = ModBlocks.GLOWROOT_LEAVES.get().defaultBlockState();
+            // Roots breaking through the walls/ceiling into the mine.
+            for (int dy = 1; dy <= CH_HEIGHT - 1; dy++) {
+                set(level, box, origin.offset(-HALF_W + 1, dy, 2), root);
+            }
+            set(level, box, origin.offset(-HALF_W + 1, CH_HEIGHT - 1, 1), leaves);
+            set(level, box, origin.offset(-HALF_W + 2, CH_HEIGHT - 1, 2), leaves);
+            for (int dy = 1; dy <= 3; dy++) {
+                set(level, box, origin.offset(HALF_W - 1, dy, -2), root);
+            }
+        }
     }
 
     /** Carved Moonstone chamber: floor + shell, interior hollowed, ore veins exposed in the walls. */

@@ -7,11 +7,13 @@ package com.jus144tice.lumenwilds.block;
 import com.jus144tice.lumenwilds.registry.ModParticles;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -53,12 +55,26 @@ public class AscensionFieldBlock extends AbstractFieldBlock {
     }
 
     @Override
-    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (random.nextInt(2) == 0) {
-            double x = pos.getX() + 0.25 + random.nextDouble() * 0.5;
-            double y = pos.getY() + random.nextDouble();
-            double z = pos.getZ() + 0.25 + random.nextDouble() * 0.5;
-            level.addParticle(ModParticles.LUMEN_SPORE.get(), x, y, z, 0.0, 0.12 + random.nextDouble() * 0.08, 0.0);
-        }
+    protected SimpleParticleType mote() {
+        return ModParticles.ASCENSION_MOTE.get();
+    }
+
+    @Override
+    protected double riseSign() {
+        return 1.0;
+    }
+
+    @Override
+    protected void hum(Level level, BlockPos pos, RandomSource random) {
+        // A higher-pitched antigravity hum.
+        level.playLocalSound(
+                pos.getX() + 0.5,
+                pos.getY() + 0.5,
+                pos.getZ() + 0.5,
+                SoundEvents.BEACON_AMBIENT,
+                SoundSource.BLOCKS,
+                0.18F,
+                1.5F + random.nextFloat() * 0.2F,
+                false);
     }
 }

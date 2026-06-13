@@ -146,6 +146,9 @@ public final class LumenwildsClient {
         event.registerSpriteSet(ModParticles.LUMEN_SPORE.get(), EndRodParticle.Provider::new);
         event.registerSpriteSet(ModParticles.GLOW_POLLEN.get(), SuspendedTownParticle.Provider::new);
         event.registerSpriteSet(ModParticles.CRYSTAL_SHIMMER.get(), GlowParticle.GlowSquidProvider::new);
+        // Liftshaft motes (Phase 11d) — bright directional glints that respect their initial velocity.
+        event.registerSpriteSet(ModParticles.ASCENSION_MOTE.get(), EndRodParticle.Provider::new);
+        event.registerSpriteSet(ModParticles.DESCENT_MOTE.get(), EndRodParticle.Provider::new);
     }
 
     @SubscribeEvent

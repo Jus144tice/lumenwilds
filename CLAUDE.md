@@ -216,10 +216,15 @@ Sentinel spawner, Memory-Crystal lore, Miner's + Engineer's-Mine caches) up two 
 **descent** (pre-filled `descent_field`) and **ascension** (`ascension_field`), so they work on discovery — to a
 surface octagonal Glowbrick-Tiles dais (shaft mouths, broken lenses, dim conduits, accents, a Miner's Cache),
 foundation-rooted. The Engineer's-Mine Cache carries the liftshaft tech (fragments/relay) so the player rebuilds
-the projector. Mine lore added to `event.MemoryCrystalInteractEvents`. **Phase 11 is feature-complete (11a–11c);
-the 11d tail — bespoke up/down particles + sounds, biome-flavored shafts, cave-aware shaft-to-cavern
-connection — is deferred.** *(Worldgen of the mine is pending an in-client/force-gen playtest: `/locate` a
-`lumenwilds:vestige_city`, the dais is ~12 blocks off the plaza.)* **Playtest-confirmed (10a–10g):** the full
+the projector. Mine lore added to `event.MemoryCrystalInteractEvents`. **11d (atmosphere, "alive + purposeful")
+is in:** bespoke `ModParticles#ASCENSION_MOTE`/`#DESCENT_MOTE` (EndRod factories) stream up/down the columns with
+horizontal energy-ring pulses + pitched hums (ascension high / descent low) via `block.AbstractFieldBlock#animateTick`;
+the Lumen Field Projector hums + glints from its working face (`LumenFieldProjectorBlock#animateTick`); and the
+mine reads its biome for accents (`VestigeMinePiece#flavor` — Crags glasspetal/crystal seams, Moonmire seeped
+Lumenwater pools, forest/jungle Glowroot-log roots breaking the walls). **Phase 11 (Lumenwright Liftshafts) is
+complete (11a–11d); only the optional cave-aware shaft-to-natural-cavern connection is deferred (too
+worldgen-risky for its value).** *(Mine worldgen + all 11d visuals are pending an in-client/force-gen playtest:
+`/locate` a `lumenwilds:vestige_city`, the dais is ~12 blocks off the plaza.)* **Playtest-confirmed (10a–10g):** the full
 city→vault→restore-engine→open-doors→loot loop works (fixed
 in-session: vault doors, Echo Sentinel spawn in light, guaranteed fragment sources, dry-land placement).
 Roadmap:
@@ -423,9 +428,10 @@ as `File#member`.
   custom events here + a `sounds.json`).
 - [ModParticles.java](src/main/java/com/jus144tice/lumenwilds/registry/ModParticles.java) — `#PARTICLES`
   (atmosphere, Phase 7b); `#LUMEN_SPORE` (signature drifting glow mote — biome ambience + the portal),
-  `#GLOW_POLLEN` (flower-biome float), `#CRYSTAL_SHIMMER` (Crags sparkle), all `SimpleParticleType`. Client
-  render factories + sprites are wired in `client.LumenwildsClient`; usage is the portal `animateTick` + biome
-  `effects.particle`.
+  `#GLOW_POLLEN` (flower-biome float), `#CRYSTAL_SHIMMER` (Crags sparkle), `#ASCENSION_MOTE`/`#DESCENT_MOTE`
+  (liftshaft column motes, 11d), all `SimpleParticleType`. Client render factories + sprites are wired in
+  `client.LumenwildsClient` (the liftshaft motes reuse the EndRod factory); usage is the portal `animateTick`,
+  biome `effects.particle`, and the field/projector `animateTick` (11d).
 - [ModFeatures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFeatures.java) — `#FEATURES`
   (custom `Feature` types), bus-wired. `#GLOWROOT_TREE_2X2` (`GlowrootTreeFeature`) — the ordinary 2×2
   Glowroot tree (the mega tree is a structure; both share `world.feature.GlowrootShape`); `#STILLBLOOM`
@@ -544,16 +550,18 @@ as `File#member`.
   `AbstractFieldBlock#entityInside` → `#applyField` + `#resync` (the shared `#approach`/`STEP`/motion-resync
   helpers, mirroring `event.LumenGravityEvents#lift`). `AscensionFieldBlock` eases vertical speed up to +0.40
   (sneak holds via `#approach`→0, a jump past the cap is preserved), `DescentFieldBlock` holds the −0.35…−0.45
-  safe band; both `resetFallDistance()` each tick. `#animateTick` drifts `ModParticles.LUMEN_SPORE` up/down.
-  `ModBlocks#ASCENSION_FIELD`/`#DESCENT_FIELD`. **Projected/cleared by the Lumen Field Projector (11b)** and
-  pre-placed in ruin shafts (11c); never hand-placed.
+  safe band; both `resetFallDistance()` each tick. The shared `AbstractFieldBlock#animateTick` (11d) streams the
+  field's mote (`ASCENSION_MOTE`/`DESCENT_MOTE`) up/down + a horizontal energy-ring pulse every 4th cell + a
+  pitched hum (subclasses supply `#mote`/`#riseSign`/`#hum`). `ModBlocks#ASCENSION_FIELD`/`#DESCENT_FIELD`.
+  **Projected/cleared by the Lumen Field Projector (11b)** and pre-placed in ruin shafts (11c); never hand-placed.
 - [LumenFieldProjectorBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenFieldProjectorBlock.java)
   + [LumenFieldProjectorBlockEntity.java](src/main/java/com/jus144tice/lumenwilds/block/LumenFieldProjectorBlockEntity.java)
   — the player-craftable liftshaft source (Phase 11b), a `BaseEntityBlock` + the **3rd** `ModBlockEntities`
   type. `#MODE` (`EnumProperty<Mode>` ascend/descend); `#useWithoutItem` toggles mode (clears the old column
   first via `be.clearField`, plays a chime, chat + `#appendHoverText` show the mode); `#onRemove` tears the
   column down. The BE `#serverTick` (every 10t, position-staggered) calls `LiftShaftNetwork.project` and clears
-  cells it no longer owns. `ModBlocks#LUMEN_FIELD_PROJECTOR` (light 6). Standalone-powered (no Resonance net).
+  cells it no longer owns. `#animateTick` (11d) hums + glints from the working face so it reads as alive.
+  `ModBlocks#LUMEN_FIELD_PROJECTOR` (light 6). Standalone-powered (no Resonance net).
 - [GravityRepeaterBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GravityRepeaterBlock.java) — a
   flush wall marker block (Phase 11b, light 3). Pure marker: `LiftShaftNetwork` resets the field's range budget
   whenever a column cell is orthogonally adjacent to one, so building repeaters into a shaft wall chains it
@@ -813,7 +821,9 @@ as `File#member`.
   spawner, Memory Crystals, `chests/miners_cache` + `chests/engineers_mine_cache`); `#shafts` pre-fills the two
   side-by-side columns with `DESCENT_FIELD`/`ASCENSION_FIELD` (work on discovery, no projector — the recoverable
   projector/relay/fragments are in the Engineer's-Mine Cache); `#dais` builds the surface Glowbrick-Tiles
-  octagon with the shaft mouths + accents, `VestigeDecay.weatheredFoundation`-rooted. **Tune the mine here.**
+  octagon with the shaft mouths + accents, `VestigeDecay.weatheredFoundation`-rooted; `#flavor` (11d) reads the
+  biome for pop-safe accents (Crags glasspetal/crystal seams, Moonmire seeped Lumenwater pools, forest/jungle
+  Glowroot-log roots). **Tune the mine here.**
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -924,8 +934,9 @@ as `File#member`.
   `LevelRenderer#renderSky` on 1.21.1. `#getBrightnessDependentFogColor` tints fog teal-indigo;
   `#getSunriseColor` returns null (no horizon band). **Visual-only — verify via `runClient`, not a server.**
 - `LumenwildsClient#onRegisterParticleProviders(RegisterParticleProvidersEvent)` (7b) — render factories for
-  the three atmosphere particles, **reusing vanilla classes** (Lumen Spore → `EndRodParticle.Provider`, Glow
-  Pollen → `SuspendedTownParticle.Provider`, Crystal Shimmer → `GlowParticle.GlowSquidProvider`); sprites from
+  the atmosphere particles, **reusing vanilla classes** (Lumen Spore → `EndRodParticle.Provider`, Glow
+  Pollen → `SuspendedTownParticle.Provider`, Crystal Shimmer → `GlowParticle.GlowSquidProvider`, and the 11d
+  liftshaft `ASCENSION_MOTE`/`DESCENT_MOTE` → `EndRodParticle.Provider`); sprites from
   `assets/lumenwilds/particles/<name>.json` → `textures/particle/<name>.png`. (Visuals verify via `runClient`.)
 - [LumenEventClientEffects.java](src/main/java/com/jus144tice/lumenwilds/client/LumenEventClientEffects.java) —
   client `ClientTickEvent.Post` (7d.2): while an event is active (per `network.LumenEventClientState`) and the

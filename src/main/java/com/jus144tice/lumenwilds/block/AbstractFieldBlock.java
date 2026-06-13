@@ -5,8 +5,10 @@
 package com.jus144tice.lumenwilds.block;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -53,6 +55,46 @@ public abstract class AbstractFieldBlock extends Block {
 
     /** Apply this field's controlled vertical velocity to {@code entity} (server-side, once per tick inside). */
     protected abstract void applyField(Entity entity);
+
+    /** The drifting glint particle this field emits. */
+    protected abstract SimpleParticleType mote();
+
+    /** +1 for an upward field, −1 for a downward field — drives particle direction. */
+    protected abstract double riseSign();
+
+    /** Play this field's pitched hum (called rarely from {@link #animateTick}). */
+    protected abstract void hum(Level level, BlockPos pos, RandomSource random);
+
+    /**
+     * The shared "alive" feel: a directional stream of motes, a horizontal energy ring every few cells (so the
+     * column reads as banded pulses of light), and an occasional pitched hum. Subclasses just supply the mote,
+     * direction, and hum.
+     */
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        double sign = riseSign();
+        SimpleParticleType mote = mote();
+        for (int i = 0; i < 2; i++) {
+            double x = pos.getX() + 0.15 + random.nextDouble() * 0.7;
+            double y = pos.getY() + random.nextDouble();
+            double z = pos.getZ() + 0.15 + random.nextDouble() * 0.7;
+            double vy = sign * (0.18 + random.nextDouble() * 0.14);
+            level.addParticle(mote, x, y, z, 0.0, vy, 0.0);
+        }
+        // Horizontal energy ring on every 4th cell — many cells doing this reads as travelling pulses.
+        if ((pos.getY() & 3) == 0 && random.nextInt(2) == 0) {
+            double cy = pos.getY() + 0.5;
+            for (int k = 0; k < 8; k++) {
+                double a = k / 8.0 * Math.PI * 2.0;
+                double x = pos.getX() + 0.5 + Math.cos(a) * 0.45;
+                double z = pos.getZ() + 0.5 + Math.sin(a) * 0.45;
+                level.addParticle(mote, x, cy, z, 0.0, sign * 0.04, 0.0);
+            }
+        }
+        if (random.nextInt(140) == 0) {
+            hum(level, pos, random);
+        }
+    }
 
     /** Move {@code cur} toward {@code tgt} by at most {@link #STEP} (used for the "sneak holds position" ease). */
     protected static double approach(double cur, double tgt) {

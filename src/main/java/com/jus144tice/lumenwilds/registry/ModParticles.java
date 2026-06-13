@@ -38,5 +38,13 @@ public final class ModParticles {
     public static final DeferredHolder<ParticleType<?>, SimpleParticleType> CRYSTAL_SHIMMER =
             PARTICLES.register("crystal_shimmer", () -> new SimpleParticleType(false));
 
+    /** Bright cyan mote rising in an Ascension Field / liftshaft (Phase 11d). */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> ASCENSION_MOTE =
+            PARTICLES.register("ascension_mote", () -> new SimpleParticleType(false));
+
+    /** Calm teal mote sinking in a Descent Field / liftshaft (Phase 11d). */
+    public static final DeferredHolder<ParticleType<?>, SimpleParticleType> DESCENT_MOTE =
+            PARTICLES.register("descent_mote", () -> new SimpleParticleType(false));
+
     private ModParticles() {}
 }
