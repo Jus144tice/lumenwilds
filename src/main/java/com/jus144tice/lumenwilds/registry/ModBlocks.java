@@ -827,6 +827,40 @@ public final class ModBlocks {
                             .lightLevel(com.jus144tice.lumenwilds.block.LumenConduitBlock::lightFor)
                             .sound(SoundType.STONE));
 
+    // --- Resonance tech (Phase 10e) -------------------------------------------------------------
+
+    /**
+     * Resonance Core ({@link com.jus144tice.lumenwilds.block.ResonanceCoreBlock}) — the network power source.
+     * A placed core floods power through connected Lumen Conduits and opens the ancient doors they reach. The
+     * second `ModBlockEntities` content; glows steadily (light 10).
+     */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.ResonanceCoreBlock> RESONANCE_CORE =
+            BLOCKS.registerBlock(
+                    "resonance_core",
+                    com.jus144tice.lumenwilds.block.ResonanceCoreBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_CYAN)
+                            .strength(3.0F, 9.0F)
+                            .requiresCorrectToolForDrops()
+                            .lightLevel(state -> 10)
+                            .noOcclusion()
+                            .sound(SoundType.AMETHYST));
+
+    /**
+     * Ancient Door — a heavy alien door that cannot be opened by hand (iron block-set), only by the Resonance
+     * network ({@code block.ResonanceNetwork} sets it open while a powered conduit/core touches it).
+     */
+    public static final DeferredBlock<DoorBlock> ANCIENT_DOOR = BLOCKS.registerBlock(
+            "ancient_door",
+            props -> new DoorBlock(net.minecraft.world.level.block.state.properties.BlockSetType.IRON, props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(3.0F, 9.0F)
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 3)
+                    .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY));
+
     // --- Property + stone-family helpers --------------------------------------------------------
 
     private static BlockBehaviour.Properties glowbrickProps(int light) {

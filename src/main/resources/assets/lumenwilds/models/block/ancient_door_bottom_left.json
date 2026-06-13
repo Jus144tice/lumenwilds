@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/door_bottom_left",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bottom": "lumenwilds:block/ancient_door_bottom",
+    "top": "lumenwilds:block/ancient_door_top"
+  }
+}

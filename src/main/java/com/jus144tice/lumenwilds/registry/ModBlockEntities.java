@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.block.LumenAnchorBlockEntity;
+import com.jus144tice.lumenwilds.block.ResonanceCoreBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -22,6 +23,12 @@ public final class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LumenAnchorBlockEntity>> LUMEN_ANCHOR =
             BLOCK_ENTITIES.register("lumen_anchor", () -> BlockEntityType.Builder.of(
                             LumenAnchorBlockEntity::new, ModBlocks.LUMEN_ANCHOR.get())
+                    .build(null));
+
+    /** Resonance Core (10e) — ticks the conduit power network (see {@code block.ResonanceNetwork}). */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ResonanceCoreBlockEntity>> RESONANCE_CORE =
+            BLOCK_ENTITIES.register("resonance_core", () -> BlockEntityType.Builder.of(
+                            ResonanceCoreBlockEntity::new, ModBlocks.RESONANCE_CORE.get())
                     .build(null));
 
     private ModBlockEntities() {}

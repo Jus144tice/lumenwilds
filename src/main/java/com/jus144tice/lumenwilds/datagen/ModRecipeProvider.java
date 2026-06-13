@@ -76,6 +76,31 @@ public class ModRecipeProvider extends RecipeProvider {
         buildShimmerstoneRecipes(recipeOutput);
         buildLumenCrystalRecipes(recipeOutput);
         buildLuminiteRecipes(recipeOutput);
+        buildResonanceRecipes(recipeOutput);
+    }
+
+    /** Resonance tech (Phase 10e): the functional Resonance Core (from a fragment) + the Ancient Door. */
+    private void buildResonanceRecipes(RecipeOutput out) {
+        // Resonance Core — rebuild a working core around a salvaged fragment.
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, ModBlocks.RESONANCE_CORE.get(), 1)
+                .pattern("LSL")
+                .pattern("CFC")
+                .pattern("LSL")
+                .define('L', ModItems.LUMINITE_INGOT.get())
+                .define('S', ModBlocks.SHIMMERSTONE.get())
+                .define('C', ModItems.LUMEN_CRYSTAL_SHARD.get())
+                .define('F', ModItems.RESONANCE_CORE_FRAGMENT.get())
+                .unlockedBy("has_resonance_core_fragment", has(ModItems.RESONANCE_CORE_FRAGMENT.get()))
+                .save(out);
+
+        // Ancient Door — 3 from glowbrick, like a vanilla door.
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.ANCIENT_DOOR.get(), 3)
+                .pattern("##")
+                .pattern("##")
+                .pattern("##")
+                .define('#', ModBlocks.GLOWBRICK.get())
+                .unlockedBy("has_glowbrick", has(ModBlocks.GLOWBRICK.get()))
+                .save(out);
     }
 
     /**

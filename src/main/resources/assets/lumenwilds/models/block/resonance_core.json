@@ -1,0 +1,4 @@
+{
+  "parent": "lumenwilds:block/_emissive_cube",
+  "textures": { "all": "lumenwilds:block/resonance_core" }
+}

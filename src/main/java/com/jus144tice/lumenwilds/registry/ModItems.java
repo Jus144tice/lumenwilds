@@ -60,6 +60,11 @@ public final class ModItems {
     // of the Lumenwrights' story; see GlyphTabletItem). The lore lines are deliberately short and mysterious.
     public static final DeferredItem<Item> MEMORY_CRYSTAL_SHARD = ITEMS.registerSimpleItem("memory_crystal_shard");
 
+    // Resonance tech component (Phase 10e) — a broken piece of an ancient machine core. Loot (reliquary/
+    // engineer's cache/Echo Sentinel) + crafts the functional Resonance Core; future gravity/projector tech.
+    public static final DeferredItem<Item> RESONANCE_CORE_FRAGMENT =
+            ITEMS.registerSimpleItem("resonance_core_fragment");
+
     public static final DeferredItem<Item> GLYPH_TABLET_SKY = ITEMS.registerItem(
             "glyph_tablet_sky",
             props -> new com.jus144tice.lumenwilds.item.GlyphTabletItem(props, "The sky engines failed first."),

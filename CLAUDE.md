@@ -149,7 +149,14 @@ ruin: a circular chiseled-glowbrick plaza with a dry crystal fountain + flickeri
 roads (embedded dead/dim Lumen Conduit lines) spoking to an outer ring of building "stamps" (crescent house /
 hollow pod / archway / root chamber / plinth-with-Memory-Crystal), all decayed + overgrown via `VestigeDecay`;
 chests are a Scholar's Reliquary in the civic hall + scattered Ruined Caches; Shade Stalkers/Sporelings via
-`spawn_overrides`. Roadmap: [the plan](.claude/plans/delegated-juggling-locket.md)
+`spawn_overrides`. **10e.1 (functional Resonance network) is in:** the **Resonance Core**
+(`block.ResonanceCoreBlock` + ticking `ResonanceCoreBlockEntity`) floods power through connected Lumen
+Conduits (driving them ACTIVE via `block.ResonanceNetwork`'s bounded BFS) and **opens the Ancient Doors**
+(`ModBlocks#ANCIENT_DOOR`, an iron-set `DoorBlock` — hand-openable disabled) they touch; removing the core
+tears the network down. Craft the core from a looted `resonance_core_fragment` (+ shimmerstone/crystal/
+luminite). *(Gravity Lens elevators + Dormant Light Engine restoration land in 10e.2; the liftshaft/projector
+system in `docs/lumenwright_liftshafts.txt` is a later follow-up — the `gravity_lens_fragment` + velocity-field
+approach there will reuse 10e.2's lens.)* Roadmap: [the plan](.claude/plans/delegated-juggling-locket.md)
 (10a–10h). What is deliberately
 *not* built yet: the final art/audio/polish pass (Phase 9) — and the
 visual-only deferrals logged throughout (final mob models, the Sporeblind overlay, real `.ogg` audio, etc.). **All biomes share one terrain *height*** (only `depth` varies, for the cave
@@ -256,7 +263,9 @@ as `File#member`.
   `#MOSSY_MOONSTONE_BRICKS`, `#ROOTED_MOONSTONE` (for the ruin processors in later 10x phases). **Lumenwright
   lore tech (10c):** `#MEMORY_CRYSTAL` (emissive glowing block, light 11 — right-click lore via
   `event.MemoryCrystalInteractEvents`, drops `ModItems#MEMORY_CRYSTAL_SHARD`), `#LUMEN_CONDUIT`
-  (`block.LumenConduitBlock`, `conduit_state` dead/dim/active → light 0/2/8).
+  (`block.LumenConduitBlock`, `conduit_state` dead/dim/active → light 0/2/8). **Resonance tech (10e.1):**
+  `#RESONANCE_CORE` (`block.ResonanceCoreBlock` + BE — the network power source, light 10), `#ANCIENT_DOOR`
+  (iron-set `DoorBlock`, opened only by the Resonance network).
   **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
@@ -278,6 +287,7 @@ as `File#member`.
   .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
   `#LIVING_FIBER`, `#RAW_LUMINITE`/`#LUMINITE_INGOT` (10a — ore → raw → smelt to ingot; ingot crafts Glowbrick),
   `#MEMORY_CRYSTAL_SHARD` + six `#GLYPH_TABLET_*` (`item.GlyphTabletItem`, lore items, 10c),
+  `#RESONANCE_CORE_FRAGMENT` (10e — crafts the Resonance Core; loot/Echo-Sentinel drop),
   `#LUMEN_FRUIT` (**food**, 8b — brief night vision), `#LUMEN_NECTAR` (**food**, 8b — brief
   regen; collected from a Stillbloom with a bottle via `event.StillbloomInteractEvents`), `#AIR_GEL`,
   `#GLOWCAP_STEW` (**food**, 8b — bowl + glowcap + lumen fruit + moonblossom → hunger + night vision, returns
@@ -326,7 +336,8 @@ as `File#member`.
   (no attrs — glow via `event.LumenEffectEvents`), `#SPOREBLIND` (−`MOVEMENT_SPEED`; the Sporeling cloud
   applies it), `#ROOTED` (−`MOVEMENT_SPEED` & −`JUMP_STRENGTH`). Icons: `textures/mob_effect/<name>.png`.
 - [ModBlockEntities.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) —
-  `#BLOCK_ENTITIES`; `#LUMEN_ANCHOR` (`BlockEntityType` for `block.LumenAnchorBlockEntity`, 8c) — the first BE.
+  `#BLOCK_ENTITIES`; `#LUMEN_ANCHOR` (`BlockEntityType` for `block.LumenAnchorBlockEntity`, 8c) — the first BE;
+  `#RESONANCE_CORE` (for `block.ResonanceCoreBlockEntity`, 10e.1 — ticks the conduit power network).
 - Empty stubs (compile; carry phase TODOs). Wired to the bus already (registered empty): 
   [ModMenus](src/main/java/com/jus144tice/lumenwilds/registry/ModMenus.java) `#MENUS`,
   [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS` (still empty — the
@@ -420,6 +431,17 @@ as `File#member`.
   Conduit (10c). `#CONDUIT_STATE` (`EnumProperty<State>` dead/dim/active) + `#lightFor` (0/2/8, wired as the
   block's `lightLevel` in `ModBlocks`). Decorative in 10c (ruins place dead/dim, state never changes); the
   Resonance network (10e) will drive the state dynamically. `ModBlocks#LUMEN_CONDUIT`.
+- [ResonanceCoreBlock.java](src/main/java/com/jus144tice/lumenwilds/block/ResonanceCoreBlock.java) +
+  [ResonanceCoreBlockEntity.java](src/main/java/com/jus144tice/lumenwilds/block/ResonanceCoreBlockEntity.java)
+  — the Resonance Core (10e.1), a `BaseEntityBlock` whose BE `#serverTick` (every 20t, position-staggered)
+  floods power and `#shutdown` (from the block's `onRemove`) tears it down. `ModBlocks#RESONANCE_CORE`,
+  `ModBlockEntities#RESONANCE_CORE` (the 2nd BE). Glows (light 10).
+- [ResonanceNetwork.java](src/main/java/com/jus144tice/lumenwilds/block/ResonanceNetwork.java) — the static
+  network logic: `#flood` (bounded BFS over `LumenConduitBlock`, cap `#MAX_NODES`), `#energize`/`#deenergize`
+  (set conduits ACTIVE/DIM, diffed vs. the core's previous reach so cuts drop downstream), and door power
+  (`ancient_door` opens while a neighbour is an active conduit or core). All flag-2 sets (no neighbour
+  cascade), server-side, transient. **Tune the resonance behaviour here.** (`ANCIENT_DOOR` is a plain iron-set
+  `DoorBlock` — no subclass; the network opens it.)
 
 ### fluid/ — Lumenwater (Phase 5e)
 - [LumenwaterBlock.java](src/main/java/com/jus144tice/lumenwilds/fluid/LumenwaterBlock.java) — the
@@ -794,7 +816,8 @@ as `File#member`.
   (wood set incl. signs, hanging signs, boat + chest boat), `#buildMoonstoneRecipes` +
   `#buildShimmerstoneRecipes` (smelting + 2×2 crafting + stonecutter via helpers `#smelt`/`#square2x2`/`#cut`),
   `#buildLuminiteRecipes` (10a — ore/raw → ingot smelt+blast, ingot ↔ block, the Glowbrick craft
-  `L I L / I C I / L I L`, + Glowbrick family cuts/shapes).
+  `L I L / I C I / L I L`, + Glowbrick family cuts/shapes), `#buildResonanceRecipes` (10e — Resonance Core
+  from a fragment, Ancient Door from glowbrick).
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
   `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL` + `LUMENWATER_BLOCK`
   (both `noLootTable`), with slab (drops 2) and door (drops 1) special-cased; `memory_crystal` →
@@ -802,7 +825,8 @@ as `File#member`.
   `RAW_LUMINITE`, Lumen Crystal ores → shard).
 - [ModTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModTagProvider.java) —
   `#addTags`: classifies blocks by name into `mineable/pickaxe|axe|shovel|hoe` + `leaves` (auto-covers new
-  stone/wood blocks; `_ore`/`_cluster`/moonstone/`glowbrick`/`luminite`/`conduit`/`memory_crystal` → pickaxe).
+  stone/wood blocks; `_ore`/`_cluster`/moonstone/`glowbrick`/`luminite`/`conduit`/`resonance`/`memory_crystal`/
+  `ancient_door` → pickaxe).
 
 > NOTE: hand-authored placeholder assets in `src/main/resources` are **authoritative** (the mod works
 > from a plain `build`, no datagen needed). `runData` output is a regeneration/diff aid only; it is NOT
@@ -826,7 +850,7 @@ as `File#member`.
   glow**: `models/block/_emissive_cube.json` / `_emissive_cube_soft.json` / `_emissive_cross.json` are emissive
   parents (NeoForge `neoforge_data` `block_light` — 15 fullbright / 7 soft / 13 cross) that the glowing blocks
   inherit so they render **bright in the dark**: Lumenbulb / Lumen Crystal Block / Stillbloom Core / Memory
-  Crystal / `lumen_conduit_active` (fullbright), the two ores + `lumen_conduit_dim` (soft), and the flora
+  Crystal / `lumen_conduit_active` / `resonance_core` (fullbright), the two ores + `lumen_conduit_dim` (soft), and the flora
   Moonblossom / Glow Fern / Glow Algae / Lumen Reeds / Glowvine (cross). Light
   emission stays via each block's `lightLevel` (ores bumped 4→6 so the Undercrown is lit by dense ore)),
   `textures/entity/{signs,signs/hanging,boat,chest_boat}/glowwood.png` + `textures/gui/
