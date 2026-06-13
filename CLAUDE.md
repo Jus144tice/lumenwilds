@@ -301,7 +301,11 @@ as `File#member`.
   (`world.feature.LumenwaterPoolFeature`) — a small **chunk-safe** Moonloam+Lumenwater basin replacing the
   vanilla `lake` (which crashed chunk-gen near borders — the Moonmire/Undercrown pools); `#LUMEN_REEF`
   (`world.feature.LumenReefFeature`) — glowing coral mounds + fronds on the submerged seabed (Phase 9, added to
-  the surface biomes' seas via a NeoForge `biome_modifier`).
+  the surface biomes' seas via a NeoForge `biome_modifier`); `#GLASSPETAL_GROWTH`
+  (`world.feature.GlasspetalGrowthFeature`) — varied-size glasspetal crystal growths (small cluster / nub / taller
+  crystal mound) scattered on the dry Crags floor (Phase 9 "feels like it's growing"; the rare town-sized version
+  is the Glasspetal Spires *structure*). Drives `configured_feature/patch_glasspetal` (was a flat single-cluster
+  `random_patch`).
 - [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
   `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` + `#GLOWROOT_TREE_PIECE` (the mega Glowroot
   tree), `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom), `#ROOTSHRINE` +

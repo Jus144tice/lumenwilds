@@ -5,6 +5,7 @@
 package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.world.feature.GlasspetalGrowthFeature;
 import com.jus144tice.lumenwilds.world.feature.GlowrootTreeFeature;
 import com.jus144tice.lumenwilds.world.feature.LumenReefFeature;
 import com.jus144tice.lumenwilds.world.feature.LumenwaterPoolFeature;
@@ -43,6 +44,10 @@ public final class ModFeatures {
     /** A Lumen Reef — glowing coral mounds + fronds on the submerged seabed (Phase 9 drawing-board). */
     public static final DeferredHolder<Feature<?>, LumenReefFeature> LUMEN_REEF =
             FEATURES.register("lumen_reef", () -> new LumenReefFeature(NoneFeatureConfiguration.CODEC));
+
+    /** Glasspetal crystal growths of varied size scattered across the Crags floor (Phase 9). */
+    public static final DeferredHolder<Feature<?>, GlasspetalGrowthFeature> GLASSPETAL_GROWTH =
+            FEATURES.register("glasspetal_growth", () -> new GlasspetalGrowthFeature(NoneFeatureConfiguration.CODEC));
 
     private ModFeatures() {}
 }

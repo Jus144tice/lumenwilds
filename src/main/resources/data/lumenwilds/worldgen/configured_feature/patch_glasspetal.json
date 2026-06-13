@@ -1,34 +1,5 @@
 {
-  "__comment": "Glasspetal Cluster surface patch (Phase 5d.2). Scatters upward-facing crystal clusters where they can attach (would_survive), forming crystal fields across the Glasspetal Crags floor.",
-  "type": "minecraft:random_patch",
-  "config": {
-    "tries": 48,
-    "xz_spread": 7,
-    "y_spread": 1,
-    "feature": {
-      "feature": {
-        "type": "minecraft:simple_block",
-        "config": {
-          "to_place": {
-            "type": "minecraft:simple_state_provider",
-            "state": { "Name": "lumenwilds:glasspetal_cluster", "Properties": { "facing": "up", "waterlogged": "false" } }
-          }
-        }
-      },
-      "placement": [
-        {
-          "type": "minecraft:block_predicate_filter",
-          "predicate": {
-            "type": "minecraft:would_survive",
-            "state": { "Name": "lumenwilds:glasspetal_cluster", "Properties": { "facing": "up", "waterlogged": "false" } }
-          }
-        },
-        {
-          "__comment": "Dry land only — the spot must currently be air, not Lumenwater (no submerged clusters).",
-          "type": "minecraft:block_predicate_filter",
-          "predicate": { "type": "minecraft:matching_blocks", "blocks": "minecraft:air" }
-        }
-      ]
-    }
-  }
+  "__comment": "Glasspetal crystal growths (Phase 9) — varied-size mineral growths (mostly small clusters, often nubs, uncommonly a taller crystal mound) scattered across the dry Crags floor, so the biome reads as living/growing. Self-scatters within ±7 and skips submerged spots; the placed feature just seeds a few origins per chunk. (Replaces the flat single-cluster random_patch. The town-sized version is the Glasspetal Spires structure.)",
+  "type": "lumenwilds:glasspetal_growth",
+  "config": {}
 }
