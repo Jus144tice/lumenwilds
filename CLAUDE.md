@@ -185,10 +185,11 @@ resources can rebuild the kit (Lumen Conduit, Lumenbulb, Memory Crystal from sha
 aged building variants); the *fragments* stay loot-only (the ruin gate). **10h.2 (weathered foundations)** makes
 slope foundations read as crumbling supports (`VestigeDecay#weatheredFoundation`). **10h.3 (biome flavor)** —
 the city reads its biome (`VestigeCityPiece#flavorFor`/`#applyFlavor`) and scatters distinct accents:
-**overgrown** (Glowroot Forest / Sporefall Jungle — glowvine/glow-fern/Glowroot-log roots) and **cracked-spire**
-(Glasspetal Crags — Glasspetal Clusters + exposed Luminite veins; Crags added to the city biome tag). Still to
-come in 10h: the **sunken** (Moonmire) variant, hazards, artifacts, and wiring dormant cores/doors into surface
-cities. **Playtest-confirmed (10a–10g):** the full city→vault→restore-engine→open-doors→loot loop works (fixed
+**overgrown** (Glowroot Forest / Sporefall Jungle — glowvine/glow-fern/Glowroot-log roots), **cracked-spire**
+(Glasspetal Crags — Glasspetal Clusters + exposed Luminite veins), and **sunken** (Moonmire — glow algae,
+lumen reeds, rooted moonstone over the drowned ruin; the swamp's pools do the flooding). Crags + Moonmire added
+to the city biome tag — all three flavors in. Still to come in 10h: hazards, artifacts (armor trim / ambient
+disc), and deeper surface resonance wiring. **Playtest-confirmed (10a–10g):** the full city→vault→restore-engine→open-doors→loot loop works (fixed
 in-session: vault doors, Echo Sentinel spawn in light, guaranteed fragment sources, dry-land placement).
 Roadmap:
 [the plan](.claude/plans/delegated-juggling-locket.md)
@@ -722,7 +723,7 @@ as `File#member`.
   `#PLAZA_R`/`#CITY_R`. Bound to `ModStructures#VESTIGE_CITY`. **`findGenerationPoint` also adds a buried
   `VestigeVaultPiece` ~22 below the plaza (10f.2), rolls the size `tier` (10g), and rejects below-sea-level
   placements (dry-land only).** **10h.3:** `#flavorFor`/`#applyFlavor` read the biome and scatter overgrown
-  (forest/jungle) or cracked-spire (Crags) accents.
+  (forest/jungle), cracked-spire (Crags), or sunken (Moonmire) accents.
 - [VestigeVaultPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeVaultPiece.java) —
   the **Vestige Vault** (10f.2), a sub-piece of the city (`ModStructures#VESTIGE_VAULT_PIECE`, no own structure
   type). `#chamber` carves a Deep-Moonstone+glowbrick room; `#resonancePuzzle` is the lock-and-key — a dead

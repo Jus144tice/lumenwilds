@@ -132,11 +132,14 @@ public class VestigeCityPiece extends StructurePiece {
 
     // --- Biome flavor (10h.3) -----------------------------------------------------------------------
 
-    /** 1 = overgrown (Glowroot Forest / Sporefall Jungle), 2 = cracked-spire (Glasspetal Crags), else 0. */
+    /** 1 = overgrown (forest/jungle), 2 = cracked-spire (Crags), 3 = sunken (Moonmire), else 0. */
     private int flavorFor(WorldGenLevel level) {
         var biome = level.getBiome(origin);
         if (biome.is(LumenBiomeBootstrap.GLASSPETAL_CRAGS)) {
             return 2;
+        }
+        if (biome.is(LumenBiomeBootstrap.MOONMIRE)) {
+            return 3;
         }
         if (biome.is(LumenBiomeBootstrap.GLOWROOT_FOREST) || biome.is(LumenBiomeBootstrap.SPOREFALL_JUNGLE)) {
             return 1;
@@ -147,8 +150,9 @@ public class VestigeCityPiece extends StructurePiece {
     /**
      * Scatters biome-specific accents across the ruin so each city reads distinctly: <b>overgrown</b> cities
      * (forest/jungle) are choked with glowvine, glow fern, and Glowroot logs punching up through the stone;
-     * <b>cracked-spire</b> cities (the Crags) bristle with Glasspetal Clusters and expose veins of Luminite Ore.
-     * Each accent is placed on top of an existing structure block found by a column scan (box-clipped).
+     * <b>cracked-spire</b> cities (the Crags) bristle with Glasspetal Clusters and expose veins of Luminite Ore;
+     * <b>sunken</b> cities (Moonmire) drown under glow algae, lumen reeds, and rooted moonstone. Each accent is
+     * placed on top of an existing structure block found by a column scan (box-clipped).
      */
     private void applyFlavor(WorldGenLevel level, BoundingBox box, RandomSource rand) {
         if (flavor == 0) {
@@ -167,11 +171,29 @@ public class VestigeCityPiece extends StructurePiece {
                 continue;
             }
             BlockPos surface = new BlockPos(origin.getX() + dx, topY, origin.getZ() + dz);
-            if (flavor == 1) {
-                overgrownAccent(level, box, rand, surface);
-            } else {
-                crackedAccent(level, box, rand, surface);
+            switch (flavor) {
+                case 1 -> overgrownAccent(level, box, rand, surface);
+                case 2 -> crackedAccent(level, box, rand, surface);
+                default -> sunkenAccent(level, box, rand, surface);
             }
+        }
+    }
+
+    private void sunkenAccent(WorldGenLevel level, BoundingBox box, RandomSource rand, BlockPos surface) {
+        BlockPos above = surface.above();
+        if (!box.isInside(above) || !level.getBlockState(above).isAir()) {
+            return;
+        }
+        // Wet swamp reclamation — glowing algae, reeds, and creeping glowvine over the drowned ruin.
+        switch (rand.nextInt(6)) {
+            case 0, 1 -> VestigeDecay.set(
+                    level, box, above, ModBlocks.GLOW_ALGAE.get().defaultBlockState());
+            case 2, 3 -> VestigeDecay.set(
+                    level, box, above, ModBlocks.LUMEN_REEDS.get().defaultBlockState());
+            case 4 -> VestigeDecay.set(
+                    level, box, surface, ModBlocks.ROOTED_MOONSTONE.get().defaultBlockState());
+            default -> VestigeDecay.set(
+                    level, box, above, ModBlocks.GLOWVINE.get().defaultBlockState());
         }
     }
 
