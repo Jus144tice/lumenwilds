@@ -221,10 +221,15 @@ is in:** bespoke `ModParticles#ASCENSION_MOTE`/`#DESCENT_MOTE` (EndRod factories
 horizontal energy-ring pulses + pitched hums (ascension high / descent low) via `block.AbstractFieldBlock#animateTick`;
 the Lumen Field Projector hums + glints from its working face (`LumenFieldProjectorBlock#animateTick`); and the
 mine reads its biome for accents (`VestigeMinePiece#flavor` — Crags glasspetal/crystal seams, Moonmire seeped
-Lumenwater pools, forest/jungle Glowroot-log roots breaking the walls). **Phase 11 (Lumenwright Liftshafts) is
-complete (11a–11d); only the optional cave-aware shaft-to-natural-cavern connection is deferred (too
-worldgen-risky for its value).** *(Mine worldgen + all 11d visuals are pending an in-client/force-gen playtest:
-`/locate` a `lumenwilds:vestige_city`, the dais is ~12 blocks off the plaza.)* **Playtest-confirmed (10a–10g):** the full
+Lumenwater pools, forest/jungle Glowroot-log roots breaking the walls). **Cave-aware placement is also in:** the
+mine probes the dais column with `ChunkGenerator#getBaseColumn` (read-only noise terrain — the same probe vanilla
+structures use, so no chunk-load risk; this dim's caverns are noise caves and show up in it) and, when it finds an
+open pocket over a solid floor, drops the chamber **at that cavern** and `VestigeMinePiece#breach`es its lower
+walls so it opens into the real cave — else it falls back to the fixed artificial depth
+(`VestigeMinePiece#findCaveFloor`, called from `VestigeCityStructure#findGenerationPoint`). **Phase 11
+(Lumenwright Liftshafts) is complete (11a–11d, incl. cave-aware mines).** *(Mine worldgen + all 11d visuals are
+pending an in-client/force-gen playtest: `/locate` a `lumenwilds:vestige_city`, the dais is ~12 blocks off the
+plaza.)* **Playtest-confirmed (10a–10g):** the full
 city→vault→restore-engine→open-doors→loot loop works (fixed
 in-session: vault doors, Echo Sentinel spawn in light, guaranteed fragment sources, dry-land placement).
 Roadmap:
@@ -823,7 +828,10 @@ as `File#member`.
   projector/relay/fragments are in the Engineer's-Mine Cache); `#dais` builds the surface Glowbrick-Tiles
   octagon with the shaft mouths + accents, `VestigeDecay.weatheredFoundation`-rooted; `#flavor` (11d) reads the
   biome for pop-safe accents (Crags glasspetal/crystal seams, Moonmire seeped Lumenwater pools, forest/jungle
-  Glowroot-log roots). **Tune the mine here.**
+  Glowroot-log roots). **Cave-aware:** `#findCaveFloor` (static, called from `VestigeCityStructure`) probes the
+  dais column with `ChunkGenerator#getBaseColumn` for an open pocket over a solid floor → the chamber drops at
+  that cavern (`naturalCave`) and `#breach` opens its lower walls into the cave; else a fixed depth (`y-38`).
+  **Tune the mine here.**
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -1202,6 +1210,14 @@ as `File#member`.
   structures on the dramatic cliffy terrain, anchoring alone isn't enough — also **root each part DOWN to the
   ground** (`GlasspetalSpiresPiece#fillFoundation`: fill from the base down through replaceable blocks until
   solid) or the base floats over slopes/water.
+- **To detect caves at structure-placement time, probe `ChunkGenerator#getBaseColumn`, NOT neighbour-chunk
+  reads.** Reading neighbour chunks in `findGenerationPoint`/`postProcess` risks "chunk unavailable"; the safe
+  way is `generator.getBaseColumn(x, z, heightAccessor, randomState)` → a `NoiseColumn` of the column's
+  noise-terrain (read-only math, the same probe vanilla uses for terrain adaptation). This dimension's caverns
+  are **noise** caves (folded into the density), so they appear in the base column — `VestigeMinePiece#findCaveFloor`
+  scans it for an open run over a solid floor. Count air **and** fluid as "open" (sub-sea noise caverns read as
+  the default fluid in the base column even though aquifers later carve them to air pockets — see the noise-cave
+  census gotcha).
 - **Noise CAVES must be folded INSIDE the `interpolated`/`squeeze` final-density tree, not added outside it.**
   Adding a carve term as `add(squeeze(interpolated(base)), caveCarve)` does NOT carve — even a constant `-2.0`
   left the deep solid (the engine only honours the interpolated cell tree for terrain). Fold it in:

@@ -73,17 +73,20 @@ public class VestigeMinePiece extends StructurePiece {
 
     private final BlockPos origin; // chamber floor centre
     private final int surfaceY; // dais (plaza) level
+    private final boolean naturalCave; // chamber landed on a detected cavern → break it open into the cave
 
-    public VestigeMinePiece(BlockPos origin, int surfaceY) {
+    public VestigeMinePiece(BlockPos origin, int surfaceY, boolean naturalCave) {
         super(ModStructures.VESTIGE_MINE_PIECE.get(), 0, boxAround(origin, surfaceY));
         this.origin = origin;
         this.surfaceY = surfaceY;
+        this.naturalCave = naturalCave;
     }
 
     public VestigeMinePiece(CompoundTag tag) {
         super(ModStructures.VESTIGE_MINE_PIECE.get(), tag);
         this.origin = new BlockPos(tag.getInt("ox"), tag.getInt("oy"), tag.getInt("oz"));
         this.surfaceY = tag.getInt("sy");
+        this.naturalCave = tag.getBoolean("cave");
     }
 
     private static BoundingBox boxAround(BlockPos o, int surfaceY) {
@@ -92,12 +95,50 @@ public class VestigeMinePiece extends StructurePiece {
                 o.getX() - REACH, o.getY() - 6, o.getZ() - REACH, o.getX() + REACH, top, o.getZ() + REACH);
     }
 
+    /**
+     * Probe the dais column for a natural cavern to drop the mine into (the bible's "Recommended Version" —
+     * connect to a real cave when one is below, else use the fixed artificial depth). Uses
+     * {@link ChunkGenerator#getBaseColumn} — the same read-only noise-terrain probe vanilla structures use, so
+     * there is no chunk-load/"chunk unavailable" risk — and this dimension's caverns are noise caves, so they
+     * show up in it. Returns the chamber-floor Y of the highest open pocket (≥{@link #CAVE_MIN_OPEN} open cells
+     * over a solid floor) below the surface, or {@link Integer#MIN_VALUE} if none.
+     */
+    public static int findCaveFloor(
+            ChunkGenerator generator,
+            int x,
+            int z,
+            net.minecraft.world.level.LevelHeightAccessor heightAccessor,
+            net.minecraft.world.level.levelgen.RandomState randomState,
+            int surfaceY) {
+        net.minecraft.world.level.NoiseColumn col = generator.getBaseColumn(x, z, heightAccessor, randomState);
+        int top = surfaceY - 18;
+        int bottom = heightAccessor.getMinBuildHeight() + 16;
+        int open = 0;
+        for (int y = top; y >= bottom; y--) {
+            BlockState s = col.getBlock(y);
+            boolean isOpen = s.isAir() || !s.getFluidState().isEmpty(); // air OR (noise) fluid pocket = cavern
+            if (isOpen) {
+                open++;
+            } else {
+                if (open >= CAVE_MIN_OPEN) {
+                    return y + 1; // chamber floor = the first open cell above this solid floor
+                }
+                open = 0;
+            }
+        }
+        return Integer.MIN_VALUE;
+    }
+
+    /** Minimum vertical run of open cells (over a solid floor) to count as a cavern worth connecting to. */
+    private static final int CAVE_MIN_OPEN = 5;
+
     @Override
     protected void addAdditionalSaveData(StructurePieceSerializationContext context, CompoundTag tag) {
         tag.putInt("ox", origin.getX());
         tag.putInt("oy", origin.getY());
         tag.putInt("oz", origin.getZ());
         tag.putInt("sy", surfaceY);
+        tag.putBoolean("cave", naturalCave);
     }
 
     @Override
@@ -113,11 +154,32 @@ public class VestigeMinePiece extends StructurePiece {
                 origin.getX() * 341873128712L ^ origin.getZ() * 132897987541L ^ (long) origin.getY());
 
         chamber(level, writeBox, rand);
+        if (naturalCave) {
+            breach(level, writeBox, rand);
+        }
         ribs(level, writeBox);
         machinery(level, writeBox, rand);
         shafts(level, writeBox);
         dais(level, writeBox, rand);
         flavor(level, writeBox, rand);
+    }
+
+    /**
+     * When the chamber landed on a real cavern, punch ragged openings through its lower walls so it visibly
+     * breaks out into the surrounding cave (where there's solid rock behind, this just reads as a broken alcove).
+     */
+    private void breach(WorldGenLevel level, BoundingBox box, RandomSource rand) {
+        BlockState air = Blocks.AIR.defaultBlockState();
+        for (int dy = 1; dy <= CH_HEIGHT - 1; dy++) {
+            for (int dx = -HALF_W; dx <= HALF_W; dx++) {
+                for (int dz = -HALF_L; dz <= HALF_L; dz++) {
+                    boolean wall = dx == -HALF_W || dx == HALF_W || dz == -HALF_L || dz == HALF_L;
+                    if (wall && rand.nextInt(100) < 35) {
+                        set(level, box, origin.offset(dx, dy, dz), air);
+                    }
+                }
+            }
+        }
     }
 
     /**

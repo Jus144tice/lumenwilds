@@ -56,7 +56,11 @@ public class VestigeCityStructure extends Structure {
         double mineAng = context.random().nextDouble() * Math.PI * 2.0;
         int mineDx = (int) Math.round(Math.cos(mineAng) * 12);
         int mineDz = (int) Math.round(Math.sin(mineAng) * 12);
-        int mineFloorY = Math.max(context.heightAccessor().getMinBuildHeight() + 8, y - 38);
+        // Try to drop the mine into a real cavern (probe the noise column, read-only); else use a fixed depth.
+        int caveY = VestigeMinePiece.findCaveFloor(
+                context.chunkGenerator(), x + mineDx, z + mineDz, context.heightAccessor(), context.randomState(), y);
+        boolean naturalCave = caveY != Integer.MIN_VALUE;
+        int mineFloorY = naturalCave ? caveY : Math.max(context.heightAccessor().getMinBuildHeight() + 8, y - 38);
         return Optional.of(new Structure.GenerationStub(origin, builder -> {
             builder.addPiece(new VestigeCityPiece(origin, tier));
             builder.addPiece(new VestigeVaultPiece(vaultOrigin, y));
@@ -67,7 +71,8 @@ public class VestigeCityStructure extends Structure {
                 builder.addPiece(new VestigeSpirePiece(new BlockPos(x + dx, y, z + dz)));
             }
             if (mine && mineFloorY < y - 16) {
-                builder.addPiece(new VestigeMinePiece(new BlockPos(x + mineDx, mineFloorY, z + mineDz), y));
+                builder.addPiece(
+                        new VestigeMinePiece(new BlockPos(x + mineDx, mineFloorY, z + mineDz), y, naturalCave));
             }
         }));
     }
