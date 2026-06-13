@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "G": {
+      "item": "lumenwilds:gravity_lens_fragment"
+    },
+    "L": {
+      "item": "lumenwilds:lumen_crystal_shard"
+    },
+    "R": {
+      "item": "lumenwilds:lumen_relay"
+    },
+    "C": {
+      "item": "lumenwilds:resonance_core_fragment"
+    },
+    "I": {
+      "item": "lumenwilds:luminite_ingot"
+    },
+    "E": {
+      "item": "lumenwilds:memory_crystal_shard"
+    }
+  },
+  "pattern": [
+    "GLG",
+    "RCR",
+    "IEI"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:lumen_field_projector"
+  }
+}

@@ -60,6 +60,8 @@ public class ModTagProvider extends BlockTagsProvider {
                     || name.contains("conduit")
                     || name.contains("resonance")
                     || name.contains("gravity_lens")
+                    || name.equals("gravity_repeater")
+                    || name.equals("lumen_field_projector")
                     || name.contains("light_engine")
                     || name.equals("lumen_relay")
                     || name.equals("memory_crystal")

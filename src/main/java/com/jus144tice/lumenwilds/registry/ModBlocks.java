@@ -971,6 +971,38 @@ public final class ModBlocks {
                             .noOcclusion()
                             .pushReaction(PushReaction.DESTROY));
 
+    /**
+     * Lumen Field Projector ({@link com.jus144tice.lumenwilds.block.LumenFieldProjectorBlock}) — the player's
+     * craftable liftshaft source (Phase 11b). A `BaseEntityBlock`; right-click toggles its mode (ascend/descend)
+     * and its block entity projects/clears the field column. Glows (light 6). The 3rd `ModBlockEntities` content.
+     */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.LumenFieldProjectorBlock> LUMEN_FIELD_PROJECTOR =
+            BLOCKS.registerBlock(
+                    "lumen_field_projector",
+                    com.jus144tice.lumenwilds.block.LumenFieldProjectorBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_CYAN)
+                            .strength(3.0F, 9.0F)
+                            .requiresCorrectToolForDrops()
+                            .lightLevel(state -> 6)
+                            .noOcclusion()
+                            .sound(SoundType.AMETHYST));
+
+    /**
+     * Gravity Repeater ({@link com.jus144tice.lumenwilds.block.GravityRepeaterBlock}) — a flush wall block that
+     * extends a liftshaft another segment whenever a face touches the field (Phase 11b). Glows faintly (light 3).
+     */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.GravityRepeaterBlock> GRAVITY_REPEATER =
+            BLOCKS.registerBlock(
+                    "gravity_repeater",
+                    com.jus144tice.lumenwilds.block.GravityRepeaterBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_PURPLE)
+                            .strength(2.0F, 6.0F)
+                            .requiresCorrectToolForDrops()
+                            .lightLevel(state -> 3)
+                            .sound(SoundType.AMETHYST));
+
     // --- Property + stone-family helpers --------------------------------------------------------
 
     private static BlockBehaviour.Properties glowbrickProps(int light) {

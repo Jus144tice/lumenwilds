@@ -37,6 +37,8 @@
   "block.lumenwilds.active_light_engine": "Active Light Engine",
   "block.lumenwilds.ascension_field": "Ascension Field",
   "block.lumenwilds.descent_field": "Descent Field",
+  "block.lumenwilds.lumen_field_projector": "Lumen Field Projector",
+  "block.lumenwilds.gravity_repeater": "Gravity Repeater",
   "item.lumenwilds.resonance_core_fragment": "Resonance Core Fragment",
   "item.lumenwilds.gravity_lens_fragment": "Gravity Lens Fragment",
   "block.lumenwilds.chiseled_moonstone": "Chiseled Moonstone",

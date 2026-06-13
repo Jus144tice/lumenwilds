@@ -198,7 +198,17 @@ Lumenwright Liftshafts (`docs/lumenwright_liftshafts.txt`):** the cities' signat
 `noLootTable`). Their `entityInside` applies the bible's *controlled velocity* (not gravity-attribute hacking,
 reusing `event.LumenGravityEvents#lift`'s cap/step/`ClientboundSetEntityMotionPacket` re-sync): ascension eases up
 to +0.40 (sneak holds, a jump past the cap is preserved), descent holds a safe −0.35…−0.45 band; both zero fall
-distance every tick (so descent is a safe drop). **Playtest-confirmed (10a–10g):** the full
+distance every tick (so descent is a safe drop). **11b (the player-craftable elevator kit) is in:** the **Lumen
+Field Projector** (`block.LumenFieldProjectorBlock` + ticking `LumenFieldProjectorBlockEntity` — the 3rd block
+entity) projects a gravity column out of one face — Ascension up / Descent down per its `MODE` (right-click to
+toggle; chat + tooltip show which) — recomputed each tick by `block.LiftShaftNetwork` (walk the column, drop a
+field cell per open space up to a 16-cell budget, stop at solid, clear cells it no longer owns); the
+**Gravity Repeater** (`block.GravityRepeaterBlock`) is a flush wall block that resets that budget whenever a
+column cell touches it, so wall-mounted repeaters chain a shaft arbitrarily tall without cluttering it. The
+projector is standalone-powered (no Resonance network); crafted `G L G / R C R / I E I` (gravity-lens-fragment /
+crystal-shard / lumen-relay / resonance-core-fragment / luminite-ingot / memory-crystal-shard), the repeater
+cheaply (shimmerstone + fragment + relay). "Carried by the Field" advancement on obtaining a projector.
+**Playtest-confirmed (10a–10g):** the full
 city→vault→restore-engine→open-doors→loot loop works (fixed
 in-session: vault doors, Echo Sentinel spawn in light, guaranteed fragment sources, dry-land placement).
 Roadmap:
@@ -315,6 +325,10 @@ as `File#member`.
   (`block.GravityLensBlock`, powered → lifts entities above), `#CRACKED_GRAVITY_LENS` (drops the fragment),
   `#LUMEN_RELAY` (`block.LumenRelayBlock`, network gap-bridge), `#DORMANT_LIGHT_ENGINE` /
   `#ACTIVE_LIGHT_ENGINE` (`block.DormantLightEngineBlock`/`ActiveLightEngineBlock` — restore with a fragment).
+  **Liftshafts (Phase 11):** `#ASCENSION_FIELD`/`#DESCENT_FIELD` (`block.AscensionFieldBlock`/`DescentFieldBlock`,
+  the projected gravity-column cells — no BlockItem, `noLootTable`, 11a), `#LUMEN_FIELD_PROJECTOR`
+  (`block.LumenFieldProjectorBlock` + BE — the player-craftable column source, 11b), `#GRAVITY_REPEATER`
+  (`block.GravityRepeaterBlock` — flush wall range-extender, 11b).
   **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
@@ -389,7 +403,8 @@ as `File#member`.
 - [ModBlockEntities.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) —
   `#BLOCK_ENTITIES`; `#LUMEN_ANCHOR` (`BlockEntityType` for `block.LumenAnchorBlockEntity`, 8c) — the first BE;
   `#RESONANCE_CORE` (for `block.ResonanceCoreBlockEntity`, 10e.1 — ticks the conduit power network; its type
-  also covers `ACTIVE_LIGHT_ENGINE`, which is a core).
+  also covers `ACTIVE_LIGHT_ENGINE`, which is a core); `#LUMEN_FIELD_PROJECTOR` (for
+  `block.LumenFieldProjectorBlockEntity`, 11b — ticks a liftshaft's gravity column) — the 3rd BE.
 - Empty stubs (compile; carry phase TODOs). Wired to the bus already (registered empty): 
   [ModMenus](src/main/java/com/jus144tice/lumenwilds/registry/ModMenus.java) `#MENUS`,
   [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS` (still empty — the
@@ -520,6 +535,22 @@ as `File#member`.
   safe band; both `resetFallDistance()` each tick. `#animateTick` drifts `ModParticles.LUMEN_SPORE` up/down.
   `ModBlocks#ASCENSION_FIELD`/`#DESCENT_FIELD`. **Projected/cleared by the Lumen Field Projector (11b)** and
   pre-placed in ruin shafts (11c); never hand-placed.
+- [LumenFieldProjectorBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenFieldProjectorBlock.java)
+  + [LumenFieldProjectorBlockEntity.java](src/main/java/com/jus144tice/lumenwilds/block/LumenFieldProjectorBlockEntity.java)
+  — the player-craftable liftshaft source (Phase 11b), a `BaseEntityBlock` + the **3rd** `ModBlockEntities`
+  type. `#MODE` (`EnumProperty<Mode>` ascend/descend); `#useWithoutItem` toggles mode (clears the old column
+  first via `be.clearField`, plays a chime, chat + `#appendHoverText` show the mode); `#onRemove` tears the
+  column down. The BE `#serverTick` (every 10t, position-staggered) calls `LiftShaftNetwork.project` and clears
+  cells it no longer owns. `ModBlocks#LUMEN_FIELD_PROJECTOR` (light 6). Standalone-powered (no Resonance net).
+- [GravityRepeaterBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GravityRepeaterBlock.java) — a
+  flush wall marker block (Phase 11b, light 3). Pure marker: `LiftShaftNetwork` resets the field's range budget
+  whenever a column cell is orthogonally adjacent to one, so building repeaters into a shaft wall chains it
+  arbitrarily tall (the user's design — function is adjacency, not facing). `ModBlocks#GRAVITY_REPEATER`.
+- [LiftShaftNetwork.java](src/main/java/com/jus144tice/lumenwilds/block/LiftShaftNetwork.java) — the static
+  field-projection logic (Phase 11b; mirrors `ResonanceNetwork`). `#project` walks the column in the mode
+  direction placing field cells (budget `#RANGE` 16, reset by `#adjacentRepeater`, hard cap `#MAX_LENGTH` 256,
+  stop at solid); `#clearStale` removes cells a projector dropped; `#clearColumn` walks-and-clears the
+  contiguous column on removal/mode-flip. **Tune shaft range/cap here.**
 
 ### fluid/ — Lumenwater (Phase 5e)
 - [LumenwaterBlock.java](src/main/java/com/jus144tice/lumenwilds/fluid/LumenwaterBlock.java) — the
@@ -913,7 +944,8 @@ as `File#member`.
   **dispatches by block type** (`#registerStatesAndModels`): logs/wood → `logBlock`/`axisBlock`,
   stairs/slab/fence/gate/wall/door/trapdoor/button/plate → the matching helper, panes → `paneBlock`,
   `AmethystClusterBlock` → `directionalBlock` of a cutout cross, `BushBlock` → cutout cross,
-  signs → `#registerSigns` (particle model), `LiquidBlock` → **skipped** (hand-authored particle model),
+  signs → `#registerSigns` (particle model), `LiquidBlock` + `AbstractFieldBlock` → **skipped** (hand-authored
+  translucent model — the liftshaft field columns, 11a),
   else `cube_all`. `#baseTex(name)` resolves a shape's base texture (Glowwood shapes → planks;
   `_brick`/`_tile` → plural `_bricks`/`_tiles`).
 - [ModItemModelProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModItemModelProvider.java) —
@@ -933,7 +965,8 @@ as `File#member`.
   `L I L / I C I / L I L`, + Glowbrick family cuts/shapes), `#buildResonanceRecipes` (10e — Resonance Core
   from a fragment, Ancient Door from glowbrick, Gravity Lens from fragments + shimmerstone, Lumen Relay),
   `#buildRebuildRecipes` (10h.1 "rebuild the Lumenwrights' kit" — Lumen Conduit, Lumenbulb, Memory Crystal
-  (4 shards), Active Light Engine, + aged-block stonecutter cuts; the *fragments* stay loot-only).
+  (4 shards), Active Light Engine, + aged-block stonecutter cuts; the *fragments* stay loot-only),
+  `#buildLiftshaftRecipes` (11b — Lumen Field Projector `G L G / R C R / I E I` + Gravity Repeater).
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
   `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL` + `LUMENWATER_BLOCK`
   (both `noLootTable`), with slab (drops 2) and door (drops 1) special-cased; `memory_crystal` →

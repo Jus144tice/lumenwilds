@@ -78,6 +78,7 @@ public class ModRecipeProvider extends RecipeProvider {
         buildLuminiteRecipes(recipeOutput);
         buildResonanceRecipes(recipeOutput);
         buildRebuildRecipes(recipeOutput);
+        buildLiftshaftRecipes(recipeOutput);
     }
 
     /**
@@ -184,6 +185,35 @@ public class ModRecipeProvider extends RecipeProvider {
                 .requires(ModItems.LUMEN_CRYSTAL_SHARD.get())
                 .requires(ModItems.LUMEN_CRYSTAL_SHARD.get())
                 .unlockedBy("has_luminite_ingot", has(ModItems.LUMINITE_INGOT.get()))
+                .save(out);
+    }
+
+    /**
+     * Lumenwright Liftshafts (Phase 11b) — the player-craftable elevator kit. The Lumen Field Projector is the
+     * bible's advanced, ruin-gated reward (recipe {@code G L G / R C R / I E I}); the Gravity Repeater is cheap
+     * so a player can chain arbitrarily tall shafts affordably.
+     */
+    private void buildLiftshaftRecipes(RecipeOutput out) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.LUMEN_FIELD_PROJECTOR.get(), 1)
+                .pattern("GLG")
+                .pattern("RCR")
+                .pattern("IEI")
+                .define('G', ModItems.GRAVITY_LENS_FRAGMENT.get())
+                .define('L', ModItems.LUMEN_CRYSTAL_SHARD.get())
+                .define('R', ModBlocks.LUMEN_RELAY.get())
+                .define('C', ModItems.RESONANCE_CORE_FRAGMENT.get())
+                .define('I', ModItems.LUMINITE_INGOT.get())
+                .define('E', ModItems.MEMORY_CRYSTAL_SHARD.get())
+                .unlockedBy("has_gravity_lens_fragment", has(ModItems.GRAVITY_LENS_FRAGMENT.get()))
+                .save(out);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.GRAVITY_REPEATER.get(), 2)
+                .pattern("SFS")
+                .pattern("SRS")
+                .define('S', ModBlocks.SHIMMERSTONE.get())
+                .define('F', ModItems.GRAVITY_LENS_FRAGMENT.get())
+                .define('R', ModBlocks.LUMEN_RELAY.get())
+                .unlockedBy("has_gravity_lens_fragment", has(ModItems.GRAVITY_LENS_FRAGMENT.get()))
                 .save(out);
     }
 

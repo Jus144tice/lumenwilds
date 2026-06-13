@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "mode=ascend": { "model": "lumenwilds:block/lumen_field_projector" },
+    "mode=descend": { "model": "lumenwilds:block/lumen_field_projector" }
+  }
+}

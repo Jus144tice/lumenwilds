@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.block.LumenAnchorBlockEntity;
+import com.jus144tice.lumenwilds.block.LumenFieldProjectorBlockEntity;
 import com.jus144tice.lumenwilds.block.ResonanceCoreBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -35,6 +36,14 @@ public final class ModBlockEntities {
                             ModBlocks.RESONANCE_CORE.get(),
                             ModBlocks.ACTIVE_LIGHT_ENGINE.get())
                     .build(null));
+
+    /**
+     * Lumen Field Projector (Phase 11b) — drives a liftshaft's gravity column. The 3rd block entity type.
+     */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LumenFieldProjectorBlockEntity>>
+            LUMEN_FIELD_PROJECTOR = BLOCK_ENTITIES.register("lumen_field_projector", () -> BlockEntityType.Builder.of(
+                    LumenFieldProjectorBlockEntity::new, ModBlocks.LUMEN_FIELD_PROJECTOR.get())
+            .build(null));
 
     private ModBlockEntities() {}
 }

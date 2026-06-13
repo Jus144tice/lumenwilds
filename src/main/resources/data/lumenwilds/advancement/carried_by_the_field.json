@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": {
+      "id": "lumenwilds:lumen_field_projector",
+      "count": 1
+    },
+    "title": {
+      "text": "Carried by the Field"
+    },
+    "description": {
+      "text": "Rebuild a Lumen Field Projector — the Lumenwrights mined vertically, but they did not climb."
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:lumen_field_projector"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ],
+  "sends_telemetry_event": false,
+  "parent": "lumenwilds:root"
+}
