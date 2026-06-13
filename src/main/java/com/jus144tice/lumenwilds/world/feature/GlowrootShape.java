@@ -117,6 +117,22 @@ public final class GlowrootShape {
                 double r = Math.max(1.2, p.rootThick() - frac * (p.rootThick() * 0.55));
                 fillDisc(placer, (int) Math.round(x), (int) Math.round(y), (int) Math.round(z), r, log, false);
             }
+            // Anchor the root to the ground: drop a vertical leg from the tip down to solid terrain, so roots
+            // don't dangle in mid-air over cliffy/uneven ground (they grow straight down to reach the floor).
+            int rx = (int) Math.round(x);
+            int rz = (int) Math.round(z);
+            int ry = (int) Math.round(y);
+            for (int d = 0; d < 28; d++) {
+                int ly = ry - d;
+                if (ly <= placer.minY()) {
+                    break;
+                }
+                BlockPos leg = new BlockPos(rx, ly, rz);
+                if (!placer.getState(leg).canBeReplaced()) {
+                    break; // reached solid ground (or already buried)
+                }
+                placer.set(leg, log);
+            }
         }
     }
 

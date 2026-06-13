@@ -5,10 +5,20 @@
   "downfall": 0.3,
   "effects": {
     "ambient_sound": "minecraft:ambient.basalt_deltas.loop",
-    "additions_sound": { "sound": "minecraft:ambient.basalt_deltas.additions", "tick_chance": 0.0111 },
-    "music": { "sound": "minecraft:music.nether.basalt_deltas", "min_delay": 12000, "max_delay": 24000, "replace_current_music": false },
+    "additions_sound": {
+      "sound": "minecraft:ambient.basalt_deltas.additions",
+      "tick_chance": 0.0111
+    },
+    "music": {
+      "sound": "minecraft:music.nether.basalt_deltas",
+      "min_delay": 12000,
+      "max_delay": 24000,
+      "replace_current_music": false
+    },
     "particle": {
-      "options": { "type": "lumenwilds:crystal_shimmer" },
+      "options": {
+        "type": "lumenwilds:crystal_shimmer"
+      },
       "probability": 0.006
     },
     "fog_color": 2760266,
@@ -25,7 +35,11 @@
     }
   },
   "carvers": {
-    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
   },
   "features": [
     [],
@@ -34,7 +48,9 @@
     [],
     [],
     [],
-    ["lumenwilds:lumen_crystal_ore"],
+    [
+      "lumenwilds:lumen_crystal_ore"
+    ],
     [],
     [],
     [
@@ -46,14 +62,31 @@
     "ambient": [],
     "axolotls": [],
     "creature": [
-      { "type": "lumenwilds:sky_jelly", "weight": 8, "minCount": 1, "maxCount": 2 }
+      {
+        "type": "lumenwilds:sky_jelly",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 4
+      }
     ],
     "misc": [],
     "monster": [
-      { "type": "lumenwilds:crag_wraith", "weight": 30, "minCount": 1, "maxCount": 2 }
+      {
+        "type": "lumenwilds:crag_wraith",
+        "weight": 30,
+        "minCount": 2,
+        "maxCount": 4
+      }
     ],
     "underground_water_creature": [],
-    "water_ambient": [],
+    "water_ambient": [
+      {
+        "type": "lumenwilds:lumen_fish",
+        "weight": 12,
+        "minCount": 4,
+        "maxCount": 8
+      }
+    ],
     "water_creature": []
   },
   "spawn_costs": {}

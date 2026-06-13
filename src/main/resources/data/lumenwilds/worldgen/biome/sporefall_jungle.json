@@ -5,8 +5,16 @@
   "downfall": 0.9,
   "effects": {
     "ambient_sound": "minecraft:ambient.crimson_forest.loop",
-    "additions_sound": { "sound": "minecraft:ambient.crimson_forest.additions", "tick_chance": 0.0111 },
-    "music": { "sound": "minecraft:music.nether.crimson_forest", "min_delay": 12000, "max_delay": 24000, "replace_current_music": false },
+    "additions_sound": {
+      "sound": "minecraft:ambient.crimson_forest.additions",
+      "tick_chance": 0.0111
+    },
+    "music": {
+      "sound": "minecraft:music.nether.crimson_forest",
+      "min_delay": 12000,
+      "max_delay": 24000,
+      "replace_current_music": false
+    },
     "fog_color": 1980968,
     "sky_color": 2244142,
     "water_color": 2780762,
@@ -14,7 +22,9 @@
     "grass_color": 5223274,
     "foliage_color": 4169822,
     "particle": {
-      "options": { "type": "minecraft:warped_spore" },
+      "options": {
+        "type": "minecraft:warped_spore"
+      },
       "probability": 0.022
     },
     "mood_sound": {
@@ -25,7 +35,11 @@
     }
   },
   "carvers": {
-    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
   },
   "features": [
     [],
@@ -34,7 +48,9 @@
     [],
     [],
     [],
-    ["lumenwilds:lumen_crystal_ore"],
+    [
+      "lumenwilds:lumen_crystal_ore"
+    ],
     [],
     [],
     [
@@ -48,16 +64,43 @@
     "ambient": [],
     "axolotls": [],
     "creature": [
-      { "type": "lumenwilds:lantern_beetle", "weight": 12, "minCount": 2, "maxCount": 4 },
-      { "type": "lumenwilds:glowmoth", "weight": 8, "minCount": 1, "maxCount": 2 }
+      {
+        "type": "lumenwilds:lantern_beetle",
+        "weight": 12,
+        "minCount": 3,
+        "maxCount": 6
+      },
+      {
+        "type": "lumenwilds:glowmoth",
+        "weight": 8,
+        "minCount": 2,
+        "maxCount": 4
+      }
     ],
     "misc": [],
     "monster": [
-      { "type": "lumenwilds:shade_stalker", "weight": 50, "minCount": 1, "maxCount": 3 },
-      { "type": "lumenwilds:sporeling", "weight": 80, "minCount": 3, "maxCount": 5 }
+      {
+        "type": "lumenwilds:shade_stalker",
+        "weight": 50,
+        "minCount": 2,
+        "maxCount": 5
+      },
+      {
+        "type": "lumenwilds:sporeling",
+        "weight": 80,
+        "minCount": 4,
+        "maxCount": 7
+      }
     ],
     "underground_water_creature": [],
-    "water_ambient": [],
+    "water_ambient": [
+      {
+        "type": "lumenwilds:lumen_fish",
+        "weight": 12,
+        "minCount": 4,
+        "maxCount": 8
+      }
+    ],
     "water_creature": []
   },
   "spawn_costs": {}

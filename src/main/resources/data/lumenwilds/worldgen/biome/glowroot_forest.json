@@ -5,10 +5,20 @@
   "downfall": 0.7,
   "effects": {
     "ambient_sound": "minecraft:ambient.warped_forest.loop",
-    "additions_sound": { "sound": "minecraft:ambient.warped_forest.additions", "tick_chance": 0.0111 },
-    "music": { "sound": "minecraft:music.nether.warped_forest", "min_delay": 12000, "max_delay": 24000, "replace_current_music": false },
+    "additions_sound": {
+      "sound": "minecraft:ambient.warped_forest.additions",
+      "tick_chance": 0.0111
+    },
+    "music": {
+      "sound": "minecraft:music.nether.warped_forest",
+      "min_delay": 12000,
+      "max_delay": 24000,
+      "replace_current_music": false
+    },
     "particle": {
-      "options": { "type": "lumenwilds:lumen_spore" },
+      "options": {
+        "type": "lumenwilds:lumen_spore"
+      },
       "probability": 0.005
     },
     "fog_color": 1450030,
@@ -25,7 +35,11 @@
     }
   },
   "carvers": {
-    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
   },
   "features": [
     [],
@@ -34,7 +48,9 @@
     [],
     [],
     [],
-    ["lumenwilds:lumen_crystal_ore"],
+    [
+      "lumenwilds:lumen_crystal_ore"
+    ],
     [],
     [],
     [
@@ -50,18 +66,55 @@
     "ambient": [],
     "axolotls": [],
     "creature": [
-      { "type": "lumenwilds:lumen_grazer", "weight": 10, "minCount": 2, "maxCount": 4 },
-      { "type": "lumenwilds:lantern_beetle", "weight": 10, "minCount": 2, "maxCount": 3 },
-      { "type": "lumenwilds:sky_jelly", "weight": 5, "minCount": 1, "maxCount": 1 },
-      { "type": "lumenwilds:glowmoth", "weight": 6, "minCount": 1, "maxCount": 1 },
-      { "type": "lumenwilds:rootback", "weight": 2, "minCount": 1, "maxCount": 1 }
+      {
+        "type": "lumenwilds:lumen_grazer",
+        "weight": 10,
+        "minCount": 3,
+        "maxCount": 6
+      },
+      {
+        "type": "lumenwilds:lantern_beetle",
+        "weight": 10,
+        "minCount": 3,
+        "maxCount": 5
+      },
+      {
+        "type": "lumenwilds:sky_jelly",
+        "weight": 5,
+        "minCount": 2,
+        "maxCount": 3
+      },
+      {
+        "type": "lumenwilds:glowmoth",
+        "weight": 6,
+        "minCount": 2,
+        "maxCount": 3
+      },
+      {
+        "type": "lumenwilds:rootback",
+        "weight": 2,
+        "minCount": 2,
+        "maxCount": 3
+      }
     ],
     "misc": [],
     "monster": [
-      { "type": "lumenwilds:shade_stalker", "weight": 60, "minCount": 1, "maxCount": 3 }
+      {
+        "type": "lumenwilds:shade_stalker",
+        "weight": 60,
+        "minCount": 2,
+        "maxCount": 5
+      }
     ],
     "underground_water_creature": [],
-    "water_ambient": [],
+    "water_ambient": [
+      {
+        "type": "lumenwilds:lumen_fish",
+        "weight": 12,
+        "minCount": 4,
+        "maxCount": 8
+      }
+    ],
     "water_creature": []
   },
   "spawn_costs": {}

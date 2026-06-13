@@ -47,11 +47,11 @@
     "creature": [],
     "misc": [],
     "monster": [
-      { "type": "lumenwilds:mirelurker", "weight": 60, "minCount": 1, "maxCount": 2 }
+      { "type": "lumenwilds:mirelurker", "weight": 60, "minCount": 2, "maxCount": 4 }
     ],
     "underground_water_creature": [],
     "water_ambient": [
-      { "type": "lumenwilds:lumen_fish", "weight": 15, "minCount": 3, "maxCount": 6 }
+      { "type": "lumenwilds:lumen_fish", "weight": 15, "minCount": 4, "maxCount": 8 }
     ],
     "water_creature": []
   },
