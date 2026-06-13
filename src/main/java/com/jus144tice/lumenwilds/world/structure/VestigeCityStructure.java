@@ -38,12 +38,22 @@ public class VestigeCityStructure extends Structure {
                 .getFirstOccupiedHeight(
                         x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
         BlockPos origin = new BlockPos(x, y, z);
+        // Size tier: ~25% of cities are GRAND (bigger, a central Light Engine + broken spires); else medium.
+        int tier = context.random().nextInt(100) < 25 ? 1 : 0;
         // A buried Vestige Vault sits ~22 blocks under the plaza, with a spiral shaft back up (10f.2).
         int vaultY = Math.max(context.heightAccessor().getMinBuildHeight() + 12, y - 22);
         BlockPos vaultOrigin = new BlockPos(x, vaultY, z);
+        int spires = tier > 0 ? 1 + context.random().nextInt(2) : 0; // 1–2 spires in a grand city
+        int spireSeed = context.random().nextInt();
         return Optional.of(new Structure.GenerationStub(origin, builder -> {
-            builder.addPiece(new VestigeCityPiece(origin));
+            builder.addPiece(new VestigeCityPiece(origin, tier));
             builder.addPiece(new VestigeVaultPiece(vaultOrigin, y));
+            for (int i = 0; i < spires; i++) {
+                double ang = (spireSeed + i * 2.39996) % (Math.PI * 2.0);
+                int dx = (int) Math.round(Math.cos(ang) * 16);
+                int dz = (int) Math.round(Math.sin(ang) * 16);
+                builder.addPiece(new VestigeSpirePiece(new BlockPos(x + dx, y, z + dz)));
+            }
         }));
     }
 

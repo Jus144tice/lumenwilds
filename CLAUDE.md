@@ -174,7 +174,12 @@ under the plaza by `VestigeCityStructure`) — a Deep-Moonstone + glowbrick cham
 lock-and-key**: a dead central Dormant Light Engine wired by dead Lumen Conduits to two sealed Ancient Doors
 that guard a Vault chest + an Engineer's Cache; **restore the engine (a fragment) → conduits power → doors
 open** (the 10e tech as a dungeon mechanic), with an Echo Sentinel spawner on guard, Memory Crystals for lore,
-and a corner spiral stair up to a hole in the plaza. Roadmap:
+and a corner spiral stair up to a hole in the plaza. **10g (spires + grand cities) is in:** `VestigeCityStructure`
+now rolls a **size tier** — ~25% are **Grand** (a larger second building ring + a central restorable **Dormant
+Light Engine** monument on the plaza + 1–2 **Vestige Spires**), the rest medium; the **Vestige Spire**
+(`world.structure.VestigeSpirePiece`) is a broken tapering glowbrick tower — shattered upper floors, an exposed
+Lumen-Crystal core, jutting stair fragments, floating debris, and a `chests/spire` reward. "Under a Dead
+Skyline" advancement on reaching a city plaza. Roadmap:
 [the plan](.claude/plans/delegated-juggling-locket.md)
 (10a–10h). What is deliberately
 *not* built yet: the final art/audio/polish pass (Phase 9) — and the
@@ -397,8 +402,9 @@ as `File#member`.
   (the Overworld ruined-portal tutorial site, 8e), and `#GLASSPETAL_SPIRES` + `#GLASSPETAL_SPIRES_PIECE` (the
   crystal towers, 8f), and `#UNDERCROWN_RELICS` + `#UNDERCROWN_RELICS_PIECE` (the buried dungeon, 8g — placed at
   a deep Y), and `#VESTIGE_OUTPOST` + `#VESTIGE_OUTPOST_PIECE` (the Small Vestige Outpost, 10b), and
-  `#VESTIGE_CITY` + `#VESTIGE_CITY_PIECE` (the Medium Vestige City, 10d), and `#VESTIGE_VAULT_PIECE` (the buried
-  Vestige Vault, 10f.2 — a piece-only type, no structure; added under the city). All are
+  `#VESTIGE_CITY` + `#VESTIGE_CITY_PIECE` (the Medium/Grand Vestige City, 10d/10g), `#VESTIGE_VAULT_PIECE` (the
+  buried Vestige Vault, 10f.2), and `#VESTIGE_SPIRE_PIECE` (the broken tower, 10g) — the last two are piece-only
+  types (no structure; added by the city). All are
   structures (generate per-chunk via a bounding box). Structure instances + spawn spacing
   (and Crag-Wraith `spawn_overrides`) are datapack JSON (`worldgen/structure*`); these are the code types.
 - [ModBiomes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBiomes.java) /
@@ -709,6 +715,13 @@ as `File#member`.
   (`chests/vault` east, `chests/engineers_cache` west) + an Echo Sentinel spawner; `#decor` adds Memory
   Crystals + dim conduits; `#shaft` climbs a corner spiral of glowbrick steps (`#RING`) to a hole in the plaza.
   Carries `surfaceY` (the plaza level) so the shaft reaches it.
+- [VestigeSpirePiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeSpirePiece.java) —
+  a **Vestige Spire** (10g), the broken tower of a grand city (`ModStructures#VESTIGE_SPIRE_PIECE`). `#postProcess`
+  grows a tapering glowbrick shaft (hollow rings, more broken with height) around an exposed Lumen-Crystal core,
+  with floor discs, jutting `GLOWBRICK_STAIRS` fragments, floating debris near the top, a `chests/spire` chest
+  at the base, and a foundation. Added by `VestigeCityStructure` for grand cities. (Grand vs. medium is rolled
+  in `VestigeCityStructure#findGenerationPoint`; `VestigeCityPiece` carries the `tier` — grand adds a 2nd
+  building ring + a central restorable Dormant Light Engine; medium keeps the dry fountain.)
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -992,14 +1005,16 @@ as `File#member`.
   by the `vestiges_of_light` advancement) — each with its `tags/worldgen/biome/has_structure/<name>.json` biome
   tag. **10c** adds `chests/scholars_reliquary` (lore/crafting loot) + a `tags/item/glyph_tablets.json` item
   tag. **10f.2:** the city also generates a buried `VestigeVaultPiece` (no JSON — added in code), with
-  `chests/vault` (high-tier) + `chests/engineers_cache` (tech) loot. Hand-authored (not datagen).
+  `chests/vault` (high-tier) + `chests/engineers_cache` (tech) loot. **10g:** grand cities add `VestigeSpirePiece`
+  towers (in code) with `chests/spire` loot. Hand-authored (not datagen).
 - `data/lumenwilds/advancement/*` — the **progression tree (Phase 9f)**: `root` (enter the dimension) →
   `living_light`→`anchored`, `the_wilds_provide`→`soothing_nectar`, `native_fauna`→`apex_of_the_dark`, and a
   biome-reach goal per biome (`into_the_glowroot`, `crystal_highlands`, `spore_rainforest`, `the_glowing_mire`,
   `beneath_the_crown`, `sanctuary`); **+ `brick_of_living_light`** (10a — obtain Glowbrick) **+
   `vestiges_of_light`** (10b — stand inside any `#lumenwilds:vestige_city` ruin) **+ `the_city_remembers`**
   (10c — obtain a memory shard or any `#lumenwilds:glyph_tablets` item) **+ `still_on_watch`** (10f — kill an
-  Echo Sentinel, via `player_killed_entity`). Triggers: `changed_dimension` / `inventory_changed` /
+  Echo Sentinel, via `player_killed_entity`) **+ `under_a_dead_skyline`** (10g — reach a `vestige_city`
+  structure). Triggers: `changed_dimension` / `inventory_changed` /
   `location`+biome/+structure / `player_killed_entity`; direct-text titles (no lang keys). Hand-authored.
 - `data/lumenwilds/neoforge/biome_modifier/*` — `lumen_reef.json` (the project's **first NeoForge biome
   modifier**, `neoforge:add_features`: injects `lumen_reef` into the 6 surface biomes at `vegetal_decoration`,

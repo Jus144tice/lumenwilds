@@ -21,6 +21,7 @@ import com.jus144tice.lumenwilds.world.structure.VestigeCityPiece;
 import com.jus144tice.lumenwilds.world.structure.VestigeCityStructure;
 import com.jus144tice.lumenwilds.world.structure.VestigeOutpostPiece;
 import com.jus144tice.lumenwilds.world.structure.VestigeOutpostStructure;
+import com.jus144tice.lumenwilds.world.structure.VestigeSpirePiece;
 import com.jus144tice.lumenwilds.world.structure.VestigeVaultPiece;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
@@ -103,6 +104,11 @@ public final class ModStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> VESTIGE_VAULT_PIECE =
             STRUCTURE_PIECES.register(
                     "vestige_vault", () -> (StructurePieceType.ContextlessType) VestigeVaultPiece::new);
+
+    // Phase 10g: the Vestige Spire — a broken tower sub-piece, added to grand cities.
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> VESTIGE_SPIRE_PIECE =
+            STRUCTURE_PIECES.register(
+                    "vestige_spire", () -> (StructurePieceType.ContextlessType) VestigeSpirePiece::new);
 
     private ModStructures() {}
 }

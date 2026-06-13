@@ -50,27 +50,34 @@ public class VestigeCityPiece extends StructurePiece {
     private static final int CITY_R = 26;
     private static final int MAX_H = 16;
     private static final int FOUNDATION = 20;
+    /** Grand cities add a second building ring out to this radius (and a central Light Engine). */
+    private static final int GRAND_R = 34;
 
     private final BlockPos origin;
+    /** 0 = medium, 1 = grand. */
+    private final int tier;
 
-    public VestigeCityPiece(BlockPos origin) {
-        super(ModStructures.VESTIGE_CITY_PIECE.get(), 0, boxAround(origin));
+    public VestigeCityPiece(BlockPos origin, int tier) {
+        super(ModStructures.VESTIGE_CITY_PIECE.get(), 0, boxAround(origin, tier));
         this.origin = origin;
+        this.tier = tier;
     }
 
     public VestigeCityPiece(CompoundTag tag) {
         super(ModStructures.VESTIGE_CITY_PIECE.get(), tag);
         this.origin = new BlockPos(tag.getInt("ox"), tag.getInt("oy"), tag.getInt("oz"));
+        this.tier = tag.getInt("tier");
     }
 
-    private static BoundingBox boxAround(BlockPos o) {
+    private static BoundingBox boxAround(BlockPos o, int tier) {
+        int reach = (tier > 0 ? GRAND_R : CITY_R) + 5;
         return new BoundingBox(
-                o.getX() - CITY_R - 5,
+                o.getX() - reach,
                 o.getY() - FOUNDATION,
-                o.getZ() - CITY_R - 5,
-                o.getX() + CITY_R + 5,
+                o.getZ() - reach,
+                o.getX() + reach,
                 o.getY() + MAX_H + 2,
-                o.getZ() + CITY_R + 5);
+                o.getZ() + reach);
     }
 
     @Override
@@ -78,6 +85,7 @@ public class VestigeCityPiece extends StructurePiece {
         tag.putInt("ox", origin.getX());
         tag.putInt("oy", origin.getY());
         tag.putInt("oz", origin.getZ());
+        tag.putInt("tier", tier);
     }
 
     @Override
@@ -93,7 +101,11 @@ public class VestigeCityPiece extends StructurePiece {
                 origin.getX() * 341873128712L ^ origin.getZ() * 132897987541L ^ (long) origin.getY());
 
         plaza(level, writeBox, rand);
-        fountain(level, writeBox, rand);
+        if (tier > 0) {
+            centralEngine(level, writeBox, rand); // grand: a large central Dormant Light Engine monument
+        } else {
+            fountain(level, writeBox, rand); // medium: a dry crystal fountain
+        }
         lightPylons(level, writeBox, rand);
 
         // Four broken roads spoking out along the cardinals.
@@ -102,23 +114,67 @@ public class VestigeCityPiece extends StructurePiece {
         road(level, writeBox, rand, 0, 1);
         road(level, writeBox, rand, 0, -1);
 
-        // Outer ring of buildings, placed on the diagonals between the roads.
-        int buildings = 8 + rand.nextInt(3);
-        for (int i = 0; i < buildings; i++) {
-            double ang = (i + 0.5) / buildings * Math.PI * 2.0;
-            int radius = 15 + rand.nextInt(8);
+        // Inner ring of buildings, placed on the diagonals between the roads.
+        ringOfBuildings(level, writeBox, rand, 8 + rand.nextInt(3), 15, 8, true);
+        // Grand cities add a sprawling second ring of outskirts buildings.
+        if (tier > 0) {
+            ringOfBuildings(level, writeBox, rand, 12 + rand.nextInt(5), 26, 8, false);
+        }
+    }
+
+    private void ringOfBuildings(
+            WorldGenLevel level,
+            BoundingBox box,
+            RandomSource rand,
+            int count,
+            int baseRadius,
+            int spread,
+            boolean withReliquary) {
+        for (int i = 0; i < count; i++) {
+            double ang = (i + 0.5) / count * Math.PI * 2.0;
+            int radius = baseRadius + rand.nextInt(spread);
             int dx = (int) Math.round(Math.cos(ang) * radius);
             int dz = (int) Math.round(Math.sin(ang) * radius);
             BlockPos c = origin.offset(dx, 0, dz);
-            ResourceKey<LootTable> loot = i == 0 ? RELIQUARY : (rand.nextInt(3) == 0 ? CACHE : null);
+            ResourceKey<LootTable> loot = (withReliquary && i == 0) ? RELIQUARY : (rand.nextInt(3) == 0 ? CACHE : null);
             switch (rand.nextInt(5)) {
-                case 0 -> crescentHouse(level, writeBox, rand, c, loot);
-                case 1 -> hollowPod(level, writeBox, rand, c, loot);
-                case 2 -> archway(level, writeBox, rand, c);
-                case 3 -> rootChamber(level, writeBox, rand, c, loot);
-                default -> plinth(level, writeBox, rand, c);
+                case 0 -> crescentHouse(level, box, rand, c, loot);
+                case 1 -> hollowPod(level, box, rand, c, loot);
+                case 2 -> archway(level, box, rand, c);
+                case 3 -> rootChamber(level, box, rand, c, loot);
+                default -> plinth(level, box, rand, c);
             }
         }
+    }
+
+    /** Grand-city centrepiece: a raised glowbrick dais bearing a restorable Dormant Light Engine. */
+    private void centralEngine(WorldGenLevel level, BoundingBox box, RandomSource rand) {
+        for (int dx = -2; dx <= 2; dx++) {
+            for (int dz = -2; dz <= 2; dz++) {
+                if (dx * dx + dz * dz <= 5) {
+                    VestigeDecay.set(
+                            level,
+                            box,
+                            origin.offset(dx, 1, dz),
+                            ModBlocks.GLOWBRICK_TILES.get().defaultBlockState());
+                }
+            }
+        }
+        // Four corner pillars + the engine on top of the dais.
+        for (int sx = -1; sx <= 1; sx += 2) {
+            for (int sz = -1; sz <= 1; sz += 2) {
+                VestigeDecay.set(
+                        level,
+                        box,
+                        origin.offset(sx * 2, 2, sz * 2),
+                        ModBlocks.GLOWBRICK_PILLAR.get().defaultBlockState());
+            }
+        }
+        VestigeDecay.set(
+                level,
+                box,
+                origin.offset(0, 2, 0),
+                ModBlocks.DORMANT_LIGHT_ENGINE.get().defaultBlockState());
     }
 
     // --- Plaza --------------------------------------------------------------------------------------
