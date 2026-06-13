@@ -305,7 +305,8 @@ as `File#member`.
   (`world.feature.GlasspetalGrowthFeature`) — varied-size glasspetal crystal growths (small cluster / nub / taller
   crystal mound) scattered on the dry Crags floor (Phase 9 "feels like it's growing"; the rare town-sized version
   is the Glasspetal Spires *structure*). Drives `configured_feature/patch_glasspetal` (was a flat single-cluster
-  `random_patch`).
+  `random_patch`); `#UNDERCROWN_DECOR` (`world.feature.UndercrownDecorFeature`) — finds open cave air in the
+  Undercrown and grows crystals on rock faces + glowing plants on floors (Phase 9 cave-richness).
 - [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
   `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` + `#GLOWROOT_TREE_PIECE` (the mega Glowroot
   tree), `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom), `#ROOTSHRINE` +
@@ -766,9 +767,12 @@ as `File#member`.
   [Phase 9 drawing-board]: a gentle y-gradient (zero ~y70, just above sea 63) + three `lumenwilds:hills` octaves —
   BIG (xz 0.35, regional plateaus/basins ≈ continents), MID (xz 1.0, main local relief), SHARP (xz 2.2, rugged
   cliff faces) — swings the surface ~y0..170: deep **Lumenwater seas** in the basins, high cliffs on the rises.
-  **Noise CAVES** (a `lumenwilds:caverns` 3D-noise carve, strength −8.5, depth-gated below ~y52 → ~28% of the deep
+  **Noise CAVES** (big cheese **caverns** [`lumenwilds:caverns`, strength −8.5] + winding **tunnels** [`lumenwilds:cave_tunnels`,
+  a ridged carve where `|noise|` is small] so caverns link into a system, depth-gated below ~y52 → ~28% of the deep
   hollow, meeting the surface biomes' vanilla carvers so you can cave down) hollow the deep into the
   **Undercrown** — folded INSIDE the `interpolated`/`squeeze` tree (adding it OUTSIDE does NOT carve — see gotcha).
+  The Undercrown is decorated as a living crystal grotto by `world.feature.UndercrownDecorFeature` (`undercrown_decor`:
+  crystals on cave rock faces + glowing Glowvine/Glow-Fern on floors) instead of the old floating-prone `lake` pool.
   **`aquifers_enabled` is now `true`** so those deep caves are AIR caverns with Lumenwater POOLS at the local water
   table (not flooded); `lava` router is the constant `0.0` (water-only — any non-zero value enables aquifer lava;
   lava is then only the engine's global floor at y<-54, below the Undercrown). The router's **`depth` is y-varying**

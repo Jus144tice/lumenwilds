@@ -139,24 +139,63 @@
                 }
               },
               "argument2": {
-                "type": "minecraft:mul",
+                "__comment": "Cave carve = big cheese CAVERNS (caverns noise) + winding TUNNELS (ridged cave_tunnels noise, carved where |noise| is small) so the caverns link into a connected system. Both depth-gated below ~y52.",
+                "type": "minecraft:add",
                 "argument1": {
-                  "type": "minecraft:y_clamped_gradient",
-                  "from_y": 52,
-                  "to_y": -5,
-                  "from_value": 0.0,
-                  "to_value": 1.0
+                  "type": "minecraft:mul",
+                  "argument1": {
+                    "type": "minecraft:y_clamped_gradient",
+                    "from_y": 52,
+                    "to_y": -5,
+                    "from_value": 0.0,
+                    "to_value": 1.0
+                  },
+                  "argument2": {
+                    "type": "minecraft:mul",
+                    "argument1": -8.5,
+                    "argument2": {
+                      "type": "minecraft:max",
+                      "argument1": 0.0,
+                      "argument2": {
+                        "type": "minecraft:add",
+                        "argument1": -0.05,
+                        "argument2": { "type": "minecraft:noise", "noise": "lumenwilds:caverns", "xz_scale": 1.0, "y_scale": 1.0 }
+                      }
+                    }
+                  }
                 },
                 "argument2": {
                   "type": "minecraft:mul",
-                  "argument1": -8.5,
+                  "argument1": {
+                    "type": "minecraft:y_clamped_gradient",
+                    "from_y": 52,
+                    "to_y": -5,
+                    "from_value": 0.0,
+                    "to_value": 1.0
+                  },
                   "argument2": {
-                    "type": "minecraft:max",
-                    "argument1": 0.0,
+                    "type": "minecraft:mul",
+                    "argument1": -7.0,
                     "argument2": {
-                      "type": "minecraft:add",
-                      "argument1": -0.05,
-                      "argument2": { "type": "minecraft:noise", "noise": "lumenwilds:caverns", "xz_scale": 1.0, "y_scale": 1.0 }
+                      "type": "minecraft:max",
+                      "argument1": 0.0,
+                      "argument2": {
+                        "type": "minecraft:add",
+                        "argument1": 0.06,
+                        "argument2": {
+                          "type": "minecraft:mul",
+                          "argument1": -1.0,
+                          "argument2": {
+                            "type": "minecraft:max",
+                            "argument1": { "type": "minecraft:noise", "noise": "lumenwilds:cave_tunnels", "xz_scale": 1.0, "y_scale": 0.6 },
+                            "argument2": {
+                              "type": "minecraft:mul",
+                              "argument1": -1.0,
+                              "argument2": { "type": "minecraft:noise", "noise": "lumenwilds:cave_tunnels", "xz_scale": 1.0, "y_scale": 0.6 }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }

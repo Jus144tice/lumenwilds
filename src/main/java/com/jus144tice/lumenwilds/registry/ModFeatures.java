@@ -10,6 +10,7 @@ import com.jus144tice.lumenwilds.world.feature.GlowrootTreeFeature;
 import com.jus144tice.lumenwilds.world.feature.LumenReefFeature;
 import com.jus144tice.lumenwilds.world.feature.LumenwaterPoolFeature;
 import com.jus144tice.lumenwilds.world.feature.StillbloomFeature;
+import com.jus144tice.lumenwilds.world.feature.UndercrownDecorFeature;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
@@ -48,6 +49,10 @@ public final class ModFeatures {
     /** Glasspetal crystal growths of varied size scattered across the Crags floor (Phase 9). */
     public static final DeferredHolder<Feature<?>, GlasspetalGrowthFeature> GLASSPETAL_GROWTH =
             FEATURES.register("glasspetal_growth", () -> new GlasspetalGrowthFeature(NoneFeatureConfiguration.CODEC));
+
+    /** Decorates Undercrown cave surfaces — crystals on rock faces + glowing plants on floors (Phase 9). */
+    public static final DeferredHolder<Feature<?>, UndercrownDecorFeature> UNDERCROWN_DECOR =
+            FEATURES.register("undercrown_decor", () -> new UndercrownDecorFeature(NoneFeatureConfiguration.CODEC));
 
     private ModFeatures() {}
 }

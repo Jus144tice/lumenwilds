@@ -1,0 +1,17 @@
+{
+  "__comment": "Undercrown cave-surface decoration (Phase 9) — crystals on rock faces + glowing plants on cave floors, spread through the deep so the cavern system reads as a living crystal grotto. High count across the cave-depth range; the feature itself finds the open cave air.",
+  "feature": "lumenwilds:undercrown_decor",
+  "placement": [
+    { "type": "minecraft:count", "count": 32 },
+    { "type": "minecraft:in_square" },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "min_inclusive": { "absolute": -56 },
+        "max_inclusive": { "absolute": 30 }
+      }
+    },
+    { "type": "minecraft:biome" }
+  ]
+}

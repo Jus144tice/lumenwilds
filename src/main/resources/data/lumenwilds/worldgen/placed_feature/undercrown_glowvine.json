@@ -1,7 +1,7 @@
 {
   "feature": "lumenwilds:undercrown_glowvine",
   "placement": [
-    { "type": "minecraft:count", "count": 14 },
+    { "type": "minecraft:count", "count": 18 },
     { "type": "minecraft:in_square" },
     {
       "type": "minecraft:height_range",
