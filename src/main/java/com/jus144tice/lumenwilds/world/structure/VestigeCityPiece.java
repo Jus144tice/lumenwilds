@@ -199,14 +199,7 @@ public class VestigeCityPiece extends StructurePiece {
                     floor = VestigeDecay.glowbrick(rand); // weathered patches
                 }
                 VestigeDecay.set(level, box, p, floor);
-                VestigeDecay.fillFoundation(
-                        level,
-                        box,
-                        p.getX(),
-                        p.getY(),
-                        p.getZ(),
-                        ModBlocks.COBBLED_MOONSTONE.get().defaultBlockState(),
-                        FOUNDATION);
+                VestigeDecay.weatheredFoundation(level, box, p.getX(), p.getY(), p.getZ(), rand, FOUNDATION);
                 VestigeDecay.overgrow(level, box, rand, p.above(), 14);
             }
         }
@@ -297,14 +290,7 @@ public class VestigeCityPiece extends StructurePiece {
                 } else {
                     VestigeDecay.decayedGlowbrick(level, box, rand, p, 26);
                 }
-                VestigeDecay.fillFoundation(
-                        level,
-                        box,
-                        p.getX(),
-                        p.getY(),
-                        p.getZ(),
-                        ModBlocks.COBBLED_MOONSTONE.get().defaultBlockState(),
-                        FOUNDATION);
+                VestigeDecay.weatheredFoundation(level, box, p.getX(), p.getY(), p.getZ(), rand, FOUNDATION);
                 VestigeDecay.overgrow(level, box, rand, p.above(), 22);
             }
         }
@@ -373,14 +359,7 @@ public class VestigeCityPiece extends StructurePiece {
         BlockPos b = alongX ? c.offset(span, 0, 0) : c.offset(0, 0, span);
         int h = 4;
         for (BlockPos foot : new BlockPos[] {a, b}) {
-            VestigeDecay.fillFoundation(
-                    level,
-                    box,
-                    foot.getX(),
-                    foot.getY(),
-                    foot.getZ(),
-                    ModBlocks.COBBLED_MOONSTONE.get().defaultBlockState(),
-                    FOUNDATION);
+            VestigeDecay.weatheredFoundation(level, box, foot.getX(), foot.getY(), foot.getZ(), rand, FOUNDATION);
             for (int y = 0; y <= h; y++) {
                 VestigeDecay.set(level, box, foot.offset(0, y, 0), pillar);
             }
@@ -407,14 +386,8 @@ public class VestigeCityPiece extends StructurePiece {
                         box,
                         c.offset(dx, -1, dz),
                         ModBlocks.ROOTED_MOONSTONE.get().defaultBlockState());
-                VestigeDecay.fillFoundation(
-                        level,
-                        box,
-                        c.getX() + dx,
-                        c.getY() - 1,
-                        c.getZ() + dz,
-                        ModBlocks.COBBLED_MOONSTONE.get().defaultBlockState(),
-                        FOUNDATION);
+                VestigeDecay.weatheredFoundation(
+                        level, box, c.getX() + dx, c.getY() - 1, c.getZ() + dz, rand, FOUNDATION);
             }
         }
         // Walls of mixed rooted moonstone + glowbrick, full of glowvine.
@@ -440,14 +413,7 @@ public class VestigeCityPiece extends StructurePiece {
     }
 
     private void plinth(WorldGenLevel level, BoundingBox box, RandomSource rand, BlockPos c) {
-        VestigeDecay.fillFoundation(
-                level,
-                box,
-                c.getX(),
-                c.getY(),
-                c.getZ(),
-                ModBlocks.COBBLED_MOONSTONE.get().defaultBlockState(),
-                FOUNDATION);
+        VestigeDecay.weatheredFoundation(level, box, c.getX(), c.getY(), c.getZ(), rand, FOUNDATION);
         VestigeDecay.set(level, box, c, ModBlocks.GLOWBRICK.get().defaultBlockState());
         VestigeDecay.set(level, box, c.above(), ModBlocks.GLOWBRICK_PILLAR.get().defaultBlockState());
         VestigeDecay.set(level, box, c.above(2), ModBlocks.GLOWBRICK_SLAB.get().defaultBlockState());
@@ -467,14 +433,7 @@ public class VestigeCityPiece extends StructurePiece {
                     continue;
                 }
                 VestigeDecay.decayedGlowbrick(level, box, rand, c.offset(dx, 0, dz), 14);
-                VestigeDecay.fillFoundation(
-                        level,
-                        box,
-                        c.getX() + dx,
-                        c.getY(),
-                        c.getZ() + dz,
-                        ModBlocks.COBBLED_MOONSTONE.get().defaultBlockState(),
-                        FOUNDATION);
+                VestigeDecay.weatheredFoundation(level, box, c.getX() + dx, c.getY(), c.getZ() + dz, rand, FOUNDATION);
             }
         }
     }

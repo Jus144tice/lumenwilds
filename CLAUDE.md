@@ -697,7 +697,9 @@ as `File#member`.
   piece runs its clean layout through so the world reclaimed the ruin: `#glowbrick`/`#ancientGlowbrick`
   (weathered glowbrick mix — fades intact→cracked→ancient), `#rubble`, `#decayedGlowbrick` (place-or-miss),
   `#overgrow` (creeps lumen grass/glow fern/moonblossom/glowvine onto air), `#fillFoundation` (roots to
-  ground), `#set` (box-clipped). **Tune the decay/overgrowth feel here.**
+  ground), `#weatheredFoundation` (10h.2 — roots with a crumbling moonstone/moonloam mix so slope foundations
+  read as ancient broken supports, not bare grey pillars; used by the surface city/outpost), `#set`
+  (box-clipped). **Tune the decay/overgrowth feel here.**
 - [VestigeOutpostStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeOutpostStructure.java)
   / [VestigeOutpostPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeOutpostPiece.java)
   — the **Small Vestige Outpost** (10b), the first/smallest Lumenwright ruin. `#findGenerationPoint` anchors

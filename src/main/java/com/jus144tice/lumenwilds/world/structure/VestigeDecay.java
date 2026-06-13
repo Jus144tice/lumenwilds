@@ -117,6 +117,41 @@ public final class VestigeDecay {
         }
     }
 
+    /**
+     * Like {@link #fillFoundation} but with a weathered, mixed material (crumbling moonstone/moonloam) so a
+     * ruin's foundations on a slope read as <b>ancient broken supports half-buried in the hill</b> rather than
+     * clean grey pillars — and the deepest reaches go to dirt/cobble so they blend with the ground. Use this
+     * for the surface ruins' foundations.
+     */
+    public static void weatheredFoundation(
+            WorldGenLevel level, BoundingBox box, int x, int fromY, int z, RandomSource rand, int maxDepth) {
+        BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
+        for (int dy = 1; dy <= maxDepth; dy++) {
+            p.set(x, fromY - dy, z);
+            if (!box.isInside(p)) {
+                break;
+            }
+            if (!level.getBlockState(p).canBeReplaced()) {
+                break; // reached solid ground
+            }
+            level.setBlock(p, foundationBlock(rand, dy), 2);
+        }
+    }
+
+    /** Weathered foundation material — more dirt/cobble the deeper it goes, so columns blend into the ground. */
+    private static BlockState foundationBlock(RandomSource rand, int depth) {
+        if (depth >= 4 && rand.nextInt(3) == 0) {
+            return ModBlocks.MOONLOAM.get().defaultBlockState();
+        }
+        return switch (rand.nextInt(6)) {
+            case 0, 1 -> ModBlocks.COBBLED_MOONSTONE.get().defaultBlockState();
+            case 2 -> ModBlocks.CRACKED_MOONSTONE_BRICKS.get().defaultBlockState();
+            case 3 -> ModBlocks.MOSSY_MOONSTONE_BRICKS.get().defaultBlockState();
+            case 4 -> ModBlocks.ROOTED_MOONSTONE.get().defaultBlockState();
+            default -> ModBlocks.MOONLOAM.get().defaultBlockState();
+        };
+    }
+
     /** Box-clipped block set (no-op outside the write box, so chunk-gen never reaches a neighbour). */
     public static void set(WorldGenLevel level, BoundingBox box, BlockPos p, BlockState state) {
         if (box.isInside(p)) {

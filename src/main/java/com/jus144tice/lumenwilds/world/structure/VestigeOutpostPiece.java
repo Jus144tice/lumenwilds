@@ -112,14 +112,7 @@ public class VestigeOutpostPiece extends StructurePiece {
                 VestigeDecay.overgrow(level, box, rand, side.above(), 28);
             }
             VestigeDecay.overgrow(level, box, rand, p.above(), 25);
-            VestigeDecay.fillFoundation(
-                    level,
-                    box,
-                    p.getX(),
-                    p.getY(),
-                    p.getZ(),
-                    ModBlocks.COBBLED_MOONSTONE.get().defaultBlockState(),
-                    FOUNDATION);
+            VestigeDecay.weatheredFoundation(level, box, p.getX(), p.getY(), p.getZ(), rand, FOUNDATION);
         }
     }
 
@@ -160,14 +153,8 @@ public class VestigeOutpostPiece extends StructurePiece {
         for (int dx = -r; dx <= r; dx++) {
             for (int dz = -r; dz <= r; dz++) {
                 VestigeDecay.decayedGlowbrick(level, box, rand, bc.offset(dx, 0, dz), 12);
-                VestigeDecay.fillFoundation(
-                        level,
-                        box,
-                        bc.getX() + dx,
-                        bc.getY(),
-                        bc.getZ() + dz,
-                        ModBlocks.COBBLED_MOONSTONE.get().defaultBlockState(),
-                        FOUNDATION);
+                VestigeDecay.weatheredFoundation(
+                        level, box, bc.getX() + dx, bc.getY(), bc.getZ() + dz, rand, FOUNDATION);
             }
         }
         // Walls (perimeter, up to 3 tall, lots missing). One side gets a 2-tall doorway gap.
@@ -232,14 +219,7 @@ public class VestigeOutpostPiece extends StructurePiece {
 
     /** An empty plinth: a short pillar capped by a glowbrick slab (a monument with nothing left on it). */
     private void plinth(WorldGenLevel level, BoundingBox box, RandomSource rand, BlockPos at) {
-        VestigeDecay.fillFoundation(
-                level,
-                box,
-                at.getX(),
-                at.getY(),
-                at.getZ(),
-                ModBlocks.COBBLED_MOONSTONE.get().defaultBlockState(),
-                FOUNDATION);
+        VestigeDecay.weatheredFoundation(level, box, at.getX(), at.getY(), at.getZ(), rand, FOUNDATION);
         VestigeDecay.set(level, box, at, ModBlocks.GLOWBRICK.get().defaultBlockState());
         VestigeDecay.set(
                 level, box, at.above(), ModBlocks.GLOWBRICK_PILLAR.get().defaultBlockState());
