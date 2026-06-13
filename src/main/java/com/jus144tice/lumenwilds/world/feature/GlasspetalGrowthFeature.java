@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -18,11 +19,12 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 
 /**
  * Scatters <b>glasspetal crystal growths</b> of varied size across the dry Glasspetal Crags floor (Phase 9
- * "make it feel like it's growing"). All one blue-violet crystal family — a {@code glasspetal_block} core with
- * {@code glasspetal_cluster} crystals bristling off it — at sizes from a lone cluster to a small mound, so the
- * biome reads as living, evolving mineral growth. Kept <b>sparse</b> (open ground between growths, so mobs still
- * spawn). The town-sized version is the rare Glasspetal Spires <i>structure</i>. Chunk-safe: scatters within ±7,
- * dry land only. Bound to {@code ModFeatures#GLASSPETAL_GROWTH}.
+ * "feels like it's growing", reworked). Each growth is a fountain-like burst of tapering {@code glasspetal_block}
+ * <b>crystal spikes</b> (thinning to a point and leaning outward) bristling with {@code glasspetal_cluster}
+ * crystals — so it reads as a living crystal growth, not a blocky cube. Rolls a size: lone cluster / small burst /
+ * large burst / rare MEGA (a tall many-spiked crystal). Kept sparse so the ground breathes and mobs spawn; the
+ * town-sized version is the Glasspetal Spires <i>structure</i>. Chunk-safe (within ~±10, dry land only). Bound to
+ * {@code ModFeatures#GLASSPETAL_GROWTH}.
  */
 public class GlasspetalGrowthFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -43,7 +45,7 @@ public class GlasspetalGrowthFeature extends Feature<NoneFeatureConfiguration> {
         for (int t = 0; t < TRIES; t++) {
             int x = origin.getX() + rand.nextInt(SPREAD * 2 + 1) - SPREAD;
             int z = origin.getZ() + rand.nextInt(SPREAD * 2 + 1) - SPREAD;
-            int y = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z); // first non-solid above the floor
+            int y = level.getHeight(Heightmap.Types.OCEAN_FLOOR_WG, x, z);
             BlockPos spot = new BlockPos(x, y, z);
             if (!level.getBlockState(spot).isAir()) {
                 continue; // dry land only
@@ -53,12 +55,14 @@ public class GlasspetalGrowthFeature extends Feature<NoneFeatureConfiguration> {
                 continue;
             }
             double s = rand.nextDouble();
-            if (s < 0.62) {
-                cluster(level, spot); // small: a lone crystal
-            } else if (s < 0.9) {
-                mound(level, rand, spot, 1); // crystal bud
+            if (s < 0.55) {
+                cluster(level, spot); // a lone crystal
+            } else if (s < 0.85) {
+                burst(level, rand, spot, 2 + rand.nextInt(2), 2 + rand.nextInt(3)); // small burst
+            } else if (s < 0.97) {
+                burst(level, rand, spot, 3 + rand.nextInt(2), 4 + rand.nextInt(4)); // large burst
             } else {
-                mound(level, rand, spot, 2 + rand.nextInt(2)); // a small crystal mound
+                burst(level, rand, spot, 5 + rand.nextInt(3), 8 + rand.nextInt(7)); // rare MEGA crystal
             }
             placedAny = true;
         }
@@ -69,36 +73,64 @@ public class GlasspetalGrowthFeature extends Feature<NoneFeatureConfiguration> {
         level.setBlock(spot, ModBlocks.GLASSPETAL_CLUSTER.get().defaultBlockState(), 2);
     }
 
-    /** A blue-violet {@code glasspetal_block} core (tapering) bristling with clusters on top + a couple of sides. */
-    private static void mound(WorldGenLevel level, RandomSource rand, BlockPos base, int height) {
+    /** A fountain of {@code spikes} tapering crystal spires (max height {@code maxH}) bursting from a small base. */
+    private static void burst(WorldGenLevel level, RandomSource rand, BlockPos base, int spikes, int maxH) {
         BlockState core = ModBlocks.GLASSPETAL_BLOCK.get().defaultBlockState();
-        BlockState cluster = ModBlocks.GLASSPETAL_CLUSTER.get().defaultBlockState();
-        for (int h = 0; h < height; h++) {
-            int r = h == 0 && height >= 3 ? 1 : 0; // a 1-wide base on the larger mounds, a column otherwise
-            for (int dx = -r; dx <= r; dx++) {
-                for (int dz = -r; dz <= r; dz++) {
-                    BlockPos p = base.offset(dx, h, dz);
-                    if (level.getBlockState(p).canBeReplaced()) {
-                        level.setBlock(p, core, 2);
-                    }
+        // A small crystalline base pad.
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                if (Math.abs(dx) + Math.abs(dz) <= 1) {
+                    setIfReplaceable(level, base.offset(dx, 0, dz), core);
                 }
             }
         }
-        // Crystal crown.
-        BlockPos crown = base.above(height);
-        if (level.getBlockState(crown).canBeReplaced()) {
-            level.setBlock(crown, cluster, 2);
+        // A central tall spike + leaning satellites.
+        spike(level, rand, base, 0.0, 0.0, maxH);
+        for (int i = 0; i < spikes; i++) {
+            double ang = rand.nextDouble() * Math.PI * 2.0;
+            double lean = 0.18 + rand.nextDouble() * 0.22;
+            int h = Math.max(2, (int) (maxH * (0.4 + rand.nextDouble() * 0.5)));
+            spike(level, rand, base, Math.cos(ang) * lean, Math.sin(ang) * lean, h);
         }
-        // A few clusters bristling off the sides of the core.
-        int bristles = height; // taller mounds bristle more
-        for (int i = 0; i < bristles; i++) {
-            Direction dir = Direction.Plane.HORIZONTAL.getRandomDirection(rand);
-            int hy = base.getY() + rand.nextInt(height);
-            BlockPos side = new BlockPos(base.getX() + dir.getStepX(), hy, base.getZ() + dir.getStepZ());
-            if (level.getBlockState(side).canBeReplaced()) {
-                level.setBlock(
-                        side, cluster.setValue(net.minecraft.world.level.block.AmethystClusterBlock.FACING, dir), 2);
+    }
+
+    /** One tapering crystal spike: a near-1-wide column that drifts (leans) and points up, cluster-capped. */
+    private static void spike(
+            WorldGenLevel level, RandomSource rand, BlockPos base, double dxStep, double dzStep, int h) {
+        BlockState core = ModBlocks.GLASSPETAL_BLOCK.get().defaultBlockState();
+        BlockState cluster = ModBlocks.GLASSPETAL_CLUSTER.get().defaultBlockState();
+        double fx = base.getX() + 0.5;
+        double fz = base.getZ() + 0.5;
+        int lastX = base.getX();
+        int lastZ = base.getZ();
+        int lastY = base.getY();
+        for (int k = 1; k <= h; k++) {
+            fx += dxStep;
+            fz += dzStep;
+            lastX = (int) Math.floor(fx);
+            lastZ = (int) Math.floor(fz);
+            lastY = base.getY() + k;
+            BlockPos p = new BlockPos(lastX, lastY, lastZ);
+            setIfReplaceable(level, p, core);
+            // a crystal bristling off a side now and then
+            if (k > 1 && rand.nextInt(3) == 0) {
+                Direction d = Direction.Plane.HORIZONTAL.getRandomDirection(rand);
+                BlockPos side = p.relative(d);
+                if (level.getBlockState(side).canBeReplaced()) {
+                    level.setBlock(side, cluster.setValue(AmethystClusterBlock.FACING, d), 2);
+                }
             }
+        }
+        // The pointed crystal tip.
+        BlockPos tip = new BlockPos(lastX, lastY + 1, lastZ);
+        if (level.getBlockState(tip).canBeReplaced()) {
+            level.setBlock(tip, cluster, 2);
+        }
+    }
+
+    private static void setIfReplaceable(WorldGenLevel level, BlockPos p, BlockState state) {
+        if (level.getBlockState(p).canBeReplaced()) {
+            level.setBlock(p, state, 2);
         }
     }
 }

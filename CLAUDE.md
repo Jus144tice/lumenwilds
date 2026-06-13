@@ -302,8 +302,9 @@ as `File#member`.
   vanilla `lake` (which crashed chunk-gen near borders — the Moonmire/Undercrown pools); `#LUMEN_REEF`
   (`world.feature.LumenReefFeature`) — glowing coral mounds + fronds on the submerged seabed (Phase 9, added to
   the surface biomes' seas via a NeoForge `biome_modifier`); `#GLASSPETAL_GROWTH`
-  (`world.feature.GlasspetalGrowthFeature`) — varied-size glasspetal crystal growths (small cluster / nub / taller
-  crystal mound) scattered on the dry Crags floor (Phase 9 "feels like it's growing"; the rare town-sized version
+  (`world.feature.GlasspetalGrowthFeature`) — varied-size glasspetal crystal growths: fountains of tapering
+  `glasspetal_block` crystal SPIKES (leaning, pointed, cluster-bristled) — lone cluster / small / large / rare MEGA
+  burst — scattered on the dry Crags floor (Phase 9 "feels like it's growing"; the rare town-sized version
   is the Glasspetal Spires *structure*). Drives `configured_feature/patch_glasspetal` (was a flat single-cluster
   `random_patch`); `#UNDERCROWN_DECOR` (`world.feature.UndercrownDecorFeature`) — finds open cave air in the
   Undercrown and grows crystals on rock faces + glowing plants on floors (Phase 9 cave-richness); `#GLOWCAP`

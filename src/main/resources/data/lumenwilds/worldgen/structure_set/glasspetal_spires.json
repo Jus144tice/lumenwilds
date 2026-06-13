@@ -3,9 +3,10 @@
     { "structure": "lumenwilds:glasspetal_spires", "weight": 1 }
   ],
   "placement": {
+    "__comment": "Phase 9: spacing dropped 22->10 so the mega crystal spires actually land inside the now-smaller Glasspetal Crags patches (a handful per biome).",
     "type": "minecraft:random_spread",
-    "spacing": 22,
-    "separation": 7,
+    "spacing": 10,
+    "separation": 4,
     "salt": 491827306
   }
 }
