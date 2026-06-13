@@ -49,7 +49,8 @@
     "misc": [],
     "monster": [
       { "type": "lumenwilds:shade_stalker", "weight": 70, "minCount": 3, "maxCount": 5 },
-      { "type": "lumenwilds:sporeling", "weight": 60, "minCount": 3, "maxCount": 6 }
+      { "type": "lumenwilds:sporeling", "weight": 60, "minCount": 3, "maxCount": 6 },
+      { "type": "lumenwilds:echo_sentinel", "weight": 5, "minCount": 1, "maxCount": 1 }
     ],
     "underground_water_creature": [],
     "water_ambient": [],

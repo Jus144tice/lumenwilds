@@ -285,6 +285,12 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.CRAG_WRAITH, 0x2C2440, 0x9A6CE0, props),
             new Item.Properties());
 
+    /** Echo Sentinel (10f) — the city ruin guardian; drops resonance/luminite/memory + rare relay. Spawn egg. */
+    public static final DeferredItem<DeferredSpawnEggItem> ECHO_SENTINEL_SPAWN_EGG = ITEMS.registerItem(
+            "echo_sentinel_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.ECHO_SENTINEL, 0x1A2A3A, 0x6FE0D8, props),
+            new Item.Properties());
+
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
             "glowwood_boat",

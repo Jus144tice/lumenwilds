@@ -163,7 +163,13 @@ gaps); and the **Dormant Light Engine** (`block.DormantLightEngineBlock`) — ri
 Resonance Core), waking a dead city's network: the bible's "city's heartbeat returns" payoff. *(The full
 paired descent/ascension liftshafts + craftable Lumen Field Projector + abandoned-mine structures from the
 liftshaft doc are a later follow-up; 10e.2's gravity lens + `gravity_lens_fragment` are forward-compatible
-with it.)* Roadmap: [the plan](.claude/plans/delegated-juggling-locket.md)
+with it.)* **10f.1 (the Echo Sentinel) is in:** the city-specific ruin guardian (`entity.EchoSentinel`) — a
+floating construct (near-zero gravity, flying nav) that attacks with a charged **light-pulse beam**
+(`entity.ai.LightPulseAttackGoal` — a hitscan line of particles + damage, not a projectile entity), bespoke
+model (`client.model.EchoSentinelModel` — shell + crystal eye + orbiting ring fragments) + emissive glow.
+Drops `resonance_core_fragment`/`luminite_ingot`/`memory_crystal_shard`/rare `lumen_relay`; spawns rarely in
+the Undercrown (+ the vault in 10f.2); "Still On Watch" advancement on kill. Roadmap:
+[the plan](.claude/plans/delegated-juggling-locket.md)
 (10a–10h). What is deliberately
 *not* built yet: the final art/audio/polish pass (Phase 9) — and the
 visual-only deferrals logged throughout (final mob models, the Sporeblind overlay, real `.ogg` audio, etc.). **All biomes share one terrain *height*** (only `depth` varies, for the cave
@@ -311,7 +317,7 @@ as `File#member`.
   `#MIRELURKER_SPAWN_EGG` (6e); `#LUMEN_FISH_BUCKET` (`MobBucketItem`) + `#LUMEN_FISH_SPAWN_EGG` (6f);
   `#SKY_JELLY_SPAWN_EGG` (6g — drops the existing `#AIR_GEL`); `#GLOW_SCALES` + `#GLOWMOTH_SPAWN_EGG` (6h);
   `#ROOTBACK_PLATE`/`#MOONLOAM_CLUMPS` + `#ROOTBACK_SPAWN_EGG` (6i); `#WRAITH_MEMBRANE`/`#CRYSTAL_DUST`
-  + `#CRAG_WRAITH_SPAWN_EGG` (6j); boats
+  + `#CRAG_WRAITH_SPAWN_EGG` (6j); `#ECHO_SENTINEL_SPAWN_EGG` (10f); boats
   `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT`
   (`BoatItem` over `ModBoatTypes.glowwood()`); signs `#GLOWWOOD_SIGN` (`SignItem`)/`#GLOWWOOD_HANGING_SIGN`
   (`HangingSignItem`) — wall variants share these. A **static loop auto-registers a simple `BlockItem` for
@@ -335,7 +341,8 @@ as `File#member`.
   (`CREATURE`, flying, 6c), `#SPORELING` (`MONSTER`, swarm, 6d), `#MIRELURKER` (`MONSTER`, amphibious, 6e),
   `#LUMEN_FISH` (`WATER_AMBIENT`, schooling fish, 6f), `#SKY_JELLY` (`CREATURE`, floating, 6g), `#GLOWMOTH`
   (`CREATURE`, neutral flying guardian, 6h), `#ROOTBACK` (`CREATURE`, massive 3.0×2.2 turtle, 6i),
-  `#CRAG_WRAITH` (`MONSTER`, flying dive-attacker, 6j) — **all 10 live, Phase 6 done**. Each entity also needs
+  `#CRAG_WRAITH` (`MONSTER`, flying dive-attacker, 6j) — **all 10 Phase-6 mobs live**; plus `#ECHO_SENTINEL`
+  (`MONSTER`, floating ranged ruin guardian, 10f). Each entity also needs
   attributes + spawn placement (`event.ModEntityEvents`), a renderer (`client.LumenwildsClient`), a loot table
   (`loot_table/entities/`), and biome `spawners` entries.
 - [ModPotions.java](src/main/java/com/jus144tice/lumenwilds/registry/ModPotions.java) — `#POTIONS`; a
@@ -551,6 +558,17 @@ as `File#member`.
   (`FOLLOW_RANGE` 32) and dives at them (fast flying `MeleeAttackGoal`) with **heavy `ATTACK_KNOCKBACK` (1.5)**
   — deadly near the crags' ledges. Floaty (low gravity). Drops Wraith Membrane / Crystal Dust. Placeholder
   render = the ghast model scaled/flattened ~0.7.
+- [EchoSentinel.java](src/main/java/com/jus144tice/lumenwilds/entity/EchoSentinel.java) — `Monster`, the
+  Vestige City **ruin guardian** (10f). Floating construct (near-zero gravity, `FlyingMoveControl` +
+  `FlyingPathNavigation`), slow drift, **no melee** — fights only with `entity.ai.LightPulseAttackGoal`. Tanky
+  (24 HP, knockback-resistant), `xpReward` 12. Bespoke `client.model.EchoSentinelModel` + emissive glow.
+  Drops resonance/luminite/memory + rare relay; spawn egg + `loot_table/entities/echo_sentinel`. Spawns rarely
+  in Undercrown `spawners` + the vault (10f.2).
+- [entity/ai/LightPulseAttackGoal.java](src/main/java/com/jus144tice/lumenwilds/entity/ai/LightPulseAttackGoal.java)
+  — the Echo Sentinel's ranged attack (10f): a **hitscan** charge→fire→cooldown cycle — when in range + LOS it
+  charges (eye glow particles), then fires an instant beam (a line of `END_ROD` particles) that damages +
+  lightly knocks back the target. No projectile entity/renderer (cheaper + robust). Tunables in the ctor
+  (damage/range/charge/cooldown).
 
 ### world/ — dimension & worldgen keys (datapack-driven)
 - [LumenDimensionConstants.java](src/main/java/com/jus144tice/lumenwilds/world/LumenDimensionConstants.java)
@@ -798,23 +816,25 @@ as `File#member`.
   ~80-tick dwell and fades it fast on exit; `RenderGuiEvent.Post` draws two opposite-scrolling teal swirl veils
   (`textures/gui/lumen_portal_overlay.png`) over the screen at alpha ∝ intensity — calm (no nausea wobble), just
   a rising glow. Pairs with the animated swirl block texture/model. **Client-visual — verify via `runClient`.**
-- The 10 `MobRenderer`s (`LumenGrazerRenderer`, `ShadeStalkerRenderer`, …) each bake a **bespoke model**
-  (Phase 9b — the vanilla-model placeholders are gone): `textures/entity/<name>.png`.
+- The `MobRenderer`s (`LumenGrazerRenderer`, `ShadeStalkerRenderer`, …, + `EchoSentinelRenderer` 10f) each bake
+  a **bespoke model** (Phase 9b — the vanilla-model placeholders are gone): `textures/entity/<name>.png`.
 - **Bespoke models (Phase 9b):** [client/model/](src/main/java/com/jus144tice/lumenwilds/client/model/) holds
   one custom `HierarchicalModel` per mob — `SkyJellyModel` (bell + tentacles), `GlowmothModel` (moth + 2 wing
   pairs), `CragWraithModel` (manta + wings/tail), `LanternBeetleModel` (shell + 6 legs + glow abdomen),
   `SporelingModel` (body + mushroom cap), `ShadeStalkerModel` (sleek 4-legged), `LumenGrazerModel` (**6 legs**),
   `RootbackModel` (domed turtle, built ~3×2 to fill the hitbox), `MirelurkerModel` (anglerfish + glowing lure),
-  `LumenFishModel` (small fish). [LumenModelLayers.java](src/main/java/com/jus144tice/lumenwilds/client/LumenModelLayers.java)
+  `LumenFishModel` (small fish), `EchoSentinelModel` (10f — floating shell + crystal eye + orbiting ring
+  fragments). [LumenModelLayers.java](src/main/java/com/jus144tice/lumenwilds/client/LumenModelLayers.java)
   declares each `ModelLayerLocation`, registered in `LumenwildsClient#onRegisterLayerDefinitions` and baked in
   the renderer. Textures carry per-box region coloring + a mood-matched **face** (ominous on hostiles, friendly
   on passives; the Sky Jelly is faceless). *(Visual-only — verify via `runClient`; iterate from there.)*
 - **Emissive glow (Phase 9c, "native living light"):**
   [client/layer/LumenEmissiveLayer.java](src/main/java/com/jus144tice/lumenwilds/client/layer/LumenEmissiveLayer.java)
   extends vanilla `EyesLayer` (model re-rendered fullbright + additive), driven by a per-mob
-  `textures/entity/<name>_glow.png` (glowing regions bright on black). Added to 9 mobs in one place via
-  `LumenwildsClient#onAddLayers` (`EntityRenderersEvent.AddLayers` + the `#addGlow` helper). **The Shade Stalker
-  is deliberately excluded** — a jump-scare ambusher that flees light; a glow would betray its position.
+  `textures/entity/<name>_glow.png` (glowing regions bright on black). Added to 9 mobs + the Echo Sentinel (10f)
+  in one place via `LumenwildsClient#onAddLayers` (`EntityRenderersEvent.AddLayers` + the `#addGlow` helper).
+  **The Shade Stalker is deliberately excluded** — a jump-scare ambusher that flees light; a glow would betray
+  its position.
 
 ### util/
 - [ResourceLocationHelper.java](src/main/java/com/jus144tice/lumenwilds/util/ResourceLocationHelper.java)
@@ -899,7 +919,7 @@ as `File#member`.
 - `data/lumenwilds/`: `recipe/*` (incl. `cooked_grazer_meat` + `cooked_mirefish` furnace/smoker/campfire,
   `glowcap_stew` shapeless [8b], `lumen_anchor` shaped [8c]),
   `loot_table/blocks/*` + `loot_table/entities/*` (mob drops — `lumen_grazer` 6a, `shade_stalker` 6b,
-  `lantern_beetle` 6c, `sporeling` 6d, `mirelurker` 6e, `lumen_fish` 6f, `sky_jelly` 6g, `glowmoth` 6h, `rootback` 6i, `crag_wraith` 6j), `dimension/lumenwilds.json` (custom noise gen +
+  `lantern_beetle` 6c, `sporeling` 6d, `mirelurker` 6e, `lumen_fish` 6f, `sky_jelly` 6g, `glowmoth` 6h, `rootback` 6i, `crag_wraith` 6j, `echo_sentinel` 10f), `dimension/lumenwilds.json` (custom noise gen +
   a **`multi_noise` biome source** — humidity splits `lumen_glade`/`glowroot_forest`, a cold band carves out
   `glasspetal_crags`, a hot+humid band gives `sporefall_jungle`, a mild+wettest band gives `moonmire`, and a
   **deep `depth` band** gives `undercrown_caverns` [5d.5]; one parameter point added per 5d.x) +
@@ -962,9 +982,9 @@ as `File#member`.
   biome-reach goal per biome (`into_the_glowroot`, `crystal_highlands`, `spore_rainforest`, `the_glowing_mire`,
   `beneath_the_crown`, `sanctuary`); **+ `brick_of_living_light`** (10a — obtain Glowbrick) **+
   `vestiges_of_light`** (10b — stand inside any `#lumenwilds:vestige_city` ruin) **+ `the_city_remembers`**
-  (10c — obtain a memory shard or any `#lumenwilds:glyph_tablets` item). Triggers:
-  `changed_dimension` / `inventory_changed` / `location`+biome/+structure; direct-text titles (no lang keys).
-  Hand-authored.
+  (10c — obtain a memory shard or any `#lumenwilds:glyph_tablets` item) **+ `still_on_watch`** (10f — kill an
+  Echo Sentinel, via `player_killed_entity`). Triggers: `changed_dimension` / `inventory_changed` /
+  `location`+biome/+structure / `player_killed_entity`; direct-text titles (no lang keys). Hand-authored.
 - `data/lumenwilds/neoforge/biome_modifier/*` — `lumen_reef.json` (the project's **first NeoForge biome
   modifier**, `neoforge:add_features`: injects `lumen_reef` into the 6 surface biomes at `vegetal_decoration`,
   avoiding each biome's feature list + the order topo-sort), `glowberry.json` (Glowberry Bush on green biomes),

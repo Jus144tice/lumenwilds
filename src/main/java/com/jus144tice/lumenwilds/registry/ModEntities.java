@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.entity.CragWraith;
+import com.jus144tice.lumenwilds.entity.EchoSentinel;
 import com.jus144tice.lumenwilds.entity.Glowmoth;
 import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenFish;
@@ -101,6 +102,13 @@ public final class ModEntities {
                     .sized(1.4F, 0.7F)
                     .clientTrackingRange(10)
                     .build("crag_wraith"));
+
+    /** Echo Sentinel — the Vestige City ruin guardian: a floating construct with a ranged light pulse (Phase 10f). */
+    public static final DeferredHolder<EntityType<?>, EntityType<EchoSentinel>> ECHO_SENTINEL =
+            ENTITIES.register("echo_sentinel", () -> EntityType.Builder.of(EchoSentinel::new, MobCategory.MONSTER)
+                    .sized(1.0F, 1.0F)
+                    .clientTrackingRange(10)
+                    .build("echo_sentinel"));
 
     private ModEntities() {}
 }

@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.event;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.entity.CragWraith;
+import com.jus144tice.lumenwilds.entity.EchoSentinel;
 import com.jus144tice.lumenwilds.entity.Glowmoth;
 import com.jus144tice.lumenwilds.entity.LanternBeetle;
 import com.jus144tice.lumenwilds.entity.LumenFish;
@@ -51,6 +52,8 @@ public final class ModEntityEvents {
         event.put(ModEntities.GLOWMOTH.get(), Glowmoth.createAttributes().build());
         event.put(ModEntities.ROOTBACK.get(), Rootback.createAttributes().build());
         event.put(ModEntities.CRAG_WRAITH.get(), CragWraith.createAttributes().build());
+        event.put(
+                ModEntities.ECHO_SENTINEL.get(), EchoSentinel.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -120,6 +123,13 @@ public final class ModEntityEvents {
         // Crag Wraith: hostile darkness rule; spawns on a crag ledge then takes to the air.
         event.register(
                 ModEntities.CRAG_WRAITH.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Monster::checkMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // Echo Sentinel: hostile darkness rule; spawns on the (deep) ground in vault/cave cores then hovers.
+        event.register(
+                ModEntities.ECHO_SENTINEL.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkMonsterSpawnRules,

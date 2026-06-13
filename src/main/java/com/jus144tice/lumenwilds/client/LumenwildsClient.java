@@ -80,6 +80,9 @@ public final class LumenwildsClient {
                 LumenModelLayers.MIRELURKER, com.jus144tice.lumenwilds.client.model.MirelurkerModel::createBodyLayer);
         event.registerLayerDefinition(
                 LumenModelLayers.LUMEN_FISH, com.jus144tice.lumenwilds.client.model.LumenFishModel::createBodyLayer);
+        event.registerLayerDefinition(
+                LumenModelLayers.ECHO_SENTINEL,
+                com.jus144tice.lumenwilds.client.model.EchoSentinelModel::createBodyLayer);
     }
 
     @SubscribeEvent
@@ -94,6 +97,7 @@ public final class LumenwildsClient {
         event.registerEntityRenderer(ModEntities.GLOWMOTH.get(), GlowmothRenderer::new);
         event.registerEntityRenderer(ModEntities.ROOTBACK.get(), RootbackRenderer::new);
         event.registerEntityRenderer(ModEntities.CRAG_WRAITH.get(), CragWraithRenderer::new);
+        event.registerEntityRenderer(ModEntities.ECHO_SENTINEL.get(), EchoSentinelRenderer::new);
     }
 
     /**
@@ -113,6 +117,7 @@ public final class LumenwildsClient {
         addGlow(event, ModEntities.LUMEN_GRAZER.get(), "lumen_grazer");
         addGlow(event, ModEntities.ROOTBACK.get(), "rootback");
         addGlow(event, ModEntities.CRAG_WRAITH.get(), "crag_wraith");
+        addGlow(event, ModEntities.ECHO_SENTINEL.get(), "echo_sentinel");
     }
 
     private static <T extends Mob, M extends EntityModel<T>> void addGlow(

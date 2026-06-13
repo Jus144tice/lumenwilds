@@ -34,6 +34,8 @@ public final class LumenModelLayers {
             new ModelLayerLocation(ResourceLocationHelper.modLoc("mirelurker"), "main");
     public static final ModelLayerLocation LUMEN_FISH =
             new ModelLayerLocation(ResourceLocationHelper.modLoc("lumen_fish"), "main");
+    public static final ModelLayerLocation ECHO_SENTINEL =
+            new ModelLayerLocation(ResourceLocationHelper.modLoc("echo_sentinel"), "main");
 
     private LumenModelLayers() {}
 }
