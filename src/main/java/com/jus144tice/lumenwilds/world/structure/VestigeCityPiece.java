@@ -8,6 +8,7 @@ import com.jus144tice.lumenwilds.block.LumenConduitBlock;
 import com.jus144tice.lumenwilds.registry.ModBlocks;
 import com.jus144tice.lumenwilds.registry.ModStructures;
 import com.jus144tice.lumenwilds.util.ResourceLocationHelper;
+import com.jus144tice.lumenwilds.world.LumenBiomeBootstrap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -17,6 +18,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -56,6 +58,8 @@ public class VestigeCityPiece extends StructurePiece {
     private final BlockPos origin;
     /** 0 = medium, 1 = grand. */
     private final int tier;
+    /** Biome flavor, derived per-gen from the biome at the origin: 0 = standard, 1 = overgrown, 2 = cracked. */
+    private int flavor;
 
     public VestigeCityPiece(BlockPos origin, int tier) {
         super(ModStructures.VESTIGE_CITY_PIECE.get(), 0, boxAround(origin, tier));
@@ -99,6 +103,7 @@ public class VestigeCityPiece extends StructurePiece {
             BlockPos pos) {
         RandomSource rand = RandomSource.create(
                 origin.getX() * 341873128712L ^ origin.getZ() * 132897987541L ^ (long) origin.getY());
+        this.flavor = flavorFor(level);
 
         plaza(level, writeBox, rand);
         if (tier > 0) {
@@ -120,6 +125,115 @@ public class VestigeCityPiece extends StructurePiece {
         if (tier > 0) {
             ringOfBuildings(level, writeBox, rand, 12 + rand.nextInt(5), 26, 8, false);
         }
+
+        // Biome flavor pass — the local biome reclaims the ruin its own way.
+        applyFlavor(level, writeBox, rand);
+    }
+
+    // --- Biome flavor (10h.3) -----------------------------------------------------------------------
+
+    /** 1 = overgrown (Glowroot Forest / Sporefall Jungle), 2 = cracked-spire (Glasspetal Crags), else 0. */
+    private int flavorFor(WorldGenLevel level) {
+        var biome = level.getBiome(origin);
+        if (biome.is(LumenBiomeBootstrap.GLASSPETAL_CRAGS)) {
+            return 2;
+        }
+        if (biome.is(LumenBiomeBootstrap.GLOWROOT_FOREST) || biome.is(LumenBiomeBootstrap.SPOREFALL_JUNGLE)) {
+            return 1;
+        }
+        return 0;
+    }
+
+    /**
+     * Scatters biome-specific accents across the ruin so each city reads distinctly: <b>overgrown</b> cities
+     * (forest/jungle) are choked with glowvine, glow fern, and Glowroot logs punching up through the stone;
+     * <b>cracked-spire</b> cities (the Crags) bristle with Glasspetal Clusters and expose veins of Luminite Ore.
+     * Each accent is placed on top of an existing structure block found by a column scan (box-clipped).
+     */
+    private void applyFlavor(WorldGenLevel level, BoundingBox box, RandomSource rand) {
+        if (flavor == 0) {
+            return;
+        }
+        int reach = (tier > 0 ? GRAND_R : CITY_R);
+        int attempts = reach * 6;
+        for (int i = 0; i < attempts; i++) {
+            int dx = rand.nextInt(2 * reach + 1) - reach;
+            int dz = rand.nextInt(2 * reach + 1) - reach;
+            if (dx * dx + dz * dz > reach * reach) {
+                continue;
+            }
+            int topY = topStructureY(level, box, origin.getX() + dx, origin.getZ() + dz);
+            if (topY == Integer.MIN_VALUE) {
+                continue;
+            }
+            BlockPos surface = new BlockPos(origin.getX() + dx, topY, origin.getZ() + dz);
+            if (flavor == 1) {
+                overgrownAccent(level, box, rand, surface);
+            } else {
+                crackedAccent(level, box, rand, surface);
+            }
+        }
+    }
+
+    private void overgrownAccent(WorldGenLevel level, BoundingBox box, RandomSource rand, BlockPos surface) {
+        BlockPos above = surface.above();
+        if (!box.isInside(above) || !level.getBlockState(above).isAir()) {
+            return;
+        }
+        switch (rand.nextInt(8)) {
+            case 0 -> {
+                // A Glowroot root punching up through the ruin.
+                int h = 2 + rand.nextInt(4);
+                for (int y = 0; y < h; y++) {
+                    VestigeDecay.set(
+                            level,
+                            box,
+                            above.above(y),
+                            ModBlocks.GLOWROOT_LOG.get().defaultBlockState());
+                }
+            }
+            case 1, 2 -> VestigeDecay.set(
+                    level, box, above, ModBlocks.GLOW_FERN.get().defaultBlockState());
+            case 3 -> VestigeDecay.set(
+                    level, box, above, ModBlocks.MOONBLOSSOM.get().defaultBlockState());
+            default -> VestigeDecay.set(
+                    level, box, above, ModBlocks.GLOWVINE.get().defaultBlockState());
+        }
+    }
+
+    private void crackedAccent(WorldGenLevel level, BoundingBox box, RandomSource rand, BlockPos surface) {
+        if (rand.nextInt(4) == 0) {
+            // Expose a vein of Luminite Ore in the masonry.
+            VestigeDecay.set(level, box, surface, ModBlocks.LUMINITE_ORE.get().defaultBlockState());
+            return;
+        }
+        BlockPos above = surface.above();
+        if (box.isInside(above) && level.getBlockState(above).isAir()) {
+            VestigeDecay.set(
+                    level,
+                    box,
+                    above,
+                    ModBlocks.GLASSPETAL_CLUSTER
+                            .get()
+                            .defaultBlockState()
+                            .setValue(AmethystClusterBlock.FACING, Direction.UP));
+        }
+    }
+
+    /** Highest non-air, non-fluid block in the column within the box, or {@link Integer#MIN_VALUE} if none. */
+    private int topStructureY(WorldGenLevel level, BoundingBox box, int x, int z) {
+        BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
+        for (int y = origin.getY() + MAX_H; y >= origin.getY() - 1; y--) {
+            p.set(x, y, z);
+            if (!box.isInside(p)) {
+                continue;
+            }
+            BlockState s = level.getBlockState(p);
+            if (!s.isAir() && s.getFluidState().isEmpty()) {
+                return y;
+            }
+        }
+        return Integer.MIN_VALUE;
     }
 
     private void ringOfBuildings(

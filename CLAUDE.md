@@ -182,8 +182,12 @@ Lumen-Crystal core, jutting stair fragments, floating debris, and a `chests/spir
 Skyline" advancement on reaching a city plaza. **10h is in progress** (the finale): **10h.1 (craftability) is
 in** — the buildable Lumenwright tech is now craftable so a player who's looted ancient fragments + mined
 resources can rebuild the kit (Lumen Conduit, Lumenbulb, Memory Crystal from shards, Active Light Engine, +
-aged building variants); the *fragments* stay loot-only (the ruin gate). Still to come in 10h: terrain/
-foundation cleanup, biome city variants, hazards, artifacts, and wiring dormant cores/doors into surface
+aged building variants); the *fragments* stay loot-only (the ruin gate). **10h.2 (weathered foundations)** makes
+slope foundations read as crumbling supports (`VestigeDecay#weatheredFoundation`). **10h.3 (biome flavor)** —
+the city reads its biome (`VestigeCityPiece#flavorFor`/`#applyFlavor`) and scatters distinct accents:
+**overgrown** (Glowroot Forest / Sporefall Jungle — glowvine/glow-fern/Glowroot-log roots) and **cracked-spire**
+(Glasspetal Crags — Glasspetal Clusters + exposed Luminite veins; Crags added to the city biome tag). Still to
+come in 10h: the **sunken** (Moonmire) variant, hazards, artifacts, and wiring dormant cores/doors into surface
 cities. **Playtest-confirmed (10a–10g):** the full city→vault→restore-engine→open-doors→loot loop works (fixed
 in-session: vault doors, Echo Sentinel spawn in light, guaranteed fragment sources, dry-land placement).
 Roadmap:
@@ -716,7 +720,9 @@ as `File#member`.
   (stepped dome), `#archway` (crescent peak), `#rootChamber` (sunken, glowvine-choked), `#plinth` (often a
   Memory Crystal). `#placeChest` drops Reliquary/Cache; `#floorAndFoundation` roots stamps. Size constants
   `#PLAZA_R`/`#CITY_R`. Bound to `ModStructures#VESTIGE_CITY`. **`findGenerationPoint` also adds a buried
-  `VestigeVaultPiece` ~22 below the plaza (10f.2).**
+  `VestigeVaultPiece` ~22 below the plaza (10f.2), rolls the size `tier` (10g), and rejects below-sea-level
+  placements (dry-land only).** **10h.3:** `#flavorFor`/`#applyFlavor` read the biome and scatter overgrown
+  (forest/jungle) or cracked-spire (Crags) accents.
 - [VestigeVaultPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeVaultPiece.java) —
   the **Vestige Vault** (10f.2), a sub-piece of the city (`ModStructures#VESTIGE_VAULT_PIECE`, no own structure
   type). `#chamber` carves a Deep-Moonstone+glowbrick room; `#resonancePuzzle` is the lock-and-key — a dead
