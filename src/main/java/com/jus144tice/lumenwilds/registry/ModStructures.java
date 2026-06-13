@@ -110,5 +110,10 @@ public final class ModStructures {
             STRUCTURE_PIECES.register(
                     "vestige_spire", () -> (StructurePieceType.ContextlessType) VestigeSpirePiece::new);
 
+    // Phase 11c: the Lumenwright Liftshaft + Abandoned Luminite Mine — a deep sub-piece of a city (dais → mine).
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> VESTIGE_MINE_PIECE =
+            STRUCTURE_PIECES.register("vestige_mine", () -> (StructurePieceType.ContextlessType)
+                    com.jus144tice.lumenwilds.world.structure.VestigeMinePiece::new);
+
     private ModStructures() {}
 }

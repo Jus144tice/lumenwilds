@@ -35,6 +35,13 @@ public final class MemoryCrystalInteractEvents {
         "The crystal hums, but the memory is incomplete.",
         "…static… the memory is broken, unreadable.",
         "When the conduits went dark, so did we.",
+        // Liftshaft / mine lore (Phase 11c) — eerie fragments tied to the gravity shafts and deep extraction.
+        "The shaft remembers weight, and teaches it to soften.",
+        "Workers descended without rope, carried by the patience of the field.",
+        "Ore rose in silence through the blue column.",
+        "The lower seams brightened before the city dimmed.",
+        "Gravity failed in the eastern shaft. The rescue never returned.",
+        "The engines below still pull against the moon.",
     };
 
     @SubscribeEvent

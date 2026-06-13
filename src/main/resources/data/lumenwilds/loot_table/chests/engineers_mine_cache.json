@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "__comment": "A guaranteed liftshaft technology component — the path to rebuilding a Lumen Field Projector.",
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "lumenwilds:gravity_lens_fragment", "weight": 7 },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_relay", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:resonance_core_fragment", "weight": 4 }
+      ]
+    },
+    {
+      "__comment": "Engineering materials, dead conduits, and a rare mine-era glyph tablet.",
+      "rolls": { "type": "minecraft:uniform", "min": 3.0, "max": 5.0 },
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "lumenwilds:luminite_ingot", "weight": 9, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:crystal_dust", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:air_gel", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_conduit", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 6.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_shard", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 4.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:gravity_lens_fragment", "weight": 3 },
+        { "type": "minecraft:item", "name": "lumenwilds:glyph_tablet_fall", "weight": 2 }
+      ]
+    }
+  ],
+  "random_sequence": "lumenwilds:chests/engineers_mine_cache"
+}

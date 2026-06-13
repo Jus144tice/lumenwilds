@@ -207,8 +207,19 @@ field cell per open space up to a 16-cell budget, stop at solid, clear cells it 
 column cell touches it, so wall-mounted repeaters chain a shaft arbitrarily tall without cluttering it. The
 projector is standalone-powered (no Resonance network); crafted `G L G / R C R / I E I` (gravity-lens-fragment /
 crystal-shard / lumen-relay / resonance-core-fragment / luminite-ingot / memory-crystal-shard), the repeater
-cheaply (shimmerstone + fragment + relay). "Carried by the Field" advancement on obtaining a projector.
-**Playtest-confirmed (10a–10g):** the full
+cheaply (shimmerstone + fragment + relay). "Carried by the Field" advancement on obtaining a projector. **11c
+(the mine access dais + abandoned Luminite mine) is in:** `world.structure.VestigeMinePiece` — a single tall
+sub-piece a Vestige City rolls (grand always, medium ~40%; offset from the plaza, clear of the vault shaft;
+`VestigeCityStructure` adds it) that spans a deep carved-Moonstone mine chamber (arched Glowbrick ribs, exposed
+Luminite + Lumen-Crystal ore, dead conduits, broken Gravity Lenses, a Shimmerstone lift platform, an Echo
+Sentinel spawner, Memory-Crystal lore, Miner's + Engineer's-Mine caches) up two side-by-side shafts —
+**descent** (pre-filled `descent_field`) and **ascension** (`ascension_field`), so they work on discovery — to a
+surface octagonal Glowbrick-Tiles dais (shaft mouths, broken lenses, dim conduits, accents, a Miner's Cache),
+foundation-rooted. The Engineer's-Mine Cache carries the liftshaft tech (fragments/relay) so the player rebuilds
+the projector. Mine lore added to `event.MemoryCrystalInteractEvents`. **Phase 11 is feature-complete (11a–11c);
+the 11d tail — bespoke up/down particles + sounds, biome-flavored shafts, cave-aware shaft-to-cavern
+connection — is deferred.** *(Worldgen of the mine is pending an in-client/force-gen playtest: `/locate` a
+`lumenwilds:vestige_city`, the dais is ~12 blocks off the plaza.)* **Playtest-confirmed (10a–10g):** the full
 city→vault→restore-engine→open-doors→loot loop works (fixed
 in-session: vault doors, Echo Sentinel spawn in light, guaranteed fragment sources, dry-land placement).
 Roadmap:
@@ -440,7 +451,8 @@ as `File#member`.
   crystal towers, 8f), and `#UNDERCROWN_RELICS` + `#UNDERCROWN_RELICS_PIECE` (the buried dungeon, 8g — placed at
   a deep Y), and `#VESTIGE_OUTPOST` + `#VESTIGE_OUTPOST_PIECE` (the Small Vestige Outpost, 10b), and
   `#VESTIGE_CITY` + `#VESTIGE_CITY_PIECE` (the Medium/Grand Vestige City, 10d/10g), `#VESTIGE_VAULT_PIECE` (the
-  buried Vestige Vault, 10f.2), and `#VESTIGE_SPIRE_PIECE` (the broken tower, 10g) — the last two are piece-only
+  buried Vestige Vault, 10f.2), `#VESTIGE_SPIRE_PIECE` (the broken tower, 10g), and `#VESTIGE_MINE_PIECE` (the
+  Lumenwright liftshaft + abandoned Luminite mine, 11c) — the last three are piece-only
   types (no structure; added by the city). All are
   structures (generate per-chunk via a bounding box). Structure instances + spawn spacing
   (and Crag-Wraith `spawn_overrides`) are datapack JSON (`worldgen/structure*`); these are the code types.
@@ -774,8 +786,9 @@ as `File#member`.
   (stepped dome), `#archway` (crescent peak), `#rootChamber` (sunken, glowvine-choked), `#plinth` (often a
   Memory Crystal). `#placeChest` drops Reliquary/Cache; `#floorAndFoundation` roots stamps. Size constants
   `#PLAZA_R`/`#CITY_R`. Bound to `ModStructures#VESTIGE_CITY`. **`findGenerationPoint` also adds a buried
-  `VestigeVaultPiece` ~22 below the plaza (10f.2), rolls the size `tier` (10g), and rejects below-sea-level
-  placements (dry-land only).** **10h.3:** `#flavorFor`/`#applyFlavor` read the biome and scatter overgrown
+  `VestigeVaultPiece` ~22 below the plaza (10f.2), rolls the size `tier` (10g), rejects below-sea-level
+  placements (dry-land only), and rolls a `VestigeMinePiece` (11c — grand always / medium ~40%, offset ~12 from
+  the plaza).** **10h.3:** `#flavorFor`/`#applyFlavor` read the biome and scatter overgrown
   (forest/jungle), cracked-spire (Crags), or sunken (Moonmire) accents.
 - [VestigeVaultPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeVaultPiece.java) —
   the **Vestige Vault** (10f.2), a sub-piece of the city (`ModStructures#VESTIGE_VAULT_PIECE`, no own structure
@@ -791,6 +804,16 @@ as `File#member`.
   at the base, and a foundation. Added by `VestigeCityStructure` for grand cities. (Grand vs. medium is rolled
   in `VestigeCityStructure#findGenerationPoint`; `VestigeCityPiece` carries the `tier` — grand adds a 2nd
   building ring + a central restorable Dormant Light Engine; medium keeps the dry fountain.)
+- [VestigeMinePiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeMinePiece.java) — the
+  **Lumenwright Liftshaft + Abandoned Luminite Mine** (Phase 11c, `ModStructures#VESTIGE_MINE_PIECE`), a single
+  tall sub-piece added by `VestigeCityStructure#findGenerationPoint` (grand always / medium ~40%, offset ~12
+  from the plaza, only if it clears `y-16`). Like the vault, spans deep→surface in one box (box-clipped,
+  position-seeded). `#chamber`/`#ribs`/`#machinery` carve the deep mine (Moonstone shell, Glowbrick rib arches,
+  Luminite + Lumen-Crystal ore veins, dim conduits, broken Gravity Lenses, Shimmerstone lift, Echo Sentinel
+  spawner, Memory Crystals, `chests/miners_cache` + `chests/engineers_mine_cache`); `#shafts` pre-fills the two
+  side-by-side columns with `DESCENT_FIELD`/`ASCENSION_FIELD` (work on discovery, no projector — the recoverable
+  projector/relay/fragments are in the Engineer's-Mine Cache); `#dais` builds the surface Glowbrick-Tiles
+  octagon with the shaft mouths + accents, `VestigeDecay.weatheredFoundation`-rooted. **Tune the mine here.**
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -864,7 +887,8 @@ as `File#member`.
   fills into `ModItems.LUMEN_NECTAR` (bloom not consumed — renewable, like honey).
 - [MemoryCrystalInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/MemoryCrystalInteractEvents.java)
   — `#onRightClickBlock` (10c): right-clicking a `ModBlocks#MEMORY_CRYSTAL` prints a fragment chosen
-  deterministically from the block position (`#FRAGMENTS`, some broken/unreadable); crystal not consumed.
+  deterministically from the block position (`#FRAGMENTS`, some broken/unreadable; the liftshaft/mine lore
+  lines were appended in 11c); crystal not consumed.
 - [LumenGravityEvents.java](src/main/java/com/jus144tice/lumenwilds/event/LumenGravityEvents.java) —
   `#onEntityTick(EntityTickEvent.Post)` (10e.2): a powered `GravityLensBlock` within `#REACH_BELOW` of a
   living entity (clear column) floats it up at a capped speed, zeroes fall distance, sneaking holds — the
@@ -1079,7 +1103,9 @@ as `File#member`.
   tag. **10c** adds `chests/scholars_reliquary` (lore/crafting loot) + a `tags/item/glyph_tablets.json` item
   tag. **10f.2:** the city also generates a buried `VestigeVaultPiece` (no JSON — added in code), with
   `chests/vault` (high-tier) + `chests/engineers_cache` (tech) loot. **10g:** grand cities add `VestigeSpirePiece`
-  towers (in code) with `chests/spire` loot. Hand-authored (not datagen).
+  towers (in code) with `chests/spire` loot. **11c:** some cities add a `VestigeMinePiece` (in code) with
+  `chests/miners_cache` (raw materials) + `chests/engineers_mine_cache` (the liftshaft tech to rebuild) loot.
+  Hand-authored (not datagen).
 - `data/lumenwilds/advancement/*` — the **progression tree (Phase 9f)**: `root` (enter the dimension) →
   `living_light`→`anchored`, `the_wilds_provide`→`soothing_nectar`, `native_fauna`→`apex_of_the_dark`, and a
   biome-reach goal per biome (`into_the_glowroot`, `crystal_highlands`, `spore_rainforest`, `the_glowing_mire`,
@@ -1087,7 +1113,8 @@ as `File#member`.
   `vestiges_of_light`** (10b — stand inside any `#lumenwilds:vestige_city` ruin) **+ `the_city_remembers`**
   (10c — obtain a memory shard or any `#lumenwilds:glyph_tablets` item) **+ `still_on_watch`** (10f — kill an
   Echo Sentinel, via `player_killed_entity`) **+ `under_a_dead_skyline`** (10g — reach a `vestige_city`
-  structure). Triggers: `changed_dimension` / `inventory_changed` /
+  structure) **+ `carried_by_the_field`** (11b — obtain a Lumen Field Projector). Triggers: `changed_dimension` /
+  `inventory_changed` /
   `location`+biome/+structure / `player_killed_entity`; direct-text titles (no lang keys). Hand-authored.
 - `data/lumenwilds/neoforge/biome_modifier/*` — `lumen_reef.json` (the project's **first NeoForge biome
   modifier**, `neoforge:add_features`: injects `lumen_reef` into the 6 surface biomes at `vegetal_decoration`,
