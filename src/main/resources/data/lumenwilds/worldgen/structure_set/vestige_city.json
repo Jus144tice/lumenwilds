@@ -1,0 +1,12 @@
+{
+  "__comment": "Rare — a Medium Vestige City is a major discovery, scarcer than the outpost.",
+  "structures": [
+    { "structure": "lumenwilds:vestige_city", "weight": 1 }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 40,
+    "separation": 13,
+    "salt": 410925766
+  }
+}

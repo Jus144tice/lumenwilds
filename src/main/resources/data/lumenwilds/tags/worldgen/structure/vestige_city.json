@@ -1,6 +1,7 @@
 {
   "__comment": "All Vestige ruins of the Lumenwrights. The 'Vestiges of Light' advancement fires inside any of them; later Phase 10 structures (city, vault, spire, biome variants) are added here.",
   "values": [
-    "lumenwilds:vestige_outpost"
+    "lumenwilds:vestige_outpost",
+    "lumenwilds:vestige_city"
   ]
 }

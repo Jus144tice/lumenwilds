@@ -143,8 +143,13 @@ right-click reads a position-hashed fragment of Lumenwright lore via `event.Memo
 `memory_crystal_shard`), six **Ancient Glyph Tablets** (`item.GlyphTabletItem` — right-click/tooltip shows a
 lore line), and the **Lumen Conduit** (`block.LumenConduitBlock`, `conduit_state` dead/dim/active → light
 0/2/8 — decorative in ruins now, made functional by the Resonance network in 10e); plus the
-`chests/scholars_reliquary` loot table and "The City Remembers" advancement. Roadmap:
-[the plan](.claude/plans/delegated-juggling-locket.md)
+`chests/scholars_reliquary` loot table and "The City Remembers" advancement. **10d (the main city) is in:**
+the **Medium Vestige City** (`world.structure.VestigeCityStructure`/`Piece`) — a rare village-sized radial
+ruin: a circular chiseled-glowbrick plaza with a dry crystal fountain + flickering light pylons, four broken
+roads (embedded dead/dim Lumen Conduit lines) spoking to an outer ring of building "stamps" (crescent house /
+hollow pod / archway / root chamber / plinth-with-Memory-Crystal), all decayed + overgrown via `VestigeDecay`;
+chests are a Scholar's Reliquary in the civic hall + scattered Ruined Caches; Shade Stalkers/Sporelings via
+`spawn_overrides`. Roadmap: [the plan](.claude/plans/delegated-juggling-locket.md)
 (10a–10h). What is deliberately
 *not* built yet: the final art/audio/polish pass (Phase 9) — and the
 visual-only deferrals logged throughout (final mob models, the Sporeblind overlay, real `.ogg` audio, etc.). **All biomes share one terrain *height*** (only `depth` varies, for the cave
@@ -355,7 +360,8 @@ as `File#member`.
   `#ROOTSHRINE_PIECE` (the small early-reward Rootshrine, 8d), `#LUMENBOUND_RUINS` + `#LUMENBOUND_RUINS_PIECE`
   (the Overworld ruined-portal tutorial site, 8e), and `#GLASSPETAL_SPIRES` + `#GLASSPETAL_SPIRES_PIECE` (the
   crystal towers, 8f), and `#UNDERCROWN_RELICS` + `#UNDERCROWN_RELICS_PIECE` (the buried dungeon, 8g — placed at
-  a deep Y), and `#VESTIGE_OUTPOST` + `#VESTIGE_OUTPOST_PIECE` (the Small Vestige Outpost, 10b). All are
+  a deep Y), and `#VESTIGE_OUTPOST` + `#VESTIGE_OUTPOST_PIECE` (the Small Vestige Outpost, 10b), and
+  `#VESTIGE_CITY` + `#VESTIGE_CITY_PIECE` (the Medium Vestige City, 10d). All are
   structures (generate per-chunk via a bounding box). Structure instances + spawn spacing
   (and Crag-Wraith `spawn_overrides`) are datapack JSON (`worldgen/structure*`); these are the code types.
 - [ModBiomes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBiomes.java) /
@@ -615,6 +621,15 @@ as `File#member`.
   broken glowbrick `#road`, `#toppledPillars` (standing stubs + horizontal-axis fallen runs), one roofless
   `#buildingShell` (decayed walls + doorway + Lumenbulb + the `chests/ruined_cache` chest), a `#plinth`, and
   `#debris` — all via `VestigeDecay`. Bound to `ModStructures#VESTIGE_OUTPOST`.
+- [VestigeCityStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeCityStructure.java)
+  / [VestigeCityPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeCityPiece.java) —
+  the **Medium Vestige City** (10d), the main ruin. `#postProcess` (position-seeded, box-clipped; spans chunks
+  like the spires) builds a radial city: `#plaza` (concentric chiseled-glowbrick rings) + `#fountain` (dry
+  sunken basin + dead central crystal pylon) + `#lightPylons` (Lumenbulb-topped, some broken) + four `#road`s
+  (with embedded `LumenConduitBlock` dim/dead lines) + an outer ring of stamps — `#crescentHouse`, `#hollowPod`
+  (stepped dome), `#archway` (crescent peak), `#rootChamber` (sunken, glowvine-choked), `#plinth` (often a
+  Memory Crystal). `#placeChest` drops Reliquary/Cache; `#floorAndFoundation` roots stamps. Size constants
+  `#PLAZA_R`/`#CITY_R`. Bound to `ModStructures#VESTIGE_CITY`.
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -882,11 +897,13 @@ as `File#member`.
   and the **Undercrown Relics** (8g) — `structure/undercrown_relics.json` (step `underground_structures`) +
   `structure_set` (spacing 24/sep 8, in `undercrown_caverns`) + `chests/undercrown_relics` loot, and the
   **Small Vestige Outpost** (10b) — `structure/vestige_outpost.json` + `structure_set` (spacing 28/sep 9, in
-  glade/forest/jungle/basin) + `chests/ruined_cache` loot, plus a `tags/worldgen/structure/vestige_city.json`
-  structure tag (groups all Vestige ruins, read by the `vestiges_of_light` advancement) — each with its
-  `tags/worldgen/biome/has_structure/<name>.json` biome tag. **10c** adds `chests/scholars_reliquary` (lore/
-  crafting loot, used by the medium city in 10d) + a `tags/item/glyph_tablets.json` item tag. Hand-authored
-  (not datagen).
+  glade/forest/jungle/basin) + `chests/ruined_cache` loot, and the **Medium Vestige City** (10d) —
+  `structure/vestige_city.json` (with a `spawn_overrides.monster` → shade_stalker + sporeling) + `structure_set`
+  (rare, spacing 40/sep 13) + `chests/ruined_cache`/`chests/scholars_reliquary` loot, plus a
+  `tags/worldgen/structure/vestige_city.json` structure tag (groups all Vestige ruins — outpost + city — read
+  by the `vestiges_of_light` advancement) — each with its `tags/worldgen/biome/has_structure/<name>.json` biome
+  tag. **10c** adds `chests/scholars_reliquary` (lore/crafting loot) + a `tags/item/glyph_tablets.json` item
+  tag. Hand-authored (not datagen).
 - `data/lumenwilds/advancement/*` — the **progression tree (Phase 9f)**: `root` (enter the dimension) →
   `living_light`→`anchored`, `the_wilds_provide`→`soothing_nectar`, `native_fauna`→`apex_of_the_dark`, and a
   biome-reach goal per biome (`into_the_glowroot`, `crystal_highlands`, `spore_rainforest`, `the_glowing_mire`,

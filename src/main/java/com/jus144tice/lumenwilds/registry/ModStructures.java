@@ -17,6 +17,8 @@ import com.jus144tice.lumenwilds.world.structure.RootshrinePiece;
 import com.jus144tice.lumenwilds.world.structure.RootshrineStructure;
 import com.jus144tice.lumenwilds.world.structure.UndercrownRelicsPiece;
 import com.jus144tice.lumenwilds.world.structure.UndercrownRelicsStructure;
+import com.jus144tice.lumenwilds.world.structure.VestigeCityPiece;
+import com.jus144tice.lumenwilds.world.structure.VestigeCityStructure;
 import com.jus144tice.lumenwilds.world.structure.VestigeOutpostPiece;
 import com.jus144tice.lumenwilds.world.structure.VestigeOutpostStructure;
 import net.minecraft.core.registries.Registries;
@@ -88,6 +90,13 @@ public final class ModStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> VESTIGE_OUTPOST_PIECE =
             STRUCTURE_PIECES.register(
                     "vestige_outpost", () -> (StructurePieceType.ContextlessType) VestigeOutpostPiece::new);
+
+    // Phase 10d: the Medium Vestige City — the main Lumenwright ruin experience.
+    public static final DeferredHolder<StructureType<?>, StructureType<VestigeCityStructure>> VESTIGE_CITY =
+            STRUCTURE_TYPES.register("vestige_city", () -> () -> VestigeCityStructure.CODEC);
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> VESTIGE_CITY_PIECE =
+            STRUCTURE_PIECES.register("vestige_city", () -> (StructurePieceType.ContextlessType) VestigeCityPiece::new);
 
     private ModStructures() {}
 }
