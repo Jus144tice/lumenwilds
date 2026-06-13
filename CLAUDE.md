@@ -875,6 +875,14 @@ as `File#member`.
   chunk-by-chunk and light is computed once at gen (static blocks = ~0 per-tick cost). Note aquifers-on here uses
   LESS Lumenwater than aquifers-off-flooded (pools at the water table vs. fully-flooded sub-sea caves). **Lesson:
   bounded worldgen fluid is free; avoid only the single-tick bulk `/fill`.**
+- **A 2D (`y_scale: 0`) relief noise that can exceed the vertical gradient's clamp makes terrain SPIKE to the
+  build ceiling.** The terrain density is `y_clamped_gradient(…→ -1.6 above y130) + hills relief`; the relief
+  noises are `y_scale: 0` (constant in Y) and sum to ~±2.4. At any column where relief > 1.6 (the clamp
+  magnitude), density stays positive for ALL y above y130 → a thin grass-topped spire to y319. Fix: a **top
+  suppressor** — a `y_clamped_gradient` that is 0 below ~y128 (leaves the dramatic terrain untouched) and ramps
+  strongly negative above (to_y 175, to_value −28), added to the base in BOTH `initial_density_without_jaggedness`
+  AND `final_density`. Caps terrain ~y125; **verified** force-gen 20×20 → max y125, 0 columns > y140, 0 runaway.
+  (Either add this, raise the clamp magnitude past max relief, or give the relief a small `y_scale`.)
 - **Surface structures must anchor to `OCEAN_FLOOR_WG`, not `WORLD_SURFACE_WG` — the latter includes fluid, so
   they generate on the SEA SURFACE and float.** All the procedural structures (`GlowrootTree`/`MegaGlowcap`/
   `Rootshrine`/`GlasspetalSpires`/`LumenboundRuins`) now use `getFirstOccupiedHeight(..., OCEAN_FLOOR_WG, ...)`
