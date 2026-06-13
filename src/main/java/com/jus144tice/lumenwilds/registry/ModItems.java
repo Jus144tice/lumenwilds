@@ -61,6 +61,17 @@ public final class ModItems {
                             .effect(new MobEffectInstance(MobEffects.NIGHT_VISION, 140, 0), 1.0F)
                             .build()));
 
+    /** Glowberries — a sweet alien berry harvested from the Glowberry Bush; a quick snack with a little glow. */
+    public static final DeferredItem<Item> GLOWBERRY = ITEMS.registerItem(
+            "glowberry",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(0.1F)
+                            .alwaysEdible()
+                            .build()));
+
     public static final DeferredItem<Item> LUMEN_NECTAR = ITEMS.registerItem(
             "lumen_nectar",
             Item::new,

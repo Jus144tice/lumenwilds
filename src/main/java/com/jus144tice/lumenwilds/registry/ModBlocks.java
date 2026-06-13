@@ -281,6 +281,32 @@ public final class ModBlocks {
                     .sound(SoundType.WET_GRASS)
                     .pushReaction(PushReaction.DESTROY));
 
+    /** Lumen Kelp — a glowing waterlogged frond (a teal-green sea plant; reuses {@link LumenCoralBlock}). */
+    public static final DeferredBlock<LumenCoralBlock> LUMEN_KELP = BLOCKS.registerBlock(
+            "lumen_kelp",
+            LumenCoralBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_GREEN)
+                    .noCollission()
+                    .instabreak()
+                    .lightLevel(state -> 7)
+                    .sound(SoundType.WET_GRASS)
+                    .pushReaction(PushReaction.DESTROY));
+
+    // --- Surface harvestables (Phase 9) — alien fruits/veggies scattered on the land ----------------
+
+    /** Glowberry Bush — a small glowing cross plant on the surface; drops edible Glowberries. */
+    public static final DeferredBlock<TallGrassBlock> GLOWBERRY_BUSH = BLOCKS.registerBlock(
+            "glowberry_bush",
+            TallGrassBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PINK)
+                    .noCollission()
+                    .instabreak()
+                    .lightLevel(state -> 5)
+                    .sound(SoundType.SWEET_BERRY_BUSH)
+                    .pushReaction(PushReaction.DESTROY));
+
     // --- Stillbloom Basin — the giant Stillbloom flower (Phase 5d.6) ----------------------------
     // Three soft, glowing blocks assembled by StillbloomFeature into a 3–8-tall giant flower: a stem
     // column carrying a petal dome around a brilliant core. The brightest blocks in the dimension.

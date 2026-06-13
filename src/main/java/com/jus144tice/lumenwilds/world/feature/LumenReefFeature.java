@@ -38,7 +38,6 @@ public class LumenReefFeature extends Feature<NoneFeatureConfiguration> {
         }
 
         BlockState coral = ModBlocks.LUMEN_CORAL_BLOCK.get().defaultBlockState();
-        BlockState frond = ModBlocks.LUMEN_CORAL.get().defaultBlockState(); // WATERLOGGED defaults true
         BlockState sand = ModBlocks.LUMENSAND.get().defaultBlockState();
 
         int cx = origin.getX();
@@ -72,10 +71,10 @@ public class LumenReefFeature extends Feature<NoneFeatureConfiguration> {
                         top = floorY + k;
                         placedAny = true;
                     }
-                    placeFrond(level, new BlockPos(gx, top + 1, gz), frond);
+                    placeFrond(level, new BlockPos(gx, top + 1, gz), frond(rand));
                 } else if (roll < 0.72) {
-                    // A frond straight on the seabed.
-                    if (placeFrond(level, new BlockPos(gx, floorY + 1, gz), frond)) {
+                    // A frond (coral or kelp) straight on the seabed.
+                    if (placeFrond(level, new BlockPos(gx, floorY + 1, gz), frond(rand))) {
                         placedAny = true;
                     }
                 } else if (roll < 0.85) {
@@ -86,6 +85,13 @@ public class LumenReefFeature extends Feature<NoneFeatureConfiguration> {
             }
         }
         return placedAny;
+    }
+
+    /** A reef frond — a glowing Lumen Coral or, more often, a teal Lumen Kelp, for varied sea vegetation. */
+    private static BlockState frond(RandomSource rand) {
+        return (rand.nextInt(3) == 0 ? ModBlocks.LUMEN_CORAL : ModBlocks.LUMEN_KELP)
+                .get()
+                .defaultBlockState();
     }
 
     private static boolean placeFrond(WorldGenLevel level, BlockPos pos, BlockState frond) {

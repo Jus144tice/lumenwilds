@@ -215,8 +215,11 @@ as `File#member`.
   (`fluid.LumenwaterBlock`, the Lumenwater liquid block — **no BlockItem, `noLootTable`**, 5e). **Underwater life
   (Phase 9 drawing-board):** `#LUMENSAND` (soft-glowing seabed, light 6 — placed under water by the surface rule
   instead of dead moonloam), `#LUMEN_CORAL_BLOCK` (solid bright coral, light 10 — reef mounds + building), and
-  `#LUMEN_CORAL` (`block.LumenCoralBlock` — a waterlogged glowing cross frond, light 9); grown on the seabed by
-  the `world.feature.LumenReefFeature`. **Phase 4 sets**
+  `#LUMEN_CORAL` (`block.LumenCoralBlock` — a waterlogged glowing cross frond, light 9), and `#LUMEN_KELP` (another
+  `LumenCoralBlock`, teal-green sea plant); grown on the seabed by the `world.feature.LumenReefFeature` (reef fronds
+  are a coral/kelp mix). **Surface harvestables (Phase 9):** `#GLOWBERRY_BUSH` (`TallGrassBlock` cross, drops
+  `ModItems#GLOWBERRY` food) scattered on the green biomes via `patch_glowberry` + a `glowberry` biome modifier.
+  **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
   `#GLOWWOOD_LEAVES`, stairs/slab/fence/fence_gate/door/trapdoor/button/pressure_plate + signs

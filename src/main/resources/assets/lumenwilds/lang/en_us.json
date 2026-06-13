@@ -179,5 +179,8 @@
   "block.lumenwilds.cracked_moonstone_bricks": "Cracked Moonstone Bricks",
   "block.lumenwilds.cracked_deep_moonstone_bricks": "Cracked Deep Moonstone Bricks",
   "block.lumenwilds.giant_glowcap_azure": "Azure Glowcap",
-  "block.lumenwilds.giant_glowcap_violet": "Violet Glowcap"
+  "block.lumenwilds.giant_glowcap_violet": "Violet Glowcap",
+  "block.lumenwilds.lumen_kelp": "Lumen Kelp",
+  "block.lumenwilds.glowberry_bush": "Glowberry Bush",
+  "item.lumenwilds.glowberry": "Glowberries"
 }

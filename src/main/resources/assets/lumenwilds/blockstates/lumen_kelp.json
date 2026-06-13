@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "waterlogged=true": {
+      "model": "lumenwilds:block/lumen_kelp"
+    },
+    "waterlogged=false": {
+      "model": "lumenwilds:block/lumen_kelp"
+    }
+  }
+}
