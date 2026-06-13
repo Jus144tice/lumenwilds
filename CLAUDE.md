@@ -132,7 +132,14 @@ ore chain (`luminite_ore` in moonstone + `deep_luminite_ore` in deep moonstone �
 `ancient_glowbrick` 1 so ruins visibly fade; `glowbrick_tiles`/`chiseled_glowbrick`/`glowbrick_pillar` +
 stairs/slab/wall), crafted `L I L / I C I / L I L` (ingot/crystal-shard/glow-pollen) → 4 — plus decay blocks
 (`overgrown_glowbrick`, `broken_sporeglass`, `mossy_moonstone_bricks`, `rooted_moonstone`) for the ruin
-processors. Roadmap: [the plan](.claude/plans/delegated-juggling-locket.md) (10a–10h). What is deliberately
+processors. **10b (first ruins) is in:** the **Small Vestige Outpost** — an uncommon procedural surface ruin
+(`world.structure.VestigeOutpostStructure`/`Piece`): a broken glowbrick road, toppled pillars, one roofless
+collapsed building shell (still-lit Lumenbulb + a `chests/ruined_cache` chest), an empty plinth, and scattered
+debris — all run through the shared `world.structure.VestigeDecay` processors (glowbrick fades
+intact→cracked→ancient, chunks go missing, glowvine/lumen-grass creep in), rooted to the ground so nothing
+floats. In glade/forest/jungle/basin; "Vestiges of Light" advancement fires inside any
+`#lumenwilds:vestige_city`-tagged ruin. Roadmap: [the plan](.claude/plans/delegated-juggling-locket.md)
+(10a–10h). What is deliberately
 *not* built yet: the final art/audio/polish pass (Phase 9) — and the
 visual-only deferrals logged throughout (final mob models, the Sporeblind overlay, real `.ogg` audio, etc.). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
@@ -338,7 +345,8 @@ as `File#member`.
   `#ROOTSHRINE_PIECE` (the small early-reward Rootshrine, 8d), `#LUMENBOUND_RUINS` + `#LUMENBOUND_RUINS_PIECE`
   (the Overworld ruined-portal tutorial site, 8e), and `#GLASSPETAL_SPIRES` + `#GLASSPETAL_SPIRES_PIECE` (the
   crystal towers, 8f), and `#UNDERCROWN_RELICS` + `#UNDERCROWN_RELICS_PIECE` (the buried dungeon, 8g — placed at
-  a deep Y). All are structures (generate per-chunk via a bounding box). Structure instances + spawn spacing
+  a deep Y), and `#VESTIGE_OUTPOST` + `#VESTIGE_OUTPOST_PIECE` (the Small Vestige Outpost, 10b). All are
+  structures (generate per-chunk via a bounding box). Structure instances + spawn spacing
   (and Crag-Wraith `spawn_overrides`) are datapack JSON (`worldgen/structure*`); these are the code types.
 - [ModBiomes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBiomes.java) /
   [ModDimensions.java](src/main/java/com/jus144tice/lumenwilds/registry/ModDimensions.java) — thin
@@ -577,6 +585,19 @@ as `File#member`.
   shell around a 9×7×5 air chamber (tiled floor, four pillars, Lumenbulb lights), a central **mob spawner**
   (`SpawnerBlockEntity#setEntityId` → Shade Stalker), and two loot chests (`chests/undercrown_relics`: rare
   loot + Lumen-Anchor parts). Bound to `ModStructures#UNDERCROWN_RELICS`; spawns in the Undercrown Caverns.
+- [VestigeDecay.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeDecay.java) — the
+  **shared ruin processors** for the whole Vestige City family (Phase 10b+). Static helpers every Vestige
+  piece runs its clean layout through so the world reclaimed the ruin: `#glowbrick`/`#ancientGlowbrick`
+  (weathered glowbrick mix — fades intact→cracked→ancient), `#rubble`, `#decayedGlowbrick` (place-or-miss),
+  `#overgrow` (creeps lumen grass/glow fern/moonblossom/glowvine onto air), `#fillFoundation` (roots to
+  ground), `#set` (box-clipped). **Tune the decay/overgrowth feel here.**
+- [VestigeOutpostStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeOutpostStructure.java)
+  / [VestigeOutpostPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeOutpostPiece.java)
+  — the **Small Vestige Outpost** (10b), the first/smallest Lumenwright ruin. `#findGenerationPoint` anchors
+  one piece at the surface (`OCEAN_FLOOR_WG`). `#postProcess` (position-seeded RNG, box-clipped) builds a
+  broken glowbrick `#road`, `#toppledPillars` (standing stubs + horizontal-axis fallen runs), one roofless
+  `#buildingShell` (decayed walls + doorway + Lumenbulb + the `chests/ruined_cache` chest), a `#plinth`, and
+  `#debris` — all via `VestigeDecay`. Bound to `ModStructures#VESTIGE_OUTPOST`.
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -837,13 +858,18 @@ as `File#member`.
   **Glasspetal Spires** (8f) — `structure/glasspetal_spires.json` (with a `spawn_overrides.monster` →
   `crag_wraith`) + `structure_set` (spacing 22/sep 7, in `glasspetal_crags`) + `chests/glasspetal_spires` loot,
   and the **Undercrown Relics** (8g) — `structure/undercrown_relics.json` (step `underground_structures`) +
-  `structure_set` (spacing 24/sep 8, in `undercrown_caverns`) + `chests/undercrown_relics` loot — each with its
+  `structure_set` (spacing 24/sep 8, in `undercrown_caverns`) + `chests/undercrown_relics` loot, and the
+  **Small Vestige Outpost** (10b) — `structure/vestige_outpost.json` + `structure_set` (spacing 28/sep 9, in
+  glade/forest/jungle/basin) + `chests/ruined_cache` loot, plus a `tags/worldgen/structure/vestige_city.json`
+  structure tag (groups all Vestige ruins, read by the `vestiges_of_light` advancement) — each with its
   `tags/worldgen/biome/has_structure/<name>.json` biome tag. Hand-authored (not datagen).
 - `data/lumenwilds/advancement/*` — the **progression tree (Phase 9f)**: `root` (enter the dimension) →
   `living_light`→`anchored`, `the_wilds_provide`→`soothing_nectar`, `native_fauna`→`apex_of_the_dark`, and a
   biome-reach goal per biome (`into_the_glowroot`, `crystal_highlands`, `spore_rainforest`, `the_glowing_mire`,
-  `beneath_the_crown`, `sanctuary`); **+ `brick_of_living_light`** (10a — obtain Glowbrick). Triggers:
-  `changed_dimension` / `inventory_changed` / `location`+biome; direct-text titles (no lang keys). Hand-authored.
+  `beneath_the_crown`, `sanctuary`); **+ `brick_of_living_light`** (10a — obtain Glowbrick) **+
+  `vestiges_of_light`** (10b — stand inside any `#lumenwilds:vestige_city` ruin). Triggers:
+  `changed_dimension` / `inventory_changed` / `location`+biome/+structure; direct-text titles (no lang keys).
+  Hand-authored.
 - `data/lumenwilds/neoforge/biome_modifier/*` — `lumen_reef.json` (the project's **first NeoForge biome
   modifier**, `neoforge:add_features`: injects `lumen_reef` into the 6 surface biomes at `vegetal_decoration`,
   avoiding each biome's feature list + the order topo-sort), `glowberry.json` (Glowberry Bush on green biomes),

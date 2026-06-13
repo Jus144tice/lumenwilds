@@ -1,0 +1,12 @@
+{
+  "__comment": "Uncommon — a Vestige Outpost is an early hint of the Lumenwrights, rarer than the Rootshrine.",
+  "structures": [
+    { "structure": "lumenwilds:vestige_outpost", "weight": 1 }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 28,
+    "separation": 9,
+    "salt": 401827553
+  }
+}

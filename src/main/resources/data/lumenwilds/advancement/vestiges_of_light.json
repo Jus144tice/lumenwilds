@@ -1,0 +1,42 @@
+{
+  "display": {
+    "icon": {
+      "id": "lumenwilds:chiseled_glowbrick",
+      "count": 1
+    },
+    "title": {
+      "text": "Vestiges of Light"
+    },
+    "description": {
+      "text": "Discover the ruins of those who shaped the Lumenwilds."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "structures": "#lumenwilds:vestige_city"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ],
+  "sends_telemetry_event": false,
+  "parent": "lumenwilds:root"
+}

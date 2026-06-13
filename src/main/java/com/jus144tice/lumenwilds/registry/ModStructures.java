@@ -17,6 +17,8 @@ import com.jus144tice.lumenwilds.world.structure.RootshrinePiece;
 import com.jus144tice.lumenwilds.world.structure.RootshrineStructure;
 import com.jus144tice.lumenwilds.world.structure.UndercrownRelicsPiece;
 import com.jus144tice.lumenwilds.world.structure.UndercrownRelicsStructure;
+import com.jus144tice.lumenwilds.world.structure.VestigeOutpostPiece;
+import com.jus144tice.lumenwilds.world.structure.VestigeOutpostStructure;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
@@ -78,6 +80,14 @@ public final class ModStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> UNDERCROWN_RELICS_PIECE =
             STRUCTURE_PIECES.register(
                     "undercrown_relics", () -> (StructurePieceType.ContextlessType) UndercrownRelicsPiece::new);
+
+    // Phase 10b: the Small Vestige Outpost — the first ruin of the vanished Lumenwrights.
+    public static final DeferredHolder<StructureType<?>, StructureType<VestigeOutpostStructure>> VESTIGE_OUTPOST =
+            STRUCTURE_TYPES.register("vestige_outpost", () -> () -> VestigeOutpostStructure.CODEC);
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> VESTIGE_OUTPOST_PIECE =
+            STRUCTURE_PIECES.register(
+                    "vestige_outpost", () -> (StructurePieceType.ContextlessType) VestigeOutpostPiece::new);
 
     private ModStructures() {}
 }

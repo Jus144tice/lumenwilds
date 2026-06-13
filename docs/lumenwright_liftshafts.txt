@@ -1,0 +1,671 @@
+Lumenwright Liftshafts
+
+The ancient alien cities should contain functional Lumenwright Liftshafts: paired gravity columns used to move between the surface city and deep mining chambers below.
+
+Each mining access point has two shafts:
+
+Descent Shaft — pulls entities downward in a controlled fall.
+Ascension Shaft — pushes entities upward through antigravity.
+
+The player sees these as two vertical glowing columns side by side, usually inside a ruined mining transit building or under a broken city plaza.
+
+The visual message is:
+
+This civilization mined vertically, but they did not climb. They floated.
+
+Minecraft 1.21 has a built-in gravity attribute exposed through entity attributes, and NeoForge documents attributes as synced double values used for entity properties, with custom attributes also possible. That said, the most reliable implementation for shaft blocks is probably not “change the player’s global gravity,” but “apply controlled vertical velocity while the player is inside a shaft volume.”
+
+The Structure: Mine Access Dais
+
+In Vestige Cities, the lift system should generate as a special structure module called:
+
+lumenwilds:vestige_mine_access_dais
+
+It appears in:
+
+medium Vestige Cities
+grand Vestige Cities
+cracked spire cities
+underground Vestige substructures
+rare overgrown city variants
+
+It should not appear in every ruin. When it does appear, it feels like a major discovery.
+
+Surface Layout
+
+The mine access dais is a circular or octagonal platform built from:
+
+Glowbrick Tiles
+Chiseled Glowbrick
+Polished Shimmerstone
+Dim Lumen Conduits
+Ancient Glowbrick
+Lumen Crystal fragments
+Broken Gravity Lens blocks
+
+At the center are two vertical shafts, side by side.
+
+[ DESCENT SHAFT ]   [ ASCENSION SHAFT ]
+
+The Descent Shaft has downward-flowing particles.
+
+The Ascension Shaft has upward-flowing particles.
+
+Both are surrounded by partial rings of Glowbrick, like the remains of an ancient elevator station.
+
+Shaft Blocks
+
+Do not make these actual fluids. Make them non-solid field blocks, similar in spirit to portal blocks, bubble columns, or tripwire-like invisible logic blocks.
+
+Descent Field
+
+Block ID:
+
+lumenwilds:descent_field
+
+Behavior:
+
+No collision.
+Transparent or semi-transparent.
+Emits light level 5.
+Applies controlled downward velocity.
+Caps falling speed.
+Resets or reduces fall distance.
+Prevents lethal fall damage while inside the shaft.
+Allows the player to exit sideways at any point.
+
+This should not feel like falling. It should feel like being lowered by gravity technology.
+
+Recommended behavior:
+
+If entity is inside Descent Field:
+- If vertical speed is greater than -0.35, push downward slightly.
+- If vertical speed is less than -0.45, slow it back upward slightly.
+- Set fallDistance to 0 or heavily reduce it.
+
+So the player descends at a steady, safe speed.
+
+Ascension Field
+
+Block ID:
+
+lumenwilds:ascension_field
+
+Behavior:
+
+No collision.
+Transparent or semi-transparent.
+Emits light level 7.
+Applies upward velocity.
+Caps upward speed.
+Lets the player float upward smoothly.
+Sneaking should slow or stop ascent.
+Jumping should give a small upward boost.
+
+Recommended behavior:
+
+If entity is inside Ascension Field:
+- Apply upward motion until vertical speed reaches about +0.32 to +0.45.
+- If sneaking, reduce upward velocity or hold position.
+- Reset fallDistance.
+
+This gives players control without making the shaft annoying.
+
+Why This Is Better Than True Gravity Reversal
+
+You could technically experiment with gravity attributes, but for this feature I would avoid making the shaft work by constantly rewriting the player’s actual gravity value.
+
+The safer Minecraft implementation is:
+
+The shaft is a column of blocks that directly manipulates entity motion while entities are inside it.
+
+That is easier to debug, easier to confine to the shaft, works on players and mobs, and avoids weird side effects with jump physics, elytra, projectiles, mounts, or other mods.
+
+Save actual gravity attribute manipulation for broader dimension-wide low gravity or specific gear later.
+
+For the liftshafts, use field blocks.
+
+Visual Design
+
+The shafts should not look like water elevators or bubble columns. They should look like alien infrastructure.
+
+Descent Shaft Visual
+Dark teal transparent column.
+Thin falling light particles.
+Small downward glyph/rune particles.
+Occasional horizontal rings pulsing downward.
+Low humming sound pitched downward.
+Dust and broken particles drifting inside.
+
+The Descent Shaft should feel calm, not dangerous.
+
+Ascension Shaft Visual
+Brighter cyan-blue transparent column.
+Upward particles.
+Floating dust fragments.
+Rings pulsing upward.
+Slight antigravity shimmer.
+Higher-pitched humming sound.
+
+The Ascension Shaft should feel magical and technological.
+
+New Technology Blocks
+
+The shafts should be built from recoverable technology pieces.
+
+Gravity Lens
+
+Block ID:
+
+lumenwilds:gravity_lens
+
+Role:
+
+Core gravity manipulation block.
+Used in both ancient structures and player crafting.
+Found in ruined cities, especially spires and mine access shafts.
+
+Appearance:
+
+Shimmerstone frame.
+Suspended blue-violet lens.
+Floating particle ring.
+Emits light level 6.
+
+In structures, Gravity Lenses appear above, below, or embedded in shaft rings.
+
+Cracked Gravity Lens
+
+Block ID:
+
+lumenwilds:cracked_gravity_lens
+
+Role:
+
+Ruined decorative or salvage block.
+Found commonly in ancient cities.
+Can be broken down into Gravity Lens Fragments.
+
+Drop:
+
+gravity_lens_fragment
+Gravity Lens Fragment
+
+Item ID:
+
+lumenwilds:gravity_lens_fragment
+
+Role:
+
+Loot/crafting component.
+Used to craft player-built gravity tech.
+
+Found in:
+
+Engineer’s Cache
+Spire Chest
+Vault Chest
+Echo Sentinel drops
+broken liftshaft rooms
+Lumen Field Projector
+
+Block ID:
+
+lumenwilds:lumen_field_projector
+
+Role:
+
+Player-crafted block used to create gravity shafts.
+Directional block.
+Projects either an Ascension Field or Descent Field depending on configuration.
+
+This is the key player reward.
+
+Player-Buildable Gravity Elevators
+
+The cool payoff is that players can eventually build their own gravity elevators.
+
+Player Crafting Progression
+
+Players first discover working shafts in ruins.
+
+Then they loot:
+
+Gravity Lens Fragments
+Luminite Ingots
+Lumen Relays
+Resonance Core Fragments
+Lumen Crystal Shards
+
+Eventually they craft a Lumen Field Projector.
+
+Lumen Field Projector Recipe
+
+Suggested recipe:
+
+G L G
+R C R
+I E I
+
+Where:
+
+G = Gravity Lens Fragment
+L = Lumen Crystal Shard
+R = Lumen Relay
+C = Resonance Core Fragment
+I = Luminite Ingot
+E = Echo Shard
+
+Output:
+
+1 Lumen Field Projector
+
+This makes it advanced and tied to ruins.
+
+Projector Modes
+
+The projector has two modes:
+
+Ascend
+Descend
+
+The player changes the mode by right-clicking with an empty hand, or by shift-right-clicking.
+
+Mode is shown in the block tooltip:
+
+Mode: Ascension
+Mode: Descent
+How It Builds the Field
+
+A Lumen Field Projector projects a vertical column above itself.
+
+Default range:
+
+16 blocks
+
+Upgraded range later:
+
+32 blocks
+
+It fills the column with temporary or generated field behavior, not necessarily permanent placed blocks.
+
+Simpler first implementation:
+
+Projector checks the vertical column above it.
+If air or replaceable blocks exist, it places invisible/transparent ascension_field or descent_field blocks.
+Breaking the projector removes the field blocks.
+Field blocks tick/check for their projector source and disappear if unsupported.
+
+Cleaner later implementation:
+
+Field is not placed as blocks.
+Projector uses an area effect check each tick.
+Entities inside the vertical AABB are moved.
+
+For Minecraft mod simplicity, I’d start with actual field blocks. They are easier to see, debug, save, and interact with.
+
+City Generation With Cave Detection
+
+Yes, the generative piece is doable, but there are two levels of complexity.
+
+NeoForge mods can ship data-pack worldgen files, including dimension and worldgen resources, as part of the mod data pack; NeoForge’s docs list dimension, dimension_type, structure, and worldgen as data-side resource folders. For structures, a data-driven jigsaw/NBT approach works well for modular ruins, and structure tutorials for modern NeoForge show that NBT pieces, template pools, loot-table chests, and custom Java behavior can be combined.
+
+Simple Version
+
+The city generates a mine access shaft whether or not a real cave is below.
+
+The shaft descends to a generated abandoned mine chamber.
+
+That chamber is part of the structure.
+
+This is much easier and more reliable.
+
+Generation flow:
+
+Generate city
+  -> choose mine access module
+  -> generate vertical shaft
+  -> generate abandoned mine chamber at fixed depth below
+
+This guarantees the content exists.
+
+Downside:
+
+It may not always connect to a natural cave.
+It feels slightly less organic.
+Better Version
+
+The city attempts to detect a cave below.
+
+Generation flow:
+
+Generate city candidate
+  -> scan downward below mine access point
+  -> look for a cave-sized air pocket
+  -> if cave exists:
+       generate liftshaft down to cave
+       generate abandoned mine attachments in cave
+     else:
+       generate normal city piece without mine access
+
+This is doable, but it requires custom structure placement/generation logic rather than pure static JSON.
+
+Recommended Version
+
+Use a hybrid:
+
+First, try to connect to a real cave.
+If no suitable cave is found, generate a buried artificial mine chamber.
+
+This gives the best player experience.
+
+The player always gets a cool mining shaft when the module appears, but sometimes it naturally intersects an existing cave system, which feels amazing.
+
+Cave Detection Rule
+
+When generating a Vestige City with a mine access dais, pick a shaft origin point near the city plaza.
+
+Then scan downward.
+
+Candidate Cave Requirements
+
+A valid cave below should satisfy:
+
+- Between 20 and 80 blocks below the city floor
+- Contains enough air blocks to count as an open space
+- Has at least one solid floor nearby
+- Is not fully submerged unless generating a sunken variant
+- Has enough horizontal room for abandoned mining decorations
+
+Implementation-style logic:
+
+For y from surfaceY - 20 down to minBuildHeight + 20:
+    sample a 7x7x5 volume around shaftX, y, shaftZ
+
+    airCount = count air/cave blocks
+    solidFloorCount = count solid blocks near bottom
+
+    if airCount > threshold and solidFloorCount > threshold:
+        caveY = y
+        foundCave = true
+        break
+
+Then generate the shaft from surfaceY down to caveY.
+
+Abandoned Mining Area
+
+At the bottom of the liftshaft, generate signs of Lumenwright mining.
+
+This should not look like an Overworld mineshaft. No oak planks, rails, torches, or cobwebs as the main identity.
+
+Name
+lumenwilds:abandoned_luminite_mine
+Visual Identity
+
+The mine is an alien extraction site.
+
+Features:
+
+carved Moonstone tunnels
+Glowbrick support ribs
+Dim Lumen Conduits along walls
+Luminite Ore exposed in walls
+broken Gravity Lenses
+old lift platforms
+dead resonance machinery
+floating dust particles
+tool alcoves
+collapsed boreholes
+partially sealed vault doors
+mine carts replaced by gravity sled remnants
+Mining Supports
+
+Instead of wooden beams, the Lumenwrights used arched Glowbrick ribs.
+
+These ribs should appear every few blocks in tunnels.
+
+They imply a more advanced engineered structure.
+
+Extraction Scars
+
+Ore was not mined with pickaxes.
+
+The walls should show smooth circular scars or bore patterns.
+
+Minecraft version:
+
+circular-ish 3x3 or 5x5 tunnel cuts
+polished Moonstone edges
+exposed Luminite Ore
+Dead Lumen Conduits leading to extraction points
+Resonance Core fragments nearby
+Abandoned Equipment
+
+Decorative blocks:
+
+dormant_excavation_core
+cracked_lumen_drill
+broken_gravity_sled
+ore_suspension_ring
+dead_lumen_relay
+
+These can start as decorative blocks and become functional later.
+
+Mine Loot
+
+Mining areas should have different loot from city plazas.
+
+Miner’s Cache
+
+Contains:
+
+Raw Luminite
+Luminite Ingots
+Lumen Crystal Shards
+Glowbrick
+Dead Lumen Conduits
+Living Fiber
+Moonstone
+Pickaxes, rarely enchanted
+Food, rarely
+Engineer’s Mine Cache
+
+Contains:
+
+Gravity Lens Fragment
+Lumen Relay
+Resonance Core Fragment
+Crystal Dust
+Luminite Ingots
+Air Gel
+Dim Lumen Conduits
+Ancient Glyph Tablet: mines variant
+Sealed Extraction Vault
+
+Rare.
+
+Contains:
+
+Luminite Blocks
+Active Lumen Conduit
+Intact Gravity Lens
+Resonance Core Fragment
+Lumen Field Projector component
+Rare armor trim
+Echo Sentinel encounter
+Mine-Specific Lore
+
+Memory Crystal messages near liftshafts and mines should hint at how the tech worked.
+
+Examples:
+
+The shaft remembers weight and teaches it to soften.
+
+Workers descended without rope, carried by the patience of the field.
+
+Ore rose in silence through the blue column.
+
+The lower seams brightened before the city dimmed.
+
+Gravity failed in the eastern shaft. The rescue never returned.
+
+The engines below still pull against the moon.
+
+These are short, eerie, and tied to the mechanic.
+
+Ruined City Integration
+
+The liftshafts should be visibly part of the city’s infrastructure.
+
+In Small Ruins
+
+Only broken shaft remnants:
+
+cracked circular platform
+dead conduits
+no working field
+loot maybe includes one Gravity Lens Fragment
+In Medium Cities
+
+One working or partially working shaft pair:
+
+Descent shaft works
+Ascension shaft flickers
+connects to small abandoned mine
+In Grand Cities
+
+Multiple shaft systems:
+
+civic liftshafts between city levels
+mine access shafts
+spire ascension columns
+one sealed deep shaft leading to a vault
+In Cracked Spire Cities
+
+Gravity tech is more prominent:
+
+vertical traversal puzzles
+broken ascension fields
+floating debris
+Crag Wraiths around exposed shafts
+In Sunken Cities
+
+The liftshafts may be flooded or damaged:
+
+Descent shaft becomes dangerous because water interrupts field stability
+Ascension shaft bubbles with Lumenwater
+Mirelurkers hide near shaft exits
+Gameplay Payoff
+
+This feature gives the Lumenwilds a fantastic progression loop.
+
+First Encounter
+
+Player finds a ruined city and sees two glowing shafts.
+
+They step into the Descent Shaft and slowly sink downward.
+
+They realize:
+
+This is an elevator, but it is made of gravity.
+
+Exploration
+
+At the bottom, they discover an abandoned alien mining chamber.
+
+They find:
+
+Luminite Ore
+Gravity Lens Fragments
+dead machinery
+loot caches
+lore
+maybe an Echo Sentinel
+Reward
+
+Eventually they craft their own Lumen Field Projector.
+
+Now they can build:
+
+base elevators
+mine elevators
+tower lifts
+floating garden access
+low-gravity transit shafts
+vertical city builds
+safe drops into deep caves
+
+This is exactly the kind of technology players should want to bring home from the Lumenwilds.
+
+Implementation Priority
+
+I would implement it in this order.
+
+Phase 5A: Ancient Shaft Blocks
+
+Add:
+
+descent_field
+ascension_field
+gravity_lens
+cracked_gravity_lens
+gravity_lens_fragment
+
+Make the field blocks work in a test structure or creative mode.
+
+Phase 5B: Player Movement Behavior
+
+Implement entity handling:
+
+controlled descent
+controlled ascent
+fall distance reset
+sneaking slows ascent
+particles
+sound loop later
+
+This is the proof of concept.
+
+Phase 5C: Mine Access Structure Piece
+
+Add a simple structure piece:
+
+vestige_mine_access_dais
+
+It contains:
+
+paired shafts
+glowbrick ring
+conduit decoration
+broken machinery
+chest
+
+At first, generate it with a fixed-depth artificial mine room.
+
+Phase 5D: Abandoned Mine Chamber
+
+Add:
+
+abandoned_luminite_mine_room
+abandoned_luminite_mine_tunnel
+abandoned_luminite_mine_cache
+
+Use jigsaw pieces to make it feel modular.
+
+Phase 5E: Cave-Aware Generation
+
+Upgrade the structure generator:
+
+scan below the city
+connect to a natural cave when possible
+otherwise generate artificial chamber
+
+This is the sophisticated version.
+
+Phase 5F: Player Craftable Projector
+
+Add:
+
+lumen_field_projector
+
+Allow players to create ascension/descent shafts in their own builds.
