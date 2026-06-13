@@ -168,7 +168,13 @@ floating construct (near-zero gravity, flying nav) that attacks with a charged *
 (`entity.ai.LightPulseAttackGoal` — a hitscan line of particles + damage, not a projectile entity), bespoke
 model (`client.model.EchoSentinelModel` — shell + crystal eye + orbiting ring fragments) + emissive glow.
 Drops `resonance_core_fragment`/`luminite_ingot`/`memory_crystal_shard`/rare `lumen_relay`; spawns rarely in
-the Undercrown (+ the vault in 10f.2); "Still On Watch" advancement on kill. Roadmap:
+the Undercrown; "Still On Watch" advancement on kill. **10f.2 (the vault) completes Phase 10f:** every Medium
+Vestige City now generates a buried **Vestige Vault** (`world.structure.VestigeVaultPiece`, a 2nd piece added
+under the plaza by `VestigeCityStructure`) — a Deep-Moonstone + glowbrick chamber holding the **resonance
+lock-and-key**: a dead central Dormant Light Engine wired by dead Lumen Conduits to two sealed Ancient Doors
+that guard a Vault chest + an Engineer's Cache; **restore the engine (a fragment) → conduits power → doors
+open** (the 10e tech as a dungeon mechanic), with an Echo Sentinel spawner on guard, Memory Crystals for lore,
+and a corner spiral stair up to a hole in the plaza. Roadmap:
 [the plan](.claude/plans/delegated-juggling-locket.md)
 (10a–10h). What is deliberately
 *not* built yet: the final art/audio/polish pass (Phase 9) — and the
@@ -391,7 +397,8 @@ as `File#member`.
   (the Overworld ruined-portal tutorial site, 8e), and `#GLASSPETAL_SPIRES` + `#GLASSPETAL_SPIRES_PIECE` (the
   crystal towers, 8f), and `#UNDERCROWN_RELICS` + `#UNDERCROWN_RELICS_PIECE` (the buried dungeon, 8g — placed at
   a deep Y), and `#VESTIGE_OUTPOST` + `#VESTIGE_OUTPOST_PIECE` (the Small Vestige Outpost, 10b), and
-  `#VESTIGE_CITY` + `#VESTIGE_CITY_PIECE` (the Medium Vestige City, 10d). All are
+  `#VESTIGE_CITY` + `#VESTIGE_CITY_PIECE` (the Medium Vestige City, 10d), and `#VESTIGE_VAULT_PIECE` (the buried
+  Vestige Vault, 10f.2 — a piece-only type, no structure; added under the city). All are
   structures (generate per-chunk via a bounding box). Structure instances + spawn spacing
   (and Crag-Wraith `spawn_overrides`) are datapack JSON (`worldgen/structure*`); these are the code types.
 - [ModBiomes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBiomes.java) /
@@ -693,7 +700,15 @@ as `File#member`.
   (with embedded `LumenConduitBlock` dim/dead lines) + an outer ring of stamps — `#crescentHouse`, `#hollowPod`
   (stepped dome), `#archway` (crescent peak), `#rootChamber` (sunken, glowvine-choked), `#plinth` (often a
   Memory Crystal). `#placeChest` drops Reliquary/Cache; `#floorAndFoundation` roots stamps. Size constants
-  `#PLAZA_R`/`#CITY_R`. Bound to `ModStructures#VESTIGE_CITY`.
+  `#PLAZA_R`/`#CITY_R`. Bound to `ModStructures#VESTIGE_CITY`. **`findGenerationPoint` also adds a buried
+  `VestigeVaultPiece` ~22 below the plaza (10f.2).**
+- [VestigeVaultPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeVaultPiece.java) —
+  the **Vestige Vault** (10f.2), a sub-piece of the city (`ModStructures#VESTIGE_VAULT_PIECE`, no own structure
+  type). `#chamber` carves a Deep-Moonstone+glowbrick room; `#resonancePuzzle` is the lock-and-key — a dead
+  central Dormant Light Engine + dead Lumen Conduit runs to two sealed `ancient_door`s + alcove chests
+  (`chests/vault` east, `chests/engineers_cache` west) + an Echo Sentinel spawner; `#decor` adds Memory
+  Crystals + dim conduits; `#shaft` climbs a corner spiral of glowbrick steps (`#RING`) to a hole in the plaza.
+  Carries `surfaceY` (the plaza level) so the shaft reaches it.
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -976,7 +991,8 @@ as `File#member`.
   `tags/worldgen/structure/vestige_city.json` structure tag (groups all Vestige ruins — outpost + city — read
   by the `vestiges_of_light` advancement) — each with its `tags/worldgen/biome/has_structure/<name>.json` biome
   tag. **10c** adds `chests/scholars_reliquary` (lore/crafting loot) + a `tags/item/glyph_tablets.json` item
-  tag. Hand-authored (not datagen).
+  tag. **10f.2:** the city also generates a buried `VestigeVaultPiece` (no JSON — added in code), with
+  `chests/vault` (high-tier) + `chests/engineers_cache` (tech) loot. Hand-authored (not datagen).
 - `data/lumenwilds/advancement/*` — the **progression tree (Phase 9f)**: `root` (enter the dimension) →
   `living_light`→`anchored`, `the_wilds_provide`→`soothing_nectar`, `native_fauna`→`apex_of_the_dark`, and a
   biome-reach goal per biome (`into_the_glowroot`, `crystal_highlands`, `spore_rainforest`, `the_glowing_mire`,

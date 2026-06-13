@@ -21,6 +21,7 @@ import com.jus144tice.lumenwilds.world.structure.VestigeCityPiece;
 import com.jus144tice.lumenwilds.world.structure.VestigeCityStructure;
 import com.jus144tice.lumenwilds.world.structure.VestigeOutpostPiece;
 import com.jus144tice.lumenwilds.world.structure.VestigeOutpostStructure;
+import com.jus144tice.lumenwilds.world.structure.VestigeVaultPiece;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
@@ -97,6 +98,11 @@ public final class ModStructures {
 
     public static final DeferredHolder<StructurePieceType, StructurePieceType> VESTIGE_CITY_PIECE =
             STRUCTURE_PIECES.register("vestige_city", () -> (StructurePieceType.ContextlessType) VestigeCityPiece::new);
+
+    // Phase 10f.2: the Vestige Vault — a sub-piece of the city (no own structure type), buried beneath it.
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> VESTIGE_VAULT_PIECE =
+            STRUCTURE_PIECES.register(
+                    "vestige_vault", () -> (StructurePieceType.ContextlessType) VestigeVaultPiece::new);
 
     private ModStructures() {}
 }

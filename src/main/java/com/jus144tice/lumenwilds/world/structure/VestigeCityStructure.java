@@ -38,8 +38,13 @@ public class VestigeCityStructure extends Structure {
                 .getFirstOccupiedHeight(
                         x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
         BlockPos origin = new BlockPos(x, y, z);
-        return Optional.of(
-                new Structure.GenerationStub(origin, builder -> builder.addPiece(new VestigeCityPiece(origin))));
+        // A buried Vestige Vault sits ~22 blocks under the plaza, with a spiral shaft back up (10f.2).
+        int vaultY = Math.max(context.heightAccessor().getMinBuildHeight() + 12, y - 22);
+        BlockPos vaultOrigin = new BlockPos(x, vaultY, z);
+        return Optional.of(new Structure.GenerationStub(origin, builder -> {
+            builder.addPiece(new VestigeCityPiece(origin));
+            builder.addPiece(new VestigeVaultPiece(vaultOrigin, y));
+        }));
     }
 
     @Override

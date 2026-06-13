@@ -1,0 +1,43 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "__comment": "Guaranteed high-tier reward — the vault always pays out.",
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "lumenwilds:luminite_block", "weight": 5 },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_anchor", "weight": 4 },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 5, "functions": [ { "function": "minecraft:enchant_randomly" } ] },
+        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:gravity_lens", "weight": 3 }
+      ]
+    },
+    {
+      "__comment": "Lumenwright technology & refined materials.",
+      "rolls": { "type": "minecraft:uniform", "min": 3.0, "max": 5.0 },
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "lumenwilds:luminite_ingot", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 3.0, "max": 8.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:resonance_core_fragment", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:gravity_lens_fragment", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_block", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:shimmerstone", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 4.0, "max": 10.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:memory_crystal", "weight": 4 },
+        { "type": "minecraft:item", "name": "lumenwilds:glowbrick", "weight": 9, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 6.0, "max": 16.0 } } ] }
+      ]
+    },
+    {
+      "__comment": "Premium treasure.",
+      "rolls": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 },
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:diamond_block", "weight": 2 },
+        { "type": "minecraft:item", "name": "minecraft:experience_bottle", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 4.0, "max": 10.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_relay", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 6.0 } } ] }
+      ]
+    }
+  ],
+  "random_sequence": "lumenwilds:chests/vault"
+}
