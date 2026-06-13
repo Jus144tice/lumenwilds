@@ -1,0 +1,6 @@
+{
+  "parent": "lumenwilds:block/_emissive_cube",
+  "textures": {
+    "all": "lumenwilds:block/glasspetal_block"
+  }
+}

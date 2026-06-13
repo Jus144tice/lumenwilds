@@ -367,6 +367,16 @@ public final class ModBlocks {
                     .lightLevel(state -> 6)
                     .sound(SoundType.AMETHYST));
 
+    /** Glasspetal Block — the solid blue-violet crystal the Glasspetal Crags' growths + spires are built from. */
+    public static final DeferredBlock<Block> GLASSPETAL_BLOCK = BLOCKS.registerSimpleBlock(
+            "glasspetal_block",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(2.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 7)
+                    .sound(SoundType.AMETHYST));
+
     /** Lumen Crystal Ore — drops Lumen Crystal Shard; glows faintly (helps light caves). */
     public static final DeferredBlock<DropExperienceBlock> LUMEN_CRYSTAL_ORE = BLOCKS.registerBlock(
             "lumen_crystal_ore",

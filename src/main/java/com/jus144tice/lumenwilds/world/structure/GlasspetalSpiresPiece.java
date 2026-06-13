@@ -16,6 +16,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.ChestBlockEntity;
@@ -28,9 +29,10 @@ import net.minecraft.world.level.storage.loot.LootTable;
 
 /**
  * The Glasspetal Spires piece (Phase 8f; reworked Phase 9). {@link #postProcess} grows a cluster of tapering
- * crystal towers from a position-seeded RNG (writing only inside {@code writeBox}): a main spire + satellites
- * of mixed Shimmerstone / Shimmerstone Bricks / Lumen Crystal Block, crowned with Glasspetal Clusters, with a
- * loot chest at the main spire's foot ({@code chests/glasspetal_spires}). Each instance rolls a <b>size tier</b>
+ * crystal towers from a position-seeded RNG (writing only inside {@code writeBox}): a main spire + satellites of
+ * solid blue-violet <b>Glasspetal Block</b> bristling with Glasspetal Clusters (the rare town-sized version of the
+ * natural crystal growths — not a ruin), with a loot chest at the main spire's foot
+ * ({@code chests/glasspetal_spires}). Each instance rolls a <b>size tier</b>
  * — regular / large / rare MASSIVE (like the Glowroot/Glowwood trees) — so the Crags vary. Every spire roots into
  * the terrain with a foundation that fills DOWN through water/air to solid ground, so nothing floats on the sea.
  */
@@ -132,30 +134,34 @@ public class GlasspetalSpiresPiece extends StructurePiece {
     }
 
     private void spire(WorldGenLevel level, BoundingBox box, RandomSource rand, BlockPos base, int height, int baseR) {
+        BlockState core = ModBlocks.GLASSPETAL_BLOCK.get().defaultBlockState();
+        BlockState cluster = ModBlocks.GLASSPETAL_CLUSTER.get().defaultBlockState();
         BlockState shimmer = ModBlocks.SHIMMERSTONE.get().defaultBlockState();
-        BlockState bricks = ModBlocks.SHIMMERSTONE_BRICKS.get().defaultBlockState();
-        BlockState crystal = ModBlocks.LUMEN_CRYSTAL_BLOCK.get().defaultBlockState();
 
+        // A solid blue-violet crystal core, tapering to a point.
         for (int h = 0; h <= height; h++) {
             float t = (float) h / height;
             int r = Math.round(baseR * (1.0F - t) + 0.3F);
             for (int dx = -r; dx <= r; dx++) {
                 for (int dz = -r; dz <= r; dz++) {
                     if (dx * dx + dz * dz <= r * r + 1) {
-                        int roll = rand.nextInt(10);
-                        BlockState block = roll < 5 ? shimmer : (roll < 8 ? bricks : crystal);
-                        set(level, box, base.offset(dx, h, dz), block);
+                        set(level, box, base.offset(dx, h, dz), core);
                     }
                 }
             }
         }
-        // Crown: a Glasspetal Cluster on a Lumen Crystal cap.
-        set(level, box, base.above(height), crystal);
-        set(
-                level,
-                box,
-                base.above(height + 1),
-                ModBlocks.GLASSPETAL_CLUSTER.get().defaultBlockState());
+        // A cluster crown, and clusters bristling out of the sides (crystals growing off the spire).
+        set(level, box, base.above(height + 1), cluster);
+        int bristles = height + baseR * 2;
+        for (int i = 0; i < bristles; i++) {
+            int h = 1 + rand.nextInt(height);
+            float t = (float) h / height;
+            int r = Math.round(baseR * (1.0F - t) + 0.3F);
+            Direction dir = Direction.Plane.HORIZONTAL.getRandomDirection(rand);
+            BlockPos bp = new BlockPos(
+                    base.getX() + dir.getStepX() * (r + 1), base.getY() + h, base.getZ() + dir.getStepZ() * (r + 1));
+            set(level, box, bp, cluster.setValue(AmethystClusterBlock.FACING, dir));
+        }
 
         // Foundation: root the base disc DOWN through water/air to solid ground (no floating on the sea).
         for (int dx = -baseR; dx <= baseR; dx++) {

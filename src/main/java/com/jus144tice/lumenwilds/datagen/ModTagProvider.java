@@ -58,7 +58,8 @@ public class ModTagProvider extends BlockTagsProvider {
                     || name.endsWith("_ore")
                     || name.endsWith("_cluster")
                     || name.equals("lumenbound_stone")
-                    || name.equals("lumen_crystal_block")) {
+                    || name.equals("lumen_crystal_block")
+                    || name.equals("glasspetal_block")) {
                 pickaxe.add(block);
             }
             // Others (moonblossom, glowvine, lumenbulb, …) break instantly / need no mining tag yet.
