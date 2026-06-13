@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "conduit_state=dead": { "model": "lumenwilds:block/lumen_conduit_dead" },
+    "conduit_state=dim": { "model": "lumenwilds:block/lumen_conduit_dim" },
+    "conduit_state=active": { "model": "lumenwilds:block/lumen_conduit_active" }
+  }
+}

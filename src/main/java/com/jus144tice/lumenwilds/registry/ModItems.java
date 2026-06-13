@@ -55,6 +55,40 @@ public final class ModItems {
     public static final DeferredItem<Item> RAW_LUMINITE = ITEMS.registerSimpleItem("raw_luminite");
     public static final DeferredItem<Item> LUMINITE_INGOT = ITEMS.registerSimpleItem("luminite_ingot");
 
+    // Lore items (Phase 10c) — recovered from the Vestige Cities. Memory crystal shards (a broken piece of
+    // ancient data storage; future crafting/repair) + six Ancient Glyph Tablets (right-click to read a fragment
+    // of the Lumenwrights' story; see GlyphTabletItem). The lore lines are deliberately short and mysterious.
+    public static final DeferredItem<Item> MEMORY_CRYSTAL_SHARD = ITEMS.registerSimpleItem("memory_crystal_shard");
+
+    public static final DeferredItem<Item> GLYPH_TABLET_SKY = ITEMS.registerItem(
+            "glyph_tablet_sky",
+            props -> new com.jus144tice.lumenwilds.item.GlyphTabletItem(props, "The sky engines failed first."),
+            new Item.Properties());
+    public static final DeferredItem<Item> GLYPH_TABLET_ROOTS = ITEMS.registerItem(
+            "glyph_tablet_roots",
+            props -> new com.jus144tice.lumenwilds.item.GlyphTabletItem(
+                    props, "They grew their roads from stone and taught the roots to sing."),
+            new Item.Properties());
+    public static final DeferredItem<Item> GLYPH_TABLET_LIGHT = ITEMS.registerItem(
+            "glyph_tablet_light",
+            props -> new com.jus144tice.lumenwilds.item.GlyphTabletItem(
+                    props, "A city of light beneath a moon that never slept."),
+            new Item.Properties());
+    public static final DeferredItem<Item> GLYPH_TABLET_FALL = ITEMS.registerItem(
+            "glyph_tablet_fall",
+            props -> new com.jus144tice.lumenwilds.item.GlyphTabletItem(
+                    props, "The lower vaults were sealed before the final Sporefall."),
+            new Item.Properties());
+    public static final DeferredItem<Item> GLYPH_TABLET_SILENCE = ITEMS.registerItem(
+            "glyph_tablet_silence",
+            props -> new com.jus144tice.lumenwilds.item.GlyphTabletItem(
+                    props, "When the conduits went dark, so did we."),
+            new Item.Properties());
+    public static final DeferredItem<Item> GLYPH_TABLET_RETURN = ITEMS.registerItem(
+            "glyph_tablet_return",
+            props -> new com.jus144tice.lumenwilds.item.GlyphTabletItem(props, "We will wake when the light returns."),
+            new Item.Properties());
+
     // Foods (Phase 8b). Lumen Fruit → brief night vision; Lumen Nectar → brief regeneration.
     public static final DeferredItem<Item> LUMEN_FRUIT = ITEMS.registerItem(
             "lumen_fruit",

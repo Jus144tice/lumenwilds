@@ -1,0 +1,43 @@
+{
+  "display": {
+    "icon": {
+      "id": "lumenwilds:memory_crystal_shard",
+      "count": 1
+    },
+    "title": {
+      "text": "The City Remembers"
+    },
+    "description": {
+      "text": "Recover a fragment of a vanished mind."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "shard": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": "lumenwilds:memory_crystal_shard" }
+        ]
+      }
+    },
+    "glyph": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          { "items": "#lumenwilds:glyph_tablets" }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "shard",
+      "glyph"
+    ]
+  ],
+  "sends_telemetry_event": false,
+  "parent": "lumenwilds:root"
+}

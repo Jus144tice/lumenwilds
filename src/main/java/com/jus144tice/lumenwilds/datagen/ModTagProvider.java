@@ -57,6 +57,8 @@ public class ModTagProvider extends BlockTagsProvider {
             } else if (name.contains("moonstone")
                     || name.contains("glowbrick")
                     || name.contains("luminite")
+                    || name.contains("conduit")
+                    || name.equals("memory_crystal")
                     || name.endsWith("_ore")
                     || name.endsWith("_cluster")
                     || name.equals("lumenbound_stone")

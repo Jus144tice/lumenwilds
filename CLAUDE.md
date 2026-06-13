@@ -138,7 +138,13 @@ collapsed building shell (still-lit Lumenbulb + a `chests/ruined_cache` chest), 
 debris — all run through the shared `world.structure.VestigeDecay` processors (glowbrick fades
 intact→cracked→ancient, chunks go missing, glowvine/lumen-grass creep in), rooted to the ground so nothing
 floats. In glade/forest/jungle/basin; "Vestiges of Light" advancement fires inside any
-`#lumenwilds:vestige_city`-tagged ruin. Roadmap: [the plan](.claude/plans/delegated-juggling-locket.md)
+`#lumenwilds:vestige_city`-tagged ruin. **10c (lore layer) is in:** the **Memory Crystal** (a glowing block —
+right-click reads a position-hashed fragment of Lumenwright lore via `event.MemoryCrystalInteractEvents`, drops
+`memory_crystal_shard`), six **Ancient Glyph Tablets** (`item.GlyphTabletItem` — right-click/tooltip shows a
+lore line), and the **Lumen Conduit** (`block.LumenConduitBlock`, `conduit_state` dead/dim/active → light
+0/2/8 — decorative in ruins now, made functional by the Resonance network in 10e); plus the
+`chests/scholars_reliquary` loot table and "The City Remembers" advancement. Roadmap:
+[the plan](.claude/plans/delegated-juggling-locket.md)
 (10a–10h). What is deliberately
 *not* built yet: the final art/audio/polish pass (Phase 9) — and the
 visual-only deferrals logged throughout (final mob models, the Sporeblind overlay, real `.ogg` audio, etc.). **All biomes share one terrain *height*** (only `depth` varies, for the cave
@@ -242,7 +248,10 @@ as `File#member`.
   `#CRACKED_GLOWBRICK` (3), `#ANCIENT_GLOWBRICK` (1) — the fading-light decay chain — `#GLOWBRICK_TILES`,
   `#CHISELED_GLOWBRICK`, `#GLOWBRICK_PILLAR`, `#GLOWBRICK_STAIRS`/`#GLOWBRICK_SLAB`/`#GLOWBRICK_WALL` (blast
   resistance 9, > stone); decay/overgrowth variants `#OVERGROWN_GLOWBRICK`, `#BROKEN_SPOREGLASS`,
-  `#MOSSY_MOONSTONE_BRICKS`, `#ROOTED_MOONSTONE` (for the ruin processors in later 10x phases).
+  `#MOSSY_MOONSTONE_BRICKS`, `#ROOTED_MOONSTONE` (for the ruin processors in later 10x phases). **Lumenwright
+  lore tech (10c):** `#MEMORY_CRYSTAL` (emissive glowing block, light 11 — right-click lore via
+  `event.MemoryCrystalInteractEvents`, drops `ModItems#MEMORY_CRYSTAL_SHARD`), `#LUMEN_CONDUIT`
+  (`block.LumenConduitBlock`, `conduit_state` dead/dim/active → light 0/2/8).
   **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
@@ -263,6 +272,7 @@ as `File#member`.
   (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`, **durable: `stacksTo(1)
   .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
   `#LIVING_FIBER`, `#RAW_LUMINITE`/`#LUMINITE_INGOT` (10a — ore → raw → smelt to ingot; ingot crafts Glowbrick),
+  `#MEMORY_CRYSTAL_SHARD` + six `#GLYPH_TABLET_*` (`item.GlyphTabletItem`, lore items, 10c),
   `#LUMEN_FRUIT` (**food**, 8b — brief night vision), `#LUMEN_NECTAR` (**food**, 8b — brief
   regen; collected from a Stillbloom with a bottle via `event.StillbloomInteractEvents`), `#AIR_GEL`,
   `#GLOWCAP_STEW` (**food**, 8b — bowl + glowcap + lumen fruit + moonblossom → hunger + night vision, returns
@@ -400,6 +410,10 @@ as `File#member`.
 - [LumenAnchorBlockEntity.java](src/main/java/com/jus144tice/lumenwilds/block/LumenAnchorBlockEntity.java) —
   stores the partner `GlobalPos` (`#getLinkedTo`/`#setLinkedTo`, saved as `LinkDim`+`LinkPos` NBT). The
   project's first block entity (`ModBlockEntities#LUMEN_ANCHOR`).
+- [LumenConduitBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenConduitBlock.java) — the Lumen
+  Conduit (10c). `#CONDUIT_STATE` (`EnumProperty<State>` dead/dim/active) + `#lightFor` (0/2/8, wired as the
+  block's `lightLevel` in `ModBlocks`). Decorative in 10c (ruins place dead/dim, state never changes); the
+  Resonance network (10e) will drive the state dynamically. `ModBlocks#LUMEN_CONDUIT`.
 
 ### fluid/ — Lumenwater (Phase 5e)
 - [LumenwaterBlock.java](src/main/java/com/jus144tice/lumenwilds/fluid/LumenwaterBlock.java) — the
@@ -414,6 +428,9 @@ as `File#member`.
   on a Lumenbound Stone frame, seeds detection from the air at the clicked face (fallback: block above),
   delegates to `LumenPortalManager#tryActivatePortal`; on success consumes 1 durability via
   `hurtAndBreak`. Returns `PASS` on non-frame blocks. **Never checks lodestone.**
+- [GlyphTabletItem.java](src/main/java/com/jus144tice/lumenwilds/item/GlyphTabletItem.java) — Ancient Glyph
+  Tablet (10c). A lore item: `#use` displays its fragment (`displayClientMessage`) and `#appendHoverText`
+  shows it as an italic tooltip. The line is passed at registration (one per tablet in `ModItems`).
 
 ### entity/ — native fauna (Phase 6)
 - [LumenGrazer.java](src/main/java/com/jus144tice/lumenwilds/entity/LumenGrazer.java) — `Animal`; the
@@ -669,6 +686,9 @@ as `File#member`.
 - [StillbloomInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/StillbloomInteractEvents.java)
   — `#onRightClickBlock(PlayerInteractEvent.RightClickBlock)` (8b): a glass bottle on a Stillbloom Core/Petal
   fills into `ModItems.LUMEN_NECTAR` (bloom not consumed — renewable, like honey).
+- [MemoryCrystalInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/MemoryCrystalInteractEvents.java)
+  — `#onRightClickBlock` (10c): right-clicking a `ModBlocks#MEMORY_CRYSTAL` prints a fragment chosen
+  deterministically from the block position (`#FRAGMENTS`, some broken/unreadable); crystal not consumed.
 - [ModBrewing.java](src/main/java/com/jus144tice/lumenwilds/event/ModBrewing.java) — **mod-bus**
   `#onRegisterBrewingRecipes(RegisterBrewingRecipesEvent)` (8h): `builder.addMix(awkward, ingredient, potion)`
   for the four `ModPotions` (Air Gel / Glow Pollen / Spore Sac / Living Fiber).
@@ -762,11 +782,12 @@ as `File#member`.
   `L I L / I C I / L I L`, + Glowbrick family cuts/shapes).
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
   `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL` + `LUMENWATER_BLOCK`
-  (both `noLootTable`), with slab (drops 2) and door (drops 1) special-cased; `DropExperienceBlock` →
-  `createOreDrop` (Luminite ores → `RAW_LUMINITE`, Lumen Crystal ores → shard).
+  (both `noLootTable`), with slab (drops 2) and door (drops 1) special-cased; `memory_crystal` →
+  `createOreDrop`(MEMORY_CRYSTAL_SHARD); `DropExperienceBlock` → `createOreDrop` (Luminite ores →
+  `RAW_LUMINITE`, Lumen Crystal ores → shard).
 - [ModTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModTagProvider.java) —
   `#addTags`: classifies blocks by name into `mineable/pickaxe|axe|shovel|hoe` + `leaves` (auto-covers new
-  stone/wood blocks; `_ore`/`_cluster`/moonstone/`glowbrick`/`luminite` → pickaxe).
+  stone/wood blocks; `_ore`/`_cluster`/moonstone/`glowbrick`/`luminite`/`conduit`/`memory_crystal` → pickaxe).
 
 > NOTE: hand-authored placeholder assets in `src/main/resources` are **authoritative** (the mod works
 > from a plain `build`, no datagen needed). `runData` output is a regeneration/diff aid only; it is NOT
@@ -789,8 +810,9 @@ as `File#member`.
   not flat colours**; `glowvine` is a passable glowing **cross** (vine) model, not a cube; **Phase 9c world
   glow**: `models/block/_emissive_cube.json` / `_emissive_cube_soft.json` / `_emissive_cross.json` are emissive
   parents (NeoForge `neoforge_data` `block_light` — 15 fullbright / 7 soft / 13 cross) that the glowing blocks
-  inherit so they render **bright in the dark**: Lumenbulb / Lumen Crystal Block / Stillbloom Core (fullbright),
-  the two ores (soft), and the flora Moonblossom / Glow Fern / Glow Algae / Lumen Reeds / Glowvine (cross). Light
+  inherit so they render **bright in the dark**: Lumenbulb / Lumen Crystal Block / Stillbloom Core / Memory
+  Crystal / `lumen_conduit_active` (fullbright), the two ores + `lumen_conduit_dim` (soft), and the flora
+  Moonblossom / Glow Fern / Glow Algae / Lumen Reeds / Glowvine (cross). Light
   emission stays via each block's `lightLevel` (ores bumped 4→6 so the Undercrown is lit by dense ore)),
   `textures/entity/{signs,signs/hanging,boat,chest_boat}/glowwood.png` + `textures/gui/
   hanging_signs/glowwood.png` (sign/boat placeholders), `lang/en_us.json` (display names +
@@ -862,12 +884,15 @@ as `File#member`.
   **Small Vestige Outpost** (10b) — `structure/vestige_outpost.json` + `structure_set` (spacing 28/sep 9, in
   glade/forest/jungle/basin) + `chests/ruined_cache` loot, plus a `tags/worldgen/structure/vestige_city.json`
   structure tag (groups all Vestige ruins, read by the `vestiges_of_light` advancement) — each with its
-  `tags/worldgen/biome/has_structure/<name>.json` biome tag. Hand-authored (not datagen).
+  `tags/worldgen/biome/has_structure/<name>.json` biome tag. **10c** adds `chests/scholars_reliquary` (lore/
+  crafting loot, used by the medium city in 10d) + a `tags/item/glyph_tablets.json` item tag. Hand-authored
+  (not datagen).
 - `data/lumenwilds/advancement/*` — the **progression tree (Phase 9f)**: `root` (enter the dimension) →
   `living_light`→`anchored`, `the_wilds_provide`→`soothing_nectar`, `native_fauna`→`apex_of_the_dark`, and a
   biome-reach goal per biome (`into_the_glowroot`, `crystal_highlands`, `spore_rainforest`, `the_glowing_mire`,
   `beneath_the_crown`, `sanctuary`); **+ `brick_of_living_light`** (10a — obtain Glowbrick) **+
-  `vestiges_of_light`** (10b — stand inside any `#lumenwilds:vestige_city` ruin). Triggers:
+  `vestiges_of_light`** (10b — stand inside any `#lumenwilds:vestige_city` ruin) **+ `the_city_remembers`**
+  (10c — obtain a memory shard or any `#lumenwilds:glyph_tablets` item). Triggers:
   `changed_dimension` / `inventory_changed` / `location`+biome/+structure; direct-text titles (no lang keys).
   Hand-authored.
 - `data/lumenwilds/neoforge/biome_modifier/*` — `lumen_reef.json` (the project's **first NeoForge biome

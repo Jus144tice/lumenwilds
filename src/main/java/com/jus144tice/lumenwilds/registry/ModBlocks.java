@@ -794,6 +794,39 @@ public final class ModBlocks {
     /** Rooted Moonstone — moonstone shot through with living roots (a decay variant). */
     public static final DeferredBlock<Block> ROOTED_MOONSTONE = moonCube("rooted_moonstone");
 
+    // --- Lumenwright lore tech (Phase 10c) ------------------------------------------------------
+
+    /**
+     * Memory Crystal — a tall glowing crystal that stores fragments of the Lumenwrights' memory. Right-click
+     * (empty hand) to read a fragmented lore line via {@code event.MemoryCrystalInteractEvents}; drops a
+     * {@code memory_crystal_shard}. Emissive (model parents {@code _emissive_cube}); light 11.
+     */
+    public static final DeferredBlock<Block> MEMORY_CRYSTAL = BLOCKS.registerSimpleBlock(
+            "memory_crystal",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(1.0F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 11)
+                    .noOcclusion()
+                    .sound(SoundType.AMETHYST));
+
+    /**
+     * Lumen Conduit — the cities' glowing energy lines ({@link com.jus144tice.lumenwilds.block.LumenConduitBlock}).
+     * Its {@code conduit_state} (dead/dim/active) sets the light level (0/2/8); decorative in 10c (ruins place
+     * dead/dim), driven dynamically by the Resonance network in 10e.
+     */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.LumenConduitBlock> LUMEN_CONDUIT =
+            BLOCKS.registerBlock(
+                    "lumen_conduit",
+                    com.jus144tice.lumenwilds.block.LumenConduitBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_CYAN)
+                            .strength(1.5F, 6.0F)
+                            .requiresCorrectToolForDrops()
+                            .lightLevel(com.jus144tice.lumenwilds.block.LumenConduitBlock::lightFor)
+                            .sound(SoundType.STONE));
+
     // --- Property + stone-family helpers --------------------------------------------------------
 
     private static BlockBehaviour.Properties glowbrickProps(int light) {
