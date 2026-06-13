@@ -39,6 +39,12 @@ public class ModItemModelProvider extends ItemModelProvider {
             Item item = entry.get();
             String name = entry.getId().getPath();
 
+            // Spawn eggs use the vanilla template_spawn_egg model (hand-authored, no flat texture) — skip
+            // them so datagen doesn't demand an item/<name>.png that doesn't (and shouldn't) exist.
+            if (item instanceof net.neoforged.neoforge.common.DeferredSpawnEggItem) {
+                continue;
+            }
+
             if (!(item instanceof BlockItem)
                     || name.endsWith("_door")
                     || name.endsWith("_pane")

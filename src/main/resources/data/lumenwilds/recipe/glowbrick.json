@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": {
+      "item": "lumenwilds:lumen_crystal_shard"
+    },
+    "I": {
+      "item": "lumenwilds:luminite_ingot"
+    },
+    "L": {
+      "item": "lumenwilds:glow_pollen"
+    }
+  },
+  "pattern": [
+    "LIL",
+    "ICI",
+    "LIL"
+  ],
+  "result": {
+    "count": 4,
+    "id": "lumenwilds:glowbrick"
+  }
+}

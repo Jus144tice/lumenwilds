@@ -1,0 +1,15 @@
+{
+  "__comment": "Phase 10a: injects Luminite ore into every Lumenwilds biome at the ores step. A NeoForge biome modifier avoids editing each biome's feature list (and the feature-order topo-sort), like lumen_reef/glowberry.",
+  "type": "neoforge:add_features",
+  "biomes": [
+    "lumenwilds:lumen_glade",
+    "lumenwilds:glowroot_forest",
+    "lumenwilds:glasspetal_crags",
+    "lumenwilds:sporefall_jungle",
+    "lumenwilds:moonmire",
+    "lumenwilds:undercrown_caverns",
+    "lumenwilds:stillbloom_basin"
+  ],
+  "features": "lumenwilds:luminite_ore",
+  "step": "underground_ores"
+}

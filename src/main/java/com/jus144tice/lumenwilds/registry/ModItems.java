@@ -50,6 +50,11 @@ public final class ModItems {
     public static final DeferredItem<Item> GLOW_POLLEN = ITEMS.registerSimpleItem("glow_pollen");
     public static final DeferredItem<Item> LIVING_FIBER = ITEMS.registerSimpleItem("living_fiber");
 
+    // Luminite chain (Phase 10a) — the Lumenwrights' structural metal. Ore → raw_luminite → luminite_ingot;
+    // ingot + lumen crystal shard + glow pollen craft Glowbrick (the Vestige City material). See ancient_cities.txt.
+    public static final DeferredItem<Item> RAW_LUMINITE = ITEMS.registerSimpleItem("raw_luminite");
+    public static final DeferredItem<Item> LUMINITE_INGOT = ITEMS.registerSimpleItem("luminite_ingot");
+
     // Foods (Phase 8b). Lumen Fruit → brief night vision; Lumen Nectar → brief regeneration.
     public static final DeferredItem<Item> LUMEN_FRUIT = ITEMS.registerItem(
             "lumen_fruit",

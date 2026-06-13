@@ -55,6 +55,8 @@ public class ModTagProvider extends BlockTagsProvider {
             } else if (name.equals("moonloam") || name.equals("lumen_grass_block") || name.equals("lumensand")) {
                 shovel.add(block);
             } else if (name.contains("moonstone")
+                    || name.contains("glowbrick")
+                    || name.contains("luminite")
                     || name.endsWith("_ore")
                     || name.endsWith("_cluster")
                     || name.equals("lumenbound_stone")

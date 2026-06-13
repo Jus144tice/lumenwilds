@@ -61,9 +61,11 @@ public final class ModLootTableProvider {
                 } else if (name.endsWith("_wall_sign")) {
                     dropOther(block, ModItems.GLOWWOOD_SIGN.get());
                 } else if (block instanceof DropExperienceBlock) {
-                    add(
-                            block,
-                            b -> createOreDrop(b, ModItems.LUMEN_CRYSTAL_SHARD.get())); // ore → shard (+silk/fortune)
+                    // Luminite ores → raw_luminite; the Lumen Crystal ores → shard (both +silk/fortune).
+                    Item drop = name.contains("luminite")
+                            ? ModItems.RAW_LUMINITE.get()
+                            : ModItems.LUMEN_CRYSTAL_SHARD.get();
+                    add(block, b -> createOreDrop(b, drop));
                 } else if (block instanceof net.minecraft.world.level.block.LeavesBlock) {
                     // Real leaves loot (NOT drop-self): shears/silk → block, else sapling/stick/mostly nothing.
                     // Drop-self on decaying leaves floods the world with leaf-block items (see CLAUDE.md).

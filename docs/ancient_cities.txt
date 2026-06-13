@@ -1,0 +1,1033 @@
+Ancient Civilization
+
+The ancient builders are known only as:
+
+The Lumenwrights
+
+This is not necessarily their true name. It is the name players, lore fragments, and advancements use for them.
+
+The Lumenwrights were an advanced alien civilization that did not use fire, redstone, or conventional machinery. Their technology was based on:
+
+living light
+crystal resonance
+gravity manipulation
+biological circuits
+luminous alloys
+memory stored in crystals
+structures grown and built together
+
+They did not separate nature from technology. Their cities were part architecture, part machine, part organism.
+
+By the time the player arrives, the Lumenwrights are gone. Only ruins remain.
+
+There are no living Lumenwright NPCs.
+
+Core Visual Identity
+
+A Vestige City looks like an alien city that has been dead for thousands of years.
+
+It contains:
+
+broken glowing brick roads
+collapsed towers
+cracked domes
+crescent-shaped arches
+floating fragments
+empty transit channels
+overgrown plazas
+shattered crystal pylons
+dead machines embedded in walls
+roots growing through old civic buildings
+luminous power conduits that still flicker weakly
+
+The architecture should be obviously not human.
+
+No square medieval houses.
+No villages.
+No castles.
+No normal streets.
+
+The city is built around circular plazas, radial paths, crescent arches, vertical spires, and impossible-looking platforms.
+
+Minecraft blocks are square, but the design language should imply curves through stepped rings, diagonals, terraces, and layered geometry.
+
+New Material: Glowbrick
+
+Glowbrick is the signature building material of Vestige Cities.
+
+It is a luminous alien brick made from refined Lumenwilds ore.
+
+Ore Chain
+
+Introduce a new ore:
+
+Luminite Ore
+
+Luminite is the ancient structural metal/mineral used by the Lumenwrights.
+
+Blocks and Items
+luminite_ore
+deepslate_luminite_ore / deep_moonstone_luminite_ore
+raw_luminite
+luminite_ingot
+glowbrick
+glowbrick_block
+cracked_glowbrick_block
+ancient_glowbrick_block
+glowbrick_tiles
+glowbrick_pillar
+glowbrick_stairs
+glowbrick_slab
+glowbrick_wall
+chiseled_glowbrick
+Smelting
+Raw Luminite -> Luminite Ingot
+Luminite Ore -> Luminite Ingot
+Crafting Glowbricks
+
+Glowbrick is crafted from Luminite Ingots.
+
+Recommended recipe:
+
+L I L
+I C I
+L I L
+
+Where:
+
+I = Luminite Ingot
+C = Lumen Crystal Shard
+L = Glow Pollen
+
+Output:
+
+4 Glowbrick Blocks
+
+This makes Glowbrick feel advanced, luminous, and native to the dimension.
+
+Glowbrick Properties
+
+Glowbrick is not as bright as a lantern. It is architectural light.
+
+Recommended behavior:
+
+Emits light level 6
+Stronger than faint grass glow
+Weaker than Lumen Lanterns
+Mineable with pickaxe
+Blast resistance higher than stone
+Has a faint animated shimmer if feasible later
+
+Cracked Glowbrick emits light level 3.
+
+Ancient Glowbrick emits light level 1–2, as if its energy is almost dead.
+
+This lets city ruins visibly fade from bright intact areas to dying old sections.
+
+City Generation Philosophy
+
+Vestige Cities should be sporadic and rare.
+
+They are a major discovery, not common scenery.
+
+Rarity
+
+They should generate less often than villages and less often than ruined portals.
+
+A player exploring normally should feel lucky to find one.
+
+Recommended rarity:
+
+Small ruins: uncommon but not constant
+Medium cities: rare
+Grand city ruins: very rare
+Sunken/overgrown variants: rare biome-specific variants
+Biome Placement
+
+Vestige Cities can generate in:
+
+Lumen Glade
+Glowroot Forest
+Sporefall Jungle
+Glasspetal Crags
+Stillbloom Basin, rarely
+Undercrown Caverns as buried city fragments
+
+They should not dominate every biome.
+
+Terrain Adaptation
+
+Cities conform to terrain in a broken way.
+
+They are not perfectly flat. They should appear partially swallowed by the landscape.
+
+Common placements:
+
+half-buried into hills
+split by ravines
+pierced by Glowroot trees
+flooded by Lumenwater
+suspended on broken pylons
+partially collapsed into caves
+overrun by Sporefall Jungle
+
+The best city ruins feel like the world reclaimed them.
+
+City Layout
+
+Each Vestige City is generated from modular pieces.
+
+Main Components
+1. Arrival Edge
+
+The player usually finds the edge first.
+
+This area has:
+
+broken glowbrick road segments
+toppled pillars
+scattered debris
+overgrown wall fragments
+cracked light conduits
+low-value loot
+
+This tells the player they are approaching something important.
+
+2. Outer Ring
+
+The outer ring contains collapsed residential or civic shells.
+
+Structures include:
+
+broken crescent houses
+hollow pod-like buildings
+cracked archways
+root-filled chambers
+empty plinths
+dead garden terraces
+
+Most buildings here are empty or lightly looted.
+
+3. Central Plaza
+
+Every Vestige City has a central plaza.
+
+The plaza contains:
+
+circular or octagonal layout
+chiseled glowbrick floor
+large central monument
+dead crystal fountain or dry Lumenwater basin
+several radial paths
+flickering light pylons
+
+The central plaza is the visual anchor.
+
+The player should be able to stand here and think:
+
+This was once the heart of a city.
+
+4. Spire District
+
+Most cities have at least one broken spire.
+
+Spire features:
+
+tall narrow tower
+shattered upper floors
+floating debris chunks
+exposed crystal core
+stair fragments
+dangerous vertical traversal
+better loot near the top or inside the base
+
+The spire is where advanced technology is most visible.
+
+5. Substructure
+
+Below the city is a buried technical layer.
+
+This contains:
+
+conduit tunnels
+maintenance chambers
+broken energy channels
+sealed vault rooms
+dead machine blocks
+crystal memory chambers
+hostile mobs
+
+This is the dungeon-like part.
+
+The surface ruin is exploration.
+The underground ruin is risk and reward.
+
+Architectural Blocks
+
+Vestige Cities use a strict material palette.
+
+Primary Blocks
+Glowbrick Block
+Cracked Glowbrick Block
+Ancient Glowbrick Block
+Glowbrick Tiles
+Chiseled Glowbrick
+Glowbrick Pillars
+Moonstone Bricks
+Polished Shimmerstone
+Shimmerstone Pillars
+Lumen Crystal Blocks
+Sporeglass
+Glowvine
+Lumenbulb
+Moonloam patches
+Secondary Decay Blocks
+Cobbled Moonstone
+Cracked Moonstone Bricks
+Mossy Moonstone Bricks
+Rooted Moonstone
+Overgrown Glowbrick
+Broken Sporeglass
+Dead Lumen Conduit
+Dim Lumen Conduit
+Structural Accent Blocks
+Crystal Pylon
+Resonance Core
+Memory Crystal
+Gravity Lens
+Dormant Light Engine
+Lumen Relay
+Ancient Control Plinth
+
+Some of these can be functional later. In the first implementation, several can be decorative archaeological blocks.
+
+Advanced Technology Remnants
+
+The city ruins must show evidence of advanced technology without turning into sci-fi computers.
+
+The Lumenwrights’ technology looks biological, crystalline, and architectural.
+
+1. Dead Lumen Conduits
+
+These are thin glowing strips embedded in floors and walls.
+
+They imply the city once had an energy network.
+
+Block variants:
+
+dead_lumen_conduit
+dim_lumen_conduit
+active_lumen_conduit
+
+Initial behavior:
+
+Dead conduit emits no light.
+Dim conduit emits light level 2.
+Active conduit emits light level 8.
+
+In ruined cities, most conduits are dead or dim.
+
+Later gameplay use:
+
+Powering ancient doors
+Activating vaults
+Stabilizing portals
+Cosmetic base lighting
+2. Resonance Cores
+
+A Resonance Core is an ancient machine block.
+
+Appearance:
+
+Dark metallic/crystalline frame
+Suspended glowing crystal center
+Broken variants have cracked glass and flickering particles
+
+Generated variants:
+
+dormant_resonance_core
+cracked_resonance_core
+active_resonance_core
+
+Initial behavior:
+
+Mostly decorative
+Emits faint sound/particles
+Rarely appears in central chambers or vault rooms
+
+Future behavior:
+
+Used for advanced crafting
+Portal stabilization
+Gravity-related devices
+City restoration mechanics
+3. Memory Crystals
+
+Memory Crystals are lore blocks.
+
+Appearance:
+
+Tall translucent crystal shards
+Pulsing internal light
+Glyph-like particles
+
+Behavior:
+
+Can be right-clicked.
+Displays short fragmented lore text.
+Some are broken and unreadable.
+Rare intact ones reveal hints about the Lumenwrights.
+
+Example messages:
+
+The crystal hums, but the memory is incomplete.
+A city of light beneath a moon that never slept.
+They grew their roads from stone and taught the roots to sing.
+The sky engines failed first.
+The lower vaults were sealed before the final Sporefall.
+
+These should be short and mysterious.
+
+4. Gravity Lenses
+
+Gravity Lenses are advanced alien devices found in spires and transit areas.
+
+Appearance:
+
+Ring-like block structure
+Shimmerstone frame
+suspended blue-violet lens
+floating particles above it
+
+Initial behavior:
+
+Decorative or lightly functional.
+Emits particles.
+Occasionally applies a very weak upward drift or slow-fall effect near intact versions.
+
+Future use:
+
+Low-gravity elevators
+Jump pads
+Spire traversal
+Crafting Lightfoot gear
+5. Lumen Rail Channels
+
+These are not minecart rails. They are ancient transit lines.
+
+Appearance:
+
+Smooth recessed channels in floors
+Dim conduit lines
+broken segments crossing plazas
+
+They imply the Lumenwrights moved through the city using light/gravity transit.
+
+Initial behavior:
+
+Decorative path blocks.
+Can guide players through the city.
+
+Future behavior:
+
+Speed boost paths
+Particle trails
+Restored city traversal systems
+6. Dormant Light Engines
+
+Large city-scale machines.
+
+Appearance:
+
+multi-block ruin centerpiece
+circular glowbrick base
+cracked crystal housing
+dead conduit lines radiating outward
+
+Location:
+
+central plaza
+underground power chamber
+top of spire in grand cities
+
+Behavior:
+
+Usually dead.
+Rare intact versions flicker.
+Emits low hum.
+May unlock vaults later.
+
+These are the strongest visual clue that the city was once technologically advanced.
+
+Ruin Decay Rules
+
+The ruins must not look freshly generated or intact.
+
+Each city uses decay patterns.
+
+Block Replacement
+
+Original clean blocks are partially replaced:
+
+Glowbrick Block -> Cracked Glowbrick Block
+Cracked Glowbrick Block -> Ancient Glowbrick Block
+Glowbrick Tiles -> broken/missing sections
+Sporeglass -> Broken Sporeglass
+Moonstone Bricks -> Cracked/Mossy/Rooted Moonstone
+Conduit blocks -> Dead or Dim Conduits
+Missing Chunks
+
+Buildings are incomplete.
+
+Common damage:
+
+missing roofs
+collapsed floors
+broken bridges
+half-standing arches
+exposed interiors
+diagonal cracks
+root intrusion
+flooded lower levels
+Overgrowth
+
+Nature has reclaimed the cities.
+
+Add:
+
+Glowvines hanging from ceilings
+Moonloam patches over floors
+Lumen Grass growing through roads
+Glowroot roots breaking walls
+Moonblossoms in courtyards
+Lumenbulbs growing in dark interiors
+Spore growth in jungle variants
+Light Decay
+
+Lighting tells the story.
+
+Fully intact Glowbricks glow softly.
+Cracked Glowbricks glow weakly.
+Ancient Glowbricks barely glow.
+Some conduits flicker.
+Some chambers are dead dark.
+Vaults may still pulse with active light.
+
+The player should feel like the city still has a heartbeat, but it is fading.
+
+Loot Philosophy
+
+Loot in Vestige Cities should reward exploration without making the structures mandatory for basic survival.
+
+The loot should support:
+
+archaeology
+advanced Lumenwilds crafting
+decorative building
+portal stabilization
+lore discovery
+rare technology fragments
+Chest Types
+Ruined Cache
+
+Low-tier loot found near outer ruins.
+
+Contains:
+
+Glow Pollen
+Lumen Crystal Shards
+Glowvine
+Moonblossoms
+Glowbrick Blocks
+Cracked Glowbrick Blocks
+Living Fiber
+Lumen Fruit
+Raw Luminite
+Scholar’s Reliquary
+
+Lore and crafting loot.
+
+Contains:
+
+Memory Crystal Shards
+Ancient Glyph Tablets
+Luminite Ingots
+Shimmerstone
+Crystal Dust
+Glow Scales
+Lumen Nectar
+Rare books with short lore snippets
+Engineer’s Cache
+
+Technology-themed loot.
+
+Contains:
+
+Luminite Ingots
+Dead Lumen Conduits
+Dim Lumen Conduits
+Resonance Core Fragment
+Gravity Lens Fragment
+Lumen Relay
+Crystal Dust
+Air Gel
+Redstone, rarely, as foreign scrap interaction
+Vault Chest
+
+High-tier loot found in sealed underground chambers.
+
+Contains:
+
+Luminite Ingots
+Glowbrick Blocks
+Active Lumen Conduit
+Resonance Core Fragment
+Intact Memory Crystal
+Gravity Lens Fragment
+Lumen Anchor components
+Shimmerstone Blocks
+Lumen Crystal Blocks
+Rare armor trim template
+Rare music disc fragment or ambient disc
+Spire Chest
+
+Vertical exploration reward.
+
+Contains:
+
+Wraith Membrane
+Air Gel
+Crystal Dust
+Lumen Crystal Shards
+Gravity Lens Fragment
+Luminite Ingots
+Lightfoot-related brewing ingredients
+New Artifact Items
+
+Vestige Cities introduce artifacts.
+
+These are not all functional immediately. Some are crafting components, some are lore items, and some become future features.
+
+Ancient Glyph Tablet
+
+A lore item.
+
+Use:
+
+Right-click to display short translated text.
+Can be collected like pottery sherds.
+Several variants exist.
+
+Examples:
+
+glyph_tablet_sky
+glyph_tablet_roots
+glyph_tablet_light
+glyph_tablet_fall
+glyph_tablet_silence
+glyph_tablet_return
+Memory Crystal Shard
+
+A broken piece of ancient data storage.
+
+Use:
+
+Crafting ingredient
+Lore progression
+Repairing intact Memory Crystals later
+Resonance Core Fragment
+
+Advanced technology component.
+
+Use:
+
+Crafting Lumen Anchor
+Crafting restored conduit blocks
+Future machines
+Gravity Lens Fragment
+
+Movement technology component.
+
+Use:
+
+Lightfoot items
+Jump pads
+Gravity devices
+Spire traversal equipment
+Lumen Relay
+
+A small ancient device.
+
+Use:
+
+Advanced lighting
+Portal stabilization
+Conduit restoration
+Future redstone-adjacent mechanics
+Ancient City Trim Template
+
+A rare cosmetic reward.
+
+Name:
+
+Lumenwright Armor Trim
+
+Visual identity:
+
+thin glowing cyan lines
+circuit/vine-like pattern
+looks organic and technological
+Hostile Presence in Cities
+
+Vestige Cities are not mobless sightseeing areas.
+
+They are dangerous because abandoned things moved in.
+
+Common City Mobs
+Shade Stalkers
+Sporelings
+Glowmoths near overgrown flower courts
+Crag Wraiths near broken spires
+Sky Jellies drifting through open ruins
+Mirelurkers in sunken variants
+New City-Specific Hostile Mob
+
+Introduce one dedicated city mob:
+
+Echo Sentinel
+
+The Echo Sentinel is a broken ancient guardian.
+
+Appearance
+Floating or hovering construct
+Shattered glowbrick/metal shell
+Lumen crystal eye
+Broken ring segments orbiting it
+Flickering teal light
+Behavior
+Spawns rarely in underground vaults and spire cores.
+Dormant until the player gets close or opens certain chests.
+Attacks with short-range light pulses.
+Moves slowly but ignores some terrain.
+Flickers between active and unstable states.
+Combat Identity
+
+The Echo Sentinel is not a skeleton with a new texture. It is a ruin guardian.
+
+Attack pattern:
+
+Charges briefly.
+Emits a visible glow.
+Fires a short pulse or beam-like projectile.
+Pauses while its core flickers.
+Repositions slowly.
+Drops
+Resonance Core Fragment
+Luminite Ingot
+Memory Crystal Shard
+Rare Lumen Relay
+Purpose
+
+The Echo Sentinel proves the ancient technology is not completely dead.
+
+The city is ruined, but some systems still remember how to defend it.
+
+Traps and Environmental Hazards
+
+Vestige Cities use ancient failing technology as hazards.
+
+Flicker Floors
+
+Some glowbrick floors flicker.
+
+Behavior:
+
+Look stable.
+Briefly pulse before collapsing or opening.
+Drop the player into lower chambers.
+
+Implementation-friendly version:
+
+Use cracked blocks and hidden holes rather than real timed collapse at first.
+Unstable Gravity Wells
+
+Found in spires and engineering chambers.
+
+Behavior:
+
+Applies brief low gravity or upward push.
+Can throw off jumps.
+Can help reach loot if used carefully.
+Dead Light Zones
+
+Some rooms are unnaturally dark.
+
+Behavior:
+
+Natural glowing plants are absent.
+Shade Stalkers spawn more easily.
+Dead conduits line the walls.
+Spore-Sealed Chambers
+
+Overgrown rooms in jungle variants.
+
+Behavior:
+
+Breaking spore growth may release Sporelings.
+Loot is partially buried in organic material.
+Lumen Shock Conduits
+
+Rare active conduits.
+
+Behavior:
+
+Damage or knock back entities that stand on them.
+Can be disabled later with the right tool or item.
+City Variants
+Small Vestige Outpost
+
+Size:
+
+Small
+
+Features:
+
+broken road
+one collapsed building
+one small cache
+a few dead conduits
+maybe one Memory Crystal
+
+Purpose:
+
+Early hint of the ancient civilization
+Medium Vestige City
+
+Size:
+
+Village-sized ruin
+
+Features:
+
+outer ring
+plaza
+several buildings
+one substructure entrance
+multiple chests
+moderate mob presence
+
+Purpose:
+
+Main common city experience
+Grand Vestige City
+
+Size:
+
+Rare, large
+
+Features:
+
+multiple plazas
+broken spires
+underground vaults
+large central Light Engine
+Echo Sentinels
+premium loot
+several lore artifacts
+
+Purpose:
+
+Major expedition destination
+Sunken Vestige City
+
+Biome:
+
+Moonmire or Lumenwater-heavy areas
+
+Features:
+
+flooded plazas
+submerged lower halls
+Mirelurkers
+glowing algae
+loot behind waterlogged chambers
+broken bridges over glowing water
+
+Purpose:
+
+Swamp exploration ruin
+Overgrown Vestige City
+
+Biome:
+
+Glowroot Forest or Sporefall Jungle
+
+Features:
+
+roots through buildings
+Glowvines everywhere
+Sporelings
+Glowmoths
+vegetation-covered roads
+hidden rooms behind plant growth
+
+Purpose:
+
+Nature reclaiming technology
+Cracked Spire City
+
+Biome:
+
+Glasspetal Crags
+
+Features:
+
+cliffside ruins
+broken towers
+gravity lenses
+Crag Wraiths
+dangerous vertical loot
+exposed Luminite deposits
+
+Purpose:
+
+High-risk vertical city ruin
+What the Player Learns From the Ruins
+
+The ruins should imply a story without over-explaining it.
+
+The player should infer:
+
+The Lumenwrights built with Glowbrick and Luminite.
+They controlled light as infrastructure.
+They had gravity technology.
+Their cities were connected by conduit networks.
+Something caused those networks to fail.
+Nature reclaimed the cities.
+Some machines are still partially alive.
+The Lumenwilds was once inhabited by a civilization far more advanced than the player.
+That civilization is gone.
+The player is walking through the remains, not conquering an active society.
+Advancement Ideas
+First Discovery
+
+Vestiges of Light
+
+Trigger:
+
+Enter a Vestige City structure.
+
+Description:
+
+Discover the ruins of those who shaped the Lumenwilds.
+First Glowbrick
+
+Brick of Living Light
+
+Trigger:
+
+Obtain Glowbrick.
+
+Description:
+
+Hold a building block from an age that refused darkness.
+First Artifact
+
+The City Remembers
+
+Trigger:
+
+Obtain a Memory Crystal Shard or Ancient Glyph Tablet.
+
+Description:
+
+Recover a fragment of a vanished mind.
+Echo Sentinel
+
+Still On Watch
+
+Trigger:
+
+Defeat an Echo Sentinel.
+
+Description:
+
+Silence a guardian whose masters never returned.
+Grand City
+
+Under a Dead Skyline
+
+Trigger:
+
+Reach the central plaza of a Grand Vestige City.
+
+Description:
+
+Stand where an ancient city once glowed.
+Implementation Priority
+
+For Phase 5, implement this in layers.
+
+First Cut
+
+Add:
+
+Glowbrick block family
+Luminite Ore
+Luminite Ingot
+basic Vestige City small structure
+basic loot table
+cracked/ancient variants
+Glowbrick roads and broken walls
+
+This gives you immediate visible ruins.
+
+Second Cut
+
+Add:
+
+medium city structure pools
+central plaza pieces
+ruined buildings
+chests by loot category
+overgrowth processors
+dead/dim conduit blocks
+
+This makes cities feel real.
+
+Third Cut
+
+Add:
+
+underground substructures
+vault rooms
+Echo Sentinel
+Resonance Core blocks
+Memory Crystals
+Gravity Lens blocks
+better loot progression
+
+This makes cities feel advanced.
+
+Fourth Cut
+
+Add:
+
+biome-specific variants
+Grand Vestige Cities
+structure-specific advancements
+rare artifacts
+active conduit mechanics
+optional restoration mechanics
+
+This makes them a full pillar of the dimension.
+
+Final Definition
+
+Vestige Cities are rare ruined alien cities built by the vanished Lumenwrights. They are made from Glowbrick, Luminite, Shimmerstone, Lumen Crystal, and living-light technology. They are circular, vertical, overgrown, partially collapsed, and filled with dead conduits, broken gravity devices, memory crystals, resonance cores, and flickering machines.
+
+They are not just loot structures.
+
+They are proof that the Lumenwilds had a civilization.
+
+And that civilization is gone.

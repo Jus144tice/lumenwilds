@@ -23,6 +23,9 @@ public final class LumenPlacedFeatures {
     private LumenPlacedFeatures() {}
 
     public static final ResourceKey<PlacedFeature> LUMEN_CRYSTAL_ORE = key("lumen_crystal_ore");
+
+    // Phase 10a: Luminite ore, injected into all Lumenwilds biomes via a NeoForge biome modifier.
+    public static final ResourceKey<PlacedFeature> LUMINITE_ORE = key("luminite_ore");
     public static final ResourceKey<PlacedFeature> PATCH_MOONBLOSSOM = key("patch_moonblossom");
     public static final ResourceKey<PlacedFeature> PATCH_GLOW_FERN = key("patch_glow_fern");
     public static final ResourceKey<PlacedFeature> GLOWWOOD_TREE = key("glowwood_tree");

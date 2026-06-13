@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": {
+      "id": "lumenwilds:glowbrick",
+      "count": 1
+    },
+    "title": {
+      "text": "Brick of Living Light"
+    },
+    "description": {
+      "text": "Hold a building block from an age that refused darkness."
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:glowbrick"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "trigger"
+    ]
+  ],
+  "sends_telemetry_event": false,
+  "parent": "lumenwilds:root"
+}

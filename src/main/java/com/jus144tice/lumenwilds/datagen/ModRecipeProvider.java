@@ -75,6 +75,94 @@ public class ModRecipeProvider extends RecipeProvider {
         buildMoonstoneRecipes(recipeOutput);
         buildShimmerstoneRecipes(recipeOutput);
         buildLumenCrystalRecipes(recipeOutput);
+        buildLuminiteRecipes(recipeOutput);
+    }
+
+    /**
+     * Luminite + Glowbrick (Phase 10a, the Lumenwright materials). Ore/raw → ingot (smelt + blast),
+     * ingot ↔ storage block, the bible's Glowbrick craft ({@code L I L / I C I / L I L}), and stonecutter
+     * cuts from Glowbrick to the whole architectural family.
+     */
+    private void buildLuminiteRecipes(RecipeOutput out) {
+        // Ore + raw → ingot (smelting + blasting).
+        Ingredient ores = Ingredient.of(ModBlocks.LUMINITE_ORE.get(), ModBlocks.DEEP_LUMINITE_ORE.get());
+        SimpleCookingRecipeBuilder.smelting(ores, RecipeCategory.MISC, ModItems.LUMINITE_INGOT.get(), 0.7F, 200)
+                .unlockedBy("has_luminite_ore", has(ModBlocks.LUMINITE_ORE.get()))
+                .save(out, id("luminite_ingot_from_smelting_ore"));
+        SimpleCookingRecipeBuilder.blasting(ores, RecipeCategory.MISC, ModItems.LUMINITE_INGOT.get(), 0.7F, 100)
+                .unlockedBy("has_luminite_ore", has(ModBlocks.LUMINITE_ORE.get()))
+                .save(out, id("luminite_ingot_from_blasting_ore"));
+        SimpleCookingRecipeBuilder.smelting(
+                        Ingredient.of(ModItems.RAW_LUMINITE.get()),
+                        RecipeCategory.MISC,
+                        ModItems.LUMINITE_INGOT.get(),
+                        0.7F,
+                        200)
+                .unlockedBy("has_raw_luminite", has(ModItems.RAW_LUMINITE.get()))
+                .save(out, id("luminite_ingot_from_smelting_raw"));
+        SimpleCookingRecipeBuilder.blasting(
+                        Ingredient.of(ModItems.RAW_LUMINITE.get()),
+                        RecipeCategory.MISC,
+                        ModItems.LUMINITE_INGOT.get(),
+                        0.7F,
+                        100)
+                .unlockedBy("has_raw_luminite", has(ModItems.RAW_LUMINITE.get()))
+                .save(out, id("luminite_ingot_from_blasting_raw"));
+
+        // Ingot ↔ storage block.
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.LUMINITE_BLOCK.get(), 1)
+                .pattern("###")
+                .pattern("###")
+                .pattern("###")
+                .define('#', ModItems.LUMINITE_INGOT.get())
+                .unlockedBy("has_luminite_ingot", has(ModItems.LUMINITE_INGOT.get()))
+                .save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.LUMINITE_INGOT.get(), 9)
+                .requires(ModBlocks.LUMINITE_BLOCK.get())
+                .unlockedBy("has_luminite_block", has(ModBlocks.LUMINITE_BLOCK.get()))
+                .save(out, id("luminite_ingot_from_block"));
+
+        // Glowbrick — the signature craft (I = luminite ingot, C = lumen crystal shard, L = glow pollen).
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWBRICK.get(), 4)
+                .pattern("LIL")
+                .pattern("ICI")
+                .pattern("LIL")
+                .define('I', ModItems.LUMINITE_INGOT.get())
+                .define('C', ModItems.LUMEN_CRYSTAL_SHARD.get())
+                .define('L', ModItems.GLOW_POLLEN.get())
+                .unlockedBy("has_luminite_ingot", has(ModItems.LUMINITE_INGOT.get()))
+                .save(out);
+
+        // Glowbrick architectural family: 2×2 tiles + stonecutter cuts from the base block.
+        square2x2(out, ModBlocks.GLOWBRICK.get(), ModBlocks.GLOWBRICK_TILES.get());
+
+        Block g = ModBlocks.GLOWBRICK.get();
+        cut(out, g, ModBlocks.GLOWBRICK_TILES.get(), 1);
+        cut(out, g, ModBlocks.CHISELED_GLOWBRICK.get(), 1);
+        cut(out, g, ModBlocks.GLOWBRICK_PILLAR.get(), 1);
+        cut(out, g, ModBlocks.GLOWBRICK_STAIRS.get(), 1);
+        cut(out, g, ModBlocks.GLOWBRICK_WALL.get(), 1);
+        cut(out, g, ModBlocks.GLOWBRICK_SLAB.get(), 2);
+
+        // Crafted-shape recipes too (stairs/slab/wall the normal way).
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWBRICK_STAIRS.get(), 4)
+                .pattern("#  ")
+                .pattern("## ")
+                .pattern("###")
+                .define('#', ModBlocks.GLOWBRICK.get())
+                .unlockedBy("has_glowbrick", has(ModBlocks.GLOWBRICK.get()))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWBRICK_SLAB.get(), 6)
+                .pattern("###")
+                .define('#', ModBlocks.GLOWBRICK.get())
+                .unlockedBy("has_glowbrick", has(ModBlocks.GLOWBRICK.get()))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWBRICK_WALL.get(), 6)
+                .pattern("###")
+                .pattern("###")
+                .define('#', ModBlocks.GLOWBRICK.get())
+                .unlockedBy("has_glowbrick", has(ModBlocks.GLOWBRICK.get()))
+                .save(out);
     }
 
     /** Lumen Crystal: block ↔ 9 shards, and ore → shard (smelting + blasting). */

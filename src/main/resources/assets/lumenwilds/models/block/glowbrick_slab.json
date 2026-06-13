@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "lumenwilds:block/glowbrick",
+    "side": "lumenwilds:block/glowbrick",
+    "top": "lumenwilds:block/glowbrick"
+  }
+}

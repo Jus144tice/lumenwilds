@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "ingredient": [
+    {
+      "item": "lumenwilds:luminite_ore"
+    },
+    {
+      "item": "lumenwilds:deep_luminite_ore"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:luminite_ingot"
+  }
+}

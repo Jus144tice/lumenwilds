@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "lumenwilds:block/glowbrick_pillar_top",
+    "side": "lumenwilds:block/glowbrick_pillar"
+  }
+}

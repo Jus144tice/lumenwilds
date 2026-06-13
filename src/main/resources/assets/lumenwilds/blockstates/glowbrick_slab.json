@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "lumenwilds:block/glowbrick_slab"
+    },
+    "type=double": {
+      "model": "lumenwilds:block/glowbrick"
+    },
+    "type=top": {
+      "model": "lumenwilds:block/glowbrick_slab_top"
+    }
+  }
+}

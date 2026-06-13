@@ -124,7 +124,16 @@ in the Undercrown Caverns (a Shade Stalker spawner + two chests of rare loot & L
 a **deep** Y. **All four Phase 8 structures are now in.** **Brewing is in (8h):** the four 8a effects are brewable —
 `registry.ModPotions` registers a Potion per effect and `event.ModBrewing` wires the mixes (awkward + Air Gel
 → Lightfoot, + Glow Pollen → Glowmarked, + Spore Sac → Sporeblind, + Living Fiber → Rooted). **Phase 8 is
-complete.** What is deliberately *not* built yet: the final art/audio/polish pass (Phase 9) — and the
+complete.** **Phase 10 is starting — the Lumenwrights / Vestige Cities (`docs/ancient_cities.txt`):** rare
+ruined alien cities built by a vanished civilization. **10a (materials foundation) is in:** the **Luminite**
+ore chain (`luminite_ore` in moonstone + `deep_luminite_ore` in deep moonstone → `raw_luminite` → smelt to
+`luminite_ingot` → `luminite_block`; ore injected dimension-wide via a `luminite_ore` biome modifier), and the
+**Glowbrick** family — the cities' signature luminous brick (`glowbrick` light 6, `cracked_glowbrick` 3,
+`ancient_glowbrick` 1 so ruins visibly fade; `glowbrick_tiles`/`chiseled_glowbrick`/`glowbrick_pillar` +
+stairs/slab/wall), crafted `L I L / I C I / L I L` (ingot/crystal-shard/glow-pollen) → 4 — plus decay blocks
+(`overgrown_glowbrick`, `broken_sporeglass`, `mossy_moonstone_bricks`, `rooted_moonstone`) for the ruin
+processors. Roadmap: [the plan](.claude/plans/delegated-juggling-locket.md) (10a–10h). What is deliberately
+*not* built yet: the final art/audio/polish pass (Phase 9) — and the
 visual-only deferrals logged throughout (final mob models, the Sporeblind overlay, real `.ogg` audio, etc.). **All biomes share one terrain *height*** (only `depth` varies, for the cave
 layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
@@ -219,6 +228,14 @@ as `File#member`.
   `LumenCoralBlock`, teal-green sea plant); grown on the seabed by the `world.feature.LumenReefFeature` (reef fronds
   are a coral/kelp mix). **Surface harvestables (Phase 9):** `#GLOWBERRY_BUSH` (`TallGrassBlock` cross, drops
   `ModItems#GLOWBERRY` food) scattered on the green biomes via `patch_glowberry` + a `glowberry` biome modifier.
+  **Lumenwright materials (Phase 10a, `docs/ancient_cities.txt`):** `#LUMINITE_ORE` + `#DEEP_LUMINITE_ORE`
+  (`DropExperienceBlock`, drop `ModItems#RAW_LUMINITE`, non-glowing metal — contrast with the self-lit crystal
+  ore; injected dimension-wide via the `luminite_ore` biome modifier), `#LUMINITE_BLOCK` (ingot storage);
+  the **Glowbrick** family (helpers `glowbrickProps(light)`/`glowbrickStairs`): `#GLOWBRICK` (light 6),
+  `#CRACKED_GLOWBRICK` (3), `#ANCIENT_GLOWBRICK` (1) — the fading-light decay chain — `#GLOWBRICK_TILES`,
+  `#CHISELED_GLOWBRICK`, `#GLOWBRICK_PILLAR`, `#GLOWBRICK_STAIRS`/`#GLOWBRICK_SLAB`/`#GLOWBRICK_WALL` (blast
+  resistance 9, > stone); decay/overgrowth variants `#OVERGROWN_GLOWBRICK`, `#BROKEN_SPOREGLASS`,
+  `#MOSSY_MOONSTONE_BRICKS`, `#ROOTED_MOONSTONE` (for the ruin processors in later 10x phases).
   **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
@@ -238,7 +255,8 @@ as `File#member`.
 - [ModItems.java](src/main/java/com/jus144tice/lumenwilds/registry/ModItems.java) — `#ITEMS`
   (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`, **durable: `stacksTo(1)
   .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
-  `#LIVING_FIBER`, `#LUMEN_FRUIT` (**food**, 8b — brief night vision), `#LUMEN_NECTAR` (**food**, 8b — brief
+  `#LIVING_FIBER`, `#RAW_LUMINITE`/`#LUMINITE_INGOT` (10a — ore → raw → smelt to ingot; ingot crafts Glowbrick),
+  `#LUMEN_FRUIT` (**food**, 8b — brief night vision), `#LUMEN_NECTAR` (**food**, 8b — brief
   regen; collected from a Stillbloom with a bottle via `event.StillbloomInteractEvents`), `#AIR_GEL`,
   `#GLOWCAP_STEW` (**food**, 8b — bowl + glowcap + lumen fruit + moonblossom → hunger + night vision, returns
   a bowl via `usingConvertsTo`), `#LUMENWATER_BUCKET` (`BucketItem` over
@@ -467,7 +485,8 @@ as `File#member`.
   + `#SPOREFALL_JUNGLE` (5d.3) + `#MOONMIRE` (5d.4) + `#UNDERCROWN_CAVERNS` (5d.5) + `#STILLBLOOM_BASIN`
   (5d.6) — **all seven live (Phase 5d complete)**.
 - [LumenConfiguredFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenConfiguredFeatures.java)
-  — keys for `data/.../worldgen/configured_feature/`: `#LUMEN_CRYSTAL_ORE`, `#PATCH_MOONBLOSSOM`,
+  — keys for `data/.../worldgen/configured_feature/`: `#LUMEN_CRYSTAL_ORE`, `#LUMINITE_ORE` (10a, `ore`
+  feature in moonstone + deep moonstone), `#PATCH_MOONBLOSSOM`,
   `#PATCH_GLOW_FERN`, `#GLOWWOOD_TREE`, `#GLOWROOT_TREE` (1×1, vanilla `tree`), `#GLOWROOT_TREE_2X2`
   (custom `GlowrootTreeFeature`), `#PATCH_GLASSPETAL` (5d.2, Glasspetal Cluster `random_patch`),
   `#GIANT_GLOWCAP` (5d.3, vanilla `huge_brown_mushroom` with the glowcap blocks), `#LUMENWATER_POOL`
@@ -709,20 +728,24 @@ as `File#member`.
   block items inherit `block/<name>` (via `UncheckedModelFile`, to dodge cross-provider validation);
   `BushBlock`/`AmethystClusterBlock` items → flat `item/generated` from the block texture;
   fence/wall/button → `_inventory`, trapdoor → `_bottom`, doors + panes + signs → flat `item/<name>`;
-  standalone items (incl. boats) → `basicItem`.
+  standalone items (incl. boats) → `basicItem`. **Spawn eggs (`DeferredSpawnEggItem`) are skipped** — they use
+  the hand-authored vanilla `template_spawn_egg` model (no flat texture), so `runData` no longer demands one.
 - [ModLanguageProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLanguageProvider.java) —
   auto names from registry paths (`#addTranslations`, `#titleCase`) + tab title + portal messages,
   **deduped by description id** (SignItem/BlockItem reuse a block's key).
 - [ModRecipeProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModRecipeProvider.java) —
   `#buildRecipes`: Lumenbound Stone (`CGC/SAS/CGC`) + Lumen Striker (`I/A/G`); `#buildGlowwoodRecipes`
   (wood set incl. signs, hanging signs, boat + chest boat), `#buildMoonstoneRecipes` +
-  `#buildShimmerstoneRecipes` (smelting + 2×2 crafting + stonecutter via helpers `#smelt`/`#square2x2`/`#cut`).
+  `#buildShimmerstoneRecipes` (smelting + 2×2 crafting + stonecutter via helpers `#smelt`/`#square2x2`/`#cut`),
+  `#buildLuminiteRecipes` (10a — ore/raw → ingot smelt+blast, ingot ↔ block, the Glowbrick craft
+  `L I L / I C I / L I L`, + Glowbrick family cuts/shapes).
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
   `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL` + `LUMENWATER_BLOCK`
-  (both `noLootTable`), with slab (drops 2) and door (drops 1) special-cased.
+  (both `noLootTable`), with slab (drops 2) and door (drops 1) special-cased; `DropExperienceBlock` →
+  `createOreDrop` (Luminite ores → `RAW_LUMINITE`, Lumen Crystal ores → shard).
 - [ModTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModTagProvider.java) —
   `#addTags`: classifies blocks by name into `mineable/pickaxe|axe|shovel|hoe` + `leaves` (auto-covers new
-  stone/wood blocks; `_ore`/`_cluster`/moonstone → pickaxe).
+  stone/wood blocks; `_ore`/`_cluster`/moonstone/`glowbrick`/`luminite` → pickaxe).
 
 > NOTE: hand-authored placeholder assets in `src/main/resources` are **authoritative** (the mod works
 > from a plain `build`, no datagen needed). `runData` output is a regeneration/diff aid only; it is NOT
@@ -796,7 +819,8 @@ as `File#member`.
   soundscape** — `ambient_sound`/`additions_sound`/`music` (Nether ambience loops for the alien biomes, calm
   overworld music for the open ones) + the existing `mood_sound`. Worldgen continues: `noise/hills.json` (terrain
   relief) + `noise/caverns.json` (the deep cave-carve 3D noise, Phase 9),
-  `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`,
+  `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`, `luminite_ore` [10a, dimension-wide via
+  the `luminite_ore` biome modifier],
   `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2`
   [custom feature], `patch_glasspetal` [5d.2], `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
   chunk-safe pool feature** — was a crashing vanilla `lake`] +
@@ -818,11 +842,12 @@ as `File#member`.
 - `data/lumenwilds/advancement/*` — the **progression tree (Phase 9f)**: `root` (enter the dimension) →
   `living_light`→`anchored`, `the_wilds_provide`→`soothing_nectar`, `native_fauna`→`apex_of_the_dark`, and a
   biome-reach goal per biome (`into_the_glowroot`, `crystal_highlands`, `spore_rainforest`, `the_glowing_mire`,
-  `beneath_the_crown`, `sanctuary`). Triggers: `changed_dimension` / `inventory_changed` / `location`+biome;
-  direct-text titles (no lang keys). Hand-authored.
-- `data/lumenwilds/neoforge/biome_modifier/lumen_reef.json` — the project's **first NeoForge biome modifier**
-  (`neoforge:add_features`): injects the `lumen_reef` placed feature into the 6 surface biomes at
-  `vegetal_decoration` (avoids editing each biome's feature list + the order topo-sort). The chest loot tables
+  `beneath_the_crown`, `sanctuary`); **+ `brick_of_living_light`** (10a — obtain Glowbrick). Triggers:
+  `changed_dimension` / `inventory_changed` / `location`+biome; direct-text titles (no lang keys). Hand-authored.
+- `data/lumenwilds/neoforge/biome_modifier/*` — `lumen_reef.json` (the project's **first NeoForge biome
+  modifier**, `neoforge:add_features`: injects `lumen_reef` into the 6 surface biomes at `vegetal_decoration`,
+  avoiding each biome's feature list + the order topo-sort), `glowberry.json` (Glowberry Bush on green biomes),
+  and `luminite_ore.json` (10a — `luminite_ore` into all 7 biomes at `underground_ores`). The chest loot tables
   (`loot_table/chests/*`, Phase 9) are now **tiered** — a guaranteed signature reward pool (enchanted gear/books,
   Lumen Anchor, striker, crystal blocks) + themed mid loot + treasure scaled by structure difficulty (no more
   all-filler chests). Underwater the surface rule places **`lumensand`** as the seabed (was dead moonloam).

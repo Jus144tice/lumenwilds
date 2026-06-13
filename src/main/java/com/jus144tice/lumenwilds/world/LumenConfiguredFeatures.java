@@ -24,6 +24,9 @@ public final class LumenConfiguredFeatures {
     private LumenConfiguredFeatures() {}
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> LUMEN_CRYSTAL_ORE = key("lumen_crystal_ore");
+
+    // Phase 10a: Luminite ore (the Lumenwright structural metal) in moonstone + deep moonstone.
+    public static final ResourceKey<ConfiguredFeature<?, ?>> LUMINITE_ORE = key("luminite_ore");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_MOONBLOSSOM = key("patch_moonblossom");
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_GLOW_FERN = key("patch_glow_fern");
     public static final ResourceKey<ConfiguredFeature<?, ?>> GLOWWOOD_TREE = key("glowwood_tree");

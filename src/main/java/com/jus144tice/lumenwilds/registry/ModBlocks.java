@@ -715,7 +715,100 @@ public final class ModBlocks {
                     .sound(SoundType.GLASS)
                     .noOcclusion());
 
+    // --- Luminite (the Lumenwrights' ancient structural metal, Phase 10a) -----------------------
+    // Refined into Glowbrick, the signature material of the Vestige Cities. Ore generates in moonstone
+    // (surface) + deep moonstone (deep) and drops raw_luminite (smelt → luminite_ingot). A plain mineral
+    // metal — it does NOT glow (it contrasts with the self-lit Lumen Crystal Ore). See ancient_cities.txt.
+
+    public static final DeferredBlock<DropExperienceBlock> LUMINITE_ORE = BLOCKS.registerBlock(
+            "luminite_ore",
+            props -> new DropExperienceBlock(UniformInt.of(1, 3), props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE));
+
+    public static final DeferredBlock<DropExperienceBlock> DEEP_LUMINITE_ORE = BLOCKS.registerBlock(
+            "deep_luminite_ore",
+            props -> new DropExperienceBlock(UniformInt.of(1, 3), props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.DEEPSLATE)
+                    .strength(4.5F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.DEEPSLATE));
+
+    /** Luminite Block — refined ingot storage; the metallic luster of the Lumenwright alloy. */
+    public static final DeferredBlock<Block> LUMINITE_BLOCK = BLOCKS.registerSimpleBlock(
+            "luminite_block",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(4.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.METAL));
+
+    // --- Glowbrick (Lumenwright luminous architecture, Phase 10a) -------------------------------
+    // The signature building material of the Vestige Cities: a luminous alien brick refined from Luminite.
+    // Architectural light, NOT a lantern — intact glowbrick glows 6, cracked 3, ancient barely 1, so ruins
+    // visibly fade from bright intact areas to dying old sections. Higher blast resistance than stone.
+
+    public static final DeferredBlock<Block> GLOWBRICK = BLOCKS.registerSimpleBlock("glowbrick", glowbrickProps(6));
+    public static final DeferredBlock<Block> CRACKED_GLOWBRICK =
+            BLOCKS.registerSimpleBlock("cracked_glowbrick", glowbrickProps(3));
+    public static final DeferredBlock<Block> ANCIENT_GLOWBRICK =
+            BLOCKS.registerSimpleBlock("ancient_glowbrick", glowbrickProps(1));
+    public static final DeferredBlock<Block> GLOWBRICK_TILES =
+            BLOCKS.registerSimpleBlock("glowbrick_tiles", glowbrickProps(6));
+    public static final DeferredBlock<Block> CHISELED_GLOWBRICK =
+            BLOCKS.registerSimpleBlock("chiseled_glowbrick", glowbrickProps(6));
+
+    public static final DeferredBlock<RotatedPillarBlock> GLOWBRICK_PILLAR =
+            BLOCKS.registerBlock("glowbrick_pillar", RotatedPillarBlock::new, glowbrickProps(6));
+
+    public static final DeferredBlock<StairBlock> GLOWBRICK_STAIRS = glowbrickStairs("glowbrick_stairs", GLOWBRICK);
+    public static final DeferredBlock<SlabBlock> GLOWBRICK_SLAB =
+            BLOCKS.registerBlock("glowbrick_slab", SlabBlock::new, glowbrickProps(6));
+    public static final DeferredBlock<WallBlock> GLOWBRICK_WALL =
+            BLOCKS.registerBlock("glowbrick_wall", WallBlock::new, glowbrickProps(6));
+
+    // --- Vestige decay blocks (Phase 10a) — used by the ruined-city decay/overgrowth processors --
+
+    /** Overgrown Glowbrick — glowbrick reclaimed by living growth; faint residual glow. */
+    public static final DeferredBlock<Block> OVERGROWN_GLOWBRICK =
+            BLOCKS.registerSimpleBlock("overgrown_glowbrick", glowbrickProps(2));
+
+    /** Broken Sporeglass — shattered, dimmer sporeglass for ruined city windows. */
+    public static final DeferredBlock<TransparentBlock> BROKEN_SPOREGLASS = BLOCKS.registerBlock(
+            "broken_sporeglass",
+            TransparentBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(0.3F)
+                    .lightLevel(state -> 2)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion());
+
+    /** Mossy Moonstone Bricks — moonstone bricks reclaimed by moss (a decay variant). */
+    public static final DeferredBlock<Block> MOSSY_MOONSTONE_BRICKS = moonCube("mossy_moonstone_bricks");
+
+    /** Rooted Moonstone — moonstone shot through with living roots (a decay variant). */
+    public static final DeferredBlock<Block> ROOTED_MOONSTONE = moonCube("rooted_moonstone");
+
     // --- Property + stone-family helpers --------------------------------------------------------
+
+    private static BlockBehaviour.Properties glowbrickProps(int light) {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_CYAN)
+                .strength(2.0F, 9.0F) // higher blast resistance than stone (6.0)
+                .requiresCorrectToolForDrops()
+                .lightLevel(state -> light)
+                .sound(SoundType.STONE);
+    }
+
+    private static DeferredBlock<StairBlock> glowbrickStairs(String name, DeferredBlock<? extends Block> base) {
+        return BLOCKS.registerBlock(
+                name, props -> new StairBlock(base.get().defaultBlockState(), props), glowbrickProps(6));
+    }
 
     private static BlockBehaviour.Properties shimmerProps() {
         return BlockBehaviour.Properties.of()
