@@ -2,6 +2,14 @@
   "type": "minecraft:chest",
   "pools": [
     {
+      "__comment": "GUARANTEED Resonance Core Fragment — the non-circular key to a city's vault (surface loot).",
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "lumenwilds:resonance_core_fragment" }
+      ]
+    },
+    {
       "__comment": "Guaranteed lore find — a glyph tablet or a memory shard.",
       "rolls": 1.0,
       "bonus_rolls": 0.0,
