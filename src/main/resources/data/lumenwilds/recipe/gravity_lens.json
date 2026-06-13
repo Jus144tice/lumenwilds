@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "lumenwilds:lumen_crystal_block"
+    },
+    "F": {
+      "item": "lumenwilds:gravity_lens_fragment"
+    },
+    "S": {
+      "item": "lumenwilds:shimmerstone"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "FCF",
+    "SSS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:gravity_lens"
+  }
+}

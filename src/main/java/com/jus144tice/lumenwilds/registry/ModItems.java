@@ -65,6 +65,9 @@ public final class ModItems {
     public static final DeferredItem<Item> RESONANCE_CORE_FRAGMENT =
             ITEMS.registerSimpleItem("resonance_core_fragment");
 
+    /** Gravity Lens Fragment (10e.2) — from a cracked lens / loot; crafts gravity tech (the future projector). */
+    public static final DeferredItem<Item> GRAVITY_LENS_FRAGMENT = ITEMS.registerSimpleItem("gravity_lens_fragment");
+
     public static final DeferredItem<Item> GLYPH_TABLET_SKY = ITEMS.registerItem(
             "glyph_tablet_sky",
             props -> new com.jus144tice.lumenwilds.item.GlyphTabletItem(props, "The sky engines failed first."),

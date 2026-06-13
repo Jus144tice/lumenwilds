@@ -1,7 +1,5 @@
 {
   "values": [
-    "lumenwilds:resonance_core",
-    "lumenwilds:ancient_door",
     "lumenwilds:lumenbound_stone",
     "lumenwilds:moonstone",
     "lumenwilds:cobbled_moonstone",
@@ -63,6 +61,13 @@
     "lumenwilds:mossy_moonstone_bricks",
     "lumenwilds:rooted_moonstone",
     "lumenwilds:memory_crystal",
-    "lumenwilds:lumen_conduit"
+    "lumenwilds:lumen_conduit",
+    "lumenwilds:resonance_core",
+    "lumenwilds:ancient_door",
+    "lumenwilds:gravity_lens",
+    "lumenwilds:cracked_gravity_lens",
+    "lumenwilds:lumen_relay",
+    "lumenwilds:dormant_light_engine",
+    "lumenwilds:active_light_engine"
   ]
 }

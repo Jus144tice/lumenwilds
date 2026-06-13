@@ -31,13 +31,19 @@ public final class ResonanceNetwork {
     /** Safety cap on a single core's network (bounded flood, avoids runaway worldgen-sized graphs). */
     public static final int MAX_NODES = 160;
 
-    /** BFS the connected {@link LumenConduitBlock} positions reachable from {@code core} (6-connected). */
+    /** How far a Lumen Relay bridges to the next conductor (lets a network jump a wall or open plaza). */
+    private static final int RELAY_BRIDGE = 2;
+
+    /**
+     * BFS the connected conductor positions reachable from {@code core} — Lumen Conduits (6-connected) plus
+     * Lumen Relays, which additionally bridge to other conductors within {@link #RELAY_BRIDGE} blocks.
+     */
     public static Set<BlockPos> flood(Level level, BlockPos core) {
         Set<BlockPos> visited = new HashSet<>();
         ArrayDeque<BlockPos> queue = new ArrayDeque<>();
         for (Direction d : Direction.values()) {
             BlockPos n = core.relative(d);
-            if (isConduit(level, n)) {
+            if (isConductor(level, n)) {
                 queue.add(n);
             }
         }
@@ -48,8 +54,21 @@ public final class ResonanceNetwork {
             }
             for (Direction d : Direction.values()) {
                 BlockPos n = p.relative(d);
-                if (!visited.contains(n) && isConduit(level, n)) {
+                if (!visited.contains(n) && isConductor(level, n)) {
                     queue.add(n);
+                }
+            }
+            // Relays bridge across small gaps to other conductors.
+            if (isRelay(level, p)) {
+                for (int dx = -RELAY_BRIDGE; dx <= RELAY_BRIDGE; dx++) {
+                    for (int dy = -RELAY_BRIDGE; dy <= RELAY_BRIDGE; dy++) {
+                        for (int dz = -RELAY_BRIDGE; dz <= RELAY_BRIDGE; dz++) {
+                            BlockPos n = p.offset(dx, dy, dz);
+                            if (!visited.contains(n) && isConductor(level, n)) {
+                                queue.add(n);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -58,6 +77,14 @@ public final class ResonanceNetwork {
 
     public static boolean isConduit(Level level, BlockPos p) {
         return level.getBlockState(p).getBlock() instanceof LumenConduitBlock;
+    }
+
+    private static boolean isRelay(Level level, BlockPos p) {
+        return level.getBlockState(p).getBlock() instanceof LumenRelayBlock;
+    }
+
+    private static boolean isConductor(Level level, BlockPos p) {
+        return isConduit(level, p) || isRelay(level, p);
     }
 
     /** Set a conduit's state (only if it changed), without a neighbour cascade. */
@@ -102,40 +129,52 @@ public final class ResonanceNetwork {
         for (BlockPos p : reach) {
             setConduit(level, p, LumenConduitBlock.State.ACTIVE);
         }
-        updateDoors(level, core, reach, previous);
+        updateDevices(level, core, reach, previous);
     }
 
-    /** Tear the whole network down (core removed): set every reached conduit DIM and re-close its doors. */
+    /** Tear the whole network down (core removed): set every reached conduit DIM and re-evaluate its devices. */
     public static void deenergize(Level level, BlockPos core, Set<BlockPos> reach) {
         for (BlockPos p : reach) {
             setConduit(level, p, LumenConduitBlock.State.DIM);
         }
-        updateDoors(level, core, Set.of(), reach);
+        updateDevices(level, core, Set.of(), reach);
     }
 
-    /** Re-evaluate doors next to any conduit in {@code reach}/{@code previous} or next to the core. */
-    private static void updateDoors(Level level, BlockPos core, Set<BlockPos> reach, Set<BlockPos> previous) {
+    /** Re-evaluate every device (ancient door, gravity lens) next to a touched conduit or the core. */
+    private static void updateDevices(Level level, BlockPos core, Set<BlockPos> reach, Set<BlockPos> previous) {
         Set<BlockPos> doorLowers = new HashSet<>();
-        collectDoors(level, core, doorLowers);
+        Set<BlockPos> lenses = new HashSet<>();
+        collectDevices(level, core, doorLowers, lenses);
         for (BlockPos p : reach) {
-            collectDoors(level, p, doorLowers);
+            collectDevices(level, p, doorLowers, lenses);
         }
         for (BlockPos p : previous) {
-            collectDoors(level, p, doorLowers);
+            collectDevices(level, p, doorLowers, lenses);
         }
         for (BlockPos lower : doorLowers) {
-            boolean powered = adjacentToPower(level, lower) || adjacentToPower(level, lower.above());
-            setDoorOpen(level, lower, powered);
+            setDoorOpen(level, lower, adjacentToPower(level, lower) || adjacentToPower(level, lower.above()));
+        }
+        for (BlockPos lens : lenses) {
+            setLensPowered(level, lens, adjacentToPower(level, lens));
         }
     }
 
-    private static void collectDoors(Level level, BlockPos around, Set<BlockPos> out) {
+    private static void collectDevices(Level level, BlockPos around, Set<BlockPos> doors, Set<BlockPos> lenses) {
         for (Direction d : Direction.values()) {
             BlockPos n = around.relative(d);
             BlockState bs = level.getBlockState(n);
             if (bs.getBlock() instanceof DoorBlock) {
-                out.add(bs.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER ? n.below() : n);
+                doors.add(bs.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER ? n.below() : n);
+            } else if (bs.getBlock() instanceof GravityLensBlock) {
+                lenses.add(n);
             }
+        }
+    }
+
+    private static void setLensPowered(Level level, BlockPos p, boolean powered) {
+        BlockState bs = level.getBlockState(p);
+        if (bs.getBlock() instanceof GravityLensBlock && bs.getValue(GravityLensBlock.POWERED) != powered) {
+            level.setBlock(p, bs.setValue(GravityLensBlock.POWERED, powered), 2);
         }
     }
 

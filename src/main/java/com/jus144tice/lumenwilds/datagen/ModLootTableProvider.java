@@ -62,6 +62,10 @@ public final class ModLootTableProvider {
                     dropOther(block, ModItems.GLOWWOOD_SIGN.get());
                 } else if (name.equals("memory_crystal")) {
                     add(block, b -> createOreDrop(b, ModItems.MEMORY_CRYSTAL_SHARD.get())); // silk → block, else shard
+                } else if (name.equals("cracked_gravity_lens")) {
+                    add(
+                            block,
+                            b -> createOreDrop(b, ModItems.GRAVITY_LENS_FRAGMENT.get())); // silk → block, else fragment
                 } else if (block instanceof DropExperienceBlock) {
                     // Luminite ores → raw_luminite; the Lumen Crystal ores → shard (both +silk/fortune).
                     Item drop = name.contains("luminite")

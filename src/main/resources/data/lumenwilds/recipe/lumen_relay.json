@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "redstone",
+  "ingredients": [
+    {
+      "item": "lumenwilds:luminite_ingot"
+    },
+    {
+      "item": "lumenwilds:lumen_crystal_shard"
+    },
+    {
+      "item": "lumenwilds:lumen_crystal_shard"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "id": "lumenwilds:lumen_relay"
+  }
+}

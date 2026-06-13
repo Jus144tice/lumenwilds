@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "powered=false": { "model": "lumenwilds:block/gravity_lens" },
+    "powered=true": { "model": "lumenwilds:block/gravity_lens_powered" }
+  }
+}

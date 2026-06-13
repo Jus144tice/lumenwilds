@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "lumenwilds:block/active_light_engine" }
+  }
+}

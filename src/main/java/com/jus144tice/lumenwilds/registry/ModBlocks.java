@@ -861,6 +861,79 @@ public final class ModBlocks {
                     .noOcclusion()
                     .pushReaction(PushReaction.DESTROY));
 
+    // --- Gravity tech (Phase 10e.2; shared with the future liftshafts) --------------------------
+
+    /**
+     * Gravity Lens ({@link com.jus144tice.lumenwilds.block.GravityLensBlock}) — a powered lens gently lifts
+     * entities above it (`event.LumenGravityEvents`). Light 6 powered / 2 dead; set powered by the network.
+     */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.GravityLensBlock> GRAVITY_LENS =
+            BLOCKS.registerBlock(
+                    "gravity_lens",
+                    com.jus144tice.lumenwilds.block.GravityLensBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_PURPLE)
+                            .strength(2.0F, 6.0F)
+                            .requiresCorrectToolForDrops()
+                            .lightLevel(com.jus144tice.lumenwilds.block.GravityLensBlock::lightFor)
+                            .noOcclusion()
+                            .sound(SoundType.AMETHYST));
+
+    /** Cracked Gravity Lens — the common ruined lens; drops a {@code gravity_lens_fragment}. */
+    public static final DeferredBlock<Block> CRACKED_GRAVITY_LENS = BLOCKS.registerSimpleBlock(
+            "cracked_gravity_lens",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(1.5F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(state -> 1)
+                    .noOcclusion()
+                    .sound(SoundType.AMETHYST));
+
+    /** Lumen Relay ({@link com.jus144tice.lumenwilds.block.LumenRelayBlock}) — bridges the resonance network across gaps. */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.LumenRelayBlock> LUMEN_RELAY =
+            BLOCKS.registerBlock(
+                    "lumen_relay",
+                    com.jus144tice.lumenwilds.block.LumenRelayBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_CYAN)
+                            .strength(2.0F, 6.0F)
+                            .requiresCorrectToolForDrops()
+                            .lightLevel(state -> 4)
+                            .sound(SoundType.AMETHYST));
+
+    /**
+     * Dormant Light Engine ({@link com.jus144tice.lumenwilds.block.DormantLightEngineBlock}) — the dead city
+     * centrepiece; right-click with a {@code resonance_core_fragment} to restore it to an Active Light Engine.
+     */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.DormantLightEngineBlock> DORMANT_LIGHT_ENGINE =
+            BLOCKS.registerBlock(
+                    "dormant_light_engine",
+                    com.jus144tice.lumenwilds.block.DormantLightEngineBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_CYAN)
+                            .strength(4.0F, 12.0F)
+                            .requiresCorrectToolForDrops()
+                            .lightLevel(state -> 3)
+                            .noOcclusion()
+                            .sound(SoundType.AMETHYST));
+
+    /**
+     * Active Light Engine ({@link com.jus144tice.lumenwilds.block.ActiveLightEngineBlock}, a Resonance Core) —
+     * the restored engine, brightly lit (13), powering the city's conduit network.
+     */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.ActiveLightEngineBlock> ACTIVE_LIGHT_ENGINE =
+            BLOCKS.registerBlock(
+                    "active_light_engine",
+                    com.jus144tice.lumenwilds.block.ActiveLightEngineBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_CYAN)
+                            .strength(4.0F, 12.0F)
+                            .requiresCorrectToolForDrops()
+                            .lightLevel(state -> 13)
+                            .noOcclusion()
+                            .sound(SoundType.AMETHYST));
+
     // --- Property + stone-family helpers --------------------------------------------------------
 
     private static BlockBehaviour.Properties glowbrickProps(int light) {

@@ -154,9 +154,16 @@ chests are a Scholar's Reliquary in the civic hall + scattered Ruined Caches; Sh
 Conduits (driving them ACTIVE via `block.ResonanceNetwork`'s bounded BFS) and **opens the Ancient Doors**
 (`ModBlocks#ANCIENT_DOOR`, an iron-set `DoorBlock` — hand-openable disabled) they touch; removing the core
 tears the network down. Craft the core from a looted `resonance_core_fragment` (+ shimmerstone/crystal/
-luminite). *(Gravity Lens elevators + Dormant Light Engine restoration land in 10e.2; the liftshaft/projector
-system in `docs/lumenwright_liftshafts.txt` is a later follow-up — the `gravity_lens_fragment` + velocity-field
-approach there will reuse 10e.2's lens.)* Roadmap: [the plan](.claude/plans/delegated-juggling-locket.md)
+luminite). **10e.2 completes the Resonance subsystem:** the **Gravity Lens** (`block.GravityLensBlock`) — when
+the network powers it, it gently lifts entities in the column above (`event.LumenGravityEvents`, controlled
+velocity per `docs/lumenwright_liftshafts.txt`, not the gravity attribute) — plus its **Cracked Gravity Lens**
+(drops `gravity_lens_fragment`); the **Lumen Relay** (`block.LumenRelayBlock`, bridges the network across
+gaps); and the **Dormant Light Engine** (`block.DormantLightEngineBlock`) — right-click with a
+`resonance_core_fragment` to **restore** it into an **Active Light Engine** (`block.ActiveLightEngineBlock`, a
+Resonance Core), waking a dead city's network: the bible's "city's heartbeat returns" payoff. *(The full
+paired descent/ascension liftshafts + craftable Lumen Field Projector + abandoned-mine structures from the
+liftshaft doc are a later follow-up; 10e.2's gravity lens + `gravity_lens_fragment` are forward-compatible
+with it.)* Roadmap: [the plan](.claude/plans/delegated-juggling-locket.md)
 (10a–10h). What is deliberately
 *not* built yet: the final art/audio/polish pass (Phase 9) — and the
 visual-only deferrals logged throughout (final mob models, the Sporeblind overlay, real `.ogg` audio, etc.). **All biomes share one terrain *height*** (only `depth` varies, for the cave
@@ -265,7 +272,10 @@ as `File#member`.
   `event.MemoryCrystalInteractEvents`, drops `ModItems#MEMORY_CRYSTAL_SHARD`), `#LUMEN_CONDUIT`
   (`block.LumenConduitBlock`, `conduit_state` dead/dim/active → light 0/2/8). **Resonance tech (10e.1):**
   `#RESONANCE_CORE` (`block.ResonanceCoreBlock` + BE — the network power source, light 10), `#ANCIENT_DOOR`
-  (iron-set `DoorBlock`, opened only by the Resonance network).
+  (iron-set `DoorBlock`, opened only by the Resonance network). **Gravity tech (10e.2):** `#GRAVITY_LENS`
+  (`block.GravityLensBlock`, powered → lifts entities above), `#CRACKED_GRAVITY_LENS` (drops the fragment),
+  `#LUMEN_RELAY` (`block.LumenRelayBlock`, network gap-bridge), `#DORMANT_LIGHT_ENGINE` /
+  `#ACTIVE_LIGHT_ENGINE` (`block.DormantLightEngineBlock`/`ActiveLightEngineBlock` — restore with a fragment).
   **Phase 4 sets**
   (helpers `moonCube/moonStairs/moonSlab/moonWall`, `deep*`, `shimmer*`, `logProps/planksProps`):
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
@@ -288,6 +298,7 @@ as `File#member`.
   `#LIVING_FIBER`, `#RAW_LUMINITE`/`#LUMINITE_INGOT` (10a — ore → raw → smelt to ingot; ingot crafts Glowbrick),
   `#MEMORY_CRYSTAL_SHARD` + six `#GLYPH_TABLET_*` (`item.GlyphTabletItem`, lore items, 10c),
   `#RESONANCE_CORE_FRAGMENT` (10e — crafts the Resonance Core; loot/Echo-Sentinel drop),
+  `#GRAVITY_LENS_FRAGMENT` (10e.2 — from a cracked lens / loot; crafts the Gravity Lens + future projector),
   `#LUMEN_FRUIT` (**food**, 8b — brief night vision), `#LUMEN_NECTAR` (**food**, 8b — brief
   regen; collected from a Stillbloom with a bottle via `event.StillbloomInteractEvents`), `#AIR_GEL`,
   `#GLOWCAP_STEW` (**food**, 8b — bowl + glowcap + lumen fruit + moonblossom → hunger + night vision, returns
@@ -337,7 +348,8 @@ as `File#member`.
   applies it), `#ROOTED` (−`MOVEMENT_SPEED` & −`JUMP_STRENGTH`). Icons: `textures/mob_effect/<name>.png`.
 - [ModBlockEntities.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBlockEntities.java) —
   `#BLOCK_ENTITIES`; `#LUMEN_ANCHOR` (`BlockEntityType` for `block.LumenAnchorBlockEntity`, 8c) — the first BE;
-  `#RESONANCE_CORE` (for `block.ResonanceCoreBlockEntity`, 10e.1 — ticks the conduit power network).
+  `#RESONANCE_CORE` (for `block.ResonanceCoreBlockEntity`, 10e.1 — ticks the conduit power network; its type
+  also covers `ACTIVE_LIGHT_ENGINE`, which is a core).
 - Empty stubs (compile; carry phase TODOs). Wired to the bus already (registered empty): 
   [ModMenus](src/main/java/com/jus144tice/lumenwilds/registry/ModMenus.java) `#MENUS`,
   [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS` (still empty — the
@@ -441,7 +453,19 @@ as `File#member`.
   (set conduits ACTIVE/DIM, diffed vs. the core's previous reach so cuts drop downstream), and door power
   (`ancient_door` opens while a neighbour is an active conduit or core). All flag-2 sets (no neighbour
   cascade), server-side, transient. **Tune the resonance behaviour here.** (`ANCIENT_DOOR` is a plain iron-set
-  `DoorBlock` — no subclass; the network opens it.)
+  `DoorBlock` — no subclass; the network opens it.) **10e.2:** the flood also traverses `LumenRelayBlock`
+  nodes (which bridge to other conductors within `#RELAY_BRIDGE`), and `#updateDevices` also powers
+  `GravityLensBlock` (sets its `POWERED`).
+- [GravityLensBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GravityLensBlock.java) — the Gravity
+  Lens (10e.2). `#POWERED` boolean (set by the network) → light 6/2 (`#lightFor`); the lift itself is in
+  `event.LumenGravityEvents`. `ModBlocks#GRAVITY_LENS` (+ `#CRACKED_GRAVITY_LENS`, drops the fragment).
+- [LumenRelayBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenRelayBlock.java) — a marker block
+  the `ResonanceNetwork` flood treats as a gap-bridging conductor node (10e.2). `ModBlocks#LUMEN_RELAY`.
+- [DormantLightEngineBlock.java](src/main/java/com/jus144tice/lumenwilds/block/DormantLightEngineBlock.java)
+  + [ActiveLightEngineBlock.java](src/main/java/com/jus144tice/lumenwilds/block/ActiveLightEngineBlock.java) —
+  the city centrepiece (10e.2). `Dormant#useItemOn` with a `resonance_core_fragment` → swaps to the Active
+  engine (`extends ResonanceCoreBlock`, so it powers the network; shares the `RESONANCE_CORE` BE type).
+  `ModBlocks#DORMANT_LIGHT_ENGINE`/`#ACTIVE_LIGHT_ENGINE`.
 
 ### fluid/ — Lumenwater (Phase 5e)
 - [LumenwaterBlock.java](src/main/java/com/jus144tice/lumenwilds/fluid/LumenwaterBlock.java) — the
@@ -726,6 +750,10 @@ as `File#member`.
 - [MemoryCrystalInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/MemoryCrystalInteractEvents.java)
   — `#onRightClickBlock` (10c): right-clicking a `ModBlocks#MEMORY_CRYSTAL` prints a fragment chosen
   deterministically from the block position (`#FRAGMENTS`, some broken/unreadable); crystal not consumed.
+- [LumenGravityEvents.java](src/main/java/com/jus144tice/lumenwilds/event/LumenGravityEvents.java) —
+  `#onEntityTick(EntityTickEvent.Post)` (10e.2): a powered `GravityLensBlock` within `#REACH_BELOW` of a
+  living entity (clear column) floats it up at a capped speed, zeroes fall distance, sneaking holds — the
+  velocity-field gravity lift (server-side; re-syncs `ServerPlayer` motion).
 - [ModBrewing.java](src/main/java/com/jus144tice/lumenwilds/event/ModBrewing.java) — **mod-bus**
   `#onRegisterBrewingRecipes(RegisterBrewingRecipesEvent)` (8h): `builder.addMix(awkward, ingredient, potion)`
   for the four `ModPotions` (Air Gel / Glow Pollen / Spore Sac / Living Fiber).
@@ -817,7 +845,7 @@ as `File#member`.
   `#buildShimmerstoneRecipes` (smelting + 2×2 crafting + stonecutter via helpers `#smelt`/`#square2x2`/`#cut`),
   `#buildLuminiteRecipes` (10a — ore/raw → ingot smelt+blast, ingot ↔ block, the Glowbrick craft
   `L I L / I C I / L I L`, + Glowbrick family cuts/shapes), `#buildResonanceRecipes` (10e — Resonance Core
-  from a fragment, Ancient Door from glowbrick).
+  from a fragment, Ancient Door from glowbrick, Gravity Lens from fragments + shimmerstone, Lumen Relay).
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
   `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL` + `LUMENWATER_BLOCK`
   (both `noLootTable`), with slab (drops 2) and door (drops 1) special-cased; `memory_crystal` →
@@ -850,7 +878,8 @@ as `File#member`.
   glow**: `models/block/_emissive_cube.json` / `_emissive_cube_soft.json` / `_emissive_cross.json` are emissive
   parents (NeoForge `neoforge_data` `block_light` — 15 fullbright / 7 soft / 13 cross) that the glowing blocks
   inherit so they render **bright in the dark**: Lumenbulb / Lumen Crystal Block / Stillbloom Core / Memory
-  Crystal / `lumen_conduit_active` / `resonance_core` (fullbright), the two ores + `lumen_conduit_dim` (soft), and the flora
+  Crystal / `lumen_conduit_active` / `resonance_core` / `gravity_lens_powered` / `active_light_engine`
+  (fullbright), the two ores + `lumen_conduit_dim` + `lumen_relay` (soft), and the flora
   Moonblossom / Glow Fern / Glow Algae / Lumen Reeds / Glowvine (cross). Light
   emission stays via each block's `lightLevel` (ores bumped 4→6 so the Undercrown is lit by dense ore)),
   `textures/entity/{signs,signs/hanging,boat,chest_boat}/glowwood.png` + `textures/gui/

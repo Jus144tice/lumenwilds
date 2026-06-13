@@ -101,6 +101,25 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('#', ModBlocks.GLOWBRICK.get())
                 .unlockedBy("has_glowbrick", has(ModBlocks.GLOWBRICK.get()))
                 .save(out);
+
+        // Gravity Lens — a Shimmerstone frame around a lens rebuilt from fragments + a crystal core.
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.GRAVITY_LENS.get(), 1)
+                .pattern("SSS")
+                .pattern("FCF")
+                .pattern("SSS")
+                .define('S', ModBlocks.SHIMMERSTONE.get())
+                .define('F', ModItems.GRAVITY_LENS_FRAGMENT.get())
+                .define('C', ModBlocks.LUMEN_CRYSTAL_BLOCK.get())
+                .unlockedBy("has_gravity_lens_fragment", has(ModItems.GRAVITY_LENS_FRAGMENT.get()))
+                .save(out);
+
+        // Lumen Relay — a small repeater device.
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, ModBlocks.LUMEN_RELAY.get(), 2)
+                .requires(ModItems.LUMINITE_INGOT.get())
+                .requires(ModItems.LUMEN_CRYSTAL_SHARD.get())
+                .requires(ModItems.LUMEN_CRYSTAL_SHARD.get())
+                .unlockedBy("has_luminite_ingot", has(ModItems.LUMINITE_INGOT.get()))
+                .save(out);
     }
 
     /**

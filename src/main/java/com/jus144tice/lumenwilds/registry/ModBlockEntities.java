@@ -25,10 +25,15 @@ public final class ModBlockEntities {
                             LumenAnchorBlockEntity::new, ModBlocks.LUMEN_ANCHOR.get())
                     .build(null));
 
-    /** Resonance Core (10e) — ticks the conduit power network (see {@code block.ResonanceNetwork}). */
+    /**
+     * Resonance Core (10e) — ticks the conduit power network (see {@code block.ResonanceNetwork}). Shared by
+     * the hand-built {@code RESONANCE_CORE} and the restored {@code ACTIVE_LIGHT_ENGINE} (also a core).
+     */
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<ResonanceCoreBlockEntity>> RESONANCE_CORE =
             BLOCK_ENTITIES.register("resonance_core", () -> BlockEntityType.Builder.of(
-                            ResonanceCoreBlockEntity::new, ModBlocks.RESONANCE_CORE.get())
+                            ResonanceCoreBlockEntity::new,
+                            ModBlocks.RESONANCE_CORE.get(),
+                            ModBlocks.ACTIVE_LIGHT_ENGINE.get())
                     .build(null));
 
     private ModBlockEntities() {}
