@@ -37,6 +37,11 @@ public class VestigeCityStructure extends Structure {
         int y = context.chunkGenerator()
                 .getFirstOccupiedHeight(
                         x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
+        // Dry land only — the Lumenwilds' surface biomes hold Lumenwater seas, and OCEAN_FLOOR_WG is the seabed,
+        // so without this a city would generate submerged. Skip placements at/below sea level.
+        if (y <= context.chunkGenerator().getSeaLevel()) {
+            return Optional.empty();
+        }
         BlockPos origin = new BlockPos(x, y, z);
         // Size tier: ~25% of cities are GRAND (bigger, a central Light Engine + broken spires); else medium.
         int tier = context.random().nextInt(100) < 25 ? 1 : 0;

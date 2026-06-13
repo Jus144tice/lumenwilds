@@ -36,6 +36,10 @@ public class VestigeOutpostStructure extends Structure {
         int y = context.chunkGenerator()
                 .getFirstOccupiedHeight(
                         x, z, Heightmap.Types.OCEAN_FLOOR_WG, context.heightAccessor(), context.randomState());
+        // Dry land only — skip seabed placements below the Lumenwater sea level (see VestigeCityStructure).
+        if (y <= context.chunkGenerator().getSeaLevel()) {
+            return Optional.empty();
+        }
         BlockPos origin = new BlockPos(x, y, z);
         return Optional.of(
                 new Structure.GenerationStub(origin, builder -> builder.addPiece(new VestigeOutpostPiece(origin))));
