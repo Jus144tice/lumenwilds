@@ -306,7 +306,10 @@ as `File#member`.
   crystal mound) scattered on the dry Crags floor (Phase 9 "feels like it's growing"; the rare town-sized version
   is the Glasspetal Spires *structure*). Drives `configured_feature/patch_glasspetal` (was a flat single-cluster
   `random_patch`); `#UNDERCROWN_DECOR` (`world.feature.UndercrownDecorFeature`) — finds open cave air in the
-  Undercrown and grows crystals on rock faces + glowing plants on floors (Phase 9 cave-richness).
+  Undercrown and grows crystals on rock faces + glowing plants on floors (Phase 9 cave-richness); `#GLOWCAP`
+  (`world.feature.GlowcapFeature`) — the ordinary Sporefall Glowcap mushroom: **bell-shaped, size-varied
+  (small/medium/large) and 3-coloured** (red / `GIANT_GLOWCAP_AZURE` / `GIANT_GLOWCAP_VIOLET`), replacing the flat
+  vanilla `huge_brown_mushroom` (Phase 9 variation; the mega is still the `MegaGlowcap` structure).
 - [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
   `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` + `#GLOWROOT_TREE_PIECE` (the mega Glowroot
   tree), `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom), `#ROOTSHRINE` +
@@ -777,7 +780,8 @@ as `File#member`.
   table (not flooded); `lava` router is the constant `0.0` (water-only — any non-zero value enables aquifer lava;
   lava is then only the engine's global floor at y<-54, below the Undercrown). The router's **`depth` is y-varying**
   [5d.5] so cave biomes layer under the surface, and **`temperature` + `vegetation` are shifted-noise** (all 7
-  biomes spread); `continents`/`erosion`/`ridges` stay constant. **`default_fluid` is `lumenwilds:lumenwater`**
+  biomes spread; `xz_scale` 0.55 — raised from 0.25 in Phase 9 to make biomes **smaller** so the rarer ones, e.g.
+  Moonmire, fall within `/locate` range); `continents`/`erosion`/`ridges` stay constant. **`default_fluid` is `lumenwilds:lumenwater`**
   (light 4) so seas/ponds/pools glow teal — safe at this scale (re-measured post-leaf-fix; see the fluid gotcha).
   Glowing Lumenwater also fills the **Moonmire** surface pools [`LumenwaterPoolFeature`]),
   `biome/lumen_glade.json` + `biome/glowroot_forest.json`

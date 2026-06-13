@@ -1,0 +1,6 @@
+{
+  "parent": "lumenwilds:block/_emissive_cube_soft",
+  "textures": {
+    "all": "lumenwilds:block/giant_glowcap_azure"
+  }
+}

@@ -440,6 +440,26 @@ public final class ModBlocks {
                     .sound(SoundType.WOOD)
                     .ignitedByLava());
 
+    /** Glowcap cap — azure variant (the standard Glowcaps come in a few colours so the jungle varies). */
+    public static final DeferredBlock<Block> GIANT_GLOWCAP_AZURE = BLOCKS.registerSimpleBlock(
+            "giant_glowcap_azure",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(0.2F)
+                    .lightLevel(state -> 9)
+                    .sound(SoundType.WOOD)
+                    .ignitedByLava());
+
+    /** Glowcap cap — violet variant. */
+    public static final DeferredBlock<Block> GIANT_GLOWCAP_VIOLET = BLOCKS.registerSimpleBlock(
+            "giant_glowcap_violet",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(0.2F)
+                    .lightLevel(state -> 9)
+                    .sound(SoundType.WOOD)
+                    .ignitedByLava());
+
     // --- Fluids (Phase 5e) ----------------------------------------------------------------------
     // Liquid block for Lumenwater. NOT given a BlockItem (placed via bucket) and has noLootTable. The
     // custom LumenwaterBlock reverts to water outside the dimension (anti-OP). See ModFluids/ModFluidTypes.

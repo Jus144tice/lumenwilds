@@ -50,7 +50,7 @@ public final class MegaGlowcapShape {
         BlockState cap = ModBlocks.GIANT_GLOWCAP_BLOCK.get().defaultBlockState();
 
         buildStem(placer, cx, baseY, cz, height, stem, p);
-        buildCap(placer, cx, baseY + height, cz, cap, p);
+        buildCap(placer, cx, baseY + height, cz, cap, stem, p);
         seedOreColumn(placer, rand, cx, baseY, cz, p);
     }
 
@@ -68,12 +68,25 @@ public final class MegaGlowcapShape {
      * top, so the underside is hollow (the gill cavity) and the glowing crown lights it. A short downward
      * skirt at the rim gives the classic overhanging-mushroom flare.
      */
-    private static void buildCap(GlowrootShape.Placer placer, int cx, int capBaseY, int cz, BlockState cap, Params p) {
+    private static void buildCap(
+            GlowrootShape.Placer placer, int cx, int capBaseY, int cz, BlockState cap, BlockState stem, Params p) {
+        // Upper half of the dome is SOLID (closes the apex — no top hole); the lower half stays a ring so the
+        // underside is a hollow gill cavity.
+        int solidFrom = Math.max(1, (int) (p.capRise() * 0.5));
         for (int dy = 0; dy <= p.capRise(); dy++) {
             double t = (double) dy / p.capRise();
             double outerR = p.capRadius() * Math.sqrt(Math.max(0.0, 1.0 - t * t));
-            fillRing(placer, cx, capBaseY + dy, cz, outerR, p.capThickness(), cap);
+            if (dy >= solidFrom) {
+                fillDisc(placer, cx, capBaseY + dy, cz, outerR, cap);
+            } else {
+                fillRing(placer, cx, capBaseY + dy, cz, outerR, p.capThickness(), cap);
+            }
         }
+        // Central neck: carry the stem up into the solid dome so the cap actually connects to the stem (no gap).
+        for (int dy = 0; dy < solidFrom; dy++) {
+            fillDisc(placer, cx, capBaseY + dy, cz, p.stemRadius() * 0.7, stem);
+        }
+        // Downward skirt at the rim (the classic overhang).
         for (int dy = 1; dy <= p.skirt(); dy++) {
             double outerR = p.capRadius() - dy * 0.6;
             fillRing(placer, cx, capBaseY - dy, cz, outerR, p.capThickness() * 0.8, cap);

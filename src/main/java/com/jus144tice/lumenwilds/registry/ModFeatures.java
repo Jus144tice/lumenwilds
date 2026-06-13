@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.world.feature.GlasspetalGrowthFeature;
+import com.jus144tice.lumenwilds.world.feature.GlowcapFeature;
 import com.jus144tice.lumenwilds.world.feature.GlowrootTreeFeature;
 import com.jus144tice.lumenwilds.world.feature.LumenReefFeature;
 import com.jus144tice.lumenwilds.world.feature.LumenwaterPoolFeature;
@@ -53,6 +54,10 @@ public final class ModFeatures {
     /** Decorates Undercrown cave surfaces — crystals on rock faces + glowing plants on floors (Phase 9). */
     public static final DeferredHolder<Feature<?>, UndercrownDecorFeature> UNDERCROWN_DECOR =
             FEATURES.register("undercrown_decor", () -> new UndercrownDecorFeature(NoneFeatureConfiguration.CODEC));
+
+    /** The ordinary Glowcap mushroom — bell-shaped, size- and colour-varied (Phase 9). */
+    public static final DeferredHolder<Feature<?>, GlowcapFeature> GLOWCAP =
+            FEATURES.register("glowcap", () -> new GlowcapFeature(NoneFeatureConfiguration.CODEC));
 
     private ModFeatures() {}
 }

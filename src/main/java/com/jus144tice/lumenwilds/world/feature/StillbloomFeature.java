@@ -7,6 +7,7 @@ package com.jus144tice.lumenwilds.world.feature;
 import com.jus144tice.lumenwilds.registry.ModBlocks;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -40,7 +41,26 @@ public class StillbloomFeature extends Feature<NoneFeatureConfiguration> {
         int cx = origin.getX();
         int cz = origin.getZ();
         int baseY = origin.getY();
-        int height = 3 + context.random().nextInt(6); // 3–8 tall
+        RandomSource rand = context.random();
+
+        // Size tier — small / large / rare MEGA (like the trees) so the basin isn't a field of identical blooms.
+        int height;
+        int domeR;
+        int layers;
+        double s = rand.nextDouble();
+        if (s < 0.55) {
+            height = 3 + rand.nextInt(3); // 3–5, a small bloom
+            domeR = 2;
+            layers = 2;
+        } else if (s < 0.9) {
+            height = 6 + rand.nextInt(4); // 6–9, a tall bloom
+            domeR = 3;
+            layers = 3;
+        } else {
+            height = 11 + rand.nextInt(6); // 11–16, the rare giant
+            domeR = 4 + rand.nextInt(2);
+            layers = 4;
+        }
 
         // Stem column. Stop early if it runs into solid ground (e.g. a hill).
         int placed = 0;
@@ -58,13 +78,21 @@ public class StillbloomFeature extends Feature<NoneFeatureConfiguration> {
 
         int headY = baseY + placed; // first block above the stem top
         BlockPos.MutableBlockPos cursor = new BlockPos.MutableBlockPos();
-        // Petal skirt (radius 2) just above the stem.
-        placePetalDisc(level, cursor, cx, headY, cz, 2, petal);
-        // Upper ring (radius 1) cupping the core.
-        placePetalDisc(level, cursor, cx, headY + 1, cz, 1, petal);
-        // The brilliant core in the centre of the upper ring, with a single petal cap above it.
-        setIfReplaceable(level, cursor.set(cx, headY + 1, cz), core);
-        setIfReplaceable(level, cursor.set(cx, headY + 2, cz), petal);
+        // A layered petal dome, shrinking toward the top — bigger blooms get a fuller, taller dome.
+        for (int l = 0; l < layers; l++) {
+            placePetalDisc(level, cursor, cx, headY + l, cz, Math.max(1, domeR - l), petal);
+        }
+        // The brilliant glowing core just under the apex, capped with a petal.
+        int coreY = headY + Math.max(1, layers - 1);
+        setIfReplaceable(level, cursor.set(cx, coreY, cz), core);
+        setIfReplaceable(level, cursor.set(cx, headY + layers, cz), petal);
+        // The giant blooms carry a brighter multi-core.
+        if (domeR >= 4) {
+            setIfReplaceable(level, cursor.set(cx + 1, coreY, cz), core);
+            setIfReplaceable(level, cursor.set(cx - 1, coreY, cz), core);
+            setIfReplaceable(level, cursor.set(cx, coreY, cz + 1), core);
+            setIfReplaceable(level, cursor.set(cx, coreY, cz - 1), core);
+        }
         return true;
     }
 

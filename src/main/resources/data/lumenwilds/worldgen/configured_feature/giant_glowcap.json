@@ -1,15 +1,5 @@
 {
-  "__comment": "Giant Glowcap (Phase 5d.3) — reuses the vanilla huge_brown_mushroom feature (wide flat cap) with the Lumenwilds glowcap cap/stem blocks. The feature sets each block's six face booleans itself; the providers just point at our blocks. foliage_radius 3 = an enormous crown.",
-  "type": "minecraft:huge_brown_mushroom",
-  "config": {
-    "cap_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": { "Name": "lumenwilds:giant_glowcap_block" }
-    },
-    "stem_provider": {
-      "type": "minecraft:simple_state_provider",
-      "state": { "Name": "lumenwilds:giant_glowcap_stem" }
-    },
-    "foliage_radius": 3
-  }
+  "__comment": "Ordinary Sporefall Jungle Glowcap (Phase 9) — a custom bell-shaped, size- and colour-varied mushroom (small/medium/large; red/azure/violet caps) replacing the flat vanilla huge_brown_mushroom. The town-sized version is the mega-Glowcap structure.",
+  "type": "lumenwilds:glowcap",
+  "config": {}
 }
