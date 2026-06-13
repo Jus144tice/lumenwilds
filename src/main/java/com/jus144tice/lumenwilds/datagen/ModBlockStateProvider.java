@@ -53,6 +53,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
             if (block instanceof LiquidBlock) {
                 continue; // fluid block — hand-authored particle-only blockstate/model
             }
+            if (block instanceof com.jus144tice.lumenwilds.block.AbstractFieldBlock) {
+                continue; // liftshaft field — hand-authored translucent column blockstate/model
+            }
             if (block instanceof RotatedPillarBlock pillar) {
                 if (name.endsWith("_wood")) {
                     // "Wood" (all-bark) reuses its log's side texture on every face.

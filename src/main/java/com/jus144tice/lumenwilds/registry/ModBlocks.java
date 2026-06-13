@@ -934,6 +934,43 @@ public final class ModBlocks {
                             .noOcclusion()
                             .sound(SoundType.AMETHYST));
 
+    // --- Liftshaft fields (Phase 11a; the bible's gravity columns) ------------------------------
+
+    /**
+     * Ascension Field ({@link com.jus144tice.lumenwilds.block.AscensionFieldBlock}) — the upward gravity column
+     * cell. Non-solid, no-collision, unbreakable (strength -1), no BlockItem, {@code noLootTable}; projected by
+     * a Lumen Field Projector (11b) and pre-placed in ruin shafts. Glows (light 7).
+     */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.AscensionFieldBlock> ASCENSION_FIELD =
+            BLOCKS.registerBlock(
+                    "ascension_field",
+                    com.jus144tice.lumenwilds.block.AscensionFieldBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                            .noCollission()
+                            .noLootTable()
+                            .strength(-1.0F)
+                            .lightLevel(state -> 7)
+                            .noOcclusion()
+                            .pushReaction(PushReaction.DESTROY));
+
+    /**
+     * Descent Field ({@link com.jus144tice.lumenwilds.block.DescentFieldBlock}) — the downward gravity column
+     * cell (controlled safe descent). Same plumbing as the ascension field; glows softer (light 5).
+     */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.DescentFieldBlock> DESCENT_FIELD =
+            BLOCKS.registerBlock(
+                    "descent_field",
+                    com.jus144tice.lumenwilds.block.DescentFieldBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_CYAN)
+                            .noCollission()
+                            .noLootTable()
+                            .strength(-1.0F)
+                            .lightLevel(state -> 5)
+                            .noOcclusion()
+                            .pushReaction(PushReaction.DESTROY));
+
     // --- Property + stone-family helpers --------------------------------------------------------
 
     private static BlockBehaviour.Properties glowbrickProps(int light) {

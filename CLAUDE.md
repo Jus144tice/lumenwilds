@@ -190,9 +190,16 @@ the city reads its biome (`VestigeCityPiece#flavorFor`/`#applyFlavor`) and scatt
 lumen reeds, rooted moonstone over the drowned ruin; the swamp's pools do the flooding). Crags + Moonmire added
 to the city biome tag — all three flavors in. **Phase 10 (the Lumenwrights / Vestige Cities) is complete.**
 What is deliberately *not* built (deferred optional tail): a surface resonance "sanctum", ruin hazards/traps,
-the Lumenwright armor trim (art-gated), and the ambient music disc (audio-gated); and the separate **liftshaft
-system** (`docs/lumenwright_liftshafts.txt`) — its gravity-lens/`gravity_lens_fragment` groundwork is already
-laid (10e.2). **Playtest-confirmed (10a–10g):** the full city→vault→restore-engine→open-doors→loot loop works (fixed
+the Lumenwright armor trim (art-gated), and the ambient music disc (audio-gated). **Phase 11 is starting — the
+Lumenwright Liftshafts (`docs/lumenwright_liftshafts.txt`):** the cities' signature gravity-elevator tech. **11a
+(field blocks + ride physics) is in:** two non-solid, no-collision, unbreakable, glowing "gravity column" cells —
+`block.AscensionFieldBlock` (light 7) and `block.DescentFieldBlock` (light 5), sharing `block.AbstractFieldBlock`
+(built like `portal.LumenPortalBlock`: empty shape, `entityInside`, hand-authored translucent model, no BlockItem,
+`noLootTable`). Their `entityInside` applies the bible's *controlled velocity* (not gravity-attribute hacking,
+reusing `event.LumenGravityEvents#lift`'s cap/step/`ClientboundSetEntityMotionPacket` re-sync): ascension eases up
+to +0.40 (sneak holds, a jump past the cap is preserved), descent holds a safe −0.35…−0.45 band; both zero fall
+distance every tick (so descent is a safe drop). **Playtest-confirmed (10a–10g):** the full
+city→vault→restore-engine→open-doors→loot loop works (fixed
 in-session: vault doors, Echo Sentinel spawn in light, guaranteed fragment sources, dry-land placement).
 Roadmap:
 [the plan](.claude/plans/delegated-juggling-locket.md)
@@ -501,6 +508,18 @@ as `File#member`.
   the city centrepiece (10e.2). `Dormant#useItemOn` with a `resonance_core_fragment` → swaps to the Active
   engine (`extends ResonanceCoreBlock`, so it powers the network; shares the `RESONANCE_CORE` BE type).
   `ModBlocks#DORMANT_LIGHT_ENGINE`/`#ACTIVE_LIGHT_ENGINE`.
+- [AbstractFieldBlock.java](src/main/java/com/jus144tice/lumenwilds/block/AbstractFieldBlock.java) +
+  [AscensionFieldBlock.java](src/main/java/com/jus144tice/lumenwilds/block/AscensionFieldBlock.java) +
+  [DescentFieldBlock.java](src/main/java/com/jus144tice/lumenwilds/block/DescentFieldBlock.java) — the
+  Lumenwright liftshaft **gravity-column field cells** (Phase 11a). Built like `portal.LumenPortalBlock`:
+  non-solid/`noCollission`/unbreakable (strength −1)/`noLootTable`, empty `#getShape` (no outline/target),
+  no BlockItem (`ModItems` skip), hand-authored translucent model (`ModBlockStateProvider` skip).
+  `AbstractFieldBlock#entityInside` → `#applyField` + `#resync` (the shared `#approach`/`STEP`/motion-resync
+  helpers, mirroring `event.LumenGravityEvents#lift`). `AscensionFieldBlock` eases vertical speed up to +0.40
+  (sneak holds via `#approach`→0, a jump past the cap is preserved), `DescentFieldBlock` holds the −0.35…−0.45
+  safe band; both `resetFallDistance()` each tick. `#animateTick` drifts `ModParticles.LUMEN_SPORE` up/down.
+  `ModBlocks#ASCENSION_FIELD`/`#DESCENT_FIELD`. **Projected/cleared by the Lumen Field Projector (11b)** and
+  pre-placed in ruin shafts (11c); never hand-placed.
 
 ### fluid/ — Lumenwater (Phase 5e)
 - [LumenwaterBlock.java](src/main/java/com/jus144tice/lumenwilds/fluid/LumenwaterBlock.java) — the

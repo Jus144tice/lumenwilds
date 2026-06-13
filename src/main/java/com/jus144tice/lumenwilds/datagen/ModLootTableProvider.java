@@ -95,6 +95,8 @@ public final class ModLootTableProvider {
                     .map(holder -> (Block) holder.get())
                     .filter(block -> block != ModBlocks.LUMEN_PORTAL.get())
                     .filter(block -> block != ModBlocks.LUMENWATER_BLOCK.get()) // noLootTable fluid block
+                    .filter(block -> block != ModBlocks.ASCENSION_FIELD.get())
+                    .filter(block -> block != ModBlocks.DESCENT_FIELD.get()) // noLootTable liftshaft fields
                     .collect(Collectors.toList());
         }
     }

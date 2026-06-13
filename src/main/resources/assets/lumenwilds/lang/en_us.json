@@ -35,6 +35,8 @@
   "block.lumenwilds.lumen_relay": "Lumen Relay",
   "block.lumenwilds.dormant_light_engine": "Dormant Light Engine",
   "block.lumenwilds.active_light_engine": "Active Light Engine",
+  "block.lumenwilds.ascension_field": "Ascension Field",
+  "block.lumenwilds.descent_field": "Descent Field",
   "item.lumenwilds.resonance_core_fragment": "Resonance Core Fragment",
   "item.lumenwilds.gravity_lens_fragment": "Gravity Lens Fragment",
   "block.lumenwilds.chiseled_moonstone": "Chiseled Moonstone",
