@@ -127,12 +127,13 @@ public final class ModEntityEvents {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        // Echo Sentinel: hostile darkness rule; spawns on the (deep) ground in vault/cave cores then hovers.
+        // Echo Sentinel: a CONSTRUCT guardian — spawns regardless of light (checkAnyLight, not the darkness
+        // rule), so the lit vault spawner + the crystal-lit Undercrown actually produce it.
         event.register(
                 ModEntities.ECHO_SENTINEL.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkMonsterSpawnRules,
+                Monster::checkAnyLightMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }
