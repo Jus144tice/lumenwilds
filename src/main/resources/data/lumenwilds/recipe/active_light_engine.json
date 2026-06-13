@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": {
+      "item": "lumenwilds:lumen_crystal_block"
+    },
+    "G": {
+      "item": "lumenwilds:glowbrick"
+    },
+    "R": {
+      "item": "lumenwilds:resonance_core"
+    }
+  },
+  "pattern": [
+    "GCG",
+    "CRC",
+    "GCG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:active_light_engine"
+  }
+}

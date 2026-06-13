@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "C": {
+      "item": "lumenwilds:lumen_crystal_shard"
+    },
+    "P": {
+      "item": "lumenwilds:glow_pollen"
+    }
+  },
+  "pattern": [
+    " P ",
+    "PCP",
+    " P "
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:lumenbulb"
+  }
+}

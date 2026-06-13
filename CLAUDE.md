@@ -179,7 +179,14 @@ now rolls a **size tier** — ~25% are **Grand** (a larger second building ring 
 Light Engine** monument on the plaza + 1–2 **Vestige Spires**), the rest medium; the **Vestige Spire**
 (`world.structure.VestigeSpirePiece`) is a broken tapering glowbrick tower — shattered upper floors, an exposed
 Lumen-Crystal core, jutting stair fragments, floating debris, and a `chests/spire` reward. "Under a Dead
-Skyline" advancement on reaching a city plaza. Roadmap:
+Skyline" advancement on reaching a city plaza. **10h is in progress** (the finale): **10h.1 (craftability) is
+in** — the buildable Lumenwright tech is now craftable so a player who's looted ancient fragments + mined
+resources can rebuild the kit (Lumen Conduit, Lumenbulb, Memory Crystal from shards, Active Light Engine, +
+aged building variants); the *fragments* stay loot-only (the ruin gate). Still to come in 10h: terrain/
+foundation cleanup, biome city variants, hazards, artifacts, and wiring dormant cores/doors into surface
+cities. **Playtest-confirmed (10a–10g):** the full city→vault→restore-engine→open-doors→loot loop works (fixed
+in-session: vault doors, Echo Sentinel spawn in light, guaranteed fragment sources, dry-land placement).
+Roadmap:
 [the plan](.claude/plans/delegated-juggling-locket.md)
 (10a–10h). What is deliberately
 *not* built yet: the final art/audio/polish pass (Phase 9) — and the
@@ -893,7 +900,9 @@ as `File#member`.
   `#buildShimmerstoneRecipes` (smelting + 2×2 crafting + stonecutter via helpers `#smelt`/`#square2x2`/`#cut`),
   `#buildLuminiteRecipes` (10a — ore/raw → ingot smelt+blast, ingot ↔ block, the Glowbrick craft
   `L I L / I C I / L I L`, + Glowbrick family cuts/shapes), `#buildResonanceRecipes` (10e — Resonance Core
-  from a fragment, Ancient Door from glowbrick, Gravity Lens from fragments + shimmerstone, Lumen Relay).
+  from a fragment, Ancient Door from glowbrick, Gravity Lens from fragments + shimmerstone, Lumen Relay),
+  `#buildRebuildRecipes` (10h.1 "rebuild the Lumenwrights' kit" — Lumen Conduit, Lumenbulb, Memory Crystal
+  (4 shards), Active Light Engine, + aged-block stonecutter cuts; the *fragments* stay loot-only).
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
   `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL` + `LUMENWATER_BLOCK`
   (both `noLootTable`), with slab (drops 2) and door (drops 1) special-cased; `memory_crystal` →

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "C": {
+      "item": "lumenwilds:lumen_crystal_shard"
+    },
+    "G": {
+      "item": "lumenwilds:glowbrick"
+    }
+  },
+  "pattern": [
+    "GCG"
+  ],
+  "result": {
+    "count": 3,
+    "id": "lumenwilds:lumen_conduit"
+  }
+}

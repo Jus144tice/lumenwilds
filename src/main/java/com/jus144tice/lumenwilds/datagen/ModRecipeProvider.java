@@ -77,6 +77,71 @@ public class ModRecipeProvider extends RecipeProvider {
         buildLumenCrystalRecipes(recipeOutput);
         buildLuminiteRecipes(recipeOutput);
         buildResonanceRecipes(recipeOutput);
+        buildRebuildRecipes(recipeOutput);
+    }
+
+    /**
+     * "Rebuild the Lumenwrights' kit" (Phase 10h.1) — once the player has looted ancient fragments + mined the
+     * resources, the buildable tech becomes craftable: Lumen Conduit, Lumenbulb, Memory Crystal (repaired from
+     * shards), the Active Light Engine, and the aged/decay building variants. The fragments themselves stay
+     * loot-only (the ruin gate).
+     */
+    private void buildRebuildRecipes(RecipeOutput out) {
+        // Lumen Conduit — glowbrick + a crystal core.
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.LUMEN_CONDUIT.get(), 3)
+                .pattern("GCG")
+                .define('G', ModBlocks.GLOWBRICK.get())
+                .define('C', ModItems.LUMEN_CRYSTAL_SHARD.get())
+                .unlockedBy("has_glowbrick", has(ModBlocks.GLOWBRICK.get()))
+                .save(out);
+
+        // Lumenbulb — a glowstone-like living light.
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.LUMENBULB.get(), 1)
+                .pattern(" P ")
+                .pattern("PCP")
+                .pattern(" P ")
+                .define('P', ModItems.GLOW_POLLEN.get())
+                .define('C', ModItems.LUMEN_CRYSTAL_SHARD.get())
+                .unlockedBy("has_glow_pollen", has(ModItems.GLOW_POLLEN.get()))
+                .save(out);
+
+        // Memory Crystal — reassembled from four shards.
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MEMORY_CRYSTAL.get(), 1)
+                .pattern("SS")
+                .pattern("SS")
+                .define('S', ModItems.MEMORY_CRYSTAL_SHARD.get())
+                .unlockedBy("has_memory_crystal_shard", has(ModItems.MEMORY_CRYSTAL_SHARD.get()))
+                .save(out);
+
+        // Active Light Engine — a full-scale core (built around a Resonance Core); the city centrepiece.
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.ACTIVE_LIGHT_ENGINE.get(), 1)
+                .pattern("GCG")
+                .pattern("CRC")
+                .pattern("GCG")
+                .define('G', ModBlocks.GLOWBRICK.get())
+                .define('C', ModBlocks.LUMEN_CRYSTAL_BLOCK.get())
+                .define('R', ModBlocks.RESONANCE_CORE.get())
+                .unlockedBy("has_resonance_core", has(ModBlocks.RESONANCE_CORE.get()))
+                .save(out);
+
+        // Aged building variants — stonecutter cuts from Glowbrick / Sporeglass (for the ruined look).
+        Block g = ModBlocks.GLOWBRICK.get();
+        cut(out, g, ModBlocks.CRACKED_GLOWBRICK.get(), 1);
+        cut(out, g, ModBlocks.ANCIENT_GLOWBRICK.get(), 1);
+        cut(out, g, ModBlocks.OVERGROWN_GLOWBRICK.get(), 1);
+        cut(out, ModBlocks.SPOREGLASS.get(), ModBlocks.BROKEN_SPOREGLASS.get(), 1);
+
+        // Mossy / rooted moonstone (like vanilla mossy stone bricks).
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MOSSY_MOONSTONE_BRICKS.get(), 1)
+                .requires(ModBlocks.MOONSTONE_BRICKS.get())
+                .requires(Items.MOSS_BLOCK)
+                .unlockedBy("has_moonstone_bricks", has(ModBlocks.MOONSTONE_BRICKS.get()))
+                .save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.ROOTED_MOONSTONE.get(), 1)
+                .requires(ModBlocks.MOONSTONE.get())
+                .requires(Items.HANGING_ROOTS)
+                .unlockedBy("has_moonstone", has(ModBlocks.MOONSTONE.get()))
+                .save(out);
     }
 
     /** Resonance tech (Phase 10e): the functional Resonance Core (from a fragment) + the Ancient Door. */
