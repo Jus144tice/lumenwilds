@@ -188,8 +188,11 @@ the city reads its biome (`VestigeCityPiece#flavorFor`/`#applyFlavor`) and scatt
 **overgrown** (Glowroot Forest / Sporefall Jungle — glowvine/glow-fern/Glowroot-log roots), **cracked-spire**
 (Glasspetal Crags — Glasspetal Clusters + exposed Luminite veins), and **sunken** (Moonmire — glow algae,
 lumen reeds, rooted moonstone over the drowned ruin; the swamp's pools do the flooding). Crags + Moonmire added
-to the city biome tag — all three flavors in. Still to come in 10h: hazards, artifacts (armor trim / ambient
-disc), and deeper surface resonance wiring. **Playtest-confirmed (10a–10g):** the full city→vault→restore-engine→open-doors→loot loop works (fixed
+to the city biome tag — all three flavors in. **Phase 10 (the Lumenwrights / Vestige Cities) is complete.**
+What is deliberately *not* built (deferred optional tail): a surface resonance "sanctum", ruin hazards/traps,
+the Lumenwright armor trim (art-gated), and the ambient music disc (audio-gated); and the separate **liftshaft
+system** (`docs/lumenwright_liftshafts.txt`) — its gravity-lens/`gravity_lens_fragment` groundwork is already
+laid (10e.2). **Playtest-confirmed (10a–10g):** the full city→vault→restore-engine→open-doors→loot loop works (fixed
 in-session: vault doors, Echo Sentinel spawn in light, guaranteed fragment sources, dry-land placement).
 Roadmap:
 [the plan](.claude/plans/delegated-juggling-locket.md)
