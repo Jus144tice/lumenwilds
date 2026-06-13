@@ -150,15 +150,13 @@ public class VestigeVaultPiece extends StructurePiece {
             for (int x = 1; x <= HALF_W; x++) {
                 set(level, box, origin.offset(dir * x, 0, 0), conduit);
             }
-            // Ancient door set into the wall opening (carve a 1×2 gap, place both halves).
+            // Ancient door set into the wall opening (replaces the wall block; both halves).
             BlockPos doorLower = origin.offset(dir * (HALF_W + 1), 0, 0);
-            Direction facing = dir > 0 ? Direction.WEST : Direction.EAST; // open inward
-            placeDoor(level, box, doorLower, facing);
+            Direction outward = dir > 0 ? Direction.EAST : Direction.WEST; // door → niche direction
+            placeDoor(level, box, doorLower, outward.getOpposite()); // door opens inward
 
-            // Loot alcove behind the door.
-            BlockPos alcove = origin.offset(dir * (HALF_W + 2), 0, 0);
-            carveAlcove(level, box, alcove);
-            placeChest(level, box, rand, alcove, dir > 0 ? VAULT : ENGINEERS, facing);
+            // Loot niche one block behind the door — never touches the door column.
+            alcove(level, box, rand, doorLower, outward, dir > 0 ? VAULT : ENGINEERS);
         }
 
         // Echo Sentinel spawner in a back corner (its eternal guard).
@@ -177,18 +175,32 @@ public class VestigeVaultPiece extends StructurePiece {
         set(level, box, lower.above(), door.setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER));
     }
 
-    private void carveAlcove(WorldGenLevel level, BoundingBox box, BlockPos center) {
+    /**
+     * A loot niche one block out from the door ({@code outward}), with a glowbrick shell on every face
+     * <em>except</em> the door side — so the Ancient Door (and its opening) stays intact. Chest faces the door.
+     */
+    private void alcove(
+            WorldGenLevel level,
+            BoundingBox box,
+            RandomSource rand,
+            BlockPos doorLower,
+            Direction outward,
+            ResourceKey<LootTable> loot) {
         BlockState air = Blocks.AIR.defaultBlockState();
         BlockState glow = ModBlocks.GLOWBRICK.get().defaultBlockState();
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dz = -1; dz <= 1; dz++) {
-                for (int dy = -1; dy <= 2; dy++) {
-                    BlockPos p = center.offset(dx, dy, dz);
-                    boolean shell = dy == -1 || dy == 2 || Math.abs(dx) == 1 || Math.abs(dz) == 1;
-                    set(level, box, p, dy >= 0 && dx == 0 && dz == 0 ? air : (shell ? glow : air));
-                }
-            }
+        BlockPos inner = doorLower.relative(outward); // the niche cavity (chest sits here)
+
+        set(level, box, inner, air);
+        set(level, box, inner.above(), air);
+        set(level, box, inner.below(), glow); // floor
+        set(level, box, inner.above(2), glow); // ceiling
+        set(level, box, inner.relative(outward), glow); // back wall (lower)
+        set(level, box, inner.relative(outward).above(), glow); // back wall (upper)
+        for (Direction side : new Direction[] {outward.getClockWise(), outward.getCounterClockWise()}) {
+            set(level, box, inner.relative(side), glow);
+            set(level, box, inner.relative(side).above(), glow);
         }
+        placeChest(level, box, rand, inner, loot, outward.getOpposite());
     }
 
     /** A scatter of lore + dead-tech atmosphere: Memory Crystals, dim conduit accents on the floor. */

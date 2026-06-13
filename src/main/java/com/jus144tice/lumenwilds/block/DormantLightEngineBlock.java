@@ -6,10 +6,13 @@ package com.jus144tice.lumenwilds.block;
 
 import com.jus144tice.lumenwilds.registry.ModBlocks;
 import com.jus144tice.lumenwilds.registry.ModItems;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -40,7 +43,8 @@ public class DormantLightEngineBlock extends Block {
             InteractionHand hand,
             BlockHitResult hit) {
         if (!stack.is(ModItems.RESONANCE_CORE_FRAGMENT.get())) {
-            return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            hint(player);
+            return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
         if (!level.isClientSide) {
             level.setBlockAndUpdate(pos, ModBlocks.ACTIVE_LIGHT_ENGINE.get().defaultBlockState());
@@ -50,5 +54,20 @@ public class DormantLightEngineBlock extends Block {
             }
         }
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(
+            BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
+        hint(player);
+        return InteractionResult.sidedSuccess(level.isClientSide);
+    }
+
+    /** Tells the player what the dead engine needs (a Resonance Core Fragment) — a gentle discovery nudge. */
+    private static void hint(Player player) {
+        player.displayClientMessage(
+                Component.literal("The Light Engine is dormant. It hungers for a Resonance Core Fragment.")
+                        .withStyle(ChatFormatting.AQUA, ChatFormatting.ITALIC),
+                true);
     }
 }
