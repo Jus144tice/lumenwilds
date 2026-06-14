@@ -37,9 +37,9 @@ import org.slf4j.Logger;
  * lives in the {@code registry} package; behaviour lives in {@code portal}, {@code item},
  * {@code world}, {@code effects} and {@code event}.</p>
  *
- * <p>This is Phase 1 scaffolding — see {@code docs/IMPLEMENTATION_PLAN.md}. Blocks, items, the
- * creative tab, the portal block/striker, and the dimension keys exist and compile; final worldgen,
- * mobs, structures and full portal behaviour are deliberately left as TODOs.</p>
+ * <p>Feature-complete as of 1.0 — the portal, dimension, worldgen/biomes, mobs, structures (incl. the
+ * Lumenwright Vestige Cities + liftshaft mines) and full portal behaviour are all in. See
+ * {@code docs/IMPLEMENTATION_PLAN.md} and {@code CHANGELOG.md} for the roadmap/history.</p>
  */
 @Mod(Lumenwilds.MOD_ID)
 public final class Lumenwilds {
@@ -52,7 +52,11 @@ public final class Lumenwilds {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public Lumenwilds(IEventBus modBus, ModContainer container) {
-        LOGGER.info("[{}] Initialising {} (scaffolding build).", MOD_ID, MOD_NAME);
+        LOGGER.info(
+                "[{}] Initialising {} v{}.",
+                MOD_ID,
+                MOD_NAME,
+                container.getModInfo().getVersion());
 
         // Register the Glowwood WoodType/BlockSetType BEFORE blocks that reference them are built.
         ModWoodTypes.init();

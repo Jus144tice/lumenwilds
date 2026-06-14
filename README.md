@@ -1,13 +1,15 @@
 # The Lumenwilds
 
-An alien, bioluminescent custom dimension for Minecraft — reached through a portal you build and
-ignite yourself. Blue grass, dim twilight under bright moonlight, glowing plants, low gravity, and
-native living light sources (planned).
+An alien, bioluminescent **custom dimension** for Minecraft — reached through a portal you build and
+ignite yourself. Dim twilight under a giant pale moon, blue-green glowing flora, low gravity, native
+living light, seven biomes, ten native mobs, and the ruined cities of a vanished civilization (the
+**Lumenwrights**) with functional crystal-resonance tech and gravity liftshafts.
 
-> **Status: scaffolding (Phase 1).** The project compiles and loads, with placeholder blocks/items, a
-> creative tab, the portal frame block + igniter, and the dimension keys in place. Worldgen, mobs,
-> structures, textures and full portal behaviour are intentionally placeholders. See
-> [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md).
+> **Status: 1.0 — released.** Feature-complete: working portal + dimension, low-gravity movement, seven
+> biomes over bespoke terrain, a full atmosphere (sky/particles/soundscape/day-cycle/events), complete
+> building-block sets, ten native mobs + a ruin guardian, status effects / food / brewing, an advancement
+> progression, the Vestige Cities + Resonance subsystem, and the Lumenwright liftshaft mines. See the
+> [latest release](https://github.com/Jus144tice/lumenwilds/releases/latest) and [CHANGELOG.md](CHANGELOG.md).
 
 ## At a glance
 
@@ -16,69 +18,62 @@ native living light sources (planned).
 | Minecraft version | 1.21.1 |
 | Loader | NeoForge (21.1.233) |
 | Java | 21 |
-| Build | Gradle (wrapper, ModDevGradle) |
 | Mod id | `lumenwilds` |
 | Main package | `com.jus144tice.lumenwilds` |
+| License | Apache-2.0 |
 
-## Portal concept
+## Install
 
-- **Frame:** Lumenbound Stone (`lumenwilds:lumenbound_stone`) — *not* vanilla lodestone.
-- **Ignition:** Lumen Striker (`lumenwilds:lumen_striker`).
-- **Interior:** Lumen Portal (`lumenwilds:lumen_portal`).
-- **Destination:** The Lumenwilds (`lumenwilds:lumenwilds`).
+Download `lumenwilds-<version>.jar` from the
+[releases page](https://github.com/Jus144tice/lumenwilds/releases/latest) and drop it into the `mods/`
+folder of a **NeoForge 1.21.1 (21.1.x)** client or server running **Java 21**.
 
-Lumenbound Stone is crafted from Overworld stonework + amethyst resonance + Nether light — mid-game,
-not netherite-expensive. (Lodestone was dropped from the original design as too expensive for this
-progression point.)
+## Getting started — open the portal
 
-### Recipes
+1. Craft a **Lumen Striker** — vertical `I / A / G` (I = iron ingot, A = amethyst shard, G = glow ink sac).
+2. Craft **Lumenbound Stone** (makes 4) — `C G C / S A S / C G C` (C = chiseled stone bricks, G = glowstone
+   dust, S = smooth stone, A = amethyst shard). The glowstone makes this a **mid-game** gate.
+3. Build a frame with a **2-wide × 3-tall opening** (like a small Nether portal, in Lumenbound Stone), then
+   **right-click it with the Lumen Striker**. Step through the glowing portal into the Lumenwilds.
 
-- **Lumenbound Stone** (makes 4): `C G C / S A S / C G C` — C = chiseled stone bricks, G = glowstone
-  dust, S = smooth stone, A = amethyst shard.
-- **Lumen Striker** (makes 1): vertical `I / A / G` — I = iron ingot, A = amethyst shard, G = glow ink
-  sac.
+Prefer to discover it? **Lumenbound Ruins** generate in the Overworld as the in-world tutorial —
+`/locate structure lumenwilds:lumenbound_ruins`.
 
-## Build
+> The frame is **Lumenbound Stone**, never vanilla lodestone (dropped as too expensive for this
+> progression point). Destination: `lumenwilds:lumenwilds`.
 
-JDK 21 must be installed (`JAVA_HOME` pointing at it).
+## What's inside
+
+- **Dimension & travel** — player-built portal, **Lumen Anchors** for precise return travel, low-gravity
+  movement, a bespoke twilight **sky** under the giant moon *Veyra*, a half-rate day cycle, ambient events,
+  particles, and a soundscape.
+- **Seven biomes** — Lumen Glade, Glowroot Forest, Glasspetal Crags, Sporefall Jungle, Moonmire, the
+  underground Undercrown Caverns, and the rare Stillbloom Basin — over alien cliffy terrain with glowing
+  **Lumenwater** seas and deep noise-caves, full of signature flora and worldgen.
+- **Ten native mobs** + the ruin-guardian **Echo Sentinel**, each with bespoke models and emissive glow.
+- **Building sets** — Glowwood, Moonstone, Deep Moonstone, Shimmerstone, Sporeglass, Lumen Crystal,
+  Luminite, and the luminous **Glowbrick** family — plus status effects + brewing, foods, and advancements.
+- **The Lumenwrights / Vestige Cities** — rare ruined alien cities (Outpost → Medium → Grand) with a
+  functional **Resonance** power subsystem (cores, conduits, ancient doors, gravity lenses, restorable Light
+  Engines), Memory-Crystal lore, and a buried Vault.
+- **Lumenwright Liftshafts** — craftable gravity-elevator tech (Lumen Field Projector + Gravity Repeaters)
+  and **Abandoned Luminite Mines** with working liftshafts built from real, reverse-engineerable components.
+  Find the nearest mine-bearing city with `/locate structure lumenwilds:vestige_mine`.
+
+## Building from source
+
+JDK 21 required (`JAVA_HOME` pointing at it).
 
 ```bash
 # Windows (PowerShell): $env:JAVA_HOME = 'C:\Program Files\Java\jdk-21'
 ./gradlew build            # spotlessApply -> compile -> tests -> jar (build/libs/lumenwilds-<ver>.jar)
-./gradlew spotlessApply    # auto-format ("prettier for Java"); runs automatically before compileJava
-```
-
-## Run a dev client
-
-```bash
-./gradlew runClient        # launches a dev Minecraft client with the mod loaded
+./gradlew runClient        # dev client with the mod loaded
 ./gradlew runServer        # dev server
-./gradlew runData          # (optional) regenerate placeholder assets into src/generated/resources
 ```
 
-In the client you should see the **The Lumenwilds** creative tab containing every placeholder block
-and item; crafting the Lumenbound Stone + Lumen Striker; and a log line when the Lumen Striker is used
-on Lumenbound Stone ("portal activation attempted").
-
-## Roadmap (summary)
-
-1. **Phase 1 — Scaffolding** (current): registries, placeholder content, creative tab, frame block +
-   striker, dimension keys.
-2. **Phase 2** — working dimension entry, basic terrain/biome, real portal activation + teleport.
-3. **Phase 3** — biomes, surface blocks, trees/plants, Lumenwater, lighting blocks.
-4. **Phase 4** — low gravity, ambient effects, weather/sporefall, custom sky/fog.
-5. **Phase 5** — mobs, structures, loot, progression.
-6. **Phase 6** — polish, full datagen, JEI compat, config, balancing.
-
-Full detail in [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). The dimension's design
-source of truth lives in [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md)
-(to be filled in).
-
-## ⚠️ Placeholders
-
-Textures are flat-colour placeholders; models are simple cubes; the dimension reuses vanilla terrain;
-the portal does not teleport yet; there are no mobs/structures/worldgen. None of this is final — it is
-scaffolding to build on.
+Contributor/AI navigation map: [CLAUDE.md](CLAUDE.md). Roadmap & history:
+[docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md), [CHANGELOG.md](CHANGELOG.md). Design source of
+truth: [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
 
 ## License
 
