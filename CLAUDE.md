@@ -1324,8 +1324,11 @@ as `File#member`.
   run forceload add …` (delete before commit).
 - **`DeferredRegister.getEntries()` yields `DeferredHolder`**, not `DeferredBlock`/`DeferredItem` —
   iterate with `var`. `registerSimpleBlockItem(...)` returns `DeferredItem<BlockItem>`.
-- **`@EventBusSubscriber(bus = Bus.MOD)` warns "deprecated for removal"** — still the correct route for
-  `GatherDataEvent` on 21.1.233; harmless.
+- **`@EventBusSubscriber` takes NO `bus` param** (NeoForge 21.1.1+): the `bus`/`Bus` value is **ignored** and
+  deprecated-for-removal — the annotation auto-routes each `@SubscribeEvent` to the correct bus by event type
+  (events implementing `IModBusEvent` → mod bus, everything else → `NeoForge.EVENT_BUS`). Just write
+  `@EventBusSubscriber(modid = MOD_ID)` (+ `value = Dist.CLIENT` for client-only); a class can even mix mod-bus
+  and game-bus listeners. (Verified: datagen + all registration subscribers fire with the param removed.)
 - **Datagen output is OFF the resource path on purpose** (no `srcDir 'src/generated/resources'`) so it
   can't clash with committed hand-authored assets.
 - **Empty stub registries with no entries are still bus-registered** (harmless) except `ModFeatures`,

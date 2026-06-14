@@ -17,7 +17,7 @@ import net.neoforged.neoforge.event.BlockEntityTypeAddBlocksEvent;
  * {@code HANGING_SIGN}), so rather than creating a new {@link BlockEntityType} we add our blocks to the
  * vanilla ones via NeoForge's {@link BlockEntityTypeAddBlocksEvent} (a mod-bus event).
  */
-@EventBusSubscriber(modid = Lumenwilds.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Lumenwilds.MOD_ID)
 public final class ModBlockEntityTypes {
 
     private ModBlockEntityTypes() {}

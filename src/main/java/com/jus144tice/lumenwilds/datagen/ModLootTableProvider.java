@@ -51,7 +51,9 @@ public final class ModLootTableProvider {
         @Override
         protected void generate() {
             for (Block block : lootableBlocks()) {
-                String name = block.builtInRegistryHolder().key().location().getPath();
+                String name = net.minecraft.core.registries.BuiltInRegistries.BLOCK
+                        .getKey(block)
+                        .getPath();
                 if (block instanceof SlabBlock) {
                     add(block, this::createSlabItemTable); // double slab drops 2
                 } else if (block instanceof DoorBlock) {

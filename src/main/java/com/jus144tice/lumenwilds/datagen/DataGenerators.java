@@ -23,7 +23,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
  * <p>Providers are deliberately tolerant: they emit cube_all/generated placeholders, the two required
  * recipes, drop-self loot, lang for every registered object, and basic mining tags.</p>
  */
-@EventBusSubscriber(modid = Lumenwilds.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Lumenwilds.MOD_ID)
 public final class DataGenerators {
 
     private DataGenerators() {}

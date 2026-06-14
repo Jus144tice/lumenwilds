@@ -44,7 +44,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
  * vanilla water still/flow animations with a teal tint, so Lumenwater reads as glowing teal water without
  * bespoke fluid textures yet.</p>
  */
-@EventBusSubscriber(modid = Lumenwilds.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = Lumenwilds.MOD_ID, value = Dist.CLIENT)
 public final class LumenwildsClient {
 
     private LumenwildsClient() {}

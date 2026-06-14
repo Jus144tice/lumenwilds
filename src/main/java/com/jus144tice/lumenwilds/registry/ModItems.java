@@ -105,7 +105,7 @@ public final class ModItems {
                     .food(new FoodProperties.Builder()
                             .nutrition(4)
                             .saturationModifier(0.3F)
-                            .effect(new MobEffectInstance(MobEffects.NIGHT_VISION, 140, 0), 1.0F)
+                            .effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 140, 0), 1.0F)
                             .build()));
 
     /** Glowberries — a sweet alien berry harvested from the Glowberry Bush; a quick snack with a little glow. */
@@ -126,7 +126,7 @@ public final class ModItems {
                     .food(new FoodProperties.Builder()
                             .nutrition(2)
                             .saturationModifier(0.2F)
-                            .effect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F)
+                            .effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F)
                             .build()));
 
     public static final DeferredItem<Item> AIR_GEL = ITEMS.registerSimpleItem("air_gel");
@@ -141,7 +141,7 @@ public final class ModItems {
                             .nutrition(6)
                             .saturationModifier(0.6F)
                             .usingConvertsTo(Items.BOWL)
-                            .effect(new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0), 1.0F)
+                            .effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0), 1.0F)
                             .build()));
 
     /** Lumenwater bucket (Phase 5e) — picks up/places the {@link ModFluids#LUMENWATER} source. */

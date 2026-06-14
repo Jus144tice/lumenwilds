@@ -32,7 +32,7 @@ import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
  * and registers its spawn placement. The per-biome spawn lists (which biomes / how many) live in the biome
  * JSON {@code spawners}; this just declares <em>where on the ground</em> a type may spawn.
  */
-@EventBusSubscriber(modid = Lumenwilds.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Lumenwilds.MOD_ID)
 public final class ModEntityEvents {
 
     private ModEntityEvents() {}

@@ -52,8 +52,8 @@ public class Mirelurker extends Monster {
     // canBreatheUnderwater() method is final), added in data/minecraft/tags/entity_type/.
 
     @Override
-    public boolean isPushedByFluid() {
-        return false; // stays put in the water, lurking
+    public boolean isPushedByFluid(net.neoforged.neoforge.fluids.FluidType type) {
+        return false; // stays put in the water, lurking (FluidType-sensitive — the no-arg form is deprecated)
     }
 
     @Override

@@ -16,6 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
@@ -165,7 +166,7 @@ public final class LumenEventManager {
         if (level.isLoaded(pos)
                 && level.getBlockState(pos).isAir()
                 && level.getBlockState(pos.above()).isAir()
-                && level.getBlockState(pos.below()).isSolid()) {
+                && level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), net.minecraft.core.Direction.UP)) {
             spawn(level, type, pos);
         }
     }
@@ -181,7 +182,7 @@ public final class LumenEventManager {
                 pos.getZ() + 0.5,
                 level.getRandom().nextFloat() * 360.0F,
                 0.0F);
-        mob.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
+        EventHooks.finalizeMobSpawn(mob, level, level.getCurrentDifficultyAt(pos), MobSpawnType.EVENT, null);
         level.addFreshEntity(mob);
     }
 }

@@ -17,7 +17,7 @@ import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
  * Brewing mixes for the Lumenwilds potions (Phase 8h). Each is an <b>awkward potion + a native ingredient</b>:
  * Air Gel → Lightfoot, Glow Pollen → Glowmarked, Spore Sac → Sporeblind, Living Fiber → Rooted. Mod-bus.
  */
-@EventBusSubscriber(modid = Lumenwilds.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Lumenwilds.MOD_ID)
 public final class ModBrewing {
 
     private ModBrewing() {}

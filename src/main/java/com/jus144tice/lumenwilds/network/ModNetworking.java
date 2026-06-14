@@ -18,7 +18,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
  * on the client and writes the common {@link LumenEventClientState} (no client-only types, so this class is
  * safe to load on the dedicated server during registration).</p>
  */
-@EventBusSubscriber(modid = Lumenwilds.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Lumenwilds.MOD_ID)
 public final class ModNetworking {
 
     private ModNetworking() {}
