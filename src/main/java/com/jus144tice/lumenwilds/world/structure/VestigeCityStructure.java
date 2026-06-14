@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.world.structure;
 
 import com.jus144tice.lumenwilds.registry.ModStructures;
 import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Optional;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
@@ -20,13 +21,26 @@ import net.minecraft.world.level.levelgen.structure.StructureType;
  * collapsed crescent houses / hollow pods / archways / root chambers), heavily decayed and overgrown via the
  * shared {@link VestigeDecay} processors. Rare. A single procedural {@link VestigeCityPiece} at the surface
  * chunk centre (anchored to {@code OCEAN_FLOOR_WG}).
+ *
+ * <p>The {@code guaranteed_mine} config field makes every city of this instance carry a Lumenwright liftshaft
+ * mine — used by the separate {@code lumenwilds:vestige_mine} datapack structure so a player can
+ * {@code /locate structure lumenwilds:vestige_mine} the nearest ancient city that's guaranteed to have one
+ * (the default {@code vestige_city} keeps the rarer grand-always / medium-~40% roll).</p>
  */
 public class VestigeCityStructure extends Structure {
 
-    public static final MapCodec<VestigeCityStructure> CODEC = simpleCodec(VestigeCityStructure::new);
+    public static final MapCodec<VestigeCityStructure> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+                    settingsCodec(inst),
+                    com.mojang.serialization.Codec.BOOL
+                            .optionalFieldOf("guaranteed_mine", false)
+                            .forGetter(s -> s.guaranteedMine))
+            .apply(inst, VestigeCityStructure::new));
 
-    public VestigeCityStructure(Structure.StructureSettings settings) {
+    private final boolean guaranteedMine;
+
+    public VestigeCityStructure(Structure.StructureSettings settings, boolean guaranteedMine) {
         super(settings);
+        this.guaranteedMine = guaranteedMine;
     }
 
     @Override
@@ -58,7 +72,7 @@ public class VestigeCityStructure extends Structure {
         int spireSeed = context.random().nextInt();
         // A Lumenwright liftshaft + abandoned mine: a major discovery, so not in every city — grand cities
         // always, medium ~40%. The dais sits offset from the plaza (clear of the central vault shaft).
-        boolean mine = tier > 0 || context.random().nextInt(100) < 40;
+        boolean mine = guaranteedMine || tier > 0 || context.random().nextInt(100) < 40;
         double mineAng = context.random().nextDouble() * Math.PI * 2.0;
         // Out at the city edge (past the inner building rings + spires) so the dais is a distinct, spottable
         // satellite, not lost in the dense core.

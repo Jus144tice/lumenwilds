@@ -1,0 +1,12 @@
+{
+  "__comment": "Guaranteed-mine Vestige Cities — a bit rarer than regular cities, with a distinct salt so they place independently. /locate structure lumenwilds:vestige_mine finds the nearest ancient city that has a mineshaft.",
+  "structures": [
+    { "structure": "lumenwilds:vestige_mine", "weight": 1 }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 48,
+    "separation": 16,
+    "salt": 588213047
+  }
+}

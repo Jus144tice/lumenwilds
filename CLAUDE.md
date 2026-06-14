@@ -821,8 +821,13 @@ as `File#member`.
   Memory Crystal). `#placeChest` drops Reliquary/Cache; `#floorAndFoundation` roots stamps. Size constants
   `#PLAZA_R`/`#CITY_R`. Bound to `ModStructures#VESTIGE_CITY`. **`findGenerationPoint` also adds a buried
   `VestigeVaultPiece` ~22 below the plaza (10f.2), rolls the size `tier` (10g), rejects below-sea-level
-  placements (dry-land only), and rolls a `VestigeMinePiece` (11c — grand always / medium ~40%, offset ~12 from
-  the plaza).** **10h.3:** `#flavorFor`/`#applyFlavor` read the biome and scatter overgrown
+  placements (dry-land only), samples the biome for `flavor`, and rolls a `VestigeMinePiece` (11c — grand always
+  / medium ~40%, offset ~22 to the city edge).** **`VestigeCityStructure` has a `guaranteed_mine` codec field**
+  (RecordCodecBuilder, not `simpleCodec`): the default `vestige_city` instance leaves it false (the rare roll),
+  while a second datapack structure **`lumenwilds:vestige_mine` sets it true** so every such city has a mine —
+  making it **`/locate`-able** (`/locate structure lumenwilds:vestige_mine` = the nearest ancient city with a
+  mineshaft; its own `structure_set`, salt, biomes-tag-reuse, and in the `vestige_city` structure tag). **10h.3:**
+  `#flavorFor`/`#applyFlavor` read the biome and scatter overgrown
   (forest/jungle), cracked-spire (Crags), or sunken (Moonmire) accents.
 - [VestigeVaultPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeVaultPiece.java) —
   the **Vestige Vault** (10f.2), a sub-piece of the city (`ModStructures#VESTIGE_VAULT_PIECE`, no own structure
@@ -1150,10 +1155,13 @@ as `File#member`.
   **Small Vestige Outpost** (10b) — `structure/vestige_outpost.json` + `structure_set` (spacing 28/sep 9, in
   glade/forest/jungle/basin) + `chests/ruined_cache` loot, and the **Medium Vestige City** (10d) —
   `structure/vestige_city.json` (with a `spawn_overrides.monster` → shade_stalker + sporeling) + `structure_set`
-  (rare, spacing 40/sep 13) + `chests/ruined_cache`/`chests/scholars_reliquary` loot, plus a
-  `tags/worldgen/structure/vestige_city.json` structure tag (groups all Vestige ruins — outpost + city — read
-  by the `vestiges_of_light` advancement) — each with its `tags/worldgen/biome/has_structure/<name>.json` biome
-  tag. **10c** adds `chests/scholars_reliquary` (lore/crafting loot) + a `tags/item/glyph_tablets.json` item
+  (rare, spacing 40/sep 13) + `chests/ruined_cache`/`chests/scholars_reliquary` loot, and the
+  **`vestige_mine`** (11c) — `structure/vestige_mine.json` (same `lumenwilds:vestige_city` type but
+  `"guaranteed_mine": true`) + `structure_set` (spacing 48/sep 16, distinct salt) so `/locate structure
+  lumenwilds:vestige_mine` finds the nearest ancient city with a mineshaft, plus a
+  `tags/worldgen/structure/vestige_city.json` structure tag (groups all Vestige ruins — outpost + city + mine —
+  read by the `vestiges_of_light` advancement) — each with its `tags/worldgen/biome/has_structure/<name>.json`
+  biome tag (`vestige_mine` reuses the city's). **10c** adds `chests/scholars_reliquary` (lore/crafting loot) + a `tags/item/glyph_tablets.json` item
   tag. **10f.2:** the city also generates a buried `VestigeVaultPiece` (no JSON — added in code), with
   `chests/vault` (high-tier) + `chests/engineers_cache` (tech) loot. **10g:** grand cities add `VestigeSpirePiece`
   towers (in code) with `chests/spire` loot. **11c:** some cities add a `VestigeMinePiece` (in code) with

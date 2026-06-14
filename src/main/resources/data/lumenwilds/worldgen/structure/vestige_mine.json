@@ -1,0 +1,17 @@
+{
+  "__comment": "A Vestige City that ALWAYS carries a Lumenwright liftshaft mine (guaranteed_mine). Same code as vestige_city; locatable via /locate structure lumenwilds:vestige_mine so a player can find the nearest ancient city with a mineshaft.",
+  "type": "lumenwilds:vestige_city",
+  "guaranteed_mine": true,
+  "biomes": "#lumenwilds:has_structure/vestige_city",
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "spawn_overrides": {
+    "monster": {
+      "bounding_box": "piece",
+      "spawns": [
+        { "type": "lumenwilds:shade_stalker", "weight": 2, "minCount": 1, "maxCount": 2 },
+        { "type": "lumenwilds:sporeling", "weight": 3, "minCount": 2, "maxCount": 4 }
+      ]
+    }
+  }
+}
