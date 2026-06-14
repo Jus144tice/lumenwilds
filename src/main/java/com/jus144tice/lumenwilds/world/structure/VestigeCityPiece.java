@@ -58,19 +58,26 @@ public class VestigeCityPiece extends StructurePiece {
     private final BlockPos origin;
     /** 0 = medium, 1 = grand. */
     private final int tier;
-    /** Biome flavor, derived per-gen from the biome at the origin: 0 = standard, 1 = overgrown, 2 = cracked. */
-    private int flavor;
+    /**
+     * Biome flavor (0 = standard, 1 = overgrown, 2 = cracked-spire, 3 = sunken). Computed at <b>placement</b>
+     * ({@link #flavorFor(net.minecraft.core.Holder)}) and passed in — NOT read from the world in
+     * {@code postProcess}, where {@code level.getBiome(origin)} can request an unavailable chunk and crash
+     * chunk-gen (a position-dependent fault). See the "getBiome in postProcess" gotcha.
+     */
+    private final int flavor;
 
-    public VestigeCityPiece(BlockPos origin, int tier) {
+    public VestigeCityPiece(BlockPos origin, int tier, int flavor) {
         super(ModStructures.VESTIGE_CITY_PIECE.get(), 0, boxAround(origin, tier));
         this.origin = origin;
         this.tier = tier;
+        this.flavor = flavor;
     }
 
     public VestigeCityPiece(CompoundTag tag) {
         super(ModStructures.VESTIGE_CITY_PIECE.get(), tag);
         this.origin = new BlockPos(tag.getInt("ox"), tag.getInt("oy"), tag.getInt("oz"));
         this.tier = tag.getInt("tier");
+        this.flavor = tag.getInt("flavor");
     }
 
     private static BoundingBox boxAround(BlockPos o, int tier) {
@@ -90,6 +97,7 @@ public class VestigeCityPiece extends StructurePiece {
         tag.putInt("oy", origin.getY());
         tag.putInt("oz", origin.getZ());
         tag.putInt("tier", tier);
+        tag.putInt("flavor", flavor);
     }
 
     @Override
@@ -103,7 +111,6 @@ public class VestigeCityPiece extends StructurePiece {
             BlockPos pos) {
         RandomSource rand = RandomSource.create(
                 origin.getX() * 341873128712L ^ origin.getZ() * 132897987541L ^ (long) origin.getY());
-        this.flavor = flavorFor(level);
 
         plaza(level, writeBox, rand);
         if (tier > 0) {
@@ -132,9 +139,12 @@ public class VestigeCityPiece extends StructurePiece {
 
     // --- Biome flavor (10h.3) -----------------------------------------------------------------------
 
-    /** 1 = overgrown (forest/jungle), 2 = cracked-spire (Crags), 3 = sunken (Moonmire), else 0. */
-    private int flavorFor(WorldGenLevel level) {
-        var biome = level.getBiome(origin);
+    /**
+     * 1 = overgrown (forest/jungle), 2 = cracked-spire (Crags), 3 = sunken (Moonmire), else 0. Called at
+     * <b>placement</b> from {@link VestigeCityStructure} with the biome sampled from the biome source — safe,
+     * unlike reading {@code level.getBiome} during {@code postProcess}.
+     */
+    public static int flavorFor(net.minecraft.core.Holder<net.minecraft.world.level.biome.Biome> biome) {
         if (biome.is(LumenBiomeBootstrap.GLASSPETAL_CRAGS)) {
             return 2;
         }

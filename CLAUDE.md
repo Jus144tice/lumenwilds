@@ -227,9 +227,12 @@ structures use, so no chunk-load risk; this dim's caverns are noise caves and sh
 open pocket over a solid floor, drops the chamber **at that cavern** and `VestigeMinePiece#breach`es its lower
 walls so it opens into the real cave — else it falls back to the fixed artificial depth
 (`VestigeMinePiece#findCaveFloor`, called from `VestigeCityStructure#findGenerationPoint`). **Phase 11
-(Lumenwright Liftshafts) is complete (11a–11d, incl. cave-aware mines).** *(Mine worldgen + all 11d visuals are
-pending an in-client/force-gen playtest: `/locate` a `lumenwilds:vestige_city`, the dais is ~12 blocks off the
-plaza.)* **Playtest-confirmed (10a–10g):** the full
+(Lumenwright Liftshafts) is complete (11a–11d, incl. cave-aware mines).** **Force-gen-verified:** a 1522-chunk dense-city test generated 380
+city + 15 mine chunks (descent/ascension fields + both caches present) with zero exceptions — and **fixed a
+latent crash it surfaced:** `VestigeCityPiece`/`VestigeMinePiece` read `level.getBiome(origin)` in `postProcess`
+(→ "Requested chunk unavailable"); biome flavor is now decided at placement and passed in (see the
+getBiome-in-postProcess gotcha). *(11d visuals — motes/rings/hums — still want an in-client look.)*
+**Playtest-confirmed (10a–10g):** the full
 city→vault→restore-engine→open-doors→loot loop works (fixed
 in-session: vault doors, Echo Sentinel spawn in light, guaranteed fragment sources, dry-land placement).
 Roadmap:
@@ -1210,6 +1213,16 @@ as `File#member`.
   structures on the dramatic cliffy terrain, anchoring alone isn't enough — also **root each part DOWN to the
   ground** (`GlasspetalSpiresPiece#fillFoundation`: fill from the base down through replaceable blocks until
   solid) or the base floats over slopes/water.
+- **Never call `WorldGenLevel#getBiome` (or any neighbour-chunk read) inside a `StructurePiece#postProcess`.**
+  `getBiome` → `getNoiseBiome` → `WorldGenRegion#getChunk`, which throws **`Requested chunk unavailable during
+  world generation`** when the piece's `origin` is in a chunk outside the currently-generating chunk's small
+  available radius. It's **position-dependent**, so sparse force-gens / playtests miss it — a dense-city
+  force-gen (spacing 7) crashed on it where the sparse one (spacing 40) never did. Decide anything biome-derived
+  at **placement** (`findGenerationPoint`, via `context.chunkGenerator().getBiomeSource().getNoiseBiome(x>>2,
+  y>>2, z>>2, context.randomState().sampler())`) and pass it into the piece as a field (NBT-saved), like `tier`.
+  Fixed for the Vestige City + Mine flavor (`VestigeCityPiece.flavorFor(Holder<Biome>)` is now static + called
+  from the structure). **Verified:** a 1522-chunk dense-city force-gen generated 380 city + 15 mine chunks with
+  zero exceptions.
 - **To detect caves at structure-placement time, probe `ChunkGenerator#getBaseColumn`, NOT neighbour-chunk
   reads.** Reading neighbour chunks in `findGenerationPoint`/`postProcess` risks "chunk unavailable"; the safe
   way is `generator.getBaseColumn(x, z, heightAccessor, randomState)` → a `NoiseColumn` of the column's

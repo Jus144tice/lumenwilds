@@ -9,7 +9,6 @@ import com.jus144tice.lumenwilds.registry.ModBlocks;
 import com.jus144tice.lumenwilds.registry.ModEntities;
 import com.jus144tice.lumenwilds.registry.ModStructures;
 import com.jus144tice.lumenwilds.util.ResourceLocationHelper;
-import com.jus144tice.lumenwilds.world.LumenBiomeBootstrap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
@@ -74,12 +73,15 @@ public class VestigeMinePiece extends StructurePiece {
     private final BlockPos origin; // chamber floor centre
     private final int surfaceY; // dais (plaza) level
     private final boolean naturalCave; // chamber landed on a detected cavern → break it open into the cave
+    /** Biome flavor (0 std / 1 overgrown / 2 cracked / 3 sunken) — decided at placement, never read in postProcess. */
+    private final int flavor;
 
-    public VestigeMinePiece(BlockPos origin, int surfaceY, boolean naturalCave) {
+    public VestigeMinePiece(BlockPos origin, int surfaceY, boolean naturalCave, int flavor) {
         super(ModStructures.VESTIGE_MINE_PIECE.get(), 0, boxAround(origin, surfaceY));
         this.origin = origin;
         this.surfaceY = surfaceY;
         this.naturalCave = naturalCave;
+        this.flavor = flavor;
     }
 
     public VestigeMinePiece(CompoundTag tag) {
@@ -87,6 +89,7 @@ public class VestigeMinePiece extends StructurePiece {
         this.origin = new BlockPos(tag.getInt("ox"), tag.getInt("oy"), tag.getInt("oz"));
         this.surfaceY = tag.getInt("sy");
         this.naturalCave = tag.getBoolean("cave");
+        this.flavor = tag.getInt("flavor");
     }
 
     private static BoundingBox boxAround(BlockPos o, int surfaceY) {
@@ -139,6 +142,7 @@ public class VestigeMinePiece extends StructurePiece {
         tag.putInt("oz", origin.getZ());
         tag.putInt("sy", surfaceY);
         tag.putBoolean("cave", naturalCave);
+        tag.putInt("flavor", flavor);
     }
 
     @Override
@@ -188,8 +192,7 @@ public class VestigeMinePiece extends StructurePiece {
      * mines are invaded by Glowroot-log roots breaking through the walls. All pop-safe (no plants on bare stone).
      */
     private void flavor(WorldGenLevel level, BoundingBox box, RandomSource rand) {
-        var biome = level.getBiome(origin);
-        if (biome.is(LumenBiomeBootstrap.GLASSPETAL_CRAGS)) {
+        if (flavor == 2) { // cracked-spire (Crags)
             BlockState cluster = ModBlocks.GLASSPETAL_CLUSTER.get().defaultBlockState();
             BlockState crystal = ModBlocks.LUMEN_CRYSTAL_BLOCK.get().defaultBlockState();
             for (int dx = -HALF_W + 1; dx <= HALF_W - 1; dx++) {
@@ -202,7 +205,7 @@ public class VestigeMinePiece extends StructurePiece {
             set(level, box, origin.offset(0, 1, 3), crystal);
             set(level, box, new BlockPos(origin.getX() - 2, surfaceY + 1, origin.getZ()), cluster);
             set(level, box, new BlockPos(origin.getX() + 2, surfaceY + 1, origin.getZ()), cluster);
-        } else if (biome.is(LumenBiomeBootstrap.MOONMIRE)) {
+        } else if (flavor == 3) { // sunken (Moonmire)
             BlockState water = ModBlocks.LUMENWATER_BLOCK.get().defaultBlockState();
             BlockState crystal = ModBlocks.LUMEN_CRYSTAL_BLOCK.get().defaultBlockState();
             // Seeped pools flush with the chamber floor in the corners (never in the shaft columns).
@@ -212,7 +215,7 @@ public class VestigeMinePiece extends StructurePiece {
                 set(level, box, origin.offset(c[0] + 1, 0, c[1]), water);
             }
             set(level, box, origin.offset(3, 0, -3), crystal);
-        } else if (biome.is(LumenBiomeBootstrap.GLOWROOT_FOREST) || biome.is(LumenBiomeBootstrap.SPOREFALL_JUNGLE)) {
+        } else if (flavor == 1) { // overgrown (forest/jungle)
             BlockState root = ModBlocks.GLOWROOT_LOG.get().defaultBlockState();
             BlockState leaves = ModBlocks.GLOWROOT_LEAVES.get().defaultBlockState();
             // Roots breaking through the walls/ceiling into the mine.

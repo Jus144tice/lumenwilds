@@ -43,6 +43,12 @@ public class VestigeCityStructure extends Structure {
             return Optional.empty();
         }
         BlockPos origin = new BlockPos(x, y, z);
+        // Biome flavor is decided HERE (placement) by sampling the biome source — safe, unlike reading
+        // level.getBiome in postProcess (which can request an unavailable chunk and crash chunk-gen).
+        net.minecraft.core.Holder<net.minecraft.world.level.biome.Biome> biome = context.chunkGenerator()
+                .getBiomeSource()
+                .getNoiseBiome(x >> 2, y >> 2, z >> 2, context.randomState().sampler());
+        int flavor = VestigeCityPiece.flavorFor(biome);
         // Size tier: ~25% of cities are GRAND (bigger, a central Light Engine + broken spires); else medium.
         int tier = context.random().nextInt(100) < 25 ? 1 : 0;
         // A buried Vestige Vault sits ~22 blocks under the plaza, with a spiral shaft back up (10f.2).
@@ -62,7 +68,7 @@ public class VestigeCityStructure extends Structure {
         boolean naturalCave = caveY != Integer.MIN_VALUE;
         int mineFloorY = naturalCave ? caveY : Math.max(context.heightAccessor().getMinBuildHeight() + 8, y - 38);
         return Optional.of(new Structure.GenerationStub(origin, builder -> {
-            builder.addPiece(new VestigeCityPiece(origin, tier));
+            builder.addPiece(new VestigeCityPiece(origin, tier, flavor));
             builder.addPiece(new VestigeVaultPiece(vaultOrigin, y));
             for (int i = 0; i < spires; i++) {
                 double ang = (spireSeed + i * 2.39996) % (Math.PI * 2.0);
@@ -72,7 +78,7 @@ public class VestigeCityStructure extends Structure {
             }
             if (mine && mineFloorY < y - 16) {
                 builder.addPiece(
-                        new VestigeMinePiece(new BlockPos(x + mineDx, mineFloorY, z + mineDz), y, naturalCave));
+                        new VestigeMinePiece(new BlockPos(x + mineDx, mineFloorY, z + mineDz), y, naturalCave, flavor));
             }
         }));
     }
