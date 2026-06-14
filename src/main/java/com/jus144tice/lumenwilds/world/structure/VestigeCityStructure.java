@@ -60,8 +60,10 @@ public class VestigeCityStructure extends Structure {
         // always, medium ~40%. The dais sits offset from the plaza (clear of the central vault shaft).
         boolean mine = tier > 0 || context.random().nextInt(100) < 40;
         double mineAng = context.random().nextDouble() * Math.PI * 2.0;
-        int mineDx = (int) Math.round(Math.cos(mineAng) * 12);
-        int mineDz = (int) Math.round(Math.sin(mineAng) * 12);
+        // Out at the city edge (past the inner building rings + spires) so the dais is a distinct, spottable
+        // satellite, not lost in the dense core.
+        int mineDx = (int) Math.round(Math.cos(mineAng) * 22);
+        int mineDz = (int) Math.round(Math.sin(mineAng) * 22);
         // Try to drop the mine into a real cavern (probe the noise column, read-only); else use a fixed depth.
         int caveY = VestigeMinePiece.findCaveFloor(
                 context.chunkGenerator(), x + mineDx, z + mineDz, context.heightAccessor(), context.randomState(), y);

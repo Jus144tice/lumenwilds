@@ -44,21 +44,35 @@ public class UndercrownDecorFeature extends Feature<NoneFeatureConfiguration> {
             if (!level.getBlockState(p).isAir()) {
                 continue; // must be open cave air
             }
-            // Floor: a sturdy rock face below — grow a plant or an up-facing crystal.
+            // Ceiling: hang a TALL Glowvine strand down into the air (the Undercrown's defining drape of living
+            // light), or sometimes a down-facing crystal.
+            if (isCaveRock(level, p.above(), Direction.DOWN)) {
+                if (rand.nextInt(3) != 0) {
+                    int len = 3 + rand.nextInt(6); // 3..8 blocks long
+                    BlockPos.MutableBlockPos m = p.mutable();
+                    for (int d = 0; d < len && level.getBlockState(m).isAir(); d++) {
+                        level.setBlock(m, ModBlocks.GLOWVINE.get().defaultBlockState(), 2);
+                        m.move(Direction.DOWN);
+                    }
+                } else {
+                    level.setBlock(p, cluster.setValue(AmethystClusterBlock.FACING, Direction.DOWN), 2);
+                }
+                placedAny = true;
+                continue;
+            }
+            // Floor: a sturdy rock face below — grow a glowing plant or an up-facing crystal.
             BlockPos below = p.below();
             if (isCaveRock(level, below, Direction.UP)) {
                 double r = rand.nextDouble();
-                if (r < 0.45) {
-                    level.setBlock(p, ModBlocks.GLOWVINE.get().defaultBlockState(), 2);
-                } else if (r < 0.7) {
+                if (r < 0.55) {
                     level.setBlock(p, ModBlocks.GLOW_FERN.get().defaultBlockState(), 2);
-                } else if (r < 0.9) {
+                } else if (r < 0.85) {
                     level.setBlock(p, cluster.setValue(AmethystClusterBlock.FACING, Direction.UP), 2);
                 }
                 placedAny = true;
                 continue;
             }
-            // Otherwise attach a crystal to whichever rock face is adjacent (ceiling or wall), pointing into the air.
+            // Otherwise attach a crystal to whichever rock face is adjacent (wall), pointing into the air.
             for (Direction dir : Direction.values()) {
                 if (isCaveRock(level, p.relative(dir), dir.getOpposite())) {
                     if (rand.nextInt(3) == 0) {

@@ -212,11 +212,16 @@ cheaply (shimmerstone + fragment + relay). "Carried by the Field" advancement on
 sub-piece a Vestige City rolls (grand always, medium ~40%; offset from the plaza, clear of the vault shaft;
 `VestigeCityStructure` adds it) that spans a deep carved-Moonstone mine chamber (arched Glowbrick ribs, exposed
 Luminite + Lumen-Crystal ore, dead conduits, broken Gravity Lenses, a Shimmerstone lift platform, an Echo
-Sentinel spawner, Memory-Crystal lore, Miner's + Engineer's-Mine caches) up two side-by-side shafts —
-**descent** (pre-filled `descent_field`) and **ascension** (`ascension_field`), so they work on discovery — to a
-surface octagonal Glowbrick-Tiles dais (shaft mouths, broken lenses, dim conduits, accents, a Miner's Cache),
-foundation-rooted. The Engineer's-Mine Cache carries the liftshaft tech (fragments/relay) so the player rebuilds
-the projector. Mine lore added to `event.MemoryCrystalInteractEvents`. **11d (atmosphere, "alive + purposeful")
+Sentinel spawner, Memory-Crystal lore, Miner's + Engineer's-Mine caches) up two side-by-side shafts — each
+built from **real, lootable components a player can reverse-engineer** (`VestigeMinePiece#gravityColumn`): a
+Lumen Field Projector (its BE floods the column at runtime) + Gravity Repeaters spaced so the 16-cell budget
+terminates the field **exactly** at each ramp (last repeater 16 from the end + a near-anchor → clean step-in/out,
+no overshoot; mine a repeater and the field above drops). **Descent** projector on a short glowbrick head above
+the dais (walk in beneath it), **ascension** projector flush in the chamber floor. Fields span chamber-floor →
+one above the dais (reachable at both ends). The shafts open onto a surface octagonal Glowbrick-Tiles dais —
+offset to the **city edge** (~22, clear of the buildings), terrain **carved away above** so it's never buried,
+marked by four tall **glowing Lumen-Crystal/Lumenbulb pylons** so it's findable. The Engineer's-Mine Cache also
+carries the loose tech so the player can rebuild it at home. Mine lore added to `event.MemoryCrystalInteractEvents`. **11d (atmosphere, "alive + purposeful")
 is in:** bespoke `ModParticles#ASCENSION_MOTE`/`#DESCENT_MOTE` (EndRod factories) stream up/down the columns with
 horizontal energy-ring pulses + pitched hums (ascension high / descent low) via `block.AbstractFieldBlock#animateTick`;
 the Lumen Field Projector hums + glints from its working face (`LumenFieldProjectorBlock#animateTick`); and the
@@ -231,8 +236,16 @@ walls so it opens into the real cave — else it falls back to the fixed artific
 city + 15 mine chunks (descent/ascension fields + both caches present) with zero exceptions — and **fixed a
 latent crash it surfaced:** `VestigeCityPiece`/`VestigeMinePiece` read `level.getBiome(origin)` in `postProcess`
 (→ "Requested chunk unavailable"); biome flavor is now decided at placement and passed in (see the
-getBiome-in-postProcess gotcha). *(11d visuals — motes/rings/hums — still want an in-client look.)*
-**Playtest-confirmed (10a–10g):** the full
+getBiome-in-postProcess gotcha). **Playtest-confirmed (Phase 11):** the component-built shafts fill + ride
+cleanly (step in at the floor, out at the dais), the pylon-marked edge dais is easy to find, tall hanging
+glowvine, and the spawn fixes all check out. **Post-playtest polish (this pass):** native fauna that read as
+ambient — **Sporeling** + **Mirelurker** — now spawn **light-agnostically** (`event.ModEntityEvents`,
+`checkAnyLightMonsterSpawnRules`) so the dim Sporefall Jungle / Moonmire actually teem (the Shade Stalker stays
+darkness-gated — fleeing light is its identity); the **Moonmire** gained Glowmoth + Sky Jelly ambient creatures;
+**Glowberry Bushes** are right-click-harvestable (`event.GlowberryInteractEvents`); **Undercrown Glowvine** now
+hangs in tall strands from cave ceilings (`world.feature.UndercrownDecorFeature`); and **Glowroot tree roots**
+reliably reach the ground (`world.feature.GlowrootShape` buttress-leg fix — the drop started on the tip's own
+log and stopped instantly). **Playtest-confirmed (10a–10g):** the full
 city→vault→restore-engine→open-doors→loot loop works (fixed
 in-session: vault doors, Echo Sentinel spawn in light, guaranteed fragment sources, dry-land placement).
 Roadmap:
@@ -453,7 +466,9 @@ as `File#member`.
   burst — scattered on the dry Crags floor (Phase 9 "feels like it's growing"; the rare town-sized version
   is the Glasspetal Spires *structure*). Drives `configured_feature/patch_glasspetal` (was a flat single-cluster
   `random_patch`); `#UNDERCROWN_DECOR` (`world.feature.UndercrownDecorFeature`) — finds open cave air in the
-  Undercrown and grows crystals on rock faces + glowing plants on floors (Phase 9 cave-richness); `#GLOWCAP`
+  Undercrown and grows crystals on rock faces, **tall Glowvine strands (3–8 blocks) hanging from cave ceilings**,
+  and glow ferns on floors (Phase 9 cave-richness; the ceiling-hang gives the iconic drape of living light
+  instead of 1-block bits); `#GLOWCAP`
   (`world.feature.GlowcapFeature`) — the ordinary Sporefall Glowcap mushroom: **bell-shaped, size-varied
   (small/medium/large) and 3-coloured** (red / `GIANT_GLOWCAP_AZURE` / `GIANT_GLOWCAP_VIOLET`), replacing the flat
   vanilla `huge_brown_mushroom` (Phase 9 variation; the mega is still the `MegaGlowcap` structure).
@@ -715,6 +730,9 @@ as `File#member`.
   every leaf blob is seated on a branch-log and capped at radius 3 (≤5.2 leaf-steps from a log → 0 gen-decay);
   lushness comes from MANY overlapping branch-blobs across tiers, not a trunk-centred dome (census-verified:
   28.6k leaves dead-flat incl. a MEGA tree). Needs the logs in `#minecraft:logs` (see the leaf-decay gotcha).
+  `#buildButtressRoots` anchors each arching root to the ground with a vertical log leg — the leg starts **one
+  below the root tip** and passes through its own logs to solid ground (starting *at* the tip stopped on the
+  tip's own log, so roots used to dangle in mid-air).
 - [GlowrootTreeFeature.java](src/main/java/com/jus144tice/lumenwilds/world/feature/GlowrootTreeFeature.java)
   — `Feature<NoneFeatureConfiguration>` for the ordinary 2×2 Glowroot tree; `#place` runs
   `GlowrootShape.generate(..., MEDIUM)`. Bound to `ModFeatures#GLOWROOT_TREE_2X2`.
@@ -822,19 +840,24 @@ as `File#member`.
   building ring + a central restorable Dormant Light Engine; medium keeps the dry fountain.)
 - [VestigeMinePiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeMinePiece.java) — the
   **Lumenwright Liftshaft + Abandoned Luminite Mine** (Phase 11c, `ModStructures#VESTIGE_MINE_PIECE`), a single
-  tall sub-piece added by `VestigeCityStructure#findGenerationPoint` (grand always / medium ~40%, offset ~12
-  from the plaza, only if it clears `y-16`). Like the vault, spans deep→surface in one box (box-clipped,
-  position-seeded). `#chamber`/`#ribs`/`#machinery` carve the deep mine (Moonstone shell, Glowbrick rib arches,
-  Luminite + Lumen-Crystal ore veins, dim conduits, broken Gravity Lenses, Shimmerstone lift, Echo Sentinel
-  spawner, Memory Crystals, `chests/miners_cache` + `chests/engineers_mine_cache`); `#shafts` pre-fills the two
-  side-by-side columns with `DESCENT_FIELD`/`ASCENSION_FIELD` (work on discovery, no projector — the recoverable
-  projector/relay/fragments are in the Engineer's-Mine Cache); `#dais` builds the surface Glowbrick-Tiles
-  octagon with the shaft mouths + accents, `VestigeDecay.weatheredFoundation`-rooted; `#flavor` (11d) reads the
-  biome for pop-safe accents (Crags glasspetal/crystal seams, Moonmire seeped Lumenwater pools, forest/jungle
-  Glowroot-log roots). **Cave-aware:** `#findCaveFloor` (static, called from `VestigeCityStructure`) probes the
-  dais column with `ChunkGenerator#getBaseColumn` for an open pocket over a solid floor → the chamber drops at
-  that cavern (`naturalCave`) and `#breach` opens its lower walls into the cave; else a fixed depth (`y-38`).
-  **Tune the mine here.**
+  tall sub-piece added by `VestigeCityStructure#findGenerationPoint` (grand always / medium ~40%, offset ~22 to
+  the **city edge** so the dais is a distinct, findable satellite, only if it clears `y-16`). Like the vault,
+  spans deep→surface in one box (box-clipped, position-seeded). `#chamber`/`#ribs`/`#machinery` carve the deep
+  mine (Moonstone shell, Glowbrick rib arches, Luminite + Lumen-Crystal ore veins, dim conduits, broken Gravity
+  Lenses, Shimmerstone lift, Echo Sentinel spawner, Memory Crystals, `chests/miners_cache` +
+  `chests/engineers_mine_cache`); `#shafts` carves the two columns open and builds each as a **working, lootable
+  gravity engine** via `#gravityColumn` — a `LumenFieldProjectorBlock` (its BE floods the field at runtime) +
+  `GravityRepeaterBlock`s spaced so the 16-cell budget terminates the field **exactly** at each ramp (last
+  repeater 16 from the far end + a near-anchor within projector reach → clean ramps, no overshoot/sky-launch;
+  ascension projector flush in the floor, descent projector on a `#descentHead` you walk under). `#dais` builds
+  the surface Glowbrick-Tiles octagon — terrain carved above (`DAIS_CLEAR`) so it's never buried, + four glowing
+  Lumen-Crystal/Lumenbulb **pylons** (findability), `VestigeDecay.weatheredFoundation`-rooted. **Order matters:**
+  `postProcess` runs `#dais` *before* `#shafts` so the descent projector head survives the dais headroom carve.
+  `#flavor` (11d) reads the biome for pop-safe accents (Crags glasspetal/crystal seams, Moonmire seeped
+  Lumenwater pools, forest/jungle Glowroot-log roots). **Cave-aware:** `#findCaveFloor` (static, called from
+  `VestigeCityStructure`) probes the dais column with `ChunkGenerator#getBaseColumn` for an open pocket over a
+  solid floor → the chamber drops at that cavern (`naturalCave`) and `#breach` opens its lower walls into the
+  cave; else a fixed depth (`y-38`). **Tune the mine here.**
 
 ### effects/ — movement (Phase 3, working)
 - [LowGravityHandler.java](src/main/java/com/jus144tice/lumenwilds/effects/LowGravityHandler.java) —
@@ -906,6 +929,10 @@ as `File#member`.
 - [StillbloomInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/StillbloomInteractEvents.java)
   — `#onRightClickBlock(PlayerInteractEvent.RightClickBlock)` (8b): a glass bottle on a Stillbloom Core/Petal
   fills into `ModItems.LUMEN_NECTAR` (bloom not consumed — renewable, like honey).
+- [GlowberryInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowberryInteractEvents.java)
+  — `#onRightClickBlock` (Phase 9 harvestables): right-clicking a `ModBlocks#GLOWBERRY_BUSH` pops 1–2
+  `ModItems.GLOWBERRY` + a pick sound and clears the bush (breaking it by hand drops the same via its loot
+  table — this just makes the intuitive right-click work too).
 - [MemoryCrystalInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/MemoryCrystalInteractEvents.java)
   — `#onRightClickBlock` (10c): right-clicking a `ModBlocks#MEMORY_CRYSTAL` prints a fragment chosen
   deterministically from the block position (`#FRAGMENTS`, some broken/unreadable; the liftshaft/mine lore
@@ -927,6 +954,10 @@ as `File#member`.
   (Phase 6); `#onAttributeCreation(EntityAttributeCreationEvent)` builds each native mob's `AttributeSupplier`
   (`event.put(...)`) and `#onRegisterSpawnPlacements(RegisterSpawnPlacementsEvent)` declares where on the
   ground a type may spawn (`ON_GROUND` + `Animal::checkAnimalSpawnRules`). **Add each new mob in both.**
+  **Light gating:** the Shade Stalker + Crag Wraith use `Monster::checkMonsterSpawnRules` (darkness — design),
+  but the **Sporeling, Mirelurker, and Echo Sentinel use `checkAnyLightMonsterSpawnRules`** (light-agnostic) —
+  the dim-but-lit Lumenwilds biomes rarely hit the darkness threshold, so darkness-gated ambient fauna barely
+  spawned; light-agnostic makes the jungle/Moonmire/Undercrown actually populated.
 
 ### client/ — `@EventBusSubscriber(value = Dist.CLIENT, bus = MOD)`, client-only
 - [LumenwildsClient.java](src/main/java/com/jus144tice/lumenwilds/client/LumenwildsClient.java) —
@@ -1324,3 +1355,44 @@ push/PR to `main`. Release (later): bump `gradle.properties` + `CHANGELOG.md`, t
 
 **Smoke signal** (log): `[lumenwilds] Initialising The Lumenwilds`, `DeferredRegisters wired…`,
 `Common setup complete.`; on a server, `Done (Ns)!` with no error mentioning `lumenwilds`.
+
+### Dev-run gotchas (port / JVM / headless verification) — read before `runClient`/`runServer`
+
+These bite **every** session; the drill that avoids them:
+
+- **FAIL FAST: never start the ~90s build until the port is provably free.** The dev `runServer` builds first
+  and only tries to `bind` at the very end, so a held port surfaces as `BindException` ~90s in — wasting a full
+  cycle. **Pre-flight check, abort if not zero**, *before* launching: stray dev runs == 0 AND port listeners ==
+  0. If non-zero, kill + re-check (or bump the port); do not launch on faith.
+- **Match dev runs by `modFolders=lumenwilds`, NOT `forgeserverdev`.** The `forgeserverdev`/`forgeclientdev`
+  token is a *program* arg that `Win32_Process.CommandLine` often truncates away, so those filters silently miss
+  the real JVMs (they show as "OTHER") — the cause of repeatedly relaunching into a still-held port. The
+  reliable tag present in every Lumenwilds dev JVM's args is `-Dfml.modFolders=lumenwilds`. Always filter
+  `Name='java.exe'` too (else the PowerShell query matches its own command line and miscounts):
+  `Get-CimInstance Win32_Process -Filter "Name='java.exe'" | Where-Object { $_.CommandLine -match 'modFolders=lumenwilds' } | Stop-Process -Force`.
+  After killing, **wait ≥8s and re-verify count==0** (a force-killed JVM lingers + the socket sits in
+  `TIME_WAIT`); when in doubt **switch `server-port`** in `run/server.properties`.
+- **A force-killed (or crashed-but-still-ticking) `runServer`/`runClient` keeps the socket + `latest.log`.** A
+  server that hits a runtime exception during gen does NOT exit — it keeps ticking and holding the port, so the
+  *next* launch collides. Always confirm the prior run actually died (count==0) before relaunching.
+- **`run/logs/latest.log` gets lock-contended** when two dev JVMs overlap (the new one logs `Unable to delete
+  file latest.log … used by another process`). Don't trust `latest.log` across runs — **redirect the run's
+  console to your own file** (`./gradlew runServer > /tmp/srv.log 2>&1 &`) and read that. (The two `Unable to
+  delete` ERROR lines are benign — not a crash.)
+- **Force-killing a server skips the world save** → no `region/*.mca` written, so worldgen can't be inspected.
+  For headless worldgen verification use a **self-stopping** harness: a `#minecraft:load` function that
+  `forceload add`s a region then `schedule`s a finish function which runs `save-all flush` + `stop`. **`stop`
+  and `save-all` require `function-permission-level=4`** in `run/server.properties` (default 2 makes them parse
+  as "unknown command" inside a function). `#load` also fires too early to `forceload` a custom dimension —
+  `schedule` the real work ~60t later.
+- **`server.properties` is reset whenever you revert test scaffolding**, silently dropping `level-name` /
+  `level-seed` / `function-permission-level`. Symptom: the verify server gens into `world` (not your temp
+  world) and never self-stops (the `stop` command lacks permission). **Re-set all four keys** (`level-name`,
+  `level-seed`, `function-permission-level=4`, `server-port`) every time before a verify run; keep a
+  `server.properties.bak` to restore the user's real config afterward.
+- **Inspect generated chunks by decompressing region files** (`run/<world>/dimensions/lumenwilds/lumenwilds/
+  region/r.*.mca`): parse the 4 KB location table, `zlib.decompress` each chunk, and substring-search the raw
+  NBT for block/structure ids (e.g. `vestige_mine`, `descent_field`, `lumen_field_projector`). This is how to
+  confirm a structure/feature actually placed without loading a client.
+- **Never run a headless `runServer` while the user has `runClient` open** — they share `run/` (config + logs)
+  and contend; ask the user to close the client first, verify, then relaunch it.

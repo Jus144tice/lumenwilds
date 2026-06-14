@@ -4,7 +4,9 @@
  */
 package com.jus144tice.lumenwilds.world.structure;
 
+import com.jus144tice.lumenwilds.block.LiftShaftNetwork;
 import com.jus144tice.lumenwilds.block.LumenConduitBlock;
+import com.jus144tice.lumenwilds.block.LumenFieldProjectorBlock;
 import com.jus144tice.lumenwilds.registry.ModBlocks;
 import com.jus144tice.lumenwilds.registry.ModEntities;
 import com.jus144tice.lumenwilds.registry.ModStructures;
@@ -38,10 +40,12 @@ import net.minecraft.world.level.storage.loot.LootTable;
  *   <li>a deep carved-Moonstone chamber with arched Glowbrick ribs, exposed Luminite + Lumen-Crystal ore,
  *       dead/dim conduits, broken Gravity Lenses, an old Shimmerstone lift platform, an Echo Sentinel spawner,
  *       Memory-Crystal lore, and two loot caches (Miner's + Engineer's Mine);</li>
- *   <li>two side-by-side vertical shafts up to the dais — a <b>descent</b> column (pre-filled with
- *       {@code descent_field}) and an <b>ascension</b> column ({@code ascension_field}) — so the shafts work the
- *       moment they're discovered: step in and be lowered/raised. (The recoverable Lumen Field Projector +
- *       Gravity Repeaters are the Engineer's Mine Cache reward, so the player rebuilds the tech.)</li>
+ *   <li>two side-by-side vertical shafts up to the dais, each built from <b>real, lootable components</b> a
+ *       player can reverse-engineer (see {@link #gravityColumn}): a {@link LumenFieldProjectorBlock} whose block
+ *       entity floods the column with field at runtime, extended by {@code GravityRepeaterBlock}s spaced so the
+ *       16-cell budget terminates the field <em>exactly</em> at each ramp (clean step-in/out, no overshoot).
+ *       Ascension's projector sits flush in the chamber floor (projecting up); descent's sits on a short
+ *       glowbrick head above the dais (projecting down), so the rider walks in beneath it.</li>
  *   <li>a surface octagonal dais of Glowbrick Tiles with the two shaft mouths, broken Gravity Lenses, dim
  *       conduits, Lumen-Crystal accents, and a Miner's Cache chest — foundation-rooted so it never floats.</li>
  * </ul>
@@ -92,8 +96,11 @@ public class VestigeMinePiece extends StructurePiece {
         this.flavor = tag.getInt("flavor");
     }
 
+    /** Headroom carved above the dais so covering terrain never buries it, + room for the marker pylons. */
+    private static final int DAIS_CLEAR = 14;
+
     private static BoundingBox boxAround(BlockPos o, int surfaceY) {
-        int top = Math.max(surfaceY, o.getY() + CH_HEIGHT) + 4;
+        int top = Math.max(surfaceY, o.getY() + CH_HEIGHT) + DAIS_CLEAR + 4;
         return new BoundingBox(
                 o.getX() - REACH, o.getY() - 6, o.getZ() - REACH, o.getX() + REACH, top, o.getZ() + REACH);
     }
@@ -163,8 +170,8 @@ public class VestigeMinePiece extends StructurePiece {
         }
         ribs(level, writeBox);
         machinery(level, writeBox, rand);
-        shafts(level, writeBox);
         dais(level, writeBox, rand);
+        shafts(level, writeBox); // after dais() so the descent projector head survives the dais headroom carve
         flavor(level, writeBox, rand);
     }
 
@@ -354,28 +361,94 @@ public class VestigeMinePiece extends StructurePiece {
      * lines the slot. The columns punch through the chamber ceiling so they open into the room below.
      */
     private void shafts(WorldGenLevel level, BoundingBox box) {
-        BlockState descent = ModBlocks.DESCENT_FIELD.get().defaultBlockState();
-        BlockState ascend = ModBlocks.ASCENSION_FIELD.get().defaultBlockState();
         BlockState glow = ModBlocks.GLOWBRICK.get().defaultBlockState();
-        int bottomY = origin.getY() + CH_HEIGHT - 1; // one below the ceiling, reaching into the chamber
-        int topY = surfaceY - 1; // top field cell, just under the dais floor
+        BlockState air = Blocks.AIR.defaultBlockState();
+        int ceilY = origin.getY() + CH_HEIGHT;
+        int ascCol = origin.getX() + ASCEND_DX;
+        int desCol = origin.getX() + DESCENT_DX;
+        int z = origin.getZ();
+        int colBottom = origin.getY() + 1; // chamber-floor standing level — step in/out right at the floor
+        int ascTop = surfaceY + 1; // ascension rider clears the lip and walks out onto the dais
+        int desTop = surfaceY + 2; // descent field top (its projector head sits at +3, so you walk in under it)
 
-        for (int y = bottomY; y <= topY; y++) {
-            // Casing around the 3-wide (x:-2..2) × 1-deep (z:-1..1) slot, above the chamber ceiling.
-            if (y >= origin.getY() + CH_HEIGHT) {
-                for (int dx = -2; dx <= 2; dx++) {
-                    for (int dz = -1; dz <= 1; dz++) {
-                        boolean rim = dx == -2 || dx == 2 || dz == -1 || dz == 1;
-                        if (rim) {
-                            setAbsolute(level, box, origin.getX() + dx, y, origin.getZ() + dz, glow);
-                        }
+        // Carve both 1-wide column cells to AIR (floor → dais) so the projectors can fill them with field at
+        // runtime; below the ceiling they're already the open chamber.
+        for (int y = colBottom; y <= desTop; y++) {
+            setAbsolute(level, box, ascCol, y, z, air);
+            setAbsolute(level, box, desCol, y, z, air);
+        }
+        // Glowbrick casing around the 3-wide slot, between the chamber ceiling and the dais floor.
+        for (int y = ceilY; y < surfaceY; y++) {
+            for (int dx = -2; dx <= 2; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    if (dx == -2 || dx == 2 || dz == -1 || dz == 1) {
+                        setAbsolute(level, box, origin.getX() + dx, y, z + dz, glow);
                     }
                 }
             }
-            // The divider and the two field columns.
-            setAbsolute(level, box, origin.getX(), y, origin.getZ(), glow);
-            setAbsolute(level, box, origin.getX() + DESCENT_DX, y, origin.getZ(), descent);
-            setAbsolute(level, box, origin.getX() + ASCEND_DX, y, origin.getZ(), ascend);
+        }
+        // The divider between the two columns, floor → flush with the dais (mouths stay open at the top).
+        for (int y = colBottom; y <= surfaceY; y++) {
+            setAbsolute(level, box, origin.getX(), y, z, glow);
+        }
+
+        // The working, lootable gravity engines — real components a player can reverse-engineer:
+        // Ascension — a Lumen Field Projector flush in the chamber floor projecting UP; repeaters carry it to the dais.
+        gravityColumn(level, box, ascCol, z, LumenFieldProjectorBlock.Mode.ASCEND, origin.getY(), colBottom, ascTop);
+        // Descent — a projector on a short glowbrick head above the dais projecting DOWN; you walk in beneath it.
+        descentHead(level, box, desCol, z, glow);
+        gravityColumn(level, box, desCol, z, LumenFieldProjectorBlock.Mode.DESCEND, surfaceY + 3, desTop, colBottom);
+    }
+
+    /**
+     * Places a working, lootable gravity engine in one column: a {@link LumenFieldProjectorBlock} (its block
+     * entity fills the field at runtime) plus {@link com.jus144tice.lumenwilds.block.GravityRepeaterBlock}s
+     * spaced so the field terminates <b>exactly</b> at {@code farField} — the last repeater sits one
+     * {@link LiftShaftNetwork#RANGE} from the far end (so the 16-cell budget runs out right at the ramp, no
+     * overshoot), and a near-anchor within the projector's own reach keeps the chain connected. This is the
+     * player-replicable build (projector + a repeater every 16) rendered in the ruin.
+     */
+    private void gravityColumn(
+            WorldGenLevel level,
+            BoundingBox box,
+            int colX,
+            int colZ,
+            LumenFieldProjectorBlock.Mode mode,
+            int projectorY,
+            int nearField,
+            int farField) {
+        int dir = mode == LumenFieldProjectorBlock.Mode.ASCEND ? 1 : -1;
+        int range = LiftShaftNetwork.RANGE;
+        setAbsolute(
+                level,
+                box,
+                colX,
+                projectorY,
+                colZ,
+                ModBlocks.LUMEN_FIELD_PROJECTOR
+                        .get()
+                        .defaultBlockState()
+                        .setValue(LumenFieldProjectorBlock.MODE, mode));
+        // Near-anchor inside the projector's own reach so the chain always connects back to it.
+        int nearAnchor = nearField + dir * (range - 1);
+        placeRepeater(level, box, colX, nearAnchor, colZ);
+        // Last repeater exactly `range` from the far end (clean ramp), then one every `range` toward the projector.
+        for (int h = farField - dir * range; (dir > 0 ? h > nearAnchor : h < nearAnchor); h -= dir * range) {
+            placeRepeater(level, box, colX, h, colZ);
+        }
+    }
+
+    /** A Gravity Repeater embedded in the z+1 casing wall, orthogonally adjacent to the column so the field reads it. */
+    private void placeRepeater(WorldGenLevel level, BoundingBox box, int colX, int y, int colZ) {
+        setAbsolute(
+                level, box, colX, y, colZ + 1, ModBlocks.GRAVITY_REPEATER.get().defaultBlockState());
+    }
+
+    /** A short glowbrick head over the descent shaft: its projector sits at the top, the rider walks in beneath it. */
+    private void descentHead(WorldGenLevel level, BoundingBox box, int colX, int colZ, BlockState glow) {
+        for (int y = surfaceY + 1; y <= surfaceY + 3; y++) {
+            setAbsolute(level, box, colX, y, colZ - 1, glow);
+            setAbsolute(level, box, colX, y, colZ + 1, glow);
         }
     }
 
@@ -393,18 +466,20 @@ public class VestigeMinePiece extends StructurePiece {
                 }
                 int x = origin.getX() + dx;
                 int z = origin.getZ() + dz;
-                boolean shaftMouth = dz == 0 && (dx == DESCENT_DX || dx == ASCEND_DX || dx == 0);
-                // Clear headroom above the dais (so it isn't buried on a slope).
-                for (int dy = 1; dy <= 3; dy++) {
+                // The two shaft mouths carry the field up to fy+1 (set by shafts()) — leave them alone so the
+                // rider can step in/out at dais level; only carve headroom ABOVE the field (from fy+2).
+                boolean boreColumn = dz == 0 && (dx == DESCENT_DX || dx == ASCEND_DX);
+                boolean divider = dz == 0 && dx == 0;
+                int clearFrom = boreColumn ? 2 : 1;
+                // Carve away any covering terrain above the dais so it's never buried (no-op where already open).
+                for (int dy = clearFrom; dy <= DAIS_CLEAR; dy++) {
                     setAbsolute(level, box, x, fy + dy, z, air);
                 }
-                if (shaftMouth) {
-                    if (dx == 0) {
-                        setAbsolute(
-                                level, box, x, fy, z, ModBlocks.GLOWBRICK.get().defaultBlockState()); // divider cap
-                    } else {
-                        setAbsolute(level, box, x, fy, z, air); // open mouth into the shaft
-                    }
+                if (boreColumn) {
+                    continue; // leave the field column + skip the foundation (the shaft drops below it)
+                }
+                if (divider) {
+                    setAbsolute(level, box, x, fy, z, ModBlocks.GLOWBRICK.get().defaultBlockState()); // flush cap
                 } else {
                     boolean edge = Math.abs(dx) == DAIS_R
                             || Math.abs(dz) == DAIS_R
@@ -446,6 +521,18 @@ public class VestigeMinePiece extends StructurePiece {
                 fy,
                 origin.getZ() + 3,
                 ModBlocks.LUMENBULB.get().defaultBlockState());
+
+        // Four tall glowing pylons at the dais edges — a Lumen-Crystal column capped with a Lumenbulb — so the
+        // mine access reads as a beacon from a distance and is never lost among the ruins or terrain.
+        int[][] pylons = {{DAIS_R - 1, 0}, {-(DAIS_R - 1), 0}, {0, DAIS_R - 1}, {0, -(DAIS_R - 1)}};
+        BlockState crystal = ModBlocks.LUMEN_CRYSTAL_BLOCK.get().defaultBlockState();
+        BlockState bulb = ModBlocks.LUMENBULB.get().defaultBlockState();
+        for (int[] p : pylons) {
+            for (int dy = 1; dy <= 4; dy++) {
+                setAbsolute(level, box, origin.getX() + p[0], fy + dy, origin.getZ() + p[1], crystal);
+            }
+            setAbsolute(level, box, origin.getX() + p[0], fy + 5, origin.getZ() + p[1], bulb);
+        }
 
         // A Miner's Cache on the dais edge.
         placeChest(

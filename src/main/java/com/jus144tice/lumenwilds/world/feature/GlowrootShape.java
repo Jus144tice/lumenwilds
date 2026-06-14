@@ -117,21 +117,24 @@ public final class GlowrootShape {
                 double r = Math.max(1.2, p.rootThick() - frac * (p.rootThick() * 0.55));
                 fillDisc(placer, (int) Math.round(x), (int) Math.round(y), (int) Math.round(z), r, log, false);
             }
-            // Anchor the root to the ground: drop a vertical leg from the tip down to solid terrain, so roots
-            // don't dangle in mid-air over cliffy/uneven ground (they grow straight down to reach the floor).
+            // Anchor the root to the ground: from JUST BELOW the tip, grow a leg straight down — passing through
+            // our own root logs and any air/replaceable — until it reaches solid terrain, so roots never dangle in
+            // mid-air over cliffy/uneven ground. (Starting at the tip itself was the old bug: the tip is a log we
+            // just placed, so the drop stopped on block one and never reached the floor.)
             int rx = (int) Math.round(x);
             int rz = (int) Math.round(z);
             int ry = (int) Math.round(y);
-            for (int d = 0; d < 28; d++) {
-                int ly = ry - d;
-                if (ly <= placer.minY()) {
-                    break;
+            BlockPos.MutableBlockPos leg = new BlockPos.MutableBlockPos();
+            for (int ly = ry - 1; ly > placer.minY() && ly > ry - 48; ly--) {
+                leg.set(rx, ly, rz);
+                BlockState here = placer.getState(leg);
+                if (here.is(log.getBlock())) {
+                    continue; // pass through our own root logs
                 }
-                BlockPos leg = new BlockPos(rx, ly, rz);
-                if (!placer.getState(leg).canBeReplaced()) {
-                    break; // reached solid ground (or already buried)
+                if (!here.canBeReplaced()) {
+                    break; // reached solid ground
                 }
-                placer.set(leg, log);
+                placer.set(leg.immutable(), log);
             }
         }
     }

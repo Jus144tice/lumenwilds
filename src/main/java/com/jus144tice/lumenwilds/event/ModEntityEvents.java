@@ -78,19 +78,22 @@ public final class ModEntityEvents {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Animal::checkAnimalSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        // Sporeling: hostile darkness rule (jungle/cave swarm).
+        // Sporeling: native jungle/cave swarm — light-AGNOSTIC (checkAnyLight, not the darkness rule), so the
+        // dim-but-not-dark Sporefall Jungle actually teems with them day and night (they're ambient fauna, not
+        // a night-only ambush mob like the Shade Stalker).
         event.register(
                 ModEntities.SPORELING.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkMonsterSpawnRules,
+                Monster::checkAnyLightMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        // Mirelurker: amphibious ambusher; spawns on the Moonmire floor (incl. under shallow water) in the dark.
+        // Mirelurker: native Moonmire amphibian — also light-agnostic so the glowing swamp is actually populated
+        // (the dim swamp rarely hit the darkness threshold, so it was nearly empty before).
         event.register(
                 ModEntities.MIRELURKER.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkMonsterSpawnRules,
+                Monster::checkAnyLightMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         // Lumen Fish: in the water, like vanilla cod/salmon.
         event.register(

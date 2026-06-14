@@ -44,7 +44,10 @@
   "spawners": {
     "ambient": [],
     "axolotls": [],
-    "creature": [],
+    "creature": [
+      { "type": "lumenwilds:glowmoth", "weight": 10, "minCount": 2, "maxCount": 4 },
+      { "type": "lumenwilds:sky_jelly", "weight": 6, "minCount": 1, "maxCount": 2 }
+    ],
     "misc": [],
     "monster": [
       { "type": "lumenwilds:mirelurker", "weight": 60, "minCount": 2, "maxCount": 4 }
