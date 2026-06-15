@@ -290,8 +290,10 @@ mod that hard-codes `Blocks.WATER`/`Fluids.WATER` would still miss it (unreachab
 added the **in-game player guide** — a **Patchouli** book (`lumenwilds:lumenwilds_guide`, 7 categories / ~16
 entries covering getting-there → survival → flora/wood → creatures+drops → light tech → the Lumenwrights →
 effects/brewing/fishing). Patchouli is an **optional/soft dependency** (`runtimeOnly` for dev, `optional` in
-`neoforge.mods.toml`, zero Java API used — the mod loads + plays without it); the book is craftable
-(book + glow pollen, `mod_loaded`-gated). **v1.1 (playthrough fixes) is complete (a–i).** Roadmap:
+`neoforge.mods.toml`, zero Java API used — the mod loads + plays without it). The guide is **creative-only by
+design** (no survival recipe / no auto-grant — players explore to learn the dimension); it appears in the
+"The Lumenwilds" creative tab (Patchouli auto-adds it via `book.json` `creative_tab` + `dont_generate_book:
+false`). **v1.1 (playthrough fixes) is complete (a–i).** Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -1254,9 +1256,10 @@ as `File#member`.
   on items) + `enchantment.lumenwilds.*` lang; the books are rolled in the fishing sub-table's spell-book pool.
 - **Patchouli guide (v1.1h, optional dep):** `data/lumenwilds/patchouli_books/lumenwilds_guide/book.json` (the
   ONLY part in `data/`; needs `use_resource_pack: true`) + the content under **`assets/lumenwilds/patchouli_books/
-  lumenwilds_guide/en_us/{categories,entries}/*`** (client/resource side, post-1.20 Patchouli) + the craft
-  `recipe/lumenwilds_guide.json` (`mod_loaded` patchouli → a `patchouli:guide_book` with the `patchouli:book`
-  component). Patchouli is `runtimeOnly` in `build.gradle` (Modrinth maven) + `optional` in `neoforge.mods.toml`.
+  lumenwilds_guide/en_us/{categories,entries}/*`** (client/resource side, post-1.20 Patchouli). The book is
+  **creative-tab-only** (no recipe; `book.json` `creative_tab` + `dont_generate_book:false` make Patchouli add
+  a `patchouli:guide_book` to the tab). Patchouli is `runtimeOnly` in `build.gradle` (Modrinth maven) +
+  `optional` in `neoforge.mods.toml`.
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood/glowroot log+wood → stripped).
 - `data/c/tags/item/*` (v1.1e) — the universal `#c:` convention food/crop tags (`foods`, `foods/{fruit,berry,
   raw_meat,cooked_meat,raw_fish,cooked_fish,soup}`, `crops`) so lumen foods integrate into Farmer's Delight /

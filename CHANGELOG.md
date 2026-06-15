@@ -26,8 +26,9 @@ First survival-playthrough feedback, addressed before any v2.0 work:
   treasure), including rare enchanted **"spell books"**.
 - **Fished enchantments** — six new gear enchantments obtainable ONLY from Lumenwater fishing: Lightfooted,
   Nightsight, Lumenward (armor) and Glowbrand, Sporestrike, Rootbinding (weapons), applied at an anvil.
-- **In-game guide** — an optional **Patchouli** guidebook (craft: book + glow pollen) that explains the
-  whole dimension. The mod works without Patchouli installed.
+- **In-game guide** — an optional **Patchouli** guidebook that explains the whole dimension. Creative-only
+  by design (grab it from the creative tab) so survival players explore and discover. The mod works without
+  Patchouli installed.
 - **Lumenwater = water** — also tagged `#c:water` so water-detection mods (e.g. a water-allergy race mod)
   treat it as water.
 - Also fixed a pre-existing gap where several recipes (Ancient Door, Resonance Core) and recipe-book unlocks
