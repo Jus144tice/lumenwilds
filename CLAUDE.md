@@ -283,7 +283,11 @@ six data-driven enchantments (`registry.ModEnchantments` keys + `data/lumenwilds
 *while-worn* (`minecraft:tick`→`apply_mob_effect`: Lightfooted/Nightsight/Lumenward) and weapon *on-hit*
 (`post_attack`: Glowbrand/Sporestrike/Rootbinding), obtainable **only** as enchanted books from Lumenwater
 fishing (kept out of the enchanting table/trades/loot tags). *(All verified loading clean on a headless
-server: GLM + enchantments + loot + tags, no datapack errors.)* Roadmap:
+server: GLM + enchantments + loot + tags, no datapack errors.)* **v1.1i** hardened **Lumenwater = water**
+for compat (e.g. a water-allergic cat-people race mod): it was already in `#minecraft:water` + returns
+`isInWater()` true; now also in the NeoForge convention `#c:water` (`data/c/tags/fluid/water.json`). Only a
+mod that hard-codes `Blocks.WATER`/`Fluids.WATER` would still miss it (unreachable from our side). **Still
+to do: v1.1h — the Patchouli player guide** (adds a soft Patchouli dependency). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -452,8 +456,9 @@ as `File#member`.
   (`NeoForgeRegistries.Keys.FLUID_TYPES`); `#LUMENWATER_TYPE` (`FluidType`, light 4, no infinite source). The
   non-state half of Lumenwater (5e). **Functions as water (Phase 6.0):** `canExtinguish`/`canHydrate`/
   `supportsBoating` set (swim/drown/push default true) **and** both fluids are in `#minecraft:water`
-  (`data/minecraft/tags/fluid/water.json`) — so boats float, farmland hydrates, fire extinguishes, and fish
-  survive. Glow + overworld-decay are unaffected.
+  (`data/minecraft/tags/fluid/water.json`) **and `#c:water`** (`data/c/tags/fluid/water.json`, v1.1i) — so
+  boats float, farmland hydrates, fire extinguishes, fish survive, and tag/`isInWater`-based water detection
+  (e.g. a water-allergy mod) treats Lumenwater as water. Glow + overworld-decay are unaffected.
 - [ModFluids.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFluids.java) — `#FLUIDS`;
   `#LUMENWATER` (source) + `#LUMENWATER_FLOWING` (`BaseFlowingFluid`). `#props()` lazily wires
   type↔still↔flowing↔block↔bucket (avoids a static forward-ref). The fluid registers **before** blocks, so

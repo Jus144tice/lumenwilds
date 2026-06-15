@@ -1,0 +1,7 @@
+{
+  "__comment": "v1.1i — also tag Lumenwater into the NeoForge convention #c:water fluid tag, so mods that detect water via the c: convention (e.g. a water-allergy race mod) treat Lumenwater as water too. (It is already in #minecraft:water and isInWater() returns true; this adds the c: convention path. A mod hard-coding Blocks.WATER/Fluids.WATER can't be reached from here.)",
+  "values": [
+    "lumenwilds:lumenwater",
+    "lumenwilds:flowing_lumenwater"
+  ]
+}
