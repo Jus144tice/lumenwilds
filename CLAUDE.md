@@ -269,7 +269,21 @@ clumps→moonloam; glowcap spores brew Sporeblind in `event.ModBrewing`; several
 bait in v1.1f). *(This pass also surfaced + fixed a pre-existing gap: several craftable recipes —
 `ancient_door`, `resonance_core` — and many recipe-unlock advancements were defined in `ModRecipeProvider`
 but never copied into `src/main/resources`, so they weren't actually obtainable/shown; all are now shipped.)*
-Roadmap:
+**v1.1e** added **cooking-mod integration** — the lumen foods/crops are tagged into the universal `#c:`
+convention tags (`data/c/tags/item/foods*`, `crops`) that **Farmer's Delight, Create, and Delightful all
+read**, so lumen ingredients drop into those mods' tag-based recipes with no hard dependency. *(Bespoke
+per-mod dishes — FD `cutting`/`cooking`, Create `mixing` — are deferred: their foreign recipe-type schemas
+can't be verified without the mods present, and a malformed one would error in the pack; the `#c:` tags give
+the universal integration safely.)* **v1.1f** added **Lumenwater fishing** — a NeoForge built-in
+`neoforge:add_table` global loot modifier (`data/.../loot_modifiers/`, indexed by
+`data/neoforge/loot_modifiers/global_loot_modifiers.json`) gated by `location_check` (dimension +
+`#lumenwilds:lumenwater` fluid) appends a bonus lumen catch (native fish/flora/materials/treasure) to vanilla
+fishing — no custom Java. **v1.1g** made the dimension's effects into **fished "spell-book" enchantments** —
+six data-driven enchantments (`registry.ModEnchantments` keys + `data/lumenwilds/enchantment/*.json`): armor
+*while-worn* (`minecraft:tick`→`apply_mob_effect`: Lightfooted/Nightsight/Lumenward) and weapon *on-hit*
+(`post_attack`: Glowbrand/Sporestrike/Rootbinding), obtainable **only** as enchanted books from Lumenwater
+fishing (kept out of the enchanting table/trades/loot tags). *(All verified loading clean on a headless
+server: GLM + enchantments + loot + tags, no datapack errors.)* Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -453,6 +467,11 @@ as `File#member`.
   (`MONSTER`, floating ranged ruin guardian, 10f). Each entity also needs
   attributes + spawn placement (`event.ModEntityEvents`), a renderer (`client.LumenwildsClient`), a loot table
   (`loot_table/entities/`), and biome `spawners` entries.
+- [ModEnchantments.java](src/main/java/com/jus144tice/lumenwilds/registry/ModEnchantments.java) — `ResourceKey<Enchantment>`
+  handles for the six **fished** enchantments (v1.1g); the enchantments are data (`data/lumenwilds/enchantment/*.json`,
+  1.21.1 data-driven), NOT a DeferredRegister — no bus wiring. Armor while-worn (`tick`→`apply_mob_effect`):
+  `#LIGHTFOOTED`/`#NIGHTSIGHT`/`#LUMENWARD`; weapon on-hit (`post_attack`): `#GLOWBRAND`/`#SPORESTRIKE`/`#ROOTBINDING`.
+  Obtainable only as enchanted books from Lumenwater fishing (kept out of the enchanting-table/trade/loot tags).
 - [ModPotions.java](src/main/java/com/jus144tice/lumenwilds/registry/ModPotions.java) — `#POTIONS`; a
   brewable `Potion` per 8a effect (`#LIGHTFOOT`/`#GLOWMARKED`/`#SPOREBLIND`/`#ROOTED`, 8h). The drinkable/
   splash/lingering/tipped item variants are vanilla; the brewing mixes are in `event.ModBrewing`.
@@ -1217,7 +1236,17 @@ as `File#member`.
   (`loot_table/chests/*`, Phase 9) are now **tiered** — a guaranteed signature reward pool (enchanted gear/books,
   Lumen Anchor, striker, crystal blocks) + themed mid loot + treasure scaled by structure difficulty (no more
   all-filler chests). Underwater the surface rule places **`lumensand`** as the seabed (was dead moonloam).
-- `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood_log/wood → stripped).
+- **Lumenwater fishing (v1.1f):** `data/neoforge/loot_modifiers/global_loot_modifiers.json` (the **required**
+  GLM index, `entries: [lumenwilds:lumenwater_fishing]`) + `data/lumenwilds/loot_modifiers/lumenwater_fishing.json`
+  (a built-in `neoforge:add_table` GLM, `location_check` on dimension + the `#lumenwilds:lumenwater` fluid tag)
+  → appends `loot_table/gameplay/fishing/lumenwater.json` (a `minecraft:fishing` sub-table) to vanilla fishing.
+- **Fished enchantments (v1.1g):** `data/lumenwilds/enchantment/{lightfooted,nightsight,lumenward,glowbrand,
+  sporestrike,rootbinding}.json` + `data/minecraft/tags/enchantment/tooltip_order.json` (append, so they show
+  on items) + `enchantment.lumenwilds.*` lang; the books are rolled in the fishing sub-table's spell-book pool.
+- `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood/glowroot log+wood → stripped).
+- `data/c/tags/item/*` (v1.1e) — the universal `#c:` convention food/crop tags (`foods`, `foods/{fruit,berry,
+  raw_meat,cooked_meat,raw_fish,cooked_fish,soup}`, `crops`) so lumen foods integrate into Farmer's Delight /
+  Create / Delightful (and any `#c:`-aware cooking mod) with no hard dependency.
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves` (glowwood + glowroot) +
   `logs.json` (all `_log`/`_wood` blocks — **required for leaf decay to recognise the trunk**, Phase 9d fix);
   `tags/block/dirt.json`
@@ -1355,6 +1384,21 @@ as `File#member`.
   `patch_moonblossom` last. To actually exercise this (and any custom feature), force-generate Lumenwilds
   chunks — a temp `data/minecraft/tags/function/load.json` → a fn running `execute in lumenwilds:lumenwilds
   run forceload add …` (delete before commit).
+- **Global Loot Modifiers need the index file + live under `loot_modifiers/` (plural).** The per-modifier
+  JSON is `data/<modid>/loot_modifiers/<name>.json` AND it must be listed in
+  `data/neoforge/loot_modifiers/global_loot_modifiers.json` (`{"replace":false,"entries":["modid:name"]}`) or
+  it never loads (verified in `LootModifierManager`: `folder = "loot_modifiers"`, reads the index for ordering).
+  NeoForge 21.1 ships a built-in **`neoforge:add_table`** GLM (fields: `conditions` array + `table` id) — no
+  custom GLM class/serializer needed to append a sub-table to e.g. `gameplay/fishing`.
+- **1.21.1 data-driven enchantment schema (verified from source — easy to get wrong):** `supported_items`/
+  `primary_items` use the `#minecraft:enchantable/<foot_armor|head_armor|chest_armor|sword|weapon|…>` tags (NOT
+  `*_enchantable`). "While worn/held" = a `minecraft:tick` effect (`List<ConditionalEffect<EnchantmentEntityEffect>>`,
+  element `{ "effect": { "type": "minecraft:apply_mob_effect", "to_apply": …, "min/max_duration", "min/max_amplifier" } }`)
+  — runs every server tick, so a short refreshing duration stays topped up while equipped and lapses when removed.
+  "On hit" = `minecraft:post_attack` (element adds `"enchanted":"attacker","affected":"victim"`).
+  **`apply_mob_effect` durations are in SECONDS** (×20 internally) — a weapon on-hit needs ~3–12, not ticks.
+  To make an enchantment fishing/loot-only, simply leave it OUT of `#minecraft:in_enchanting_table`/`tradeable`/
+  `on_random_loot`; add it to `#minecraft:tooltip_order` (append) so it still displays on items.
 - **A `random_patch` flora feature must filter on `would_survive`, not `matching_blocks:air`.** The latter
   places the plant in ANY air cell within `y_spread` — including the air *directly above* another plant — so
   moonblossoms/glow ferns generated floating on top of glowberry bushes (the v1.1b bug). `would_survive` (the

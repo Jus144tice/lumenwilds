@@ -1,0 +1,13 @@
+{
+  "type": "neoforge:add_table",
+  "conditions": [
+    {
+      "condition": "minecraft:location_check",
+      "predicate": {
+        "dimension": "lumenwilds:lumenwilds",
+        "fluid": { "fluids": "#lumenwilds:lumenwater" }
+      }
+    }
+  ],
+  "table": "lumenwilds:gameplay/fishing/lumenwater"
+}

@@ -242,5 +242,11 @@
   "block.lumenwilds.stripped_glowroot_log": "Stripped Glowroot Log",
   "block.lumenwilds.stripped_glowroot_wood": "Stripped Glowroot Wood",
   "item.lumenwilds.glowroot_boat": "Glowroot Boat",
-  "item.lumenwilds.glowroot_chest_boat": "Glowroot Chest Boat"
+  "item.lumenwilds.glowroot_chest_boat": "Glowroot Chest Boat",
+  "enchantment.lumenwilds.lightfooted": "Lightfooted",
+  "enchantment.lumenwilds.nightsight": "Nightsight",
+  "enchantment.lumenwilds.lumenward": "Lumenward",
+  "enchantment.lumenwilds.glowbrand": "Glowbrand",
+  "enchantment.lumenwilds.sporestrike": "Sporestrike",
+  "enchantment.lumenwilds.rootbinding": "Rootbinding"
 }

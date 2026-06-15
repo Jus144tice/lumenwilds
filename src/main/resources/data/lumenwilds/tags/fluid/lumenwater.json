@@ -1,0 +1,7 @@
+{
+  "__comment": "Lumenwater (source + flowing) — used by the lumenwater_fishing loot modifier's location_check.",
+  "values": [
+    "lumenwilds:lumenwater",
+    "lumenwilds:flowing_lumenwater"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "description": { "translate": "enchantment.lumenwilds.rootbinding" },
+  "supported_items": "#minecraft:enchantable/weapon",
+  "weight": 2,
+  "max_level": 1,
+  "min_cost": { "base": 20, "per_level_above_first": 10 },
+  "max_cost": { "base": 70, "per_level_above_first": 10 },
+  "anvil_cost": 6,
+  "slots": ["mainhand"],
+  "effects": {
+    "minecraft:post_attack": [
+      {
+        "enchanted": "attacker",
+        "affected": "victim",
+        "effect": {
+          "type": "minecraft:apply_mob_effect",
+          "to_apply": "lumenwilds:rooted",
+          "min_duration": 3.0,
+          "max_duration": 5.0,
+          "min_amplifier": 0.0,
+          "max_amplifier": 0.0
+        }
+      }
+    ]
+  }
+}

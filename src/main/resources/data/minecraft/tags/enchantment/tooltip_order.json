@@ -1,0 +1,11 @@
+{
+  "__comment": "Append the Lumenwilds fished enchantments to the tooltip order (merges with vanilla; replace defaults false) so they display on enchanted gear/books.",
+  "values": [
+    "lumenwilds:lightfooted",
+    "lumenwilds:nightsight",
+    "lumenwilds:lumenward",
+    "lumenwilds:glowbrand",
+    "lumenwilds:sporestrike",
+    "lumenwilds:rootbinding"
+  ]
+}

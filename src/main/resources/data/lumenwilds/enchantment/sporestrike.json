@@ -1,0 +1,26 @@
+{
+  "description": { "translate": "enchantment.lumenwilds.sporestrike" },
+  "supported_items": "#minecraft:enchantable/weapon",
+  "weight": 3,
+  "max_level": 1,
+  "min_cost": { "base": 18, "per_level_above_first": 9 },
+  "max_cost": { "base": 68, "per_level_above_first": 9 },
+  "anvil_cost": 4,
+  "slots": ["mainhand"],
+  "effects": {
+    "minecraft:post_attack": [
+      {
+        "enchanted": "attacker",
+        "affected": "victim",
+        "effect": {
+          "type": "minecraft:apply_mob_effect",
+          "to_apply": "lumenwilds:sporeblind",
+          "min_duration": 5.0,
+          "max_duration": 8.0,
+          "min_amplifier": 0.0,
+          "max_amplifier": 0.0
+        }
+      }
+    ]
+  }
+}

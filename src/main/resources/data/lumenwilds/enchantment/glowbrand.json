@@ -1,0 +1,26 @@
+{
+  "description": { "translate": "enchantment.lumenwilds.glowbrand" },
+  "supported_items": "#minecraft:enchantable/sword",
+  "weight": 4,
+  "max_level": 1,
+  "min_cost": { "base": 15, "per_level_above_first": 9 },
+  "max_cost": { "base": 65, "per_level_above_first": 9 },
+  "anvil_cost": 4,
+  "slots": ["mainhand"],
+  "effects": {
+    "minecraft:post_attack": [
+      {
+        "enchanted": "attacker",
+        "affected": "victim",
+        "effect": {
+          "type": "minecraft:apply_mob_effect",
+          "to_apply": "lumenwilds:glowmarked",
+          "min_duration": 8.0,
+          "max_duration": 12.0,
+          "min_amplifier": 0.0,
+          "max_amplifier": 0.0
+        }
+      }
+    ]
+  }
+}
