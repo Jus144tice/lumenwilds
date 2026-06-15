@@ -1,0 +1,16 @@
+{
+  "name": "Native Fauna",
+  "icon": "lumenwilds:shade_stalker_spawn_egg",
+  "category": "lumenwilds:creatures",
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(l)Lumen Grazer$(/l) — peaceful herd grazer.$(br)$(l)Shade Stalker$(/l) — fast dark predator that flees light.$(br)$(l)Lantern Beetle$(/l) — glowing flyer; bottle it for a lamp.$(br)$(l)Sporeling$(/l) — jungle/cave swarm; bursts a spore cloud.$(br)$(l)Mirelurker$(/l) — Moonmire ambusher."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)Lumen Fish$(/l) — schooling glow-fish (bucketable).$(br)$(l)Sky Jelly$(/l) — harmless air drifter.$(br)$(l)Glowmoth$(/l) — flower guardian; turns hostile if you break a bloom near it.$(br)$(l)Rootback$(/l) — huge, slow, tanky turtle.$(br)$(l)Crag Wraith$(/l) — flying crags hunter.$(br)$(l)Echo Sentinel$(/l) — ruin guardian (see The Lumenwrights)."
+    }
+  ]
+}

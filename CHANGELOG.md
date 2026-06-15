@@ -6,6 +6,33 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+### v1.1 — Playthrough fixes & integration
+First survival-playthrough feedback, addressed before any v2.0 work:
+
+- **Glowroot wood set** — the signature self-lit tree now has a full wood set (planks, wood/stripped,
+  stairs/slab/fence/gate/door/trapdoor/button/plate, signs, hanging signs, boats + axe-stripping), all
+  faintly glowing. Closes the "can't make planks from Glowroot logs" gap.
+- **Plantable, renewable Glowberries** — the bush is now a sweet-berry-style block (grows through ages,
+  bone-mealable, glows brighter as it ripens, right-click to harvest); plant it by right-clicking soil with
+  a Glowberry.
+- **Flora fix** — Moonblossoms / Glow Ferns no longer generate floating on top of bushes (they now require
+  valid ground like every other patch).
+- **A use for every mob drop** — the 12 formerly-useless drops now craft into useful items (hides→leather,
+  sinew→string, algae→dye, membrane→phantom membrane, tooth→bone meal, plate→iron nuggets, scales→glow
+  pollen, claw→echo dust, crystal dust→glasspetal block, clumps→moonloam) or brew (glowcap spores→Sporeblind).
+- **Cooking-mod integration** — lumen foods/crops are tagged into the universal `#c:` convention tags that
+  Farmer's Delight, Create, Delightful, and other cooking mods read.
+- **Lumenwater fishing** — fishing in Lumenwater yields a unique bonus catch (native fish/flora/materials/
+  treasure), including rare enchanted **"spell books"**.
+- **Fished enchantments** — six new gear enchantments obtainable ONLY from Lumenwater fishing: Lightfooted,
+  Nightsight, Lumenward (armor) and Glowbrand, Sporestrike, Rootbinding (weapons), applied at an anvil.
+- **In-game guide** — an optional **Patchouli** guidebook (craft: book + glow pollen) that explains the
+  whole dimension. The mod works without Patchouli installed.
+- **Lumenwater = water** — also tagged `#c:water` so water-detection mods (e.g. a water-allergy race mod)
+  treat it as water.
+- Also fixed a pre-existing gap where several recipes (Ancient Door, Resonance Core) and recipe-book unlocks
+  were defined in code but never shipped.
+
 ## [1.0.0] - 2026-06-14
 The first full release of **The Lumenwilds** — a complete, explorable bioluminescent dimension for
 NeoForge 1.21.1 / Java 21, reached through a player-built portal.

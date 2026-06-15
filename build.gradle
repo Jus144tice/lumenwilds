@@ -16,6 +16,16 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 repositories {
     // Needed for the JUnit test dependencies below.
     mavenCentral()
+    // Modrinth maven — for Patchouli (the optional in-game guidebook, v1.1h). Soft dependency only.
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'Modrinth'
+                url = 'https://api.modrinth.com/maven'
+            }
+        }
+        filter { includeGroup 'maven.modrinth' }
+    }
 }
 
 neoForge {
@@ -63,6 +73,13 @@ neoForge {
 // (git-ignored) purely as a regeneration/diff aid; copy anything you want to keep into src/main.
 
 dependencies {
+    // --- Optional: Patchouli (in-game guidebook, v1.1h) ----------------------
+    // SOFT dependency, dev-run only. runtimeOnly so dev runs (runClient) load Patchouli to open/test the
+    // guide, but it is NOT on the compile classpath (the mod uses zero Patchouli Java API — the book is pure
+    // datapack JSON + a mod_loaded-gated craft) and is NOT bundled into our jar. The mods.toml entry is
+    // optional, so the shipped mod loads + plays without Patchouli (the guide just can't be opened).
+    runtimeOnly 'maven.modrinth:patchouli:1.21.1-93-neoforge'
+
     // --- Test-only: JUnit 5 --------------------------------------------------
     testImplementation platform('org.junit:junit-bom:5.10.2')
     testImplementation 'org.junit.jupiter:junit-jupiter'

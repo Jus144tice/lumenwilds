@@ -1,0 +1,15 @@
+{
+  "name": "First Steps",
+  "icon": "lumenwilds:lumenbulb",
+  "category": "lumenwilds:getting_started",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Gravity is gentle here. You jump higher, fall slower, and take less fall damage (and from a greater height). Projectiles fly flatter. The effect applies while you are in the dimension."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "It is always dim twilight under $(l)Veyra$(/l), the great pale moon. Carry light — or harvest the native glow. Many hostiles $(o)flee bright light$(): daylight, a Stillbloom's core, lanterns, and Lumen light all keep them at bay."
+    }
+  ]
+}

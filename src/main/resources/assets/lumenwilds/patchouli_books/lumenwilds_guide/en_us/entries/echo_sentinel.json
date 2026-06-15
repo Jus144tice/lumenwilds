@@ -1,0 +1,15 @@
+{
+  "name": "The Echo Sentinel",
+  "icon": "lumenwilds:echo_sentinel_spawn_egg",
+  "category": "lumenwilds:lumenwrights",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The cities are not unguarded. The $(l)Echo Sentinel$(/l) is a floating construct that still keeps watch — it charges and fires a $(o)light-pulse beam$(). It haunts the Undercrown and the vaults."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Defeat one for $(l)resonance core fragments$(/l), $(l)luminite$(/l), $(l)memory crystal shards$(/l), and rarely a $(l)Lumen Relay$(/l) — the parts you need to rebuild the Lumenwrights' tech."
+    }
+  ]
+}

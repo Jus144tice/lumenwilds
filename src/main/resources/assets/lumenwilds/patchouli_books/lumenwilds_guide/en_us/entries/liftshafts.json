@@ -1,0 +1,16 @@
+{
+  "name": "Gravity Liftshafts",
+  "icon": "lumenwilds:lumen_field_projector",
+  "category": "lumenwilds:light_tech",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Lumenwrights did not climb — they floated. A $(l)Lumen Field Projector$(/l) projects a gravity column from one face: ride it up (Ascension) or safely down (Descent). Right-click to toggle the mode."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A column reaches 16 blocks. Mount a $(l)Gravity Repeater$(/l) flush in the shaft wall and it resets that range, chaining a shaft arbitrarily tall. You'll find these working in the abandoned mines beneath Vestige Cities — built from real, reusable parts."
+    },
+    { "type": "patchouli:crafting", "recipe": "lumenwilds:lumen_field_projector", "text": "The Lumen Field Projector (ruin-gated parts)." }
+  ]
+}

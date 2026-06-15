@@ -1,0 +1,17 @@
+{
+  "name": "Plants & Food",
+  "icon": "lumenwilds:glowcap_stew",
+  "category": "lumenwilds:flora_and_food",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(l)Moonblossom$(/l) is a glowing flower (night vision in suspicious stew). $(l)Glow Fern$(/l), $(l)Glow Algae$(/l) and $(l)Lumen Reeds$(/l) carpet the land and swamps. $(l)Lumen Fruit$(/l) gives brief night vision; $(l)Lumen Nectar$(/l) (bottle a Stillbloom) gives regeneration."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "lumenwilds:glowberry",
+      "text": "Right-click soil with a Glowberry to plant a bush. Bone-meal it to ripen; right-click a ripe bush to harvest — it regrows."
+    },
+    { "type": "patchouli:crafting", "recipe": "lumenwilds:glowcap_stew", "text": "Glowcap Stew — hearty, with night vision. Returns the bowl." }
+  ]
+}

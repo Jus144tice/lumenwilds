@@ -1,0 +1,10 @@
+{
+  "name": "The Lumenwilds",
+  "landing_text": "A field guide to the alien, bioluminescent realm of perpetual twilight. Light is alive here. Step through a Lumenbound portal and read on, traveler.",
+  "version": 1,
+  "subtitle": "A Traveler's Field Guide",
+  "creative_tab": "lumenwilds:lumenwilds",
+  "model": "patchouli:book_blue",
+  "use_resource_pack": true,
+  "dont_generate_book": false
+}

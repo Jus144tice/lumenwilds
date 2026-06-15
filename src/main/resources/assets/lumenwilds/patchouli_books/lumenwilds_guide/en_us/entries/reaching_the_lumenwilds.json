@@ -1,0 +1,18 @@
+{
+  "name": "Reaching the Lumenwilds",
+  "icon": "lumenwilds:lumen_portal",
+  "category": "lumenwilds:getting_started",
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Lumenwilds is reached through a player-built portal. Its frame is $(l)Lumenbound Stone$(/l) — $(o)never$() vanilla lodestone. Build a frame like a Nether portal (a 4-wide, 5-tall ring around a 2x3 opening), then light the inner face with a $(l)Lumen Striker$(/l)."
+    },
+    { "type": "patchouli:crafting", "recipe": "lumenwilds:lumenbound_stone", "text": "Lumenbound Stone — the portal frame." },
+    { "type": "patchouli:crafting", "recipe": "lumenwilds:lumen_striker", "text": "The Lumen Striker lights the portal (and has durability)." },
+    {
+      "type": "patchouli:text",
+      "text": "Right-click the inside face of the frame with the Striker to open the portal, then step through. $(br)$(br)Stuck on ingredients? Search the Overworld for $(l)Lumenbound Ruins$(/l) — a broken portal site with a chest of starter parts."
+    }
+  ]
+}

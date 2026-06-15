@@ -1,0 +1,16 @@
+{
+  "name": "Vestige Cities",
+  "icon": "lumenwilds:glowbrick",
+  "category": "lumenwilds:lumenwrights",
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The $(l)Lumenwrights$(/l) are gone; only ruins remain. Find broken $(l)Vestige Outposts$(/l), village-sized $(l)Vestige Cities$(/l) (some Grand, with spires), buried $(l)Vaults$(/l), and abandoned $(l)Luminite Mines$(/l) with liftshafts."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Their material is $(l)Glowbrick$(/l), refined from $(l)Luminite$(/l) ore (ore → raw → smelt to ingot → glowbrick). $(l)Memory Crystals$(/l) and $(l)Glyph Tablets$(/l) hold fragments of their story. $(br)$(br)Tip: $(l)/locate structure lumenwilds:vestige_mine$(/l) finds the nearest city with a mineshaft."
+    }
+  ]
+}

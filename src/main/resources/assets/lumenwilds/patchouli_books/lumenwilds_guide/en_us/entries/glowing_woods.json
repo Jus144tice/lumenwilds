@@ -1,0 +1,17 @@
+{
+  "name": "Glowing Woods",
+  "icon": "lumenwilds:glowroot_log",
+  "category": "lumenwilds:flora_and_food",
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Two trees grow here. $(l)Glowwood$(/l) is the cyan building wood. $(l)Glowroot$(/l) is the signature self-lit species — its whole wood set glows faintly. Both have full sets: planks, stairs, slabs, fences, doors, signs, boats, and more."
+    },
+    { "type": "patchouli:crafting", "recipe": "lumenwilds:glowroot_planks", "text": "Glowroot logs make glowing planks." },
+    {
+      "type": "patchouli:text",
+      "text": "Plant a sapling to grow a tree. Glowroot grows a spreading 2x2 tree when four saplings are planted together — and a town-sized giant generates in the world. Strip logs with an axe for the smooth variant."
+    }
+  ]
+}

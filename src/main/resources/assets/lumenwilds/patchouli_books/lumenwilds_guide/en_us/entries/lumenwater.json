@@ -1,0 +1,16 @@
+{
+  "name": "Lumenwater",
+  "icon": "lumenwilds:lumenwater_bucket",
+  "category": "lumenwilds:world",
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "lumenwilds:lumenwater_bucket",
+      "text": "The dimension's native glowing teal water. It behaves as water — you swim, boats float, farmland hydrates, fish live in it."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Carry it $(o)out$() of the Lumenwilds and it slowly reverts to ordinary water — its light is bound to this realm. Fishing in Lumenwater yields unique catches (see $(l)Effects, Brewing & Fishing$(/l))."
+    }
+  ]
+}

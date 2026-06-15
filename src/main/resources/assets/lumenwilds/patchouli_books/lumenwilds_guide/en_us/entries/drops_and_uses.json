@@ -1,0 +1,15 @@
+{
+  "name": "Drops & Their Uses",
+  "icon": "lumenwilds:glow_sinew",
+  "category": "lumenwilds:creatures",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Every drop is useful. $(l)Hides$(/l) (grazer/dark) craft into leather. $(l)Glow Sinew$(/l) → string. $(l)Lumen Algae$(/l) → green dye. $(l)Wraith Membrane$(/l) → phantom membrane. $(l)Mire Tooth$(/l) → bone meal. $(l)Rootback Plate$(/l) → iron nuggets."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l)Glow Scales$(/l) → glow pollen. $(l)Shade Claw$(/l) → echo dust. $(l)Crystal Dust$(/l) → glasspetal block. $(l)Moonloam Clumps$(/l) → moonloam. $(br)$(br)$(l)Spore Sac$(/l) & $(l)Glowcap Spores$(/l) brew Sporeblind; $(l)Air Gel$(/l), $(l)Glow Pollen$(/l) and $(l)Living Fiber$(/l) brew the other native potions."
+    }
+  ]
+}

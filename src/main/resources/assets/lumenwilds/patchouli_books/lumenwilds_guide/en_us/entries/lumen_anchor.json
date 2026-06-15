@@ -1,0 +1,14 @@
+{
+  "name": "Lumen Anchor",
+  "icon": "lumenwilds:lumen_anchor",
+  "category": "lumenwilds:light_tech",
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "lumenwilds:lumen_anchor",
+      "text": "Portals normally return you to a 1:1-scaled spot. Place two Lumen Anchors and link them with the Lumen Striker; a linked anchor near a portal lands return travel precisely at its partner."
+    },
+    { "type": "patchouli:crafting", "recipe": "lumenwilds:lumen_anchor", "text": "Crafting the Lumen Anchor." }
+  ]
+}

@@ -286,8 +286,12 @@ fishing (kept out of the enchanting table/trades/loot tags). *(All verified load
 server: GLM + enchantments + loot + tags, no datapack errors.)* **v1.1i** hardened **Lumenwater = water**
 for compat (e.g. a water-allergic cat-people race mod): it was already in `#minecraft:water` + returns
 `isInWater()` true; now also in the NeoForge convention `#c:water` (`data/c/tags/fluid/water.json`). Only a
-mod that hard-codes `Blocks.WATER`/`Fluids.WATER` would still miss it (unreachable from our side). **Still
-to do: v1.1h — the Patchouli player guide** (adds a soft Patchouli dependency). Roadmap:
+mod that hard-codes `Blocks.WATER`/`Fluids.WATER` would still miss it (unreachable from our side). **v1.1h**
+added the **in-game player guide** — a **Patchouli** book (`lumenwilds:lumenwilds_guide`, 7 categories / ~16
+entries covering getting-there → survival → flora/wood → creatures+drops → light tech → the Lumenwrights →
+effects/brewing/fishing). Patchouli is an **optional/soft dependency** (`runtimeOnly` for dev, `optional` in
+`neoforge.mods.toml`, zero Java API used — the mod loads + plays without it); the book is craftable
+(book + glow pollen, `mod_loaded`-gated). **v1.1 (playthrough fixes) is complete (a–i).** Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -1248,6 +1252,11 @@ as `File#member`.
 - **Fished enchantments (v1.1g):** `data/lumenwilds/enchantment/{lightfooted,nightsight,lumenward,glowbrand,
   sporestrike,rootbinding}.json` + `data/minecraft/tags/enchantment/tooltip_order.json` (append, so they show
   on items) + `enchantment.lumenwilds.*` lang; the books are rolled in the fishing sub-table's spell-book pool.
+- **Patchouli guide (v1.1h, optional dep):** `data/lumenwilds/patchouli_books/lumenwilds_guide/book.json` (the
+  ONLY part in `data/`; needs `use_resource_pack: true`) + the content under **`assets/lumenwilds/patchouli_books/
+  lumenwilds_guide/en_us/{categories,entries}/*`** (client/resource side, post-1.20 Patchouli) + the craft
+  `recipe/lumenwilds_guide.json` (`mod_loaded` patchouli → a `patchouli:guide_book` with the `patchouli:book`
+  component). Patchouli is `runtimeOnly` in `build.gradle` (Modrinth maven) + `optional` in `neoforge.mods.toml`.
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood/glowroot log+wood → stripped).
 - `data/c/tags/item/*` (v1.1e) — the universal `#c:` convention food/crop tags (`foods`, `foods/{fruit,berry,
   raw_meat,cooked_meat,raw_fish,cooked_fish,soup}`, `crops`) so lumen foods integrate into Farmer's Delight /
@@ -1389,6 +1398,12 @@ as `File#member`.
   `patch_moonblossom` last. To actually exercise this (and any custom feature), force-generate Lumenwilds
   chunks — a temp `data/minecraft/tags/function/load.json` → a fn running `execute in lumenwilds:lumenwilds
   run forceload add …` (delete before commit).
+- **Patchouli (1.20+) books split across `data/` and `assets/`.** Only `book.json` stays in
+  `data/<modid>/patchouli_books/<book>/` and it MUST set `use_resource_pack: true`; the categories/entries/
+  templates live in `assets/<modid>/patchouli_books/<book>/<lang>/…` (client side). A book.json with
+  `use_resource_pack:false` (the old layout) is rejected at load (`Failed to load book … skipping`) — caught
+  on a headless `runServer` (Patchouli validates book.json server-side). Give the book via a recipe whose
+  result is `patchouli:guide_book` with a `patchouli:book` component = the book id; gate it `mod_loaded`.
 - **Global Loot Modifiers need the index file + live under `loot_modifiers/` (plural).** The per-modifier
   JSON is `data/<modid>/loot_modifiers/<name>.json` AND it must be listed in
   `data/neoforge/loot_modifiers/global_loot_modifiers.json` (`{"replace":false,"entries":["modid:name"]}`) or
@@ -1437,7 +1452,9 @@ as `File#member`.
 ## Build & verify
 
 Versions in [gradle.properties](gradle.properties): MC `1.21.1`, NeoForge `21.1.233`, Java 21, Gradle
-8.10, ModDevGradle `2.0.141`, Spotless `6.25.0`. License **Apache-2.0**. `JAVA_HOME` → a JDK 21.
+8.10, ModDevGradle `2.0.141`, Spotless `6.25.0`. License **Apache-2.0**. `JAVA_HOME` → a JDK 21. Optional
+dep: **Patchouli** `1.21.1-93-neoforge` (`runtimeOnly`, Modrinth maven — the in-game guide; dev-run only,
+never compiled against, not bundled).
 
 ```bash
 export JAVA_HOME="/c/Program Files/Java/jdk-21"

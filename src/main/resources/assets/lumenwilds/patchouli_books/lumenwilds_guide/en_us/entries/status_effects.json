@@ -1,0 +1,16 @@
+{
+  "name": "Effects & Brewing",
+  "icon": "minecraft:potion",
+  "category": "lumenwilds:effects_and_fishing",
+  "priority": true,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Four native effects: $(l)Lightfoot$(/l) (higher jump, safe fall), $(l)Glowmarked$(/l) (the target glows), $(l)Sporeblind$(/l) (a spore-clouded slow), and $(l)Rooted$(/l) (heavy slow, no jump)."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Brew each from an Awkward Potion + a native ingredient: $(br)Air Gel → Lightfoot$(br)Glow Pollen → Glowmarked$(br)Spore Sac (or Glowcap Spores) → Sporeblind$(br)Living Fiber → Rooted"
+    }
+  ]
+}

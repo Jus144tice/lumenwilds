@@ -17,11 +17,12 @@ authors = "Jus144tice"
 # Adds the Glowwood Boat.Type via NeoForge's enum extension (see registry/ModBoatTypes).
 enumExtensions = "META-INF/enumextensions.json"
 description = '''
-The Lumenwilds is an alien, bioluminescent custom dimension reached through a portal whose frame is
-built from Lumenbound Stone (NOT vanilla lodestone) and lit with the Lumen Striker. This build is
-Phase 1 scaffolding: registries, placeholder blocks/items, a creative tab, the portal block + striker,
-and the dimension keys all exist and compile. Worldgen, mobs, structures and full portal behaviour are
-intentionally placeholders — see docs/IMPLEMENTATION_PLAN.md.
+The Lumenwilds is an alien, bioluminescent custom dimension reached through a player-built portal whose
+frame is Lumenbound Stone (NOT vanilla lodestone), lit with the Lumen Striker. Explore seven glowing biomes
+under the giant moon Veyra in low gravity: native fauna, glowing flora and wood, Lumenwater, status effects
+and brewing, the ruined Vestige Cities of the vanished Lumenwrights (resonance tech, gravity liftshafts,
+abandoned mines), and Lumenwater fishing with rare effect-enchantment "spell books". Install Patchouli for
+the in-game guide.
 '''
 
 # --- NeoForge (required) ---
@@ -37,5 +38,14 @@ side = "BOTH"
 modId = "minecraft"
 type = "required"
 versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "BOTH"
+
+# --- Patchouli (optional) — the in-game guidebook (v1.1h). The mod loads + plays without it; the guide
+# just can't be opened. No Patchouli Java API is used (the book is datapack JSON + a mod_loaded-gated craft).
+[[dependencies.lumenwilds]]
+modId = "patchouli"
+type = "optional"
+versionRange = "*"
 ordering = "NONE"
 side = "BOTH"

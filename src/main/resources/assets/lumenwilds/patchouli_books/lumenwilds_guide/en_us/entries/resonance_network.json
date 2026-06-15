@@ -1,0 +1,15 @@
+{
+  "name": "The Resonance Network",
+  "icon": "lumenwilds:resonance_core",
+  "category": "lumenwilds:light_tech",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A $(l)Resonance Core$(/l) floods power through connected $(l)Lumen Conduits$(/l) (dead → dim → active) and opens the $(l)Ancient Doors$(/l) they reach. $(l)Lumen Relays$(/l) bridge gaps in the network."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A powered $(l)Gravity Lens$(/l) lifts entities in the column above it. A dead city's $(l)Dormant Light Engine$(/l) can be restored with a looted $(o)resonance core fragment$() — waking the network. Cores and lenses can be rebuilt from looted fragments."
+    }
+  ]
+}

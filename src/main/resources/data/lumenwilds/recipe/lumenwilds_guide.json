@@ -1,0 +1,19 @@
+{
+  "__comment": "Craft the Patchouli guide (v1.1h). Only loads when Patchouli is present; the result is a patchouli:guide_book bound to our book via the patchouli:book data component.",
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "conditions": [
+    { "type": "neoforge:mod_loaded", "modid": "patchouli" }
+  ],
+  "ingredients": [
+    { "item": "minecraft:book" },
+    { "item": "lumenwilds:glow_pollen" }
+  ],
+  "result": {
+    "id": "patchouli:guide_book",
+    "count": 1,
+    "components": {
+      "patchouli:book": "lumenwilds:lumenwilds_guide"
+    }
+  }
+}

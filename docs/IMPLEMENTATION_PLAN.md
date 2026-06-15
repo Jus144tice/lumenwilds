@@ -33,6 +33,11 @@ phase.
    NeoForge `PayloadRegistrar` packet.
 4. **No new dependencies** without justification recorded here (incl. portal-helper libraries) — see
    [CLAUDE.md](../CLAUDE.md) Mandate 6. Portal logic stays in-house under `portal/`.
+   - **Justified dependency (v1.1h): Patchouli** — the in-game guidebook. **Optional / soft only**: `runtimeOnly`
+     in `build.gradle` (Modrinth maven, for dev runs), `optional` in `neoforge.mods.toml`, and **zero Patchouli
+     Java API** is used (the book is pure datapack/asset JSON + a `mod_loaded`-gated craft). The mod compiles,
+     loads, and plays with Patchouli absent — only the in-game guide is unavailable. Chosen over a hand-rolled
+     book/GUI because it gives a searchable, multi-chapter guide for ~no maintenance burden and no hard coupling.
 5. **Lumenbound Stone is the only portal frame** — never lodestone ([CLAUDE.md](../CLAUDE.md) Mandate 4).
 6. **Phased, not overbuilt.** Each phase adds the minimum to make its slice work and leaves typed TODOs
    at the next seam. Keep `./gradlew build` green and smoke-test with `runData` / `runClient` / `runServer`.
