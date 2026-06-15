@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lumen_algae": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:lumen_algae"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:green_dye_from_lumen_algae"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lumen_algae"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:green_dye_from_lumen_algae"
+    ]
+  }
+}

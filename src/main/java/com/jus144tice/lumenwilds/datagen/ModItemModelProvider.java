@@ -46,6 +46,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             }
 
             if (!(item instanceof BlockItem)
+                    || name.equals("glowberry") // ItemNameBlockItem, but uses the berry icon (item/glowberry)
                     || name.endsWith("_door")
                     || name.endsWith("_pane")
                     || name.endsWith("_sign")) {
@@ -83,6 +84,9 @@ public class ModItemModelProvider extends ItemModelProvider {
     private ResourceLocation baseTex(String name) {
         if (name.startsWith("glowwood_")) {
             return tex("glowwood_planks");
+        }
+        if (name.startsWith("glowroot_")) {
+            return tex("glowroot_planks");
         }
         String base = name;
         for (String suffix : new String[] {"_wall", "_fence", "_button"}) {

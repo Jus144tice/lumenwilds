@@ -226,5 +226,21 @@
   "block.lumenwilds.giant_glowcap_violet": "Violet Glowcap",
   "block.lumenwilds.lumen_kelp": "Lumen Kelp",
   "block.lumenwilds.glowberry_bush": "Glowberry Bush",
-  "item.lumenwilds.glowberry": "Glowberries"
+  "item.lumenwilds.glowberry": "Glowberries",
+  "block.lumenwilds.glowroot_button": "Glowroot Button",
+  "block.lumenwilds.glowroot_door": "Glowroot Door",
+  "block.lumenwilds.glowroot_fence": "Glowroot Fence",
+  "block.lumenwilds.glowroot_fence_gate": "Glowroot Fence Gate",
+  "block.lumenwilds.glowroot_hanging_sign": "Glowroot Hanging Sign",
+  "block.lumenwilds.glowroot_planks": "Glowroot Planks",
+  "block.lumenwilds.glowroot_pressure_plate": "Glowroot Pressure Plate",
+  "block.lumenwilds.glowroot_sign": "Glowroot Sign",
+  "block.lumenwilds.glowroot_slab": "Glowroot Slab",
+  "block.lumenwilds.glowroot_stairs": "Glowroot Stairs",
+  "block.lumenwilds.glowroot_trapdoor": "Glowroot Trapdoor",
+  "block.lumenwilds.glowroot_wood": "Glowroot Wood",
+  "block.lumenwilds.stripped_glowroot_log": "Stripped Glowroot Log",
+  "block.lumenwilds.stripped_glowroot_wood": "Stripped Glowroot Wood",
+  "item.lumenwilds.glowroot_boat": "Glowroot Boat",
+  "item.lumenwilds.glowroot_chest_boat": "Glowroot Chest Boat"
 }

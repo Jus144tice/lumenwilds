@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lumenwilds:shade_claw"
+    },
+    {
+      "item": "lumenwilds:shade_claw"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:echo_dust"
+  }
+}

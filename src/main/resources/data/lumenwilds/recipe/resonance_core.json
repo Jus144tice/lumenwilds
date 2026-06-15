@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "lumenwilds:lumen_crystal_shard"
+    },
+    "F": {
+      "item": "lumenwilds:resonance_core_fragment"
+    },
+    "L": {
+      "item": "lumenwilds:luminite_ingot"
+    },
+    "S": {
+      "item": "lumenwilds:shimmerstone"
+    }
+  },
+  "pattern": [
+    "LSL",
+    "CFC",
+    "LSL"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:resonance_core"
+  }
+}

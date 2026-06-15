@@ -242,7 +242,7 @@ glowvine, and the spawn fixes all check out. **Post-playtest polish (this pass):
 ambient — **Sporeling** + **Mirelurker** — now spawn **light-agnostically** (`event.ModEntityEvents`,
 `checkAnyLightMonsterSpawnRules`) so the dim Sporefall Jungle / Moonmire actually teem (the Shade Stalker stays
 darkness-gated — fleeing light is its identity); the **Moonmire** gained Glowmoth + Sky Jelly ambient creatures;
-**Glowberry Bushes** are right-click-harvestable (`event.GlowberryInteractEvents`); **Undercrown Glowvine** now
+**Glowberry Bushes** are right-click-harvestable (now `block.GlowberryBushBlock`, v1.1c); **Undercrown Glowvine** now
 hangs in tall strands from cave ceilings (`world.feature.UndercrownDecorFeature`); and **Glowroot tree roots**
 reliably reach the ground (`world.feature.GlowrootShape` buttress-leg fix — the drop started on the tip's own
 log and stopped instantly). **Playtest-confirmed (10a–10g):** the full
@@ -253,7 +253,23 @@ Roadmap:
 (10a–10h). What is deliberately
 *not* built yet: the final art/audio/polish pass (Phase 9) — and the
 visual-only deferrals logged throughout (final mob models, the Sporeblind overlay, real `.ogg` audio, etc.). **All biomes share one terrain *height*** (only `depth` varies, for the cave
-layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). Roadmap:
+layer) — per-biome terrain silhouette is a deferred cross-cutting pass (see IMPLEMENTATION_PLAN). **Post-1.0
+playthrough fixes (v1.1) are in progress** (see [the plan](.claude/plans/delegated-juggling-locket.md)):
+**v1.1a** gave **Glowroot a full wood set** (the signature self-lit species — planks/wood/stairs/slab/fence/
+gate/door/trapdoor/button/plate/signs/boats, all faintly glowing, on `ModWoodTypes.GLOWROOT`), closing the
+"can't make planks from Glowroot logs" gap. **v1.1b** fixed **flora generating on top of bushes**
+(moonblossom + glow fern used `matching_blocks:air` with no survival check → floated above glowberry bushes;
+now `would_survive` like every other patch, on `WORLD_SURFACE_WG`). **v1.1c** made **Glowberries plantable +
+renewable** — `GLOWBERRY_BUSH` is now a sweet-berry-style `block.GlowberryBushBlock` (`AGE 0..3`,
+bone-mealable, glow 3→6, right-click-harvest), and the Glowberry item is an `ItemNameBlockItem` that plants it.
+**v1.1d** gave **every orphan mob drop a use** (`ModRecipeProvider#buildOrphanDropRecipes` — hides→leather,
+glow sinew→string, lumen algae→green dye, wraith membrane→phantom membrane, mire tooth→bone meal, rootback
+plate→iron nuggets, glow scales→glow pollen, shade claw→echo dust, crystal dust→glasspetal block, moonloam
+clumps→moonloam; glowcap spores brew Sporeblind in `event.ModBrewing`; several also become Lumenwater fishing
+bait in v1.1f). *(This pass also surfaced + fixed a pre-existing gap: several craftable recipes —
+`ancient_door`, `resonance_core` — and many recipe-unlock advancements were defined in `ModRecipeProvider`
+but never copied into `src/main/resources`, so they weren't actually obtainable/shown; all are now shipped.)*
+Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -344,8 +360,10 @@ as `File#member`.
   instead of dead moonloam), `#LUMEN_CORAL_BLOCK` (solid bright coral, light 10 — reef mounds + building), and
   `#LUMEN_CORAL` (`block.LumenCoralBlock` — a waterlogged glowing cross frond, light 9), and `#LUMEN_KELP` (another
   `LumenCoralBlock`, teal-green sea plant); grown on the seabed by the `world.feature.LumenReefFeature` (reef fronds
-  are a coral/kelp mix). **Surface harvestables (Phase 9):** `#GLOWBERRY_BUSH` (`TallGrassBlock` cross, drops
-  `ModItems#GLOWBERRY` food) scattered on the green biomes via `patch_glowberry` + a `glowberry` biome modifier.
+  are a coral/kelp mix). **Surface harvestables (Phase 9 / v1.1c):** `#GLOWBERRY_BUSH`
+  (`block.GlowberryBushBlock` — a bone-mealable `AGE 0..3` sweet-berry-style bush, glow 3→6, right-click-harvest;
+  **no own BlockItem** — planted by the `ModItems#GLOWBERRY` `ItemNameBlockItem`) scattered (at age 3) on the green
+  biomes via `patch_glowberry` + a `glowberry` biome modifier.
   **Lumenwright materials (Phase 10a, `docs/ancient_cities.txt`):** `#LUMINITE_ORE` + `#DEEP_LUMINITE_ORE`
   (`DropExperienceBlock`, drop `ModItems#RAW_LUMINITE`, non-glowing metal — contrast with the self-lit crystal
   ore; injected dimension-wide via the `luminite_ore` biome modifier), `#LUMINITE_BLOCK` (ingot storage);
@@ -371,17 +389,22 @@ as `File#member`.
   Glowwood wood set (`#GLOWWOOD_LOG` pillar, `#GLOWWOOD_WOOD`, stripped log/wood, `#GLOWWOOD_PLANKS`,
   `#GLOWWOOD_LEAVES`, stairs/slab/fence/fence_gate/door/trapdoor/button/pressure_plate + signs
   `#GLOWWOOD_SIGN`/`#GLOWWOOD_WALL_SIGN`/`#GLOWWOOD_HANGING_SIGN`/`#GLOWWOOD_WALL_HANGING_SIGN` — all using
-  `ModWoodTypes.GLOWWOOD`/`GLOWWOOD_SET`); Moonstone set (smooth/bricks/chiseled/tiles/**cracked_bricks** + stairs/slabs/
+  `ModWoodTypes.GLOWWOOD`/`GLOWWOOD_SET`); **Glowroot wood set (v1.1a)** — the identical full set
+  (`#GLOWROOT_WOOD`, stripped log/wood, `#GLOWROOT_PLANKS`, stairs/slab/fence/fence_gate/door/trapdoor/button/
+  pressure_plate + the four signs) on `ModWoodTypes.GLOWROOT`/`GLOWROOT_SET`, but **self-lit** (helpers
+  `glowrootLogProps` light 4 / `glowrootPlanksProps` light 3) since Glowroot is the glowing species
+  (`#GLOWROOT_LOG`/`#GLOWROOT_LEAVES`/`#GLOWROOT_SAPLING` declared earlier); Moonstone set (smooth/bricks/chiseled/tiles/**cracked_bricks** + stairs/slabs/
   walls); Deep Moonstone (deepslate-analog: cobbled/polished/bricks/tiles/**cracked_bricks** + shapes); Shimmerstone
   (polished/bricks/tiles/pillar/glass + shapes); Sporeglass (`TransparentBlock`) + pane (`IronBarsBlock`).
   **Add a block here → it auto-gets a BlockItem in `ModItems` (loop); add asset + loot via datagen.**
 - [ModWoodTypes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModWoodTypes.java) — bespoke
-  `#GLOWWOOD` (`WoodType`, name `lumenwilds:glowwood` → sign textures) + `#GLOWWOOD_SET` (`BlockSetType`).
-  NOT DeferredRegister content; `#init()` is called early in the `Lumenwilds` ctor.
+  `#GLOWWOOD` (`WoodType`, name `lumenwilds:glowwood` → sign textures) + `#GLOWWOOD_SET` (`BlockSetType`),
+  plus `#GLOWROOT`/`#GLOWROOT_SET` (v1.1a, the Glowroot wood set). NOT DeferredRegister content; `#init()`
+  is called early in the `Lumenwilds` ctor. Both are registered with `Sheets` in `LumenwildsClient#onClientSetup`.
 - [ModBoatTypes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBoatTypes.java) — `#GLOWWOOD_BOAT_TYPE`
-  (`EnumProxy<Boat.Type>`) adds a Glowwood `Boat.Type` via NeoForge enum extension
-  (`META-INF/enumextensions.json` + the `enumExtensions` key in `neoforge.mods.toml`); `#glowwood()` →
-  the created type. Reuses vanilla `Boat`/`ChestBoat`/renderer — no custom entity.
+  + `#GLOWROOT_BOAT_TYPE` (`EnumProxy<Boat.Type>`) add Glowwood/Glowroot `Boat.Type`s via NeoForge enum extension
+  (`META-INF/enumextensions.json` + the `enumExtensions` key in `neoforge.mods.toml`); `#glowwood()`/`#glowroot()` →
+  the created types. Reuses vanilla `Boat`/`ChestBoat`/renderer — no custom entity.
 - [ModItems.java](src/main/java/com/jus144tice/lumenwilds/registry/ModItems.java) — `#ITEMS`
   (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`, **durable: `stacksTo(1)
   .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
@@ -402,8 +425,9 @@ as `File#member`.
   `#SKY_JELLY_SPAWN_EGG` (6g — drops the existing `#AIR_GEL`); `#GLOW_SCALES` + `#GLOWMOTH_SPAWN_EGG` (6h);
   `#ROOTBACK_PLATE`/`#MOONLOAM_CLUMPS` + `#ROOTBACK_SPAWN_EGG` (6i); `#WRAITH_MEMBRANE`/`#CRYSTAL_DUST`
   + `#CRAG_WRAITH_SPAWN_EGG` (6j); `#ECHO_SENTINEL_SPAWN_EGG` (10f); boats
-  `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT`
-  (`BoatItem` over `ModBoatTypes.glowwood()`); signs `#GLOWWOOD_SIGN` (`SignItem`)/`#GLOWWOOD_HANGING_SIGN`
+  `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT` + `#GLOWROOT_BOAT`/`#GLOWROOT_CHEST_BOAT`
+  (`BoatItem` over `ModBoatTypes.glowwood()`/`glowroot()`); signs `#GLOWWOOD_SIGN`/`#GLOWROOT_SIGN` (`SignItem`) +
+  `#GLOWWOOD_HANGING_SIGN`/`#GLOWROOT_HANGING_SIGN`
   (`HangingSignItem`) — wall variants share these. A **static loop auto-registers a simple `BlockItem` for
   every block except `LUMEN_PORTAL`, `LUMENWATER_BLOCK`, and the sign blocks** (runs after the standalone/sign
   items so the striker stays first in the tab) — new blocks get an item with no edits here.
@@ -518,6 +542,12 @@ as `File#member`.
   the 1:1-scaled position — so an anchored return lands precisely.
 
 ### block/ — custom block behaviours
+- [GlowberryBushBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GlowberryBushBlock.java) — the
+  Glowberry Bush (v1.1c), a `BushBlock` + `BonemealableBlock` modelled on vanilla `SweetBerryBushBlock`.
+  `#AGE` (0..3, `AGE_3`), `#lightFor` (light 3→6, wired in `ModBlocks`), `#randomTick` ripens in light ≥9,
+  `#useWithoutItem` harvests a mature bush (pops 1–2 Glowberries, reverts to age 1 — renewable), bone meal
+  advances age. `ModBlocks#GLOWBERRY_BUSH`; planted by the `ModItems#GLOWBERRY` `ItemNameBlockItem`
+  (no own BlockItem); age-conditioned berry loot is hand-authored.
 - [LumenCoralBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenCoralBlock.java) — the glowing
   underwater Lumen Coral frond (Phase 9). A waterlogged (`SimpleWaterloggedBlock`) no-collision cross plant:
   `#WATERLOGGED`, `#getStateForPlacement` (waterlogs in a full water source), `#getFluidState` (returns
@@ -934,10 +964,8 @@ as `File#member`.
 - [StillbloomInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/StillbloomInteractEvents.java)
   — `#onRightClickBlock(PlayerInteractEvent.RightClickBlock)` (8b): a glass bottle on a Stillbloom Core/Petal
   fills into `ModItems.LUMEN_NECTAR` (bloom not consumed — renewable, like honey).
-- [GlowberryInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowberryInteractEvents.java)
-  — `#onRightClickBlock` (Phase 9 harvestables): right-clicking a `ModBlocks#GLOWBERRY_BUSH` pops 1–2
-  `ModItems.GLOWBERRY` + a pick sound and clears the bush (breaking it by hand drops the same via its loot
-  table — this just makes the intuitive right-click work too).
+  *(Glowberry harvest moved into `block.GlowberryBushBlock#useWithoutItem` in v1.1c — the old
+  `GlowberryInteractEvents` was deleted.)*
 - [MemoryCrystalInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/MemoryCrystalInteractEvents.java)
   — `#onRightClickBlock` (10c): right-clicking a `ModBlocks#MEMORY_CRYSTAL` prints a fragment chosen
   deterministically from the block position (`#FRAGMENTS`, some broken/unreadable; the liftshaft/mine lore
@@ -948,7 +976,8 @@ as `File#member`.
   velocity-field gravity lift (server-side; re-syncs `ServerPlayer` motion).
 - [ModBrewing.java](src/main/java/com/jus144tice/lumenwilds/event/ModBrewing.java) — **mod-bus**
   `#onRegisterBrewingRecipes(RegisterBrewingRecipesEvent)` (8h): `builder.addMix(awkward, ingredient, potion)`
-  for the four `ModPotions` (Air Gel / Glow Pollen / Spore Sac / Living Fiber).
+  for the four `ModPotions` (Air Gel / Glow Pollen / Spore Sac / Living Fiber); + Glowcap Spores → Sporeblind
+  (a second jungle-sourced mix, v1.1d).
 - [GlowmothAggroEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowmothAggroEvents.java) —
   `#onBlockBreak(BlockEvent.BreakEvent)` (6h): when a player breaks a guarded bloom (Moonblossom / any
   Stillbloom part), every `Glowmoth` within ~12 blocks `setTarget`s the culprit — the flower-guardian aggro.
@@ -1040,20 +1069,24 @@ as `File#member`.
   auto names from registry paths (`#addTranslations`, `#titleCase`) + tab title + portal messages,
   **deduped by description id** (SignItem/BlockItem reuse a block's key).
 - [ModRecipeProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModRecipeProvider.java) —
-  `#buildRecipes`: Lumenbound Stone (`CGC/SAS/CGC`) + Lumen Striker (`I/A/G`); `#buildGlowwoodRecipes`
-  (wood set incl. signs, hanging signs, boat + chest boat), `#buildMoonstoneRecipes` +
+  `#buildRecipes`: Lumenbound Stone (`CGC/SAS/CGC`) + Lumen Striker (`I/A/G`); `#buildGlowwoodRecipes` +
+  `#buildGlowrootRecipes` (both call the shared `#buildWoodSetRecipes` — full wood set incl. signs, hanging
+  signs, boat + chest boat), `#buildMoonstoneRecipes` +
   `#buildShimmerstoneRecipes` (smelting + 2×2 crafting + stonecutter via helpers `#smelt`/`#square2x2`/`#cut`),
   `#buildLuminiteRecipes` (10a — ore/raw → ingot smelt+blast, ingot ↔ block, the Glowbrick craft
   `L I L / I C I / L I L`, + Glowbrick family cuts/shapes), `#buildResonanceRecipes` (10e — Resonance Core
   from a fragment, Ancient Door from glowbrick, Gravity Lens from fragments + shimmerstone, Lumen Relay),
   `#buildRebuildRecipes` (10h.1 "rebuild the Lumenwrights' kit" — Lumen Conduit, Lumenbulb, Memory Crystal
   (4 shards), Active Light Engine, + aged-block stonecutter cuts; the *fragments* stay loot-only),
-  `#buildLiftshaftRecipes` (11b — Lumen Field Projector `G L G / R C R / I E I` + Gravity Repeater).
+  `#buildLiftshaftRecipes` (11b — Lumen Field Projector `G L G / R C R / I E I` + Gravity Repeater),
+  `#buildOrphanDropRecipes` (v1.1d — gives each formerly-useless mob drop a use; `#salvage` helper for
+  1-input conversions, explicit recipe ids so same-result recipes don't collide).
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
   `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL` + `LUMENWATER_BLOCK`
-  (both `noLootTable`), with slab (drops 2) and door (drops 1) special-cased; `memory_crystal` →
+  (both `noLootTable`) + the liftshaft fields + `GLOWBERRY_BUSH` (hand-authored age-conditioned berry loot),
+  with slab (drops 2) and door (drops 1) special-cased; `memory_crystal` →
   `createOreDrop`(MEMORY_CRYSTAL_SHARD); `DropExperienceBlock` → `createOreDrop` (Luminite ores →
-  `RAW_LUMINITE`, Lumen Crystal ores → shard).
+  `RAW_LUMINITE`, Lumen Crystal ores → shard); Glowroot wall-signs drop the Glowroot sign item.
 - [ModTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModTagProvider.java) —
   `#addTags`: classifies blocks by name into `mineable/pickaxe|axe|shovel|hoe` + `leaves` (auto-covers new
   stone/wood blocks; `_ore`/`_cluster`/moonstone/`glowbrick`/`luminite`/`conduit`/`resonance`/`memory_crystal`/
@@ -1322,6 +1355,11 @@ as `File#member`.
   `patch_moonblossom` last. To actually exercise this (and any custom feature), force-generate Lumenwilds
   chunks — a temp `data/minecraft/tags/function/load.json` → a fn running `execute in lumenwilds:lumenwilds
   run forceload add …` (delete before commit).
+- **A `random_patch` flora feature must filter on `would_survive`, not `matching_blocks:air`.** The latter
+  places the plant in ANY air cell within `y_spread` — including the air *directly above* another plant — so
+  moonblossoms/glow ferns generated floating on top of glowberry bushes (the v1.1b bug). `would_survive` (the
+  block's own `canSurvive`, what `patch_glowberry` already used) only places where the plant is actually
+  supported. Every flora `random_patch` here now uses `would_survive` + `WORLD_SURFACE_WG`.
 - **`DeferredRegister.getEntries()` yields `DeferredHolder`**, not `DeferredBlock`/`DeferredItem` —
   iterate with `var`. `registerSimpleBlockItem(...)` returns `DeferredItem<BlockItem>`.
 - **`@EventBusSubscriber` takes NO `bus` param** (NeoForge 21.1.1+): the `bus`/`Bus` value is **ignored** and

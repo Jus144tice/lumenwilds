@@ -295,17 +295,25 @@ public final class ModBlocks {
 
     // --- Surface harvestables (Phase 9) — alien fruits/veggies scattered on the land ----------------
 
-    /** Glowberry Bush — a small glowing cross plant on the surface; drops edible Glowberries. */
-    public static final DeferredBlock<TallGrassBlock> GLOWBERRY_BUSH = BLOCKS.registerBlock(
-            "glowberry_bush",
-            TallGrassBlock::new,
-            BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_PINK)
-                    .noCollission()
-                    .instabreak()
-                    .lightLevel(state -> 5)
-                    .sound(SoundType.SWEET_BERRY_BUSH)
-                    .pushReaction(PushReaction.DESTROY));
+    /**
+     * Glowberry Bush (v1.1c) — a renewable, plantable, bone-mealable alien berry bush
+     * ({@link com.jus144tice.lumenwilds.block.GlowberryBushBlock}, sweet-berry-style): ripens through
+     * {@code AGE 0..3}, glows brighter as it matures (light 3→6), harvested by right-click. Planted with the
+     * Glowberry item (an {@code ItemNameBlockItem} over this block). No standalone BlockItem (skipped in the
+     * {@code ModItems} loop); its loot is hand-authored to drop Glowberries.
+     */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.GlowberryBushBlock> GLOWBERRY_BUSH =
+            BLOCKS.registerBlock(
+                    "glowberry_bush",
+                    com.jus144tice.lumenwilds.block.GlowberryBushBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_PINK)
+                            .noCollission()
+                            .randomTicks()
+                            .instabreak()
+                            .lightLevel(com.jus144tice.lumenwilds.block.GlowberryBushBlock::lightFor)
+                            .sound(SoundType.SWEET_BERRY_BUSH)
+                            .pushReaction(PushReaction.DESTROY));
 
     // --- Stillbloom Basin — the giant Stillbloom flower (Phase 5d.6) ----------------------------
     // Three soft, glowing blocks assembled by StillbloomFeature into a 3–8-tall giant flower: a stem
@@ -595,6 +603,89 @@ public final class ModBlocks {
 
     public static final DeferredBlock<WallHangingSignBlock> GLOWWOOD_WALL_HANGING_SIGN = BLOCKS.registerBlock(
             "glowwood_wall_hanging_sign", props -> new WallHangingSignBlock(ModWoodTypes.GLOWWOOD, props), signProps());
+
+    // --- Glowroot building set (Phase v1.1a) ----------------------------------------------------
+    // The signature self-lit tree's full wood set (GLOWROOT_LOG/LEAVES/SAPLING are declared above). Unlike
+    // Glowwood, the whole set glows faintly (glowrootLogProps light 4 / glowrootPlanksProps light 3) — living
+    // wood that carries its own light. Uses the bespoke GLOWROOT WoodType/BlockSetType (ModWoodTypes).
+
+    public static final DeferredBlock<RotatedPillarBlock> GLOWROOT_WOOD =
+            BLOCKS.registerBlock("glowroot_wood", RotatedPillarBlock::new, glowrootLogProps());
+
+    public static final DeferredBlock<RotatedPillarBlock> STRIPPED_GLOWROOT_LOG =
+            BLOCKS.registerBlock("stripped_glowroot_log", RotatedPillarBlock::new, glowrootLogProps());
+
+    public static final DeferredBlock<RotatedPillarBlock> STRIPPED_GLOWROOT_WOOD =
+            BLOCKS.registerBlock("stripped_glowroot_wood", RotatedPillarBlock::new, glowrootLogProps());
+
+    public static final DeferredBlock<Block> GLOWROOT_PLANKS =
+            BLOCKS.registerSimpleBlock("glowroot_planks", glowrootPlanksProps());
+
+    public static final DeferredBlock<StairBlock> GLOWROOT_STAIRS = BLOCKS.registerBlock(
+            "glowroot_stairs",
+            props -> new StairBlock(GLOWROOT_PLANKS.get().defaultBlockState(), props),
+            glowrootPlanksProps());
+
+    public static final DeferredBlock<SlabBlock> GLOWROOT_SLAB =
+            BLOCKS.registerBlock("glowroot_slab", SlabBlock::new, glowrootPlanksProps());
+
+    public static final DeferredBlock<FenceBlock> GLOWROOT_FENCE =
+            BLOCKS.registerBlock("glowroot_fence", FenceBlock::new, glowrootPlanksProps());
+
+    public static final DeferredBlock<FenceGateBlock> GLOWROOT_FENCE_GATE = BLOCKS.registerBlock(
+            "glowroot_fence_gate", props -> new FenceGateBlock(ModWoodTypes.GLOWROOT, props), glowrootPlanksProps());
+
+    public static final DeferredBlock<DoorBlock> GLOWROOT_DOOR = BLOCKS.registerBlock(
+            "glowroot_door",
+            props -> new DoorBlock(ModWoodTypes.GLOWROOT_SET, props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(3.0F)
+                    .lightLevel(state -> 3)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY));
+
+    public static final DeferredBlock<TrapDoorBlock> GLOWROOT_TRAPDOOR = BLOCKS.registerBlock(
+            "glowroot_trapdoor",
+            props -> new TrapDoorBlock(ModWoodTypes.GLOWROOT_SET, props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_PURPLE)
+                    .strength(3.0F)
+                    .lightLevel(state -> 3)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()
+                    .isValidSpawn((s, l, p, e) -> false));
+
+    public static final DeferredBlock<ButtonBlock> GLOWROOT_BUTTON = BLOCKS.registerBlock(
+            "glowroot_button",
+            props -> new ButtonBlock(ModWoodTypes.GLOWROOT_SET, 30, props),
+            BlockBehaviour.Properties.of()
+                    .noCollission()
+                    .strength(0.5F)
+                    .sound(SoundType.WOOD)
+                    .pushReaction(PushReaction.DESTROY));
+
+    public static final DeferredBlock<PressurePlateBlock> GLOWROOT_PRESSURE_PLATE = BLOCKS.registerBlock(
+            "glowroot_pressure_plate",
+            props -> new PressurePlateBlock(ModWoodTypes.GLOWROOT_SET, props),
+            BlockBehaviour.Properties.of()
+                    .noCollission()
+                    .strength(0.5F)
+                    .sound(SoundType.WOOD)
+                    .pushReaction(PushReaction.DESTROY));
+
+    public static final DeferredBlock<StandingSignBlock> GLOWROOT_SIGN = BLOCKS.registerBlock(
+            "glowroot_sign", props -> new StandingSignBlock(ModWoodTypes.GLOWROOT, props), signProps());
+
+    public static final DeferredBlock<WallSignBlock> GLOWROOT_WALL_SIGN = BLOCKS.registerBlock(
+            "glowroot_wall_sign", props -> new WallSignBlock(ModWoodTypes.GLOWROOT, props), signProps());
+
+    public static final DeferredBlock<CeilingHangingSignBlock> GLOWROOT_HANGING_SIGN = BLOCKS.registerBlock(
+            "glowroot_hanging_sign", props -> new CeilingHangingSignBlock(ModWoodTypes.GLOWROOT, props), signProps());
+
+    public static final DeferredBlock<WallHangingSignBlock> GLOWROOT_WALL_HANGING_SIGN = BLOCKS.registerBlock(
+            "glowroot_wall_hanging_sign", props -> new WallHangingSignBlock(ModWoodTypes.GLOWROOT, props), signProps());
 
     // --- Moonstone stone set (Phase 4) ----------------------------------------------------------
     // MOONSTONE + COBBLED_MOONSTONE are declared above. Cube variants first, then stairs/slabs/walls.
@@ -1106,6 +1197,24 @@ public final class ModBlocks {
         return BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_CYAN)
                 .strength(2.0F, 3.0F)
+                .sound(SoundType.WOOD);
+    }
+
+    /** Glowroot logs/wood — the self-lit species, so the bark/wood emits a faint glow (light 4). */
+    private static BlockBehaviour.Properties glowrootLogProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_PURPLE)
+                .strength(2.0F)
+                .lightLevel(state -> 4)
+                .sound(SoundType.WOOD);
+    }
+
+    /** Glowroot planks + plank-derived shapes — a milder residual glow (light 3) than the raw wood. */
+    private static BlockBehaviour.Properties glowrootPlanksProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.COLOR_PURPLE)
+                .strength(2.0F, 3.0F)
+                .lightLevel(state -> 3)
                 .sound(SoundType.WOOD);
     }
 

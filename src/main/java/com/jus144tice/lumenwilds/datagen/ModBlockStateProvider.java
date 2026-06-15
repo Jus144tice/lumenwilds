@@ -58,9 +58,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
             }
             if (block instanceof RotatedPillarBlock pillar) {
                 if (name.endsWith("_wood")) {
-                    // "Wood" (all-bark) reuses its log's side texture on every face.
-                    ResourceLocation side =
-                            blockTex(name.startsWith("stripped") ? "stripped_glowwood_log" : "glowwood_log");
+                    // "Wood" (all-bark) reuses its log's side texture on every face (e.g. glowwood_wood →
+                    // glowwood_log, stripped_glowroot_wood → stripped_glowroot_log).
+                    ResourceLocation side = blockTex(name.substring(0, name.length() - "_wood".length()) + "_log");
                     axisBlock(pillar, side, side);
                 } else {
                     logBlock(pillar); // block/<name> (side) + block/<name>_top
@@ -102,11 +102,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     /** Sign blocks render via a block-entity renderer; their blockstate just points at a particle model. */
     private void registerSigns() {
-        ResourceLocation particle = blockTex("glowwood_planks");
-        signBlock(ModBlocks.GLOWWOOD_SIGN.get(), ModBlocks.GLOWWOOD_WALL_SIGN.get(), particle);
-        ModelFile hanging = models().sign("glowwood_hanging_sign", particle);
-        simpleBlock(ModBlocks.GLOWWOOD_HANGING_SIGN.get(), hanging);
-        simpleBlock(ModBlocks.GLOWWOOD_WALL_HANGING_SIGN.get(), hanging);
+        ResourceLocation glowwood = blockTex("glowwood_planks");
+        signBlock(ModBlocks.GLOWWOOD_SIGN.get(), ModBlocks.GLOWWOOD_WALL_SIGN.get(), glowwood);
+        ModelFile glowwoodHanging = models().sign("glowwood_hanging_sign", glowwood);
+        simpleBlock(ModBlocks.GLOWWOOD_HANGING_SIGN.get(), glowwoodHanging);
+        simpleBlock(ModBlocks.GLOWWOOD_WALL_HANGING_SIGN.get(), glowwoodHanging);
+
+        ResourceLocation glowroot = blockTex("glowroot_planks");
+        signBlock(ModBlocks.GLOWROOT_SIGN.get(), ModBlocks.GLOWROOT_WALL_SIGN.get(), glowroot);
+        ModelFile glowrootHanging = models().sign("glowroot_hanging_sign", glowroot);
+        simpleBlock(ModBlocks.GLOWROOT_HANGING_SIGN.get(), glowrootHanging);
+        simpleBlock(ModBlocks.GLOWROOT_WALL_HANGING_SIGN.get(), glowrootHanging);
     }
 
     /** Texture {@code lumenwilds:block/<id>}. */
@@ -121,6 +127,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
     private ResourceLocation baseTex(String name) {
         if (name.startsWith("glowwood_")) {
             return blockTex("glowwood_planks");
+        }
+        if (name.startsWith("glowroot_")) {
+            return blockTex("glowroot_planks");
         }
         String base = name;
         for (String suffix :

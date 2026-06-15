@@ -72,6 +72,7 @@ public class ModRecipeProvider extends RecipeProvider {
                 .save(recipeOutput);
 
         buildGlowwoodRecipes(recipeOutput);
+        buildGlowrootRecipes(recipeOutput);
         buildMoonstoneRecipes(recipeOutput);
         buildShimmerstoneRecipes(recipeOutput);
         buildLumenCrystalRecipes(recipeOutput);
@@ -79,6 +80,66 @@ public class ModRecipeProvider extends RecipeProvider {
         buildResonanceRecipes(recipeOutput);
         buildRebuildRecipes(recipeOutput);
         buildLiftshaftRecipes(recipeOutput);
+        buildOrphanDropRecipes(recipeOutput);
+    }
+
+    /**
+     * Gives every otherwise-useless mob drop a real purpose (v1.1d) — mostly conversions into universally
+     * useful vanilla/Lumenwilds items, so no new blocks/items are needed. (Several also double as Lumenwater
+     * fishing bait, wired in v1.1f; and Glowcap Spores brew Sporeblind in {@code event.ModBrewing}.)
+     */
+    private void buildOrphanDropRecipes(RecipeOutput out) {
+        // Hides → leather (universal: armor, books, item frames, …). Both the Grazer's and the Shade Stalker's.
+        salvage(out, ModItems.GRAZER_HIDE.get(), Items.LEATHER, 1, "leather_from_grazer_hide");
+        salvage(out, ModItems.DARK_HIDE.get(), Items.LEATHER, 1, "leather_from_dark_hide");
+        // Glow Sinew → string (binding fibre): leads, bows, wool, …
+        salvage(out, ModItems.GLOW_SINEW.get(), Items.STRING, 1, "string_from_glow_sinew");
+        // Lumen Algae → green dye.
+        salvage(out, ModItems.LUMEN_ALGAE.get(), Items.GREEN_DYE, 1, "green_dye_from_lumen_algae");
+        // Wraith Membrane → phantom membrane (Slow Falling brewing + elytra repair) — both are flying-mob membranes.
+        salvage(
+                out,
+                ModItems.WRAITH_MEMBRANE.get(),
+                Items.PHANTOM_MEMBRANE,
+                1,
+                "phantom_membrane_from_wraith_membrane");
+        // Mire Tooth → bone meal (ground calcium).
+        salvage(out, ModItems.MIRE_TOOTH.get(), Items.BONE_MEAL, 2, "bone_meal_from_mire_tooth");
+        // Rootback Plate → iron nuggets (salvaged plating).
+        salvage(out, ModItems.ROOTBACK_PLATE.get(), Items.IRON_NUGGET, 2, "iron_nugget_from_rootback_plate");
+        // Glow Scales (2) → Glow Pollen (feeds the big glow-pollen economy: lumenbulb, glowbrick, sporeglass, …).
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GLOW_POLLEN.get(), 1)
+                .requires(ModItems.GLOW_SCALES.get(), 2)
+                .unlockedBy("has_glow_scales", has(ModItems.GLOW_SCALES.get()))
+                .save(out, id("glow_pollen_from_glow_scales"));
+        // Shade Claw (2) → Echo Dust (the rare, useful Shade Stalker drop used in the Lumen Anchor).
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ECHO_DUST.get(), 1)
+                .requires(ModItems.SHADE_CLAW.get(), 2)
+                .unlockedBy("has_shade_claw", has(ModItems.SHADE_CLAW.get()))
+                .save(out, id("echo_dust_from_shade_claw"));
+        // Crystal Dust (4) → Glasspetal Block (the Crags crystal — the Crag Wraith's own biome material).
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLASSPETAL_BLOCK.get(), 1)
+                .pattern("##")
+                .pattern("##")
+                .define('#', ModItems.CRYSTAL_DUST.get())
+                .unlockedBy("has_crystal_dust", has(ModItems.CRYSTAL_DUST.get()))
+                .save(out, id("glasspetal_block_from_crystal_dust"));
+        // Moonloam Clumps (4) → Moonloam block.
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.MOONLOAM.get(), 1)
+                .pattern("##")
+                .pattern("##")
+                .define('#', ModItems.MOONLOAM_CLUMPS.get())
+                .unlockedBy("has_moonloam_clumps", has(ModItems.MOONLOAM_CLUMPS.get()))
+                .save(out, id("moonloam_from_clumps"));
+    }
+
+    /** A single-ingredient shapeless conversion ({@code count} of {@code to} from one {@code from}). */
+    private void salvage(RecipeOutput out, ItemLike from, ItemLike to, int count, String recipeId) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, to, count)
+                .requires(from)
+                .unlockedBy(
+                        "has_" + BuiltInRegistries.ITEM.getKey(from.asItem()).getPath(), has(from))
+                .save(out, id(recipeId));
     }
 
     /**
@@ -483,103 +544,171 @@ public class ModRecipeProvider extends RecipeProvider {
 
     /** Standard wood-set recipes for the Glowwood building blocks (Phase 4). */
     private void buildGlowwoodRecipes(RecipeOutput out) {
+        buildWoodSetRecipes(
+                out,
+                ModBlocks.GLOWWOOD_LOG.get(),
+                ModBlocks.GLOWWOOD_WOOD.get(),
+                ModBlocks.STRIPPED_GLOWWOOD_LOG.get(),
+                ModBlocks.STRIPPED_GLOWWOOD_WOOD.get(),
+                ModBlocks.GLOWWOOD_PLANKS.get(),
+                ModBlocks.GLOWWOOD_STAIRS.get(),
+                ModBlocks.GLOWWOOD_SLAB.get(),
+                ModBlocks.GLOWWOOD_FENCE.get(),
+                ModBlocks.GLOWWOOD_FENCE_GATE.get(),
+                ModBlocks.GLOWWOOD_DOOR.get(),
+                ModBlocks.GLOWWOOD_TRAPDOOR.get(),
+                ModBlocks.GLOWWOOD_BUTTON.get(),
+                ModBlocks.GLOWWOOD_PRESSURE_PLATE.get(),
+                ModItems.GLOWWOOD_SIGN.get(),
+                ModItems.GLOWWOOD_HANGING_SIGN.get(),
+                ModItems.GLOWWOOD_BOAT.get(),
+                ModItems.GLOWWOOD_CHEST_BOAT.get());
+    }
+
+    /** Standard wood-set recipes for the Glowroot building blocks (v1.1a). */
+    private void buildGlowrootRecipes(RecipeOutput out) {
+        buildWoodSetRecipes(
+                out,
+                ModBlocks.GLOWROOT_LOG.get(),
+                ModBlocks.GLOWROOT_WOOD.get(),
+                ModBlocks.STRIPPED_GLOWROOT_LOG.get(),
+                ModBlocks.STRIPPED_GLOWROOT_WOOD.get(),
+                ModBlocks.GLOWROOT_PLANKS.get(),
+                ModBlocks.GLOWROOT_STAIRS.get(),
+                ModBlocks.GLOWROOT_SLAB.get(),
+                ModBlocks.GLOWROOT_FENCE.get(),
+                ModBlocks.GLOWROOT_FENCE_GATE.get(),
+                ModBlocks.GLOWROOT_DOOR.get(),
+                ModBlocks.GLOWROOT_TRAPDOOR.get(),
+                ModBlocks.GLOWROOT_BUTTON.get(),
+                ModBlocks.GLOWROOT_PRESSURE_PLATE.get(),
+                ModItems.GLOWROOT_SIGN.get(),
+                ModItems.GLOWROOT_HANGING_SIGN.get(),
+                ModItems.GLOWROOT_BOAT.get(),
+                ModItems.GLOWROOT_CHEST_BOAT.get());
+    }
+
+    /**
+     * The full vanilla wood-set recipe shapes for one species (log→planks/wood, all plank-derived blocks,
+     * signs, hanging signs, boat + chest boat). Recipe ids derive from the result item, so two species never
+     * collide; criterion names are per-recipe so generic labels are fine.
+     */
+    private void buildWoodSetRecipes(
+            RecipeOutput out,
+            ItemLike log,
+            ItemLike wood,
+            ItemLike strippedLog,
+            ItemLike strippedWood,
+            ItemLike planks,
+            ItemLike stairs,
+            ItemLike slab,
+            ItemLike fence,
+            ItemLike fenceGate,
+            ItemLike door,
+            ItemLike trapdoor,
+            ItemLike button,
+            ItemLike plate,
+            ItemLike sign,
+            ItemLike hangingSign,
+            ItemLike boat,
+            ItemLike chestBoat) {
         // Planks from logs; "wood" (all-bark) from 4 logs.
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWWOOD_PLANKS.get(), 4)
-                .requires(ModBlocks.GLOWWOOD_LOG.get())
-                .unlockedBy("has_glowwood_log", has(ModBlocks.GLOWWOOD_LOG.get()))
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, planks, 4)
+                .requires(log)
+                .unlockedBy("has_log", has(log))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWWOOD_WOOD.get(), 3)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, wood, 3)
                 .pattern("##")
                 .pattern("##")
-                .define('#', ModBlocks.GLOWWOOD_LOG.get())
-                .unlockedBy("has_glowwood_log", has(ModBlocks.GLOWWOOD_LOG.get()))
+                .define('#', log)
+                .unlockedBy("has_log", has(log))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.STRIPPED_GLOWWOOD_WOOD.get(), 3)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, strippedWood, 3)
                 .pattern("##")
                 .pattern("##")
-                .define('#', ModBlocks.STRIPPED_GLOWWOOD_LOG.get())
-                .unlockedBy("has_stripped_glowwood_log", has(ModBlocks.STRIPPED_GLOWWOOD_LOG.get()))
+                .define('#', strippedLog)
+                .unlockedBy("has_stripped_log", has(strippedLog))
                 .save(out);
 
         // Plank-derived building blocks.
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWWOOD_STAIRS.get(), 4)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, stairs, 4)
                 .pattern("#  ")
                 .pattern("## ")
                 .pattern("###")
-                .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
-                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+                .define('#', planks)
+                .unlockedBy("has_planks", has(planks))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLOWWOOD_SLAB.get(), 6)
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, slab, 6)
                 .pattern("###")
-                .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
-                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+                .define('#', planks)
+                .unlockedBy("has_planks", has(planks))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.GLOWWOOD_FENCE.get(), 3)
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, fence, 3)
                 .pattern("#/#")
                 .pattern("#/#")
-                .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
+                .define('#', planks)
                 .define('/', Items.STICK)
-                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+                .unlockedBy("has_planks", has(planks))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.GLOWWOOD_FENCE_GATE.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, fenceGate, 1)
                 .pattern("/#/")
                 .pattern("/#/")
-                .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
+                .define('#', planks)
                 .define('/', Items.STICK)
-                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+                .unlockedBy("has_planks", has(planks))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.GLOWWOOD_DOOR.get(), 3)
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, door, 3)
                 .pattern("##")
                 .pattern("##")
                 .pattern("##")
-                .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
-                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+                .define('#', planks)
+                .unlockedBy("has_planks", has(planks))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.GLOWWOOD_TRAPDOOR.get(), 2)
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, trapdoor, 2)
                 .pattern("###")
                 .pattern("###")
-                .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
-                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+                .define('#', planks)
+                .unlockedBy("has_planks", has(planks))
                 .save(out);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, ModBlocks.GLOWWOOD_BUTTON.get(), 1)
-                .requires(ModBlocks.GLOWWOOD_PLANKS.get())
-                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.REDSTONE, button, 1)
+                .requires(planks)
+                .unlockedBy("has_planks", has(planks))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, ModBlocks.GLOWWOOD_PRESSURE_PLATE.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.REDSTONE, plate, 1)
                 .pattern("##")
-                .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
-                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+                .define('#', planks)
+                .unlockedBy("has_planks", has(planks))
                 .save(out);
 
-        // Signs (the recipe result is the SignItem, registered under glowwood_sign).
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.GLOWWOOD_SIGN.get(), 3)
+        // Signs (the recipe result is the SignItem).
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, sign, 3)
                 .pattern("###")
                 .pattern("###")
                 .pattern(" / ")
-                .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
+                .define('#', planks)
                 .define('/', Items.STICK)
-                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+                .unlockedBy("has_planks", has(planks))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModItems.GLOWWOOD_HANGING_SIGN.get(), 6)
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, hangingSign, 6)
                 .pattern("C C")
                 .pattern("###")
                 .pattern("###")
                 .define('C', Items.CHAIN)
-                .define('#', ModBlocks.STRIPPED_GLOWWOOD_LOG.get())
-                .unlockedBy("has_stripped_glowwood_log", has(ModBlocks.STRIPPED_GLOWWOOD_LOG.get()))
+                .define('#', strippedLog)
+                .unlockedBy("has_stripped_log", has(strippedLog))
                 .save(out);
 
         // Boats.
-        ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, ModItems.GLOWWOOD_BOAT.get(), 1)
+        ShapedRecipeBuilder.shaped(RecipeCategory.TRANSPORTATION, boat, 1)
                 .pattern("# #")
                 .pattern("###")
-                .define('#', ModBlocks.GLOWWOOD_PLANKS.get())
-                .unlockedBy("has_glowwood_planks", has(ModBlocks.GLOWWOOD_PLANKS.get()))
+                .define('#', planks)
+                .unlockedBy("has_planks", has(planks))
                 .save(out);
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, ModItems.GLOWWOOD_CHEST_BOAT.get(), 1)
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.TRANSPORTATION, chestBoat, 1)
                 .requires(Items.CHEST)
-                .requires(ModItems.GLOWWOOD_BOAT.get())
-                .unlockedBy("has_glowwood_boat", has(ModItems.GLOWWOOD_BOAT.get()))
+                .requires(boat)
+                .unlockedBy("has_boat", has(boat))
                 .save(out);
     }
 }

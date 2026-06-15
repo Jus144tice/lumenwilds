@@ -32,10 +32,24 @@ public final class ModBoatTypes {
             (Supplier<Item>) () -> Items.STICK,
             false);
 
+    public static final EnumProxy<Boat.Type> GLOWROOT_BOAT_TYPE = new EnumProxy<>(
+            Boat.Type.class,
+            (Supplier<Block>) () -> ModBlocks.GLOWROOT_PLANKS.get(),
+            Lumenwilds.MOD_ID + ":glowroot",
+            (Supplier<Item>) () -> ModItems.GLOWROOT_BOAT.get(),
+            (Supplier<Item>) () -> ModItems.GLOWROOT_CHEST_BOAT.get(),
+            (Supplier<Item>) () -> Items.STICK,
+            false);
+
     private ModBoatTypes() {}
 
     /** The created Glowwood boat type (valid once enum extension has run during mod load). */
     public static Boat.Type glowwood() {
         return GLOWWOOD_BOAT_TYPE.getValue();
+    }
+
+    /** The created Glowroot boat type (valid once enum extension has run during mod load). */
+    public static Boat.Type glowroot() {
+        return GLOWROOT_BOAT_TYPE.getValue();
     }
 }

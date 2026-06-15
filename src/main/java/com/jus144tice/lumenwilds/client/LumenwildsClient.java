@@ -51,7 +51,10 @@ public final class LumenwildsClient {
 
     @SubscribeEvent
     public static void onClientSetup(final FMLClientSetupEvent event) {
-        event.enqueueWork(() -> Sheets.addWoodType(ModWoodTypes.GLOWWOOD));
+        event.enqueueWork(() -> {
+            Sheets.addWoodType(ModWoodTypes.GLOWWOOD);
+            Sheets.addWoodType(ModWoodTypes.GLOWROOT);
+        });
     }
 
     /** Phase 9b: register the bespoke entity-model layer definitions (one per mob as they're authored). */

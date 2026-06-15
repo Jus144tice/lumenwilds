@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:chest"
+    },
+    {
+      "item": "lumenwilds:glowroot_boat"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:glowroot_chest_boat"
+  }
+}

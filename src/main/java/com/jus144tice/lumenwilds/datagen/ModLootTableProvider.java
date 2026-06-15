@@ -59,9 +59,15 @@ public final class ModLootTableProvider {
                 } else if (block instanceof DoorBlock) {
                     add(block, this::createDoorTable); // a door is two blocks but drops one item
                 } else if (name.endsWith("_wall_hanging_sign")) {
-                    dropOther(block, ModItems.GLOWWOOD_HANGING_SIGN.get());
+                    dropOther(
+                            block,
+                            name.startsWith("glowroot")
+                                    ? ModItems.GLOWROOT_HANGING_SIGN.get()
+                                    : ModItems.GLOWWOOD_HANGING_SIGN.get());
                 } else if (name.endsWith("_wall_sign")) {
-                    dropOther(block, ModItems.GLOWWOOD_SIGN.get());
+                    dropOther(
+                            block,
+                            name.startsWith("glowroot") ? ModItems.GLOWROOT_SIGN.get() : ModItems.GLOWWOOD_SIGN.get());
                 } else if (name.equals("memory_crystal")) {
                     add(block, b -> createOreDrop(b, ModItems.MEMORY_CRYSTAL_SHARD.get())); // silk → block, else shard
                 } else if (name.equals("cracked_gravity_lens")) {
@@ -99,6 +105,8 @@ public final class ModLootTableProvider {
                     .filter(block -> block != ModBlocks.LUMENWATER_BLOCK.get()) // noLootTable fluid block
                     .filter(block -> block != ModBlocks.ASCENSION_FIELD.get())
                     .filter(block -> block != ModBlocks.DESCENT_FIELD.get()) // noLootTable liftshaft fields
+                    // Glowberry Bush has a hand-authored, age-conditioned berry loot table (v1.1c).
+                    .filter(block -> block != ModBlocks.GLOWBERRY_BUSH.get())
                     .collect(Collectors.toList());
         }
     }

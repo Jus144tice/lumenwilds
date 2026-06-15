@@ -28,6 +28,9 @@ public final class ModBrewing {
         builder.addMix(Potions.AWKWARD, ModItems.AIR_GEL.get(), ModPotions.LIGHTFOOT);
         builder.addMix(Potions.AWKWARD, ModItems.GLOW_POLLEN.get(), ModPotions.GLOWMARKED);
         builder.addMix(Potions.AWKWARD, ModItems.SPORE_SAC.get(), ModPotions.SPOREBLIND);
+        // Glowcap Spores brew Sporeblind too (a second, jungle-sourced ingredient — v1.1d, giving the
+        // Sporeling's spore drop a use beyond loot/fishing bait).
+        builder.addMix(Potions.AWKWARD, ModItems.GLOWCAP_SPORES.get(), ModPotions.SPOREBLIND);
         builder.addMix(Potions.AWKWARD, ModItems.LIVING_FIBER.get(), ModPotions.ROOTED);
     }
 }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_glowbrick": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:glowbrick"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:glowbrick_slab"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_glowbrick"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:glowbrick_slab"
+    ]
+  }
+}

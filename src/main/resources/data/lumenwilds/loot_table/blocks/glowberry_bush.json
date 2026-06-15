@@ -6,16 +6,37 @@
       "rolls": 1.0,
       "entries": [
         {
-          "type": "minecraft:item",
-          "name": "lumenwilds:glowberry",
-          "functions": [
+          "type": "minecraft:alternatives",
+          "children": [
             {
-              "function": "minecraft:set_count",
-              "count": {
-                "type": "minecraft:uniform",
-                "min": 1.0,
-                "max": 2.0
-              }
+              "type": "minecraft:item",
+              "name": "lumenwilds:glowberry",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "lumenwilds:glowberry_bush",
+                  "properties": { "age": "3" }
+                }
+              ],
+              "functions": [
+                { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 3.0 } },
+                { "function": "minecraft:explosion_decay" }
+              ]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "lumenwilds:glowberry",
+              "conditions": [
+                {
+                  "condition": "minecraft:block_state_property",
+                  "block": "lumenwilds:glowberry_bush",
+                  "properties": { "age": "2" }
+                }
+              ],
+              "functions": [
+                { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } },
+                { "function": "minecraft:explosion_decay" }
+              ]
             }
           ]
         }

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_mire_tooth": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:mire_tooth"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:bone_meal_from_mire_tooth"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_mire_tooth"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:bone_meal_from_mire_tooth"
+    ]
+  }
+}

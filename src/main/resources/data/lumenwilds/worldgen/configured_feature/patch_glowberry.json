@@ -11,7 +11,7 @@
         "config": {
           "to_place": {
             "type": "minecraft:simple_state_provider",
-            "state": { "Name": "lumenwilds:glowberry_bush" }
+            "state": { "Name": "lumenwilds:glowberry_bush", "Properties": { "age": "3" } }
           }
         }
       },

@@ -14,6 +14,7 @@ import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.HangingSignItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
 import net.minecraft.world.item.SignItem;
@@ -108,10 +109,14 @@ public final class ModItems {
                             .effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 140, 0), 1.0F)
                             .build()));
 
-    /** Glowberries — a sweet alien berry harvested from the Glowberry Bush; a quick snack with a little glow. */
-    public static final DeferredItem<Item> GLOWBERRY = ITEMS.registerItem(
+    /**
+     * Glowberries — a sweet alien berry; a quick snack with a little glow, and (like vanilla sweet berries) an
+     * {@code ItemNameBlockItem} so right-clicking valid soil <b>plants a Glowberry Bush</b> (v1.1c). The bush
+     * itself has no separate BlockItem (skipped in the loop below).
+     */
+    public static final DeferredItem<ItemNameBlockItem> GLOWBERRY = ITEMS.registerItem(
             "glowberry",
-            Item::new,
+            props -> new ItemNameBlockItem(ModBlocks.GLOWBERRY_BUSH.get(), props),
             new Item.Properties()
                     .food(new FoodProperties.Builder()
                             .nutrition(2)
@@ -302,6 +307,16 @@ public final class ModItems {
             props -> new BoatItem(true, ModBoatTypes.glowwood(), props),
             new Item.Properties().stacksTo(1));
 
+    public static final DeferredItem<BoatItem> GLOWROOT_BOAT = ITEMS.registerItem(
+            "glowroot_boat",
+            props -> new BoatItem(false, ModBoatTypes.glowroot(), props),
+            new Item.Properties().stacksTo(1));
+
+    public static final DeferredItem<BoatItem> GLOWROOT_CHEST_BOAT = ITEMS.registerItem(
+            "glowroot_chest_boat",
+            props -> new BoatItem(true, ModBoatTypes.glowroot(), props),
+            new Item.Properties().stacksTo(1));
+
     // --- Sign items (one item per sign pair; the wall variants share it) -------------------------
     public static final DeferredItem<SignItem> GLOWWOOD_SIGN = ITEMS.registerItem(
             "glowwood_sign",
@@ -312,6 +327,17 @@ public final class ModItems {
             "glowwood_hanging_sign",
             props -> new HangingSignItem(
                     ModBlocks.GLOWWOOD_HANGING_SIGN.get(), ModBlocks.GLOWWOOD_WALL_HANGING_SIGN.get(), props),
+            new Item.Properties().stacksTo(16));
+
+    public static final DeferredItem<SignItem> GLOWROOT_SIGN = ITEMS.registerItem(
+            "glowroot_sign",
+            props -> new SignItem(props, ModBlocks.GLOWROOT_SIGN.get(), ModBlocks.GLOWROOT_WALL_SIGN.get()),
+            new Item.Properties().stacksTo(16));
+
+    public static final DeferredItem<HangingSignItem> GLOWROOT_HANGING_SIGN = ITEMS.registerItem(
+            "glowroot_hanging_sign",
+            props -> new HangingSignItem(
+                    ModBlocks.GLOWROOT_HANGING_SIGN.get(), ModBlocks.GLOWROOT_WALL_HANGING_SIGN.get(), props),
             new Item.Properties().stacksTo(16));
 
     // --- Block items ----------------------------------------------------------------------------
@@ -325,6 +351,9 @@ public final class ModItems {
                     || block == ModBlocks.LUMENWATER_BLOCK
                     || block == ModBlocks.ASCENSION_FIELD
                     || block == ModBlocks.DESCENT_FIELD
+                    || block
+                            == ModBlocks
+                                    .GLOWBERRY_BUSH // planted by the Glowberry item (ItemNameBlockItem), no own item
                     || block.getId().getPath().contains("sign")) {
                 continue;
             }

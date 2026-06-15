@@ -68,6 +68,8 @@
     "lumenwilds:cracked_gravity_lens",
     "lumenwilds:lumen_relay",
     "lumenwilds:dormant_light_engine",
-    "lumenwilds:active_light_engine"
+    "lumenwilds:active_light_engine",
+    "lumenwilds:lumen_field_projector",
+    "lumenwilds:gravity_repeater"
   ]
 }

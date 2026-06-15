@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lumenwilds:wraith_membrane"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "minecraft:phantom_membrane"
+  }
+}

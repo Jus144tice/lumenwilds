@@ -1,6 +1,8 @@
 {
   "values": {
     "lumenwilds:glowwood_log": "lumenwilds:stripped_glowwood_log",
-    "lumenwilds:glowwood_wood": "lumenwilds:stripped_glowwood_wood"
+    "lumenwilds:glowwood_wood": "lumenwilds:stripped_glowwood_wood",
+    "lumenwilds:glowroot_log": "lumenwilds:stripped_glowroot_log",
+    "lumenwilds:glowroot_wood": "lumenwilds:stripped_glowroot_wood"
   }
 }

@@ -8,6 +8,15 @@
         "class": "com/jus144tice/lumenwilds/registry/ModBoatTypes",
         "field": "GLOWWOOD_BOAT_TYPE"
       }
+    },
+    {
+      "enum": "net/minecraft/world/entity/vehicle/Boat$Type",
+      "name": "lumenwilds_glowroot",
+      "constructor": "(Ljava/util/function/Supplier;Ljava/lang/String;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Ljava/util/function/Supplier;Z)V",
+      "parameters": {
+        "class": "com/jus144tice/lumenwilds/registry/ModBoatTypes",
+        "field": "GLOWROOT_BOAT_TYPE"
+      }
     }
   ]
 }

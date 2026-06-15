@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_sporeglass": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:sporeglass"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:broken_sporeglass_from_sporeglass_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_sporeglass"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:broken_sporeglass_from_sporeglass_stonecutting"
+    ]
+  }
+}

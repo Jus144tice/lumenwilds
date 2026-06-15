@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "lumenwilds:block/glowroot_slab"
+    },
+    "type=double": {
+      "model": "lumenwilds:block/glowroot_planks"
+    },
+    "type=top": {
+      "model": "lumenwilds:block/glowroot_slab_top"
+    }
+  }
+}

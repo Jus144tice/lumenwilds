@@ -29,6 +29,13 @@ public final class ModWoodTypes {
     public static final WoodType GLOWWOOD =
             WoodType.register(new WoodType(Lumenwilds.MOD_ID + ":glowwood", GLOWWOOD_SET));
 
+    /** Glowroot — the signature self-lit species (its wood set glows faintly; see {@code ModBlocks}). */
+    public static final BlockSetType GLOWROOT_SET =
+            BlockSetType.register(new BlockSetType(Lumenwilds.MOD_ID + ":glowroot"));
+
+    public static final WoodType GLOWROOT =
+            WoodType.register(new WoodType(Lumenwilds.MOD_ID + ":glowroot", GLOWROOT_SET));
+
     private ModWoodTypes() {}
 
     /** Forces class-load so the static registrations above run. Call early in the mod constructor. */
