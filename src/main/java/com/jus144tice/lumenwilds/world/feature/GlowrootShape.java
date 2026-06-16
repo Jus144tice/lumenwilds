@@ -99,13 +99,24 @@ public final class GlowrootShape {
             double dirX = Math.cos(ang);
             double dirZ = Math.sin(ang);
             int len = p.rootLen() + random.nextInt(p.rootLenRand());
+            // Start INSIDE the trunk (trunkRadius - 1) and place the disc BEFORE advancing, so the first root
+            // disc overlaps the trunk and the arm is always joined to it. (Advancing first put the first disc at
+            // the trunk's outer edge, where rounding could leave a 1-block air gap between root and tree.)
             double x = cx + dirX * (p.trunkRadius() - 1.0);
             double z = cz + dirZ * (p.trunkRadius() - 1.0);
             double y = baseY + 3 + random.nextInt(3);
+            int rx = (int) Math.round(x);
+            int ry = (int) Math.round(y);
+            int rz = (int) Math.round(z);
             for (int i = 0; i < len; i++) {
+                double frac = i / (double) len;
+                double r = Math.max(1.2, p.rootThick() - frac * (p.rootThick() * 0.55));
+                rx = (int) Math.round(x);
+                ry = (int) Math.round(y);
+                rz = (int) Math.round(z);
+                fillDisc(placer, rx, ry, rz, r, log, false); // place at the current cell (first one is in the trunk)
                 x += dirX;
                 z += dirZ;
-                double frac = i / (double) len;
                 if (frac < 0.4) {
                     y += (random.nextDouble() - 0.45) * 0.6;
                 } else {
@@ -114,16 +125,10 @@ public final class GlowrootShape {
                 if (y < baseY - 10) {
                     break;
                 }
-                double r = Math.max(1.2, p.rootThick() - frac * (p.rootThick() * 0.55));
-                fillDisc(placer, (int) Math.round(x), (int) Math.round(y), (int) Math.round(z), r, log, false);
             }
-            // Anchor the root to the ground: from JUST BELOW the tip, grow a leg straight down — passing through
-            // our own root logs and any air/replaceable — until it reaches solid terrain, so roots never dangle in
-            // mid-air over cliffy/uneven ground. (Starting at the tip itself was the old bug: the tip is a log we
-            // just placed, so the drop stopped on block one and never reached the floor.)
-            int rx = (int) Math.round(x);
-            int rz = (int) Math.round(z);
-            int ry = (int) Math.round(y);
+            // Anchor the LAST placed disc to the ground: from JUST BELOW it, grow a leg straight down — passing
+            // through our own root logs and any air/replaceable — until it reaches solid terrain, so roots never
+            // dangle in mid-air over cliffy/uneven ground. (Starting at the tip's own log stopped on block one.)
             BlockPos.MutableBlockPos leg = new BlockPos.MutableBlockPos();
             for (int ly = ry - 1; ly > placer.minY() && ly > ry - 48; ly--) {
                 leg.set(rx, ly, rz);

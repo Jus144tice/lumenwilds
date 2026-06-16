@@ -1,7 +1,7 @@
 {
   "type": "lumenwilds:vestige_outpost",
   "biomes": "#lumenwilds:has_structure/vestige_outpost",
-  "step": "surface_structures",
+  "step": "top_layer_modification",
   "terrain_adaptation": "beard_thin",
   "spawn_overrides": {}
 }

@@ -1,7 +1,7 @@
 {
   "type": "lumenwilds:rootshrine",
   "biomes": "#lumenwilds:has_structure/rootshrine",
-  "step": "surface_structures",
+  "step": "top_layer_modification",
   "terrain_adaptation": "beard_thin",
   "spawn_overrides": {}
 }

@@ -558,6 +558,7 @@ public final class ModBlocks {
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(3.0F)
+                    .lightLevel(state -> 2)
                     .sound(SoundType.WOOD)
                     .noOcclusion()
                     .pushReaction(PushReaction.DESTROY));
@@ -568,6 +569,7 @@ public final class ModBlocks {
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(3.0F)
+                    .lightLevel(state -> 2)
                     .sound(SoundType.WOOD)
                     .noOcclusion()
                     .isValidSpawn((s, l, p, e) -> false));
@@ -1186,10 +1188,14 @@ public final class ModBlocks {
 
     // --- Property helpers -----------------------------------------------------------------------
 
+    // Glowwood is a glowing biome wood (the bible's "living light" selling point): the raw log/wood emits a
+    // gentle glow (light 3) and planks + plank-derived blocks a softer one (light 2). Glowroot (the signature
+    // species) is brighter still (glowrootLogProps 4 / glowrootPlanksProps 3).
     private static BlockBehaviour.Properties logProps() {
         return BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_CYAN)
                 .strength(2.0F)
+                .lightLevel(state -> 3)
                 .sound(SoundType.WOOD);
     }
 
@@ -1197,6 +1203,7 @@ public final class ModBlocks {
         return BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_CYAN)
                 .strength(2.0F, 3.0F)
+                .lightLevel(state -> 2)
                 .sound(SoundType.WOOD);
     }
 

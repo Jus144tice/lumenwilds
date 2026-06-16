@@ -6,6 +6,22 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.1.1] - 2026-06-15
+**Playthrough #2 fixes:**
+
+- **Wood actually works as wood** — Glowwood & Glowroot planks/logs/etc. are now in the vanilla wood tags
+  (`#minecraft:planks` and all `wooden_*`/sign/sapling/log tags). You can now craft a crafting table, chests,
+  and every other planks-based recipe from them, and they burn as fuel. (Note: "4 logs → 3 wood blocks" is
+  vanilla-correct; planks are the net-positive path — 1 log → 4 planks.)
+- **Glowwood now glows** — logs/planks emit light (a gentle radiance), matching the biome's living-light
+  theme. Glowroot is brighter still.
+- **Glowroot tree roots** — fixed roots generating with a gap between the root and the trunk; they now always
+  connect.
+- **Grazers are breedable** with **Glowberries** (renewable — plant/harvest the bushes) as well as Lumen
+  Fruit. Hold one out to lure and breed them.
+- **Worldgen order** — the ruins/cities/mines now generate *after* trees, so trees no longer grow through
+  chests or leave partial pieces. (Applies to newly generated chunks.)
+
 ## [1.1.0] - 2026-06-15
 **Playthrough fixes & integration** — first survival-playthrough feedback, addressed before any v2.0 work:
 

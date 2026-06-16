@@ -293,7 +293,14 @@ effects/brewing/fishing). Patchouli is an **optional/soft dependency** (`runtime
 `neoforge.mods.toml`, zero Java API used — the mod loads + plays without it). The guide is **creative-only by
 design** (no survival recipe / no auto-grant — players explore to learn the dimension); it appears in the
 "The Lumenwilds" creative tab (Patchouli auto-adds it via `book.json` `creative_tab` + `dont_generate_book:
-false`). **v1.1 (playthrough fixes) is complete (a–i).** Roadmap:
+false`). **v1.1 (playthrough fixes) is complete (a–i).** **v1.1.1 (playthrough #2 fixes):** the wood sets now
+carry the **vanilla wood tags** (`#minecraft:planks` + all `wooden_*`/sign/sapling/log tags, block + item via
+the new `datagen.ModItemTagProvider`) so Glowwood/Glowroot planks craft crafting tables/chests/etc. and burn as
+fuel; **Glowwood now glows** (`logProps` light 3 / `planksProps` light 2; Glowroot brighter); the **Glowroot
+buttress roots reliably join the trunk** (place-then-advance fix in `GlowrootShape#buildButtressRoots`); the
+**Lumen Grazer breeds with the renewable Glowberry** (not just the rare Lumen Fruit); and the **built/loot
+structures moved to the `top_layer_modification` step** so they generate *after* trees and overwrite them (no
+more tree-through-chest / tree-corrupted pieces). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -1117,10 +1124,17 @@ as `File#member`.
   with slab (drops 2) and door (drops 1) special-cased; `memory_crystal` →
   `createOreDrop`(MEMORY_CRYSTAL_SHARD); `DropExperienceBlock` → `createOreDrop` (Luminite ores →
   `RAW_LUMINITE`, Lumen Crystal ores → shard); Glowroot wall-signs drop the Glowroot sign item.
-- [ModTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModTagProvider.java) —
+- [ModTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModTagProvider.java) — a `BlockTagsProvider`.
   `#addTags`: classifies blocks by name into `mineable/pickaxe|axe|shovel|hoe` + `leaves` (auto-covers new
   stone/wood blocks; `_ore`/`_cluster`/moonstone/`glowbrick`/`luminite`/`conduit`/`resonance`/`memory_crystal`/
-  `ancient_door` → pickaxe).
+  `ancient_door` → pickaxe). **v1.1.1:** also tags the Glowwood/Glowroot wood-species blocks into the vanilla
+  wood **block** tags (`PLANKS`, `WOODEN_SLABS|STAIRS|FENCES|DOORS|TRAPDOORS|BUTTONS|PRESSURE_PLATES`,
+  `FENCE_GATES`, `STANDING_SIGNS`/`WALL_SIGNS`/`CEILING_HANGING_SIGNS`/`WALL_HANGING_SIGNS`, `LOGS_THAT_BURN`,
+  `SAPLINGS`) — gated on the species name so the stone families/glowcap aren't included.
+- [ModItemTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModItemTagProvider.java) — an
+  `ItemTagsProvider` (v1.1.1; wired in `DataGenerators` with `ModTagProvider#contentsGetter`). Mirrors the wood
+  block tags onto the matching **item** tags via `#copy` (`#minecraft:planks` etc. — what recipes read, so the
+  planks craft a crafting table/chest/…), plus item-only `SIGNS`/`HANGING_SIGNS`/`BOATS`/`CHEST_BOATS`.
 
 > NOTE: hand-authored placeholder assets in `src/main/resources` are **authoritative** (the mod works
 > from a plain `build`, no datagen needed). `runData` output is a regeneration/diff aid only; it is NOT
@@ -1422,6 +1436,14 @@ as `File#member`.
   **`apply_mob_effect` durations are in SECONDS** (×20 internally) — a weapon on-hit needs ~3–12, not ticks.
   To make an enchantment fishing/loot-only, simply leave it OUT of `#minecraft:in_enchanting_table`/`tradeable`/
   `on_random_loot`; add it to `#minecraft:tooltip_order` (append) so it still displays on items.
+- **Trees overwrite structures unless the structure decorates at a LATER step.** Within each chunk, each
+  `GenerationStep.Decoration` runs structures-at-that-step THEN features-at-that-step; trees are
+  `vegetal_decoration` (step 9), so a structure at `surface_structures` (step 4) is built first and then trees
+  grow *through* it (tree-through-chest, partial roots in a plaza). Fix: set the built/loot structures'
+  `"step"` to **`top_layer_modification`** (10, after trees) so their pieces build last and overwrite trees.
+  The Vestige family + Rootshrine + Glasspetal Spires + Lumenbound Ruins use this; `glowroot_tree`/`mega_glowcap`
+  (organic) stay at `surface_structures`, `undercrown_relics` stays underground. (`step` only changes piece
+  build TIMING, not `findGenerationPoint` placement — so Y/spacing are unaffected.)
 - **A `random_patch` flora feature must filter on `would_survive`, not `matching_blocks:air`.** The latter
   places the plant in ANY air cell within `y_spread` — including the air *directly above* another plant — so
   moonblossoms/glow ferns generated floating on top of glowberry bushes (the v1.1b bug). `would_survive` (the

@@ -46,7 +46,7 @@ public class LumenGrazer extends Animal {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 2.0));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25, stack -> stack.is(ModItems.LUMEN_FRUIT.get()), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25, LumenGrazer::isGrazerFood, false));
         // Skittish: flees nearby players (the bible's "flees from players"), but the Lumen-Fruit tempt above
         // out-prioritises this, so it can still be lured and bred.
         this.goalSelector.addGoal(4, new AvoidEntityGoal<>(this, Player.class, 6.0F, 1.0, 1.3));
@@ -56,9 +56,17 @@ public class LumenGrazer extends Animal {
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     }
 
+    /**
+     * Grazer food / breeding item: a Glowberry (renewable — plant + harvest bushes) or a Lumen Fruit (rarer,
+     * from chests/Stillblooms). Glowberry is the practical breeding food now that the bush is farmable (v1.1.1).
+     */
+    public static boolean isGrazerFood(ItemStack stack) {
+        return stack.is(ModItems.GLOWBERRY.get()) || stack.is(ModItems.LUMEN_FRUIT.get());
+    }
+
     @Override
     public boolean isFood(ItemStack stack) {
-        return stack.is(ModItems.LUMEN_FRUIT.get());
+        return isGrazerFood(stack);
     }
 
     /** Native low gravity (0.056 ≈ 0.08 × 0.7) baked into the supplier; otherwise a hardy grazer. */

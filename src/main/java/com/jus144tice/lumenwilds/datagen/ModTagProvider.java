@@ -36,6 +36,25 @@ public class ModTagProvider extends BlockTagsProvider {
         // it, every leaf computes DISTANCE 7 and decays — even one touching the trunk. Keep it populated.
         var logs = tag(BlockTags.LOGS);
 
+        // Vanilla wood-set block tags (v1.1.1) — so the Glowwood + Glowroot sets behave as real wood
+        // (#minecraft:planks → crafting table/chest/etc., fence/door/sign/button/plate behaviour, burnable
+        // logs, saplings). The matching ITEM tags (what recipes read) are mirrored in ModItemTagProvider.
+        var planks = tag(BlockTags.PLANKS);
+        var woodenSlabs = tag(BlockTags.WOODEN_SLABS);
+        var woodenStairs = tag(BlockTags.WOODEN_STAIRS);
+        var woodenFences = tag(BlockTags.WOODEN_FENCES);
+        var fenceGates = tag(BlockTags.FENCE_GATES);
+        var woodenDoors = tag(BlockTags.WOODEN_DOORS);
+        var woodenTrapdoors = tag(BlockTags.WOODEN_TRAPDOORS);
+        var woodenButtons = tag(BlockTags.WOODEN_BUTTONS);
+        var woodenPlates = tag(BlockTags.WOODEN_PRESSURE_PLATES);
+        var standingSigns = tag(BlockTags.STANDING_SIGNS);
+        var wallSigns = tag(BlockTags.WALL_SIGNS);
+        var ceilingHangingSigns = tag(BlockTags.CEILING_HANGING_SIGNS);
+        var wallHangingSigns = tag(BlockTags.WALL_HANGING_SIGNS);
+        var logsThatBurn = tag(BlockTags.LOGS_THAT_BURN);
+        var saplings = tag(BlockTags.SAPLINGS);
+
         // Classify by name so new stone/wood blocks are covered automatically.
         for (var holder : ModBlocks.BLOCKS.getEntries()) {
             if (holder == ModBlocks.LUMEN_PORTAL) {
@@ -46,6 +65,43 @@ public class ModTagProvider extends BlockTagsProvider {
             // Non-exclusive: logs/wood are both axe-mineable AND #minecraft:logs (for leaf decay).
             if (name.endsWith("_log") || name.endsWith("_wood")) {
                 logs.add(block);
+            }
+
+            // Vanilla wood-set membership for the Glowwood + Glowroot species (NOT the stone families or
+            // glowcap mushroom blocks, which is why this gates on the species name, not the block type).
+            if (name.contains("glowwood") || name.contains("glowroot")) {
+                if (name.endsWith("_planks")) {
+                    planks.add(block);
+                } else if (name.endsWith("_wall_hanging_sign")) {
+                    wallHangingSigns.add(block);
+                } else if (name.endsWith("_hanging_sign")) {
+                    ceilingHangingSigns.add(block);
+                } else if (name.endsWith("_wall_sign")) {
+                    wallSigns.add(block);
+                } else if (name.endsWith("_sign")) {
+                    standingSigns.add(block);
+                } else if (name.endsWith("_slab")) {
+                    woodenSlabs.add(block);
+                } else if (name.endsWith("_stairs")) {
+                    woodenStairs.add(block);
+                } else if (name.endsWith("_fence_gate")) {
+                    fenceGates.add(block);
+                } else if (name.endsWith("_fence")) {
+                    woodenFences.add(block);
+                } else if (name.endsWith("_door")) {
+                    woodenDoors.add(block);
+                } else if (name.endsWith("_trapdoor")) {
+                    woodenTrapdoors.add(block);
+                } else if (name.endsWith("_button")) {
+                    woodenButtons.add(block);
+                } else if (name.endsWith("_pressure_plate")) {
+                    woodenPlates.add(block);
+                } else if (name.endsWith("_sapling")) {
+                    saplings.add(block);
+                }
+                if (name.endsWith("_log") || name.endsWith("_wood")) {
+                    logsThatBurn.add(block);
+                }
             }
             if (name.endsWith("leaves")) {
                 hoe.add(block);
