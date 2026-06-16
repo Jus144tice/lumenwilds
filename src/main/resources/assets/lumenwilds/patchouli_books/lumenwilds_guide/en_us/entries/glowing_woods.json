@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Two trees grow here. $(l)Glowwood$(/l) is the cyan building wood. $(l)Glowroot$(/l) is the signature self-lit species — its whole wood set glows faintly. Both have full sets: planks, stairs, slabs, fences, doors, signs, boats, and more."
+      "text": "Two trees grow here. $(thing)Glowwood$() is the cyan building wood. $(thing)Glowroot$() is the signature self-lit species — its whole wood set glows faintly. Both have full sets: planks, stairs, slabs, fences, doors, signs, boats, and more."
     },
     { "type": "patchouli:crafting", "recipe": "lumenwilds:glowroot_planks", "text": "Glowroot logs make glowing planks." },
     {

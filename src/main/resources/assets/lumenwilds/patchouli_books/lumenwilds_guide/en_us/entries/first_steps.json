@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "It is always dim twilight under $(l)Veyra$(/l), the great pale moon. Carry light — or harvest the native glow. Many hostiles $(o)flee bright light$(): daylight, a Stillbloom's core, lanterns, and Lumen light all keep them at bay."
+      "text": "It is always dim twilight under $(thing)Veyra$(), the great pale moon. Carry light — or harvest the native glow. Many hostiles $(o)flee bright light$(): daylight, a Stillbloom's core, lanterns, and Lumen light all keep them at bay."
     }
   ]
 }

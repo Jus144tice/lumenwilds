@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Four native effects: $(l)Lightfoot$(/l) (higher jump, safe fall), $(l)Glowmarked$(/l) (the target glows), $(l)Sporeblind$(/l) (a spore-clouded slow), and $(l)Rooted$(/l) (heavy slow, no jump)."
+      "text": "Four native effects: $(thing)Lightfoot$() (higher jump, safe fall), $(thing)Glowmarked$() (the target glows), $(thing)Sporeblind$() (a spore-clouded slow), and $(thing)Rooted$() (heavy slow, no jump)."
     },
     {
       "type": "patchouli:text",

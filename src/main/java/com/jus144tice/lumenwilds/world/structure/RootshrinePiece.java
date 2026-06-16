@@ -52,10 +52,12 @@ public class RootshrinePiece extends StructurePiece {
         this.origin = new BlockPos(tag.getInt("ox"), tag.getInt("oy"), tag.getInt("oz"));
     }
 
+    private static final int FOUNDATION_DEPTH = 16; // how far the floor can root down on a slope
+
     private static BoundingBox boxAround(BlockPos o) {
         return new BoundingBox(
                 o.getX() - REACH,
-                o.getY() - 2,
+                o.getY() - FOUNDATION_DEPTH, // room to root the floor down to terrain on uneven ground
                 o.getZ() - REACH,
                 o.getX() + REACH,
                 o.getY() + PEAK + 2,
@@ -87,11 +89,13 @@ public class RootshrinePiece extends StructurePiece {
         BlockState bulb = ModBlocks.LUMENBULB.get().defaultBlockState();
         BlockState vine = ModBlocks.GLOWVINE.get().defaultBlockState();
 
-        // 1) Floor disc (one below origin) + clear the chamber air above it.
+        // 1) Floor disc (one below origin) + a foundation rooting each column down to solid terrain (so the
+        //    shrine never floats on a slope) + clear the chamber air above it.
         for (int dx = -RADIUS; dx <= RADIUS; dx++) {
             for (int dz = -RADIUS; dz <= RADIUS; dz++) {
                 if (dx * dx + dz * dz <= RADIUS * RADIUS + 1) {
                     set(level, writeBox, origin.offset(dx, -1, dz), moonstone);
+                    fillFoundation(level, writeBox, origin.offset(dx, -2, dz), moonstone);
                     for (int dy = 0; dy < PEAK; dy++) {
                         set(level, writeBox, origin.offset(dx, dy, dz), Blocks.AIR.defaultBlockState());
                     }
@@ -143,6 +147,22 @@ public class RootshrinePiece extends StructurePiece {
     private static void set(WorldGenLevel level, BoundingBox box, BlockPos p, BlockState state) {
         if (box.isInside(p)) {
             level.setBlock(p, state, 2);
+        }
+    }
+
+    /** Fills {@code fill} straight down from {@code start} through air/water/replaceable blocks until it hits
+     *  solid terrain (or leaves the box) — roots a floor column to the ground so it can't float on a slope. */
+    private static void fillFoundation(WorldGenLevel level, BoundingBox box, BlockPos start, BlockState fill) {
+        BlockPos.MutableBlockPos cursor = start.mutable();
+        for (int i = 0; i < FOUNDATION_DEPTH; i++) {
+            if (!box.isInside(cursor)) {
+                break;
+            }
+            if (!level.getBlockState(cursor).canBeReplaced()) {
+                break; // reached solid ground
+            }
+            level.setBlock(cursor, fill, 2);
+            cursor.move(Direction.DOWN);
         }
     }
 }

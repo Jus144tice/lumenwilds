@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(l)Moonblossom$(/l) is a glowing flower (night vision in suspicious stew). $(l)Glow Fern$(/l), $(l)Glow Algae$(/l) and $(l)Lumen Reeds$(/l) carpet the land and swamps. $(l)Lumen Fruit$(/l) gives brief night vision; $(l)Lumen Nectar$(/l) (bottle a Stillbloom) gives regeneration."
+      "text": "$(thing)Moonblossom$() is a glowing flower (night vision in suspicious stew). $(thing)Glow Fern$(), $(thing)Glow Algae$() and $(thing)Lumen Reeds$() carpet the land and swamps. $(thing)Lumen Fruit$() gives brief night vision; $(thing)Lumen Nectar$() (bottle a Stillbloom) gives regeneration."
     },
     {
       "type": "patchouli:spotlight",

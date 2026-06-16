@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "Carry it $(o)out$() of the Lumenwilds and it slowly reverts to ordinary water — its light is bound to this realm. Fishing in Lumenwater yields unique catches (see $(l)Effects, Brewing & Fishing$(/l))."
+      "text": "Carry it $(o)out$() of the Lumenwilds and it slowly reverts to ordinary water — its light is bound to this realm. Fishing in Lumenwater yields unique catches (see $(thing)Effects, Brewing & Fishing$())."
     }
   ]
 }

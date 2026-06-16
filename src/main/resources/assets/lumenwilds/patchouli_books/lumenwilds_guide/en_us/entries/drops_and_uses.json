@@ -5,11 +5,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Every drop is useful. $(l)Hides$(/l) (grazer/dark) craft into leather. $(l)Glow Sinew$(/l) → string. $(l)Lumen Algae$(/l) → green dye. $(l)Wraith Membrane$(/l) → phantom membrane. $(l)Mire Tooth$(/l) → bone meal. $(l)Rootback Plate$(/l) → iron nuggets."
+      "text": "Every drop is useful. $(thing)Hides$() (grazer/dark) craft into leather. $(thing)Glow Sinew$() → string. $(thing)Lumen Algae$() → green dye. $(thing)Wraith Membrane$() → phantom membrane. $(thing)Mire Tooth$() → bone meal. $(thing)Rootback Plate$() → iron nuggets."
     },
     {
       "type": "patchouli:text",
-      "text": "$(l)Glow Scales$(/l) → glow pollen. $(l)Shade Claw$(/l) → echo dust. $(l)Crystal Dust$(/l) → glasspetal block. $(l)Moonloam Clumps$(/l) → moonloam. $(br)$(br)$(l)Spore Sac$(/l) & $(l)Glowcap Spores$(/l) brew Sporeblind; $(l)Air Gel$(/l), $(l)Glow Pollen$(/l) and $(l)Living Fiber$(/l) brew the other native potions."
+      "text": "$(thing)Glow Scales$() → glow pollen. $(thing)Shade Claw$() → echo dust. $(thing)Crystal Dust$() → glasspetal block. $(thing)Moonloam Clumps$() → moonloam. $(br)$(br)$(thing)Spore Sac$() & $(thing)Glowcap Spores$() brew Sporeblind; $(thing)Air Gel$(), $(thing)Glow Pollen$() and $(thing)Living Fiber$() brew the other native potions."
     }
   ]
 }

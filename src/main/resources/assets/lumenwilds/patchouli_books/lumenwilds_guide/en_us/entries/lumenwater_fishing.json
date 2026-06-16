@@ -5,15 +5,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Cast a line into $(l)Lumenwater$(/l) for a catch found nowhere else — native fish and flora, glowing materials, and rare treasure on top of your normal haul."
+      "text": "Cast a line into $(thing)Lumenwater$() for a catch found nowhere else — native fish and flora, glowing materials, and rare treasure on top of your normal haul."
     },
     {
       "type": "patchouli:text",
-      "text": "Rarest of all are enchanted $(l)spell-books$(/l) carrying Lumenwilds enchantments — the $(o)only$() way to get them. Apply them at an anvil."
+      "text": "Rarest of all are enchanted $(thing)spell-books$() carrying Lumenwilds enchantments — the $(o)only$() way to get them. Apply them at an anvil."
     },
     {
       "type": "patchouli:text",
-      "text": "Armor: $(l)Lightfooted$(/l) (boots, Lightfoot), $(l)Nightsight$(/l) (helmet, night vision), $(l)Lumenward$(/l) (chest, water breathing + dolphin's grace).$(br)Weapons: $(l)Glowbrand$(/l) (Glowmarked on hit), $(l)Sporestrike$(/l) (Sporeblind), $(l)Rootbinding$(/l) (Rooted)."
+      "text": "Armor: $(thing)Lightfooted$() (boots, Lightfoot), $(thing)Nightsight$() (helmet, night vision), $(thing)Lumenward$() (chest, water breathing + dolphin's grace).$(br)Weapons: $(thing)Glowbrand$() (Glowmarked on hit), $(thing)Sporestrike$() (Sporeblind), $(thing)Rootbinding$() (Rooted)."
     }
   ]
 }
