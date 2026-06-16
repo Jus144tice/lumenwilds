@@ -6,8 +6,8 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
-### v1.1 — Playthrough fixes & integration
-First survival-playthrough feedback, addressed before any v2.0 work:
+## [1.1.0] - 2026-06-15
+**Playthrough fixes & integration** — first survival-playthrough feedback, addressed before any v2.0 work:
 
 - **Glowroot wood set** — the signature self-lit tree now has a full wood set (planks, wood/stripped,
   stairs/slab/fence/gate/door/trapdoor/button/plate, signs, hanging signs, boats + axe-stripping), all
