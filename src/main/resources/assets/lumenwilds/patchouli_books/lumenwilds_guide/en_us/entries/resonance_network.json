@@ -5,11 +5,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "A $(thing)Resonance Core$() floods power through connected $(thing)Lumen Conduits$() (dead → dim → active) and opens the $(thing)Ancient Doors$() they reach. $(thing)Lumen Relays$() bridge gaps in the network."
+      "text": "A Resonance Core floods power through connected Lumen Conduits (dead → dim → active) and opens the Ancient Doors they reach. Lumen Relays bridge gaps in the network."
     },
     {
       "type": "patchouli:text",
-      "text": "A powered $(thing)Gravity Lens$() lifts entities in the column above it. A dead city's $(thing)Dormant Light Engine$() can be restored with a looted $(o)resonance core fragment$() — waking the network. Cores and lenses can be rebuilt from looted fragments."
+      "text": "A powered Gravity Lens lifts entities in the column above it — the same idea the $(l:liftshafts)Liftshafts$(/l) scale up. A dead city's Dormant Light Engine can be restored with a looted resonance core fragment, waking the network. Cores and lenses can be rebuilt from looted fragments."
     }
   ]
 }

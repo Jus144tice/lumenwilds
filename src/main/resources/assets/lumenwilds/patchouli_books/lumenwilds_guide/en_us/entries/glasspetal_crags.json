@@ -1,0 +1,15 @@
+{
+  "name": "Glasspetal Crags",
+  "icon": "lumenwilds:glasspetal_cluster",
+  "category": "lumenwilds:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Blue-violet crystal highlands, lit by mineral growth instead of foliage: jagged Glasspetal Clusters bristle from the rock, and Lumen Crystal ore lies exposed on the cliff faces."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Tapering crystal spires rise from the heights, sometimes hiding loot — but $(l:native_fauna)Crag Wraiths$(/l) hunt the ledges, and a fall here is a long one."
+    }
+  ]
+}

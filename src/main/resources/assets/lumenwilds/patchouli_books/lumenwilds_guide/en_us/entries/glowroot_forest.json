@@ -1,0 +1,15 @@
+{
+  "name": "Glowroot Forest",
+  "icon": "lumenwilds:glowroot_sapling",
+  "category": "lumenwilds:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A dim, dense forest of towering, self-lit $(l:glowing_woods)Glowroot$(/l) trees over a dark-teal floor. Their own glow is most of the light here, so the shadows between the trunks run deep."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "That darkness hides $(l:native_fauna)Shade Stalkers$(/l), which flee any bright light you bring. Small root-cage shrines sometimes shelter a reward chest among the giant trees."
+    }
+  ]
+}

@@ -287,13 +287,15 @@ server: GLM + enchantments + loot + tags, no datapack errors.)* **v1.1i** harden
 for compat (e.g. a water-allergic cat-people race mod): it was already in `#minecraft:water` + returns
 `isInWater()` true; now also in the NeoForge convention `#c:water` (`data/c/tags/fluid/water.json`). Only a
 mod that hard-codes `Blocks.WATER`/`Fluids.WATER` would still miss it (unreachable from our side). **v1.1h**
-added the **in-game player guide** — a **Patchouli** book (`lumenwilds:lumenwilds_guide`, 7 categories / ~16
-entries covering getting-there → survival → flora/wood → creatures+drops → light tech → the Lumenwrights →
-effects/brewing/fishing). Patchouli is an **optional/soft dependency** (`runtimeOnly` for dev, `optional` in
-`neoforge.mods.toml`, zero Java API used — the mod loads + plays without it). The guide is **creative-only by
-design** (no survival recipe / no auto-grant — players explore to learn the dimension); it appears in the
-"The Lumenwilds" creative tab (Patchouli auto-adds it via `book.json` `creative_tab` + `dont_generate_book:
-false`). **v1.1 (playthrough fixes) is complete (a–i).** **v1.1.1 (playthrough #2 fixes):** the wood sets now
+added the **in-game player guide** — a **Patchouli** book (`lumenwilds:lumenwilds_guide`, 7 categories / ~24
+entries). Patchouli is an **optional/soft dependency** (`runtimeOnly` for dev, `optional` in
+`neoforge.mods.toml`, zero Java API used — the mod loads + plays without it). It's craftable (**book + glowstone
+dust**, `mod_loaded`-gated) and also auto-added to the "The Lumenwilds" creative tab. **The book text is fully
+cross-linked** — every look-up-able term is a real Patchouli `$(l:entry)` link (NOT decorative emphasis; note
+`$(l)` *alone* is Patchouli's LINK macro and renders `[ERROR]` without a target — use `$(l:entryId)…$(/l)` for
+links and plain text otherwise). There's one entry per biome (Lumen Glade/Glowroot Forest/Glasspetal Crags/
+Sporefall Jungle/Moonmire/Undercrown Caverns/Stillbloom Basin) + a Veyra/sky entry so biome names link to
+them. **v1.1 (playthrough fixes) is complete (a–i).** **v1.1.1 (playthrough #2 fixes):** the wood sets now
 carry the **vanilla wood tags** (`#minecraft:planks` + all `wooden_*`/sign/sapling/log tags, block + item via
 the new `datagen.ModItemTagProvider`) so Glowwood/Glowroot planks craft crafting tables/chests/etc. and burn as
 fuel; **Glowwood now glows** (`logProps` light 3 / `planksProps` light 2; Glowroot brighter); the **Glowroot
@@ -1270,10 +1272,11 @@ as `File#member`.
   on items) + `enchantment.lumenwilds.*` lang; the books are rolled in the fishing sub-table's spell-book pool.
 - **Patchouli guide (v1.1h, optional dep):** `data/lumenwilds/patchouli_books/lumenwilds_guide/book.json` (the
   ONLY part in `data/`; needs `use_resource_pack: true`) + the content under **`assets/lumenwilds/patchouli_books/
-  lumenwilds_guide/en_us/{categories,entries}/*`** (client/resource side, post-1.20 Patchouli). The book is
-  **creative-tab-only** (no recipe; `book.json` `creative_tab` + `dont_generate_book:false` make Patchouli add
-  a `patchouli:guide_book` to the tab). Patchouli is `runtimeOnly` in `build.gradle` (Modrinth maven) +
-  `optional` in `neoforge.mods.toml`.
+  lumenwilds_guide/en_us/{categories,entries}/*`** (client/resource side, post-1.20 Patchouli; ~24 entries,
+  one per biome). Obtained two ways: the `recipe/lumenwilds_guide.json` craft (**book + glowstone dust**,
+  `mod_loaded`-gated) and the creative tab (`book.json` `creative_tab` + `dont_generate_book:false`). Patchouli
+  is `runtimeOnly` in `build.gradle` (Modrinth maven) + `optional` in `neoforge.mods.toml`. **Entry text uses
+  real `$(l:entryId)…$(/l)` cross-links, never bare `$(l)`** (which renders `[ERROR]`).
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood/glowroot log+wood → stripped).
 - `data/c/tags/item/*` (v1.1e) — the universal `#c:` convention food/crop tags (`foods`, `foods/{fruit,berry,
   raw_meat,cooked_meat,raw_fish,cooked_fish,soup}`, `crops`) so lumen foods integrate into Farmer's Delight /

@@ -5,11 +5,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The cities are not unguarded. The $(thing)Echo Sentinel$() is a floating construct that still keeps watch — it charges and fires a $(o)light-pulse beam$(). It haunts the Undercrown and the vaults."
+      "text": "The cities are not unguarded. The Echo Sentinel is a floating construct that still keeps watch — it charges and fires a light-pulse beam. It haunts the $(l:undercrown_caverns)Undercrown$(/l) and the buried vaults."
     },
     {
       "type": "patchouli:text",
-      "text": "Defeat one for $(thing)resonance core fragments$(), $(thing)luminite$(), $(thing)memory crystal shards$(), and rarely a $(thing)Lumen Relay$() — the parts you need to rebuild the Lumenwrights' tech."
+      "text": "Defeat one for resonance core fragments, luminite, memory crystal shards, and rarely a Lumen Relay — the parts you need to rebuild the Lumenwrights' $(l:resonance_network)Resonance Network$(/l)."
     }
   ]
 }

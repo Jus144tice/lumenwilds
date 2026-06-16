@@ -1,0 +1,19 @@
+{
+  "name": "Veyra & the Sky",
+  "icon": "minecraft:clock",
+  "category": "lumenwilds:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Lumenwilds lies in perpetual dim twilight beneath Veyra, an oversized pale moon. A weak, blurred sun crosses the sky, but the world lives by moonlight — it is never truly day."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Its day also runs at half speed (a 48,000-tick cycle), so nights are long. Sleeping won't skip the Lumenwilds' clock."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Watch the sky for passing events: Moonwake (a brighter Veyra and more $(l:native_fauna)Lantern Beetles$(/l) at night), Sporefall (a surge of $(l:native_fauna)Sporelings$(/l) and dense spores), and Deep Hush (more hostiles around deep explorers)."
+    }
+  ]
+}

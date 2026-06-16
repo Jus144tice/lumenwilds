@@ -1,0 +1,19 @@
+{
+  "__comment": "Craft the Patchouli guide in survival (v1.1.2) — book + glowstone dust. Only loads when Patchouli is present; result is a patchouli:guide_book bound to our book via the patchouli:book data component.",
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "conditions": [
+    { "type": "neoforge:mod_loaded", "modid": "patchouli" }
+  ],
+  "ingredients": [
+    { "item": "minecraft:book" },
+    { "item": "minecraft:glowstone_dust" }
+  ],
+  "result": {
+    "id": "patchouli:guide_book",
+    "count": 1,
+    "components": {
+      "patchouli:book": "lumenwilds:lumenwilds_guide"
+    }
+  }
+}

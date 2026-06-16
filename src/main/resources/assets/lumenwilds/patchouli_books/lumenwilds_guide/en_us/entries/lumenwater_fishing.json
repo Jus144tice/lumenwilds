@@ -5,15 +5,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Cast a line into $(thing)Lumenwater$() for a catch found nowhere else — native fish and flora, glowing materials, and rare treasure on top of your normal haul."
+      "text": "Cast a line into $(l:lumenwater)Lumenwater$(/l) for a catch found nowhere else — native fish and flora, glowing materials, and rare treasure on top of your normal haul."
     },
     {
       "type": "patchouli:text",
-      "text": "Rarest of all are enchanted $(thing)spell-books$() carrying Lumenwilds enchantments — the $(o)only$() way to get them. Apply them at an anvil."
+      "text": "Rarest of all are enchanted spell-books carrying Lumenwilds enchantments — the only way to get them. Apply them at an anvil."
     },
     {
       "type": "patchouli:text",
-      "text": "Armor: $(thing)Lightfooted$() (boots, Lightfoot), $(thing)Nightsight$() (helmet, night vision), $(thing)Lumenward$() (chest, water breathing + dolphin's grace).$(br)Weapons: $(thing)Glowbrand$() (Glowmarked on hit), $(thing)Sporestrike$() (Sporeblind), $(thing)Rootbinding$() (Rooted)."
+      "text": "Armor: Lightfooted (boots), Nightsight (helmet, night vision), Lumenward (chest, water breathing + dolphin's grace).$(br)Weapons: Glowbrand, Sporestrike, Rootbinding — each applies a Lumenwilds $(l:status_effects)effect$(/l) on hit."
     }
   ]
 }

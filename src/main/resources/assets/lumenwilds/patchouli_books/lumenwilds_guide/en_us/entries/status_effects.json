@@ -6,11 +6,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Four native effects: $(thing)Lightfoot$() (higher jump, safe fall), $(thing)Glowmarked$() (the target glows), $(thing)Sporeblind$() (a spore-clouded slow), and $(thing)Rooted$() (heavy slow, no jump)."
+      "text": "Four native effects: Lightfoot (higher jump, safe fall), Glowmarked (the target glows), Sporeblind (a spore-clouded slow), and Rooted (heavy slow, no jump)."
     },
     {
       "type": "patchouli:text",
       "text": "Brew each from an Awkward Potion + a native ingredient: $(br)Air Gel → Lightfoot$(br)Glow Pollen → Glowmarked$(br)Spore Sac (or Glowcap Spores) → Sporeblind$(br)Living Fiber → Rooted"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The same four effects can be put on gear as enchantments — fished only from Lumenwater. See $(l:lumenwater_fishing)Lumenwater Fishing$(/l)."
     }
   ]
 }

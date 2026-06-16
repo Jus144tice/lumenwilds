@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Lumen Glade$() — gentle blue-green meadows.$(br)$(thing)Glowroot Forest$() — dense, dim woods of giant self-lit trees.$(br)$(thing)Glasspetal Crags$() — blue-violet crystal highlands.$(br)$(thing)Sporefall Jungle$() — lush rainforest of giant glowing mushrooms."
+      "text": "$(l:lumen_glade)Lumen Glade$(/l) — gentle blue-green meadows.$(br)$(l:glowroot_forest)Glowroot Forest$(/l) — dense, dim woods of giant self-lit trees.$(br)$(l:glasspetal_crags)Glasspetal Crags$(/l) — blue-violet crystal highlands.$(br)$(l:sporefall_jungle)Sporefall Jungle$(/l) — lush rainforest of giant glowing mushrooms."
     },
     {
       "type": "patchouli:text",
-      "text": "$(thing)Moonmire$() — a glowing swamp of Lumenwater pools.$(br)$(thing)Undercrown Caverns$() — the deep cave biome, lit by dense crystal ore and hanging glowvine.$(br)$(thing)Stillbloom Basin$() — a rare, bright sanctuary of giant Stillbloom flowers."
+      "text": "$(l:moonmire)Moonmire$(/l) — a glowing swamp of Lumenwater pools.$(br)$(l:undercrown_caverns)Undercrown Caverns$(/l) — the deep cave biome, lit by crystal ore and hanging glowvine.$(br)$(l:stillbloom_basin)Stillbloom Basin$(/l) — a rare, bright sanctuary of giant Stillbloom flowers.$(br)$(br)Overhead, all of it lies under $(l:veyra)Veyra$(/l)."
     }
   ]
 }

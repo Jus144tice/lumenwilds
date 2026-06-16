@@ -6,11 +6,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The $(thing)Lumenwrights$() are gone; only ruins remain. Find broken $(thing)Vestige Outposts$(), village-sized $(thing)Vestige Cities$() (some Grand, with spires), buried $(thing)Vaults$(), and abandoned $(thing)Luminite Mines$() with liftshafts."
+      "text": "The Lumenwrights are gone; only ruins remain. Find broken Vestige Outposts, village-sized Vestige Cities (some Grand, with spires), buried Vaults, and abandoned Luminite Mines with $(l:liftshafts)liftshafts$(/l)."
     },
     {
       "type": "patchouli:text",
-      "text": "Their material is $(thing)Glowbrick$(), refined from $(thing)Luminite$() ore (ore → raw → smelt to ingot → glowbrick). $(thing)Memory Crystals$() and $(thing)Glyph Tablets$() hold fragments of their story. $(br)$(br)Tip: $(thing)/locate structure lumenwilds:vestige_mine$() finds the nearest city with a mineshaft."
+      "text": "Their material is Glowbrick, refined from Luminite ore (ore → raw → smelt to ingot → glowbrick). Memory Crystals and Glyph Tablets hold fragments of their story, and their machines run on the $(l:resonance_network)Resonance Network$(/l) — still guarded by the $(l:echo_sentinel)Echo Sentinel$(/l)."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Tip: run /locate structure lumenwilds:vestige_mine to find the nearest city with a mineshaft."
     }
   ]
 }

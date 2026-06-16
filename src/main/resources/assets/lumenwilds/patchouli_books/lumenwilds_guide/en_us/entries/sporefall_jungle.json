@@ -1,0 +1,15 @@
+{
+  "name": "Sporefall Jungle",
+  "icon": "lumenwilds:giant_glowcap_block",
+  "category": "lumenwilds:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The densest, lushest biome — a green rainforest of giant glowing mushrooms (Giant Glowcaps) under a constant drift of glowing spores."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(l:native_fauna)Sporelings$(/l) swarm the undergrowth, aggroing as a group. A rare, town-sized mega Glowcap towers over the canopy with treasure buried beneath it."
+    }
+  ]
+}

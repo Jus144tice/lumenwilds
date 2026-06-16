@@ -1,0 +1,15 @@
+{
+  "name": "Lumen Glade",
+  "icon": "lumenwilds:lumen_grass_block",
+  "category": "lumenwilds:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The gentlest biome, and a good place to arrive: rolling blue-green meadows under scattered $(l:glowing_woods)Glowwood$(/l) trees, dotted with $(l:plants_and_food)Moonblossom$(/l) and glow fern."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Herds of $(l:native_fauna)Lumen Grazers$(/l) graze the open ground, and $(l:native_fauna)Lantern Beetles$(/l) drift between the flowers — a calm first foothold before the stranger biomes."
+    }
+  ]
+}

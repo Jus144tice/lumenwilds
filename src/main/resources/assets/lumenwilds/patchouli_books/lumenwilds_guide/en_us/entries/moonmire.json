@@ -1,0 +1,15 @@
+{
+  "name": "Moonmire",
+  "icon": "lumenwilds:lumen_reeds",
+  "category": "lumenwilds:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A dark, misty swamp whose glowing pools are real $(l:lumenwater)Lumenwater$(/l), fringed by glow algae and tall lumen reeds, with sparse $(l:glowroot_forest)Glowroot$(/l) rising from the wet ground."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "The amphibious $(l:native_fauna)Mirelurker$(/l) lurks in the shallows and lunges at anyone who wades in — and it is faster after dark."
+    }
+  ]
+}

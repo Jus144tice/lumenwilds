@@ -1,0 +1,15 @@
+{
+  "name": "Undercrown Caverns",
+  "icon": "lumenwilds:lumen_crystal_ore",
+  "category": "lumenwilds:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The dimension's underground biome, layered beneath the surface. It needs no torches: dense Lumen Crystal ore and tall, hanging glowvine light the dark, with $(l:lumenwater)Lumenwater$(/l) pools below."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "It is also the most dangerous deep: the $(l:echo_sentinel)Echo Sentinel$(/l) drifts the caverns, and the buried halls of the $(l:vestige_cities)Vestige$(/l) ruins reach down into it."
+    }
+  ]
+}

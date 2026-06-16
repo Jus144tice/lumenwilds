@@ -1,0 +1,15 @@
+{
+  "name": "Stillbloom Basin",
+  "icon": "lumenwilds:stillbloom_core",
+  "category": "lumenwilds:world",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A rare sanctuary — open fields of the giant $(l:plants_and_food)Stillbloom$(/l), the brightest and softest of the biomes."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "A Stillbloom's core is among the brightest light in the world, so the dark-loving hostiles shun the basin. It is the safest place to make camp — and a source of $(l:plants_and_food)Lumen Nectar$(/l)."
+    }
+  ]
+}
