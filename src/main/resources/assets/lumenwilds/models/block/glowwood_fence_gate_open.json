@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/template_fence_gate_open",
+  "parent": "lumenwilds:block/_emissive_template_fence_gate_open",
   "textures": {
     "texture": "lumenwilds:block/glowwood_planks"
   }

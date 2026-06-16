@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/slab",
+  "parent": "lumenwilds:block/_emissive_slab",
   "textures": {
     "bottom": "lumenwilds:block/glowroot_planks",
     "side": "lumenwilds:block/glowroot_planks",

@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/button",
+  "parent": "lumenwilds:block/_emissive_button",
   "textures": {
     "texture": "lumenwilds:block/glowroot_planks"
   }

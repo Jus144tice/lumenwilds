@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/button_pressed",
+  "parent": "lumenwilds:block/_emissive_button_pressed",
   "textures": {
     "texture": "lumenwilds:block/glowwood_planks"
   }

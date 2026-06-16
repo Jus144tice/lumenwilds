@@ -558,7 +558,7 @@ public final class ModBlocks {
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(3.0F)
-                    .lightLevel(state -> 2)
+                    .lightLevel(state -> 5)
                     .sound(SoundType.WOOD)
                     .noOcclusion()
                     .pushReaction(PushReaction.DESTROY));
@@ -569,7 +569,7 @@ public final class ModBlocks {
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_CYAN)
                     .strength(3.0F)
-                    .lightLevel(state -> 2)
+                    .lightLevel(state -> 5)
                     .sound(SoundType.WOOD)
                     .noOcclusion()
                     .isValidSpawn((s, l, p, e) -> false));
@@ -643,7 +643,7 @@ public final class ModBlocks {
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(3.0F)
-                    .lightLevel(state -> 3)
+                    .lightLevel(state -> 5)
                     .sound(SoundType.WOOD)
                     .noOcclusion()
                     .pushReaction(PushReaction.DESTROY));
@@ -654,7 +654,7 @@ public final class ModBlocks {
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_PURPLE)
                     .strength(3.0F)
-                    .lightLevel(state -> 3)
+                    .lightLevel(state -> 5)
                     .sound(SoundType.WOOD)
                     .noOcclusion()
                     .isValidSpawn((s, l, p, e) -> false));
@@ -1188,14 +1188,15 @@ public final class ModBlocks {
 
     // --- Property helpers -----------------------------------------------------------------------
 
-    // Glowwood is a glowing biome wood (the bible's "living light" selling point): the raw log/wood emits a
-    // gentle glow (light 3) and planks + plank-derived blocks a softer one (light 2). Glowroot (the signature
-    // species) is brighter still (glowrootLogProps 4 / glowrootPlanksProps 3).
+    // Glowwood + Glowroot are glowing biome woods (the bible's "living light" selling point): their whole sets
+    // are EMISSIVE-rendered (the block models inherit the `_emissive_*` parents, so they look luminous in any
+    // light) AND emit real light — logs/wood 7, planks + plank-derived 5. (Glowroot uses the parallel
+    // glowrootLogProps/glowrootPlanksProps; same values, the species differ by texture colour.)
     private static BlockBehaviour.Properties logProps() {
         return BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_CYAN)
                 .strength(2.0F)
-                .lightLevel(state -> 3)
+                .lightLevel(state -> 7)
                 .sound(SoundType.WOOD);
     }
 
@@ -1203,25 +1204,25 @@ public final class ModBlocks {
         return BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_CYAN)
                 .strength(2.0F, 3.0F)
-                .lightLevel(state -> 2)
+                .lightLevel(state -> 5)
                 .sound(SoundType.WOOD);
     }
 
-    /** Glowroot logs/wood — the self-lit species, so the bark/wood emits a faint glow (light 4). */
+    /** Glowroot logs/wood — the self-lit species; emissive-rendered + emits light 7. */
     private static BlockBehaviour.Properties glowrootLogProps() {
         return BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_PURPLE)
                 .strength(2.0F)
-                .lightLevel(state -> 4)
+                .lightLevel(state -> 7)
                 .sound(SoundType.WOOD);
     }
 
-    /** Glowroot planks + plank-derived shapes — a milder residual glow (light 3) than the raw wood. */
+    /** Glowroot planks + plank-derived shapes — emissive-rendered + emits light 5. */
     private static BlockBehaviour.Properties glowrootPlanksProps() {
         return BlockBehaviour.Properties.of()
                 .mapColor(MapColor.COLOR_PURPLE)
                 .strength(2.0F, 3.0F)
-                .lightLevel(state -> 3)
+                .lightLevel(state -> 5)
                 .sound(SoundType.WOOD);
     }
 

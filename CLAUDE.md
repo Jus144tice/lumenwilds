@@ -298,7 +298,9 @@ Sporefall Jungle/Moonmire/Undercrown Caverns/Stillbloom Basin) + a Veyra/sky ent
 them. **v1.1 (playthrough fixes) is complete (a–i).** **v1.1.1 (playthrough #2 fixes):** the wood sets now
 carry the **vanilla wood tags** (`#minecraft:planks` + all `wooden_*`/sign/sapling/log tags, block + item via
 the new `datagen.ModItemTagProvider`) so Glowwood/Glowroot planks craft crafting tables/chests/etc. and burn as
-fuel; **Glowwood now glows** (`logProps` light 3 / `planksProps` light 2; Glowroot brighter); the **Glowroot
+fuel; the **wood sets now glow** — both species are **emissive-rendered** (every shape's block model inherits
+an `_emissive_*` parent with `neoforge_data block_light`, so they look luminous in any light incl. daylight)
+AND emit light (logs/wood 7, planks + derived 5); the **Glowroot
 buttress roots reliably join the trunk** (place-then-advance fix in `GlowrootShape#buildButtressRoots`); the
 **Lumen Grazer breeds with the renewable Glowberry** (not just the rare Lumen Fruit); and the **built/loot
 structures moved to the `top_layer_modification` step** so they generate *after* trees and overwrite them (no
@@ -1163,7 +1165,12 @@ as `File#member`.
   Crystal / `lumen_conduit_active` / `resonance_core` / `gravity_lens_powered` / `active_light_engine`
   (fullbright), the two ores + `lumen_conduit_dim` + `lumen_relay` (soft), and the flora
   Moonblossom / Glow Fern / Glow Algae / Lumen Reeds / Glowvine (cross). Light
-  emission stays via each block's `lightLevel` (ores bumped 4→6 so the Undercrown is lit by dense ore)),
+  emission stays via each block's `lightLevel` (ores bumped 4→6 so the Undercrown is lit by dense ore).
+  **v1.1.2 — glowing wood:** the whole Glowwood + Glowroot sets are emissive too, via per-shape parents
+  `_emissive_{cube_column,cube_column_horizontal,stairs,inner_stairs,outer_stairs,slab,slab_top,fence_post,
+  fence_side,template_fence_gate*,door_*,template_orientable_trapdoor_*,button*,pressure_plate_*}.json`
+  (vanilla shape geometry + `neoforge_data block_light 15` on every element); the wood block-models inherit
+  these (planks/leaves use `_emissive_cube`). Saplings (cross) are left non-emissive),
   `textures/entity/{signs,signs/hanging,boat,chest_boat}/glowwood.png` + `textures/gui/
   hanging_signs/glowwood.png` (sign/boat placeholders), `lang/en_us.json` (display names +
   `itemGroup.lumenwilds` + portal messages `lumenwilds.portal.{entering,leaving}` + `fluid_type.lumenwilds.lumenwater`
@@ -1418,6 +1425,15 @@ as `File#member`.
   `patch_moonblossom` last. To actually exercise this (and any custom feature), force-generate Lumenwilds
   chunks — a temp `data/minecraft/tags/function/load.json` → a fn running `execute in lumenwilds:lumenwilds
   run forceload add …` (delete before commit).
+- **Light EMISSION (`lightLevel`) ≠ emissive RENDERING — a "glowing" block needs both.** `lightLevel` makes a
+  block *cast* light into the world, but it's only visible in darkness — in bright/daylight (or even the
+  Lumenwilds' twilight at a low value) the block still renders normally and looks unlit. To make a block
+  *look* luminous in any light, its block MODEL must be emissive: an element with
+  `"neoforge_data": { "block_light": N, "sky_light": 0 }` renders that face at min light N (15 = fullbright).
+  Shape geometry lives in the vanilla parent models, so emissive shapes need a custom `_emissive_<shape>`
+  parent (copy the vanilla model, add `neoforge_data` to every element) that the block model inherits. The
+  glowing wood (v1.1.2) does both: emissive `_emissive_*` shape parents + a `lightLevel`. Set BOTH or the
+  feedback "it doesn't glow" recurs (it was emitting faint light but not rendering emissive).
 - **Patchouli (1.20+) books split across `data/` and `assets/`.** Only `book.json` stays in
   `data/<modid>/patchouli_books/<book>/` and it MUST set `use_resource_pack: true`; the categories/entries/
   templates live in `assets/<modid>/patchouli_books/<book>/<lang>/…` (client side). A book.json with

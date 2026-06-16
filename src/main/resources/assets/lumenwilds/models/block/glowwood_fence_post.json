@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/fence_post",
+  "parent": "lumenwilds:block/_emissive_fence_post",
   "textures": {
     "texture": "lumenwilds:block/glowwood_planks"
   }

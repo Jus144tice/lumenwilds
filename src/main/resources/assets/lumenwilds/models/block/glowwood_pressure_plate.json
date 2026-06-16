@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/pressure_plate_up",
+  "parent": "lumenwilds:block/_emissive_pressure_plate_up",
   "textures": {
     "texture": "lumenwilds:block/glowwood_planks"
   }

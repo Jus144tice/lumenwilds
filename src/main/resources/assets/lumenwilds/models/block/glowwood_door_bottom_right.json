@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/door_bottom_right",
+  "parent": "lumenwilds:block/_emissive_door_bottom_right",
   "render_type": "minecraft:cutout",
   "textures": {
     "bottom": "lumenwilds:block/glowwood_door_bottom",

@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/outer_stairs",
+  "parent": "lumenwilds:block/_emissive_outer_stairs",
   "textures": {
     "bottom": "lumenwilds:block/glowroot_planks",
     "side": "lumenwilds:block/glowroot_planks",
