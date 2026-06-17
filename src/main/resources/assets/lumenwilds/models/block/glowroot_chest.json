@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "lumenwilds:block/glowroot_planks"
+  }
+}

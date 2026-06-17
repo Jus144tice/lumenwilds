@@ -90,6 +90,10 @@ public final class LumenwildsClient {
 
     @SubscribeEvent
     public static void onRegisterRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        // Glowing wood chests (v1.1.3) — bespoke block-entity renderer (species texture + fullbright glow).
+        event.registerBlockEntityRenderer(
+                com.jus144tice.lumenwilds.registry.ModBlockEntities.LUMEN_CHEST.get(), LumenChestRenderer::new);
+
         event.registerEntityRenderer(ModEntities.LUMEN_GRAZER.get(), LumenGrazerRenderer::new);
         event.registerEntityRenderer(ModEntities.SHADE_STALKER.get(), ShadeStalkerRenderer::new);
         event.registerEntityRenderer(ModEntities.LANTERN_BEETLE.get(), LanternBeetleRenderer::new);

@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [ "PPP", "P P", "PPP" ],
+  "key": { "P": { "item": "lumenwilds:glowwood_planks" } },
+  "result": { "id": "lumenwilds:glowwood_chest", "count": 1 }
+}

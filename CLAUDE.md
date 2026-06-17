@@ -314,8 +314,10 @@ animation over Lumenwater (vanilla hardcodes those particles to `Blocks.WATER`).
 wood storage:** `#GLOWWOOD_BARREL`/`#GLOWROOT_BARREL` (vanilla `BarrelBlock` added to `BlockEntityType.BARREL`
 via `event.ModBlockEntityTypes`, like the signs; emissive `_emissive_cube_bottom_top` models so they glow +
 light 7) — and **fixed a latent v1.1a bug where the Glowroot signs were never added to `BlockEntityType.SIGN`/
-`HANGING_SIGN`** (so their text didn't save). *(Matching glowing Glowwood/Glowroot **chests** — a custom
-block-entity renderer — are the next piece.)* Roadmap:
+`HANGING_SIGN`** (so their text didn't save). It also added glowing **chests**: `#GLOWWOOD_CHEST`/`#GLOWROOT_CHEST`
+(vanilla `ChestBlock` with our shared `ModBlockEntities#LUMEN_CHEST` BE [`block.LumenChestBlockEntity`] +
+`client.LumenChestRenderer`, which picks the species texture from the chests atlas and renders fullbright to
+glow; light 7). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -522,7 +524,8 @@ as `File#member`.
   `#BLOCK_ENTITIES`; `#LUMEN_ANCHOR` (`BlockEntityType` for `block.LumenAnchorBlockEntity`, 8c) — the first BE;
   `#RESONANCE_CORE` (for `block.ResonanceCoreBlockEntity`, 10e.1 — ticks the conduit power network; its type
   also covers `ACTIVE_LIGHT_ENGINE`, which is a core); `#LUMEN_FIELD_PROJECTOR` (for
-  `block.LumenFieldProjectorBlockEntity`, 11b — ticks a liftshaft's gravity column) — the 3rd BE.
+  `block.LumenFieldProjectorBlockEntity`, 11b — ticks a liftshaft's gravity column) — the 3rd BE; and
+  `#LUMEN_CHEST` (for `block.LumenChestBlockEntity`, v1.1.3 — shared by both glowing chest blocks).
 - Empty stubs (compile; carry phase TODOs). Wired to the bus already (registered empty): 
   [ModMenus](src/main/java/com/jus144tice/lumenwilds/registry/ModMenus.java) `#MENUS`,
   [ModSounds](src/main/java/com/jus144tice/lumenwilds/registry/ModSounds.java) `#SOUNDS` (still empty — the
@@ -599,6 +602,11 @@ as `File#member`.
   the 1:1-scaled position — so an anchored return lands precisely.
 
 ### block/ — custom block behaviours
+- [LumenChestBlockEntity.java](src/main/java/com/jus144tice/lumenwilds/block/LumenChestBlockEntity.java) — a
+  thin `ChestBlockEntity` subclass (v1.1.3) carrying the `ModBlockEntities#LUMEN_CHEST` type so the glowing
+  Glowwood/Glowroot chests (vanilla `ChestBlock` + `client.LumenChestRenderer`) get per-species textures; all
+  chest behaviour is inherited. Chest textures: `textures/entity/chest/{glowwood,glowroot}{,_left,_right}.png`
+  on the vanilla chests atlas (+ an insurance `assets/lumenwilds/atlases/chests.json`); item = a flat icon.
 - [GlowberryBushBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GlowberryBushBlock.java) — the
   Glowberry Bush (v1.1c), a `BushBlock` + `BonemealableBlock` modelled on vanilla `SweetBerryBushBlock`.
   `#AGE` (0..3, `AGE_3`), `#lightFor` (light 3→6, wired in `ModBlocks`), `#randomTick` ripens in light ≥9,

@@ -59,6 +59,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
             if (block instanceof net.minecraft.world.level.block.BarrelBlock) {
                 continue; // hand-authored facing/open blockstate + emissive models (v1.1.3)
             }
+            if (block instanceof net.minecraft.world.level.block.ChestBlock) {
+                continue; // chest renders via the block-entity renderer — hand-authored particle blockstate
+            }
             if (block instanceof RotatedPillarBlock pillar) {
                 if (name.endsWith("_wood")) {
                     // "Wood" (all-bark) reuses its log's side texture on every face (e.g. glowwood_wood →

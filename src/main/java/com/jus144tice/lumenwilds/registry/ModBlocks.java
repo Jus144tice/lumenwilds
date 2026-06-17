@@ -700,6 +700,18 @@ public final class ModBlocks {
     public static final DeferredBlock<net.minecraft.world.level.block.BarrelBlock> GLOWROOT_BARREL =
             BLOCKS.registerBlock("glowroot_barrel", net.minecraft.world.level.block.BarrelBlock::new, barrelProps());
 
+    // Chests reuse the vanilla ChestBlock but with OUR shared block entity type (ModBlockEntities#LUMEN_CHEST)
+    // so the bespoke client.LumenChestRenderer can give each species its own glowing texture. Light 7.
+    public static final DeferredBlock<net.minecraft.world.level.block.ChestBlock> GLOWWOOD_CHEST = BLOCKS.registerBlock(
+            "glowwood_chest",
+            props -> new net.minecraft.world.level.block.ChestBlock(props, () -> ModBlockEntities.LUMEN_CHEST.get()),
+            barrelProps());
+
+    public static final DeferredBlock<net.minecraft.world.level.block.ChestBlock> GLOWROOT_CHEST = BLOCKS.registerBlock(
+            "glowroot_chest",
+            props -> new net.minecraft.world.level.block.ChestBlock(props, () -> ModBlockEntities.LUMEN_CHEST.get()),
+            barrelProps());
+
     // --- Moonstone stone set (Phase 4) ----------------------------------------------------------
     // MOONSTONE + COBBLED_MOONSTONE are declared above. Cube variants first, then stairs/slabs/walls.
 

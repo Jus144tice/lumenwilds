@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.block.LumenAnchorBlockEntity;
+import com.jus144tice.lumenwilds.block.LumenChestBlockEntity;
 import com.jus144tice.lumenwilds.block.LumenFieldProjectorBlockEntity;
 import com.jus144tice.lumenwilds.block.ResonanceCoreBlockEntity;
 import net.minecraft.core.registries.Registries;
@@ -44,6 +45,12 @@ public final class ModBlockEntities {
             LUMEN_FIELD_PROJECTOR = BLOCK_ENTITIES.register("lumen_field_projector", () -> BlockEntityType.Builder.of(
                     LumenFieldProjectorBlockEntity::new, ModBlocks.LUMEN_FIELD_PROJECTOR.get())
             .build(null));
+
+    /** Glowing wood chests (v1.1.3) — shared by Glowwood + Glowroot; rendered by {@code client.LumenChestRenderer}. */
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LumenChestBlockEntity>> LUMEN_CHEST =
+            BLOCK_ENTITIES.register("lumen_chest", () -> BlockEntityType.Builder.of(
+                            LumenChestBlockEntity::new, ModBlocks.GLOWWOOD_CHEST.get(), ModBlocks.GLOWROOT_CHEST.get())
+                    .build(null));
 
     private ModBlockEntities() {}
 }
