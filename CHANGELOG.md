@@ -6,6 +6,17 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.1.2] - 2026-06-16
+**Playthrough #2 polish:**
+
+- **Glowing wood is now actually glowing.** The Glowwood & Glowroot sets are emissive-rendered, so they
+  look luminous in *any* light (including daylight), and they cast light too (logs 7, planks/shapes 5).
+  (v1.1.1 only emitted faint light, which is invisible in daylight — hence "it doesn't glow.")
+- **In-game guide overhaul.** Fixed the `[ERROR]` text in the Patchouli book (a misused link macro), and
+  reworked it so every look-up-able term is a real clickable link — added a page for each biome + the sky,
+  so biome/mob/tech names jump to their own entries. Re-added the survival craft (**book + glowstone dust**).
+- **Rootshrines no longer float** on sloped ground (they now root a foundation down to the terrain).
+
 ## [1.1.1] - 2026-06-15
 **Playthrough #2 fixes:**
 
