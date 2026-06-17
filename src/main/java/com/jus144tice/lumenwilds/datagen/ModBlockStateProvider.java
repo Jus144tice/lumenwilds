@@ -56,6 +56,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
             if (block instanceof com.jus144tice.lumenwilds.block.AbstractFieldBlock) {
                 continue; // liftshaft field — hand-authored translucent column blockstate/model
             }
+            if (block instanceof net.minecraft.world.level.block.BarrelBlock) {
+                continue; // hand-authored facing/open blockstate + emissive models (v1.1.3)
+            }
             if (block instanceof RotatedPillarBlock pillar) {
                 if (name.endsWith("_wood")) {
                     // "Wood" (all-bark) reuses its log's side texture on every face (e.g. glowwood_wood →

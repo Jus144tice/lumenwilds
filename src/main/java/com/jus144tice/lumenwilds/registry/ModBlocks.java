@@ -689,6 +689,17 @@ public final class ModBlocks {
     public static final DeferredBlock<WallHangingSignBlock> GLOWROOT_WALL_HANGING_SIGN = BLOCKS.registerBlock(
             "glowroot_wall_hanging_sign", props -> new WallHangingSignBlock(ModWoodTypes.GLOWROOT, props), signProps());
 
+    // --- Glowing wood containers (v1.1.3) -------------------------------------------------------
+    // Barrels reuse the vanilla BarrelBlock + BlockEntityType.BARREL (the blocks are added to that BE type in
+    // event.ModBlockEntityTypes, like the signs). They render as a normal MODEL, so the emissive model parents
+    // make them glow; lightLevel makes them also cast light. (The matching glowing chests are a separate block
+    // with a custom block-entity renderer.)
+    public static final DeferredBlock<net.minecraft.world.level.block.BarrelBlock> GLOWWOOD_BARREL =
+            BLOCKS.registerBlock("glowwood_barrel", net.minecraft.world.level.block.BarrelBlock::new, barrelProps());
+
+    public static final DeferredBlock<net.minecraft.world.level.block.BarrelBlock> GLOWROOT_BARREL =
+            BLOCKS.registerBlock("glowroot_barrel", net.minecraft.world.level.block.BarrelBlock::new, barrelProps());
+
     // --- Moonstone stone set (Phase 4) ----------------------------------------------------------
     // MOONSTONE + COBBLED_MOONSTONE are declared above. Cube variants first, then stairs/slabs/walls.
 
@@ -1205,6 +1216,15 @@ public final class ModBlocks {
                 .mapColor(MapColor.COLOR_CYAN)
                 .strength(2.0F, 3.0F)
                 .lightLevel(state -> 5)
+                .sound(SoundType.WOOD);
+    }
+
+    /** Glowing wood barrel — wood-strength container that emits light 7 (its model is emissive too). */
+    private static BlockBehaviour.Properties barrelProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.WOOD)
+                .strength(2.5F)
+                .lightLevel(state -> 7)
                 .sound(SoundType.WOOD);
     }
 

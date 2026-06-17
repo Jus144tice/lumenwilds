@@ -1,0 +1,8 @@
+{
+  "parent": "lumenwilds:block/_emissive_cube_bottom_top",
+  "textures": {
+    "bottom": "lumenwilds:block/glowwood_barrel_bottom",
+    "side": "lumenwilds:block/glowwood_barrel_side",
+    "top": "lumenwilds:block/glowwood_barrel_top"
+  }
+}

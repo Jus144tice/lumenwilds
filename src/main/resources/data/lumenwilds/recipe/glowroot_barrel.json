@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [ "PSP", "P P", "PSP" ],
+  "key": {
+    "P": { "item": "lumenwilds:glowroot_planks" },
+    "S": { "item": "lumenwilds:glowroot_slab" }
+  },
+  "result": { "id": "lumenwilds:glowroot_barrel", "count": 1 }
+}

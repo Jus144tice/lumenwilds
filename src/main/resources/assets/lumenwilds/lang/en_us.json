@@ -251,5 +251,7 @@
   "enchantment.lumenwilds.rootbinding": "Rootbinding",
   "item.lumenwilds.cooked_glimmerfish": "Cooked Glimmerfish",
   "item.lumenwilds.glimmerfish": "Glimmerfish",
-  "item.lumenwilds.sporefin": "Sporefin"
+  "item.lumenwilds.sporefin": "Sporefin",
+  "block.lumenwilds.glowroot_barrel": "Glowroot Barrel",
+  "block.lumenwilds.glowwood_barrel": "Glowwood Barrel"
 }

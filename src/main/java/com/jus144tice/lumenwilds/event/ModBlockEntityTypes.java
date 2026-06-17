@@ -24,10 +24,19 @@ public final class ModBlockEntityTypes {
 
     @SubscribeEvent
     public static void addSignBlocks(final BlockEntityTypeAddBlocksEvent event) {
-        event.modify(BlockEntityType.SIGN, ModBlocks.GLOWWOOD_SIGN.get(), ModBlocks.GLOWWOOD_WALL_SIGN.get());
+        event.modify(
+                BlockEntityType.SIGN,
+                ModBlocks.GLOWWOOD_SIGN.get(),
+                ModBlocks.GLOWWOOD_WALL_SIGN.get(),
+                ModBlocks.GLOWROOT_SIGN.get(),
+                ModBlocks.GLOWROOT_WALL_SIGN.get());
         event.modify(
                 BlockEntityType.HANGING_SIGN,
                 ModBlocks.GLOWWOOD_HANGING_SIGN.get(),
-                ModBlocks.GLOWWOOD_WALL_HANGING_SIGN.get());
+                ModBlocks.GLOWWOOD_WALL_HANGING_SIGN.get(),
+                ModBlocks.GLOWROOT_HANGING_SIGN.get(),
+                ModBlocks.GLOWROOT_WALL_HANGING_SIGN.get());
+        // Glowing wood barrels reuse the vanilla barrel block entity (v1.1.3).
+        event.modify(BlockEntityType.BARREL, ModBlocks.GLOWWOOD_BARREL.get(), ModBlocks.GLOWROOT_BARREL.get());
     }
 }

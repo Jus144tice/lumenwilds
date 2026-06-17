@@ -310,7 +310,12 @@ now yields **only native species** — a custom `loot.LumenwaterFishingModifier`
 `loot_table/gameplay/fishing/lumenwater.json` (native fish — `glimmerfish`/`cooked_glimmerfish`/`sporefin` +
 mirefish + a rare live `lumen_fish_bucket`; lumen junk; treasure that **keeps** vanilla enchanted rod/bow/book
 + the 6 fished spell-book enchantments); and a `mixin.FishingHookMixin` restores the fish-strike bubble/splash
-animation over Lumenwater (vanilla hardcodes those particles to `Blocks.WATER`). Roadmap:
+animation over Lumenwater (vanilla hardcodes those particles to `Blocks.WATER`). **v1.1.3 also added glowing
+wood storage:** `#GLOWWOOD_BARREL`/`#GLOWROOT_BARREL` (vanilla `BarrelBlock` added to `BlockEntityType.BARREL`
+via `event.ModBlockEntityTypes`, like the signs; emissive `_emissive_cube_bottom_top` models so they glow +
+light 7) — and **fixed a latent v1.1a bug where the Glowroot signs were never added to `BlockEntityType.SIGN`/
+`HANGING_SIGN`** (so their text didn't save). *(Matching glowing Glowwood/Glowroot **chests** — a custom
+block-entity renderer — are the next piece.)* Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -1044,8 +1049,9 @@ as `File#member`.
   `#onBlockBreak(BlockEvent.BreakEvent)` (6h): when a player breaks a guarded bloom (Moonblossom / any
   Stillbloom part), every `Glowmoth` within ~12 blocks `setTarget`s the culprit — the flower-guardian aggro.
 - [ModBlockEntityTypes.java](src/main/java/com/jus144tice/lumenwilds/event/ModBlockEntityTypes.java) —
-  mod-bus `#addSignBlocks(BlockEntityTypeAddBlocksEvent)`: adds the Glowwood sign blocks to the vanilla
-  `BlockEntityType.SIGN`/`HANGING_SIGN` (modded signs reuse the vanilla block entities).
+  mod-bus `#addSignBlocks(BlockEntityTypeAddBlocksEvent)`: adds the **Glowwood + Glowroot** sign blocks to the
+  vanilla `BlockEntityType.SIGN`/`HANGING_SIGN` and the barrels to `BlockEntityType.BARREL` (modded signs/
+  barrels reuse the vanilla block entities; the Glowroot-sign add was missing pre-v1.1.3).
 - [ModEntityEvents.java](src/main/java/com/jus144tice/lumenwilds/event/ModEntityEvents.java) — **mod-bus**
   (Phase 6); `#onAttributeCreation(EntityAttributeCreationEvent)` builds each native mob's `AttributeSupplier`
   (`event.put(...)`) and `#onRegisterSpawnPlacements(RegisterSpawnPlacementsEvent)` declares where on the
