@@ -6,6 +6,20 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.1.3] - 2026-06-17
+**Playthrough #3 — fishing & wood storage:**
+
+- **Lumenwater fishing is now native-only.** You no longer reel in earth fish (cod/salmon/pufferfish);
+  the catch is replaced with Lumenwilds species — new **Glimmerfish** (+cooked) and **Sporefin** (a
+  pufferfish-analog: edible but usually inflicts Sporeblind), plus Mirefish and a rare live Lumen Fish bucket.
+  **Treasure is preserved** — enchanted fishing rods, bows, and books are still catchable, alongside the 6
+  fished spell-book enchantments and lumen treasure.
+- **Fishing strike animation restored** in Lumenwater (the approaching-bubble + splash particles; vanilla
+  hardcoded them to plain water).
+- **Glowing wood storage** — **Glowwood/Glowroot Chests** (per-species glowing texture) and
+  **Glowwood/Glowroot Barrels**, all emit light and render luminous. Crafted like their vanilla counterparts.
+- Fixed a bug where **Glowroot signs didn't save text** (the sign block-entity wasn't registered for them).
+
 ## [1.1.2] - 2026-06-16
 **Playthrough #2 polish:**
 
