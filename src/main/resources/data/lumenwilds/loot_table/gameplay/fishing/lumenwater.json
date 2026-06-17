@@ -1,42 +1,69 @@
 {
-  "__comment": "Lumenwater fishing bonus (v1.1f). Added to the vanilla fishing roll by the lumenwater_fishing loot modifier when the bobber is in Lumenwater in the Lumenwilds. One bonus lumen catch per roll: mostly native fish/flora, sometimes a material, rarely treasure (fished spell-book enchantments live in their own pool, v1.1g).",
+  "__comment": "Lumenwater fishing catch (v1.1.3). The lumenwater_fishing loot modifier REPLACES the vanilla catch with one roll of this table when the bobber is in Lumenwater in the Lumenwilds — so no earth fish. Native fish (bulk), lumen junk, and treasure (vanilla enchanted rod/bow/book + lumen treasure + the fished spell-books).",
   "type": "minecraft:fishing",
   "pools": [
     {
       "rolls": 1.0,
+      "bonus_rolls": 0.0,
       "entries": [
-        { "type": "minecraft:item", "name": "lumenwilds:raw_mirefish", "weight": 40 },
+        { "type": "minecraft:item", "name": "lumenwilds:raw_mirefish", "weight": 35 },
+        { "type": "minecraft:item", "name": "lumenwilds:glimmerfish", "weight": 30 },
+        { "type": "minecraft:item", "name": "lumenwilds:sporefin", "weight": 12 },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_fish_bucket", "weight": 2 },
+
         {
           "type": "minecraft:item",
           "name": "lumenwilds:lumen_algae",
-          "weight": 20,
+          "weight": 5,
           "functions": [
             { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } }
           ]
         },
-        { "type": "minecraft:item", "name": "lumenwilds:glowberry", "weight": 10 },
-        { "type": "minecraft:item", "name": "lumenwilds:glow_pollen", "weight": 10 },
-        { "type": "minecraft:item", "name": "lumenwilds:moonloam_clumps", "weight": 8 },
-        { "type": "minecraft:item", "name": "lumenwilds:air_gel", "weight": 6 },
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_shard", "weight": 5 },
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_block", "weight": 2 },
-        { "type": "minecraft:item", "name": "lumenwilds:memory_crystal_shard", "weight": 2 },
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_fish_bucket", "weight": 1 }
-      ]
-    },
-    {
-      "__comment": "Spell-book pool (v1.1g): a rare fished enchanted book carrying ONE Lumenwilds enchantment — the only way to obtain them.",
-      "rolls": 1.0,
-      "conditions": [
-        { "condition": "minecraft:random_chance", "chance": 0.04 }
-      ],
-      "entries": [
-        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:lightfooted": 1 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:nightsight": 1 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:lumenward": 1 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:glowbrand": 1 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:sporestrike": 1 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 1, "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:rootbinding": 1 } } ] }
+        { "type": "minecraft:item", "name": "lumenwilds:glow_pollen", "weight": 5 },
+        { "type": "minecraft:item", "name": "lumenwilds:moonloam_clumps", "weight": 3 },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_kelp", "weight": 2 },
+        { "type": "minecraft:item", "name": "minecraft:stick", "weight": 2 },
+
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "weight": 2,
+          "quality": 2,
+          "functions": [
+            { "function": "minecraft:enchant_with_levels", "levels": 30.0, "options": "#minecraft:on_random_loot" }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:fishing_rod",
+          "weight": 1,
+          "quality": 2,
+          "functions": [
+            { "function": "minecraft:set_damage", "damage": { "type": "minecraft:uniform", "min": 0.0, "max": 0.25 } },
+            { "function": "minecraft:enchant_with_levels", "levels": 30.0, "options": "#minecraft:on_random_loot" }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bow",
+          "weight": 1,
+          "quality": 2,
+          "functions": [
+            { "function": "minecraft:set_damage", "damage": { "type": "minecraft:uniform", "min": 0.0, "max": 0.25 } },
+            { "function": "minecraft:enchant_with_levels", "levels": 30.0, "options": "#minecraft:on_random_loot" }
+          ]
+        },
+        { "type": "minecraft:item", "name": "minecraft:nautilus_shell", "weight": 1, "quality": 1 },
+        { "type": "minecraft:item", "name": "minecraft:name_tag", "weight": 1, "quality": 1 },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_block", "weight": 1, "quality": 1 },
+        { "type": "minecraft:item", "name": "lumenwilds:memory_crystal_shard", "weight": 1, "quality": 1 },
+
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 1, "quality": 1, "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:lightfooted": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 1, "quality": 1, "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:nightsight": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 1, "quality": 1, "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:lumenward": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 1, "quality": 1, "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:glowbrand": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 1, "quality": 1, "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:sporestrike": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 1, "quality": 1, "functions": [ { "function": "minecraft:set_enchantments", "enchantments": { "lumenwilds:rootbinding": 1 } } ] }
       ]
     }
   ],

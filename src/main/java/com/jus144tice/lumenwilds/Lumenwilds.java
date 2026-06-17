@@ -13,6 +13,7 @@ import com.jus144tice.lumenwilds.registry.ModFeatures;
 import com.jus144tice.lumenwilds.registry.ModFluidTypes;
 import com.jus144tice.lumenwilds.registry.ModFluids;
 import com.jus144tice.lumenwilds.registry.ModItems;
+import com.jus144tice.lumenwilds.registry.ModLootModifiers;
 import com.jus144tice.lumenwilds.registry.ModMenus;
 import com.jus144tice.lumenwilds.registry.ModMobEffects;
 import com.jus144tice.lumenwilds.registry.ModParticles;
@@ -77,6 +78,7 @@ public final class Lumenwilds {
         ModEntities.ENTITIES.register(modBus);
         ModMenus.MENUS.register(modBus);
         ModCreativeTabs.CREATIVE_MODE_TABS.register(modBus);
+        ModLootModifiers.LOOT_MODIFIER_SERIALIZERS.register(modBus);
 
         // Worldgen registries (configured/placed features, biomes, dimensions) are data-driven for
         // now (see src/main/resources/data/lumenwilds/...). The Java-side resource keys live in the

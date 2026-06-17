@@ -248,5 +248,8 @@
   "enchantment.lumenwilds.lumenward": "Lumenward",
   "enchantment.lumenwilds.glowbrand": "Glowbrand",
   "enchantment.lumenwilds.sporestrike": "Sporestrike",
-  "enchantment.lumenwilds.rootbinding": "Rootbinding"
+  "enchantment.lumenwilds.rootbinding": "Rootbinding",
+  "item.lumenwilds.cooked_glimmerfish": "Cooked Glimmerfish",
+  "item.lumenwilds.glimmerfish": "Glimmerfish",
+  "item.lumenwilds.sporefin": "Sporefin"
 }

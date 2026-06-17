@@ -239,6 +239,38 @@ public final class ModItems {
                             .saturationModifier(0.7F)
                             .build()));
 
+    // --- Native fish caught by Lumenwater fishing (v1.1.3) — the Lumenwilds has no earth fish ------
+    /** Glimmerfish — a common glowing food fish (the cod/salmon analog); better cooked. */
+    public static final DeferredItem<Item> GLIMMERFISH = ITEMS.registerItem(
+            "glimmerfish",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(0.2F)
+                            .build()));
+
+    public static final DeferredItem<Item> COOKED_GLIMMERFISH = ITEMS.registerItem(
+            "cooked_glimmerfish",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(6)
+                            .saturationModifier(0.8F)
+                            .build()));
+
+    /** Sporefin — the pufferfish analog: edible but risky (often inflicts Sporeblind on eating). */
+    public static final DeferredItem<Item> SPOREFIN = ITEMS.registerItem(
+            "sporefin",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.1F)
+                            .alwaysEdible()
+                            .effect(() -> new MobEffectInstance(ModMobEffects.SPOREBLIND, 120, 0), 0.7F)
+                            .build()));
+
     public static final DeferredItem<DeferredSpawnEggItem> MIRELURKER_SPAWN_EGG = ITEMS.registerItem(
             "mirelurker_spawn_egg",
             props -> new DeferredSpawnEggItem(ModEntities.MIRELURKER, 0x2A3E36, 0x5AC0A0, props),

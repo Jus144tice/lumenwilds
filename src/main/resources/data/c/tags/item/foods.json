@@ -7,6 +7,9 @@
     "lumenwilds:raw_grazer_meat",
     "lumenwilds:cooked_grazer_meat",
     "lumenwilds:raw_mirefish",
-    "lumenwilds:cooked_mirefish"
+    "lumenwilds:cooked_mirefish",
+    "lumenwilds:glimmerfish",
+    "lumenwilds:cooked_glimmerfish",
+    "lumenwilds:sporefin"
   ]
 }

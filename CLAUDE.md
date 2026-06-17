@@ -304,7 +304,13 @@ AND emit light (logs/wood 7, planks + derived 5); the **Glowroot
 buttress roots reliably join the trunk** (place-then-advance fix in `GlowrootShape#buildButtressRoots`); the
 **Lumen Grazer breeds with the renewable Glowberry** (not just the rare Lumen Fruit); and the **built/loot
 structures moved to the `top_layer_modification` step** so they generate *after* trees and overwrite them (no
-more tree-through-chest / tree-corrupted pieces). Roadmap:
+more tree-through-chest / tree-corrupted pieces). **v1.1.3 (Lumenwater fishing rework):** fishing in Lumenwater
+now yields **only native species** — a custom `loot.LumenwaterFishingModifier` (registered via
+`registry.ModLootModifiers`) **replaces** the vanilla catch (no more earth cod/pufferfish) with a roll of
+`loot_table/gameplay/fishing/lumenwater.json` (native fish — `glimmerfish`/`cooked_glimmerfish`/`sporefin` +
+mirefish + a rare live `lumen_fish_bucket`; lumen junk; treasure that **keeps** vanilla enchanted rod/bow/book
++ the 6 fished spell-book enchantments); and a `mixin.FishingHookMixin` restores the fish-strike bubble/splash
+animation over Lumenwater (vanilla hardcodes those particles to `Blocks.WATER`). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -457,6 +463,8 @@ as `File#member`.
   the Bottled Lantern Beetle is a *block*, `ModBlocks#BOTTLED_LANTERN_BEETLE`); `#SPORE_SAC`/`#GLOWCAP_SPORES`
   + `#SPORELING_SPAWN_EGG` (6d); `#MIRE_TOOTH`/`#LUMEN_ALGAE`/`#RAW_MIREFISH`/`#COOKED_MIREFISH` (foods) +
   `#MIRELURKER_SPAWN_EGG` (6e); `#LUMEN_FISH_BUCKET` (`MobBucketItem`) + `#LUMEN_FISH_SPAWN_EGG` (6f);
+  native fishing fish (v1.1.3) `#GLIMMERFISH`/`#COOKED_GLIMMERFISH` + `#SPOREFIN` (a pufferfish-analog food that
+  inflicts Sporeblind);
   `#SKY_JELLY_SPAWN_EGG` (6g — drops the existing `#AIR_GEL`); `#GLOW_SCALES` + `#GLOWMOTH_SPAWN_EGG` (6h);
   `#ROOTBACK_PLATE`/`#MOONLOAM_CLUMPS` + `#ROOTBACK_SPAWN_EGG` (6i); `#WRAITH_MEMBRANE`/`#CRYSTAL_DUST`
   + `#CRAG_WRAITH_SPAWN_EGG` (6j); `#ECHO_SENTINEL_SPAWN_EGG` (10f); boats
@@ -494,6 +502,9 @@ as `File#member`.
   1.21.1 data-driven), NOT a DeferredRegister — no bus wiring. Armor while-worn (`tick`→`apply_mob_effect`):
   `#LIGHTFOOTED`/`#NIGHTSIGHT`/`#LUMENWARD`; weapon on-hit (`post_attack`): `#GLOWBRAND`/`#SPORESTRIKE`/`#ROOTBINDING`.
   Obtainable only as enchanted books from Lumenwater fishing (kept out of the enchanting-table/trade/loot tags).
+- [ModLootModifiers.java](src/main/java/com/jus144tice/lumenwilds/registry/ModLootModifiers.java) — `#LOOT_MODIFIER_SERIALIZERS`
+  (on `NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS`); registers the `#LUMENWATER_FISHING` codec
+  (`loot.LumenwaterFishingModifier`, v1.1.3). Wired on the mod bus in `Lumenwilds` ctor.
 - [ModPotions.java](src/main/java/com/jus144tice/lumenwilds/registry/ModPotions.java) — `#POTIONS`; a
   brewable `Potion` per 8a effect (`#LIGHTFOOT`/`#GLOWMARKED`/`#SPOREBLIND`/`#ROOTED`, 8h). The drinkable/
   splash/lingering/tipped item variants are vanilla; the brewing mixes are in `event.ModBrewing`.
@@ -945,7 +956,17 @@ as `File#member`.
   `#onChangedDimension(player)`, `#remove(livingEntity)`. Native-mob gravity comes via their attribute
   suppliers in Phase 6, so this hook is player-only.
 
-### mixin/ + world/time/ — the half-rate day clock (Phase 7d.1; the project's only Mixins)
+### loot/ — global loot modifiers
+- [LumenwaterFishingModifier.java](src/main/java/com/jus144tice/lumenwilds/loot/LumenwaterFishingModifier.java)
+  — the custom GLM (v1.1.3) that REPLACES the vanilla fishing catch with a roll of our native table when the
+  bobber is in Lumenwater (its `location_check` conditions are handled by the `LootModifier` base). `#doApply`
+  clears the generated loot then rolls `#table` (mirrors `neoforge:add_table` but replaces instead of adds).
+  Codec registered in `registry.ModLootModifiers`.
+
+### mixin/ + world/time/ — the half-rate day clock (7d.1) + FishingHook (v1.1.3)
+- [FishingHookMixin.java](src/main/java/com/jus144tice/lumenwilds/mixin/FishingHookMixin.java) — `@Redirect`s
+  the `BlockState#is(Block)` water checks in `FishingHook#catchingFish` so the approaching-bubble + splash
+  particles also fire over Lumenwater (vanilla hardcodes them to `Blocks.WATER`). Listed in `lumenwilds.mixins.json`.
 - [ServerLevelMixin.java](src/main/java/com/jus144tice/lumenwilds/mixin/ServerLevelMixin.java) —
   `@Mixin(ServerLevel.class)`; `@Shadow @Final @Mutable boolean tickTime` + a `@Unique` setter
   (`LumenwildsTickTime`). Vanilla builds only the Overworld with `tickTime = true`; this lets the Lumenwilds
@@ -1270,10 +1291,13 @@ as `File#member`.
   (`loot_table/chests/*`, Phase 9) are now **tiered** — a guaranteed signature reward pool (enchanted gear/books,
   Lumen Anchor, striker, crystal blocks) + themed mid loot + treasure scaled by structure difficulty (no more
   all-filler chests). Underwater the surface rule places **`lumensand`** as the seabed (was dead moonloam).
-- **Lumenwater fishing (v1.1f):** `data/neoforge/loot_modifiers/global_loot_modifiers.json` (the **required**
-  GLM index, `entries: [lumenwilds:lumenwater_fishing]`) + `data/lumenwilds/loot_modifiers/lumenwater_fishing.json`
-  (a built-in `neoforge:add_table` GLM, `location_check` on dimension + the `#lumenwilds:lumenwater` fluid tag)
-  → appends `loot_table/gameplay/fishing/lumenwater.json` (a `minecraft:fishing` sub-table) to vanilla fishing.
+- **Lumenwater fishing (v1.1f, reworked v1.1.3):** `data/neoforge/loot_modifiers/global_loot_modifiers.json`
+  (the **required** GLM index) + `data/lumenwilds/loot_modifiers/lumenwater_fishing.json` (a **custom**
+  `lumenwilds:lumenwater_fishing` GLM = `loot.LumenwaterFishingModifier`, `location_check` on dimension + the
+  `#lumenwilds:lumenwater` fluid tag) that **REPLACES** the vanilla catch (clears it, rolls our table) with
+  `loot_table/gameplay/fishing/lumenwater.json` — native fish + lumen junk + treasure (vanilla enchanted
+  rod/bow/book + the spell-books). (Was a `neoforge:add_table` that *appended*, leaving earth fish; the custom
+  replace removes cod/pufferfish while keeping treasure.)
 - **Fished enchantments (v1.1g):** `data/lumenwilds/enchantment/{lightfooted,nightsight,lumenward,glowbrand,
   sporestrike,rootbinding}.json` + `data/minecraft/tags/enchantment/tooltip_order.json` (append, so they show
   on items) + `enchantment.lumenwilds.*` lang; the books are rolled in the fishing sub-table's spell-book pool.
@@ -1445,7 +1469,14 @@ as `File#member`.
   `data/neoforge/loot_modifiers/global_loot_modifiers.json` (`{"replace":false,"entries":["modid:name"]}`) or
   it never loads (verified in `LootModifierManager`: `folder = "loot_modifiers"`, reads the index for ordering).
   NeoForge 21.1 ships a built-in **`neoforge:add_table`** GLM (fields: `conditions` array + `table` id) — no
-  custom GLM class/serializer needed to append a sub-table to e.g. `gameplay/fishing`.
+  custom GLM class/serializer needed to append a sub-table to e.g. `gameplay/fishing`. But `add_table` only
+  **appends** — to REPLACE a catch (e.g. strip vanilla fish from Lumenwater fishing) write a custom
+  `LootModifier` whose `doApply` does `generatedLoot.clear()` then rolls its table (`getRandomItemsRaw`, with
+  `@SuppressWarnings("deprecation")` as NeoForge's own AddTableLootModifier does) — see `loot.LumenwaterFishingModifier`.
+- **Vanilla `FishingHook#catchingFish` hardcodes its bubble/splash particles to `Blocks.WATER`**, not the
+  `#minecraft:water` fluid tag — so a modded water block (Lumenwater) catches fish but shows no strike
+  animation. Fix is a mixin redirecting those `BlockState#is(Block)` checks to also accept the modded water
+  (`mixin.FishingHookMixin`). (The lure-ripple `FISHING` particles aren't gated, which is why it half-worked.)
 - **1.21.1 data-driven enchantment schema (verified from source — easy to get wrong):** `supported_items`/
   `primary_items` use the `#minecraft:enchantable/<foot_armor|head_armor|chest_armor|sword|weapon|…>` tags (NOT
   `*_enchantable`). "While worn/held" = a `minecraft:tick` effect (`List<ConditionalEffect<EnchantmentEntityEffect>>`,
