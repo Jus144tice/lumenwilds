@@ -36,6 +36,15 @@ public class ModTagProvider extends BlockTagsProvider {
         // it, every leaf computes DISTANCE 7 and decays — even one touching the trunk. Keep it populated.
         var logs = tag(BlockTags.LOGS);
 
+        // Harvest TIERS (v1.2) — the blocks above all set requiresCorrectToolForDrops(), but without a tier
+        // tag the game (and every harvest-HUD/tooltip mod, which reads these same tags) treats EVERY tier as
+        // correct → a wooden pickaxe harvests everything. Vanilla's #incorrect_for_*_tool tags reference these
+        // #needs_*_tool tags, so populating them gates mining + makes harvest-level mods report correctly.
+        // Stone-tier = the dimension's basic stone/build family; iron-tier = its valuable ores + metal/crystal
+        // blocks (Lumenwilds: Moonstone tools mine the former, Luminite tools the latter).
+        var needsStone = tag(BlockTags.NEEDS_STONE_TOOL);
+        var needsIron = tag(BlockTags.NEEDS_IRON_TOOL);
+
         // Vanilla wood-set block tags (v1.1.1) — so the Glowwood + Glowroot sets behave as real wood
         // (#minecraft:planks → crafting table/chest/etc., fence/door/sign/button/plate behaviour, burnable
         // logs, saplings). The matching ITEM tags (what recipes read) are mirrored in ModItemTagProvider.
@@ -128,10 +137,15 @@ public class ModTagProvider extends BlockTagsProvider {
                     || name.equals("lumen_crystal_block")
                     || name.equals("glasspetal_block")) {
                 pickaxe.add(block);
+                // Iron-tier = the dimension's valuable resources (its ores + crystal/metal storage blocks);
+                // everything else pickaxe-mineable is stone-tier (the basic build/stone families).
+                if (name.endsWith("_ore") || name.equals("lumen_crystal_block") || name.equals("luminite_block")) {
+                    needsIron.add(block);
+                } else {
+                    needsStone.add(block);
+                }
             }
             // Others (moonblossom, glowvine, lumenbulb, …) break instantly / need no mining tag yet.
         }
-
-        // TODO (Phase 4+): needs_*_tool tiers, c: common tags via an item-tag provider, plant/vine tags.
     }
 }

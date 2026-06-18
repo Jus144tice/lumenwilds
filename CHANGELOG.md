@@ -6,6 +6,24 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-06-17
+**Playthrough #4 — tools, harvest tiers, friendlier Sporelings & a new trader:**
+
+- **Lumenwilds tool sets.** A full in-dimension stone→iron progression so you can gear up without hauling
+  Overworld tools: **Moonstone tools** (pickaxe/axe/shovel/hoe/sword — stone-tier, crafted from Cobbled
+  Moonstone, a touch more durable than stone) and **Luminite tools** (iron-tier, from Luminite Ingots). They
+  enchant exactly like their vanilla counterparts.
+- **Proper pickaxe restrictions.** Blocks are now tagged with their required tool tier
+  (`#minecraft:needs_stone_tool` / `needs_iron_tool`), so a wooden pickaxe no longer mines everything, and
+  harvest-level HUD/tooltip mods finally report the correct tier. Stone-tier = the build/stone families;
+  iron-tier = the valuable ores + crystal/Luminite blocks (mine those with Luminite or iron+).
+- **Sporelings are cute now.** They no longer aggro on sight — they wander harmlessly and only fight back if
+  you attack one (still alerting the swarm, still bursting their Sporeblind spore cloud on death).
+- **New mob — the Sporeman.** A rare "fully grown Sporeling" wandering **trader** of the Sporefall Jungle:
+  neutral (fights back hard only if struck), he deals exclusively in Lumenwilds goods sold for **Overworld
+  valuables** — mostly emeralds, with a few premium gold/diamond wares. Each one carries a random handful of
+  trades.
+
 ## [1.1.4] - 2026-06-17
 **Hotfix — dedicated-server boot crash with Create installed.**
 

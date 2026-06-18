@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_cobbled_moonstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:cobbled_moonstone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:moonstone_shovel"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_cobbled_moonstone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:moonstone_shovel"
+    ]
+  }
+}

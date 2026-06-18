@@ -4,7 +4,6 @@
  */
 package com.jus144tice.lumenwilds.client.model;
 
-import com.jus144tice.lumenwilds.entity.Sporeling;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,12 +13,14 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 
 /**
  * Bespoke Sporeling model (Phase 9b) — a small fungal creeper: a squat body crowned by a glowing mushroom
- * cap, with two stubby feet. Replaces the slime placeholder. It bobs as it scuttles.
+ * cap, with two stubby feet. Replaces the slime placeholder. It bobs as it scuttles. Generic over the entity
+ * type so the {@code SporeTrader} ("fully grown Sporeling", v1.2) can reuse it at a larger scale.
  */
-public class SporelingModel extends HierarchicalModel<Sporeling> {
+public class SporelingModel<T extends Entity> extends HierarchicalModel<T> {
 
     private final ModelPart root;
     private final ModelPart body;
@@ -66,12 +67,7 @@ public class SporelingModel extends HierarchicalModel<Sporeling> {
 
     @Override
     public void setupAnim(
-            Sporeling entity,
-            float limbSwing,
-            float limbSwingAmount,
-            float ageInTicks,
-            float headYaw,
-            float headPitch) {
+            T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
         this.footR.xRot = Mth.cos(limbSwing * 0.8F) * 0.8F * limbSwingAmount;
         this.footL.xRot = Mth.cos(limbSwing * 0.8F + Mth.PI) * 0.8F * limbSwingAmount;
         this.body.y = 24.0F + Mth.abs(Mth.sin(limbSwing * 0.8F)) * -1.0F * limbSwingAmount; // little hop

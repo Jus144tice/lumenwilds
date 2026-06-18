@@ -10,14 +10,21 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.BucketItem;
+import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.HangingSignItem;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.MobBucketItem;
+import net.minecraft.world.item.PickaxeItem;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SignItem;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -328,6 +335,11 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.ECHO_SENTINEL, 0x1A2A3A, 0x6FE0D8, props),
             new Item.Properties());
 
+    public static final DeferredItem<DeferredSpawnEggItem> SPORE_TRADER_SPAWN_EGG = ITEMS.registerItem(
+            "spore_trader_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.SPORE_TRADER, 0x6E4A7A, 0xC8E060, props),
+            new Item.Properties());
+
     // --- Boats (vanilla Boat/ChestBoat with the Glowwood Boat.Type from ModBoatTypes) ------------
     public static final DeferredItem<BoatItem> GLOWWOOD_BOAT = ITEMS.registerItem(
             "glowwood_boat",
@@ -371,6 +383,58 @@ public final class ModItems {
             props -> new HangingSignItem(
                     ModBlocks.GLOWROOT_HANGING_SIGN.get(), ModBlocks.GLOWROOT_WALL_HANGING_SIGN.get(), props),
             new Item.Properties().stacksTo(16));
+
+    // --- Tools (v1.2) — a stone→iron progression so you can gear up in-dimension. Moonstone = stone-tier
+    // (crafted from Cobbled Moonstone), Luminite = iron-tier (from Luminite Ingots). Tiers in ModToolTiers;
+    // attack damage/speed mirror the matching vanilla tier per tool type. Recipes in ModRecipeProvider. -----
+    public static final DeferredItem<PickaxeItem> MOONSTONE_PICKAXE =
+            pickaxe("moonstone_pickaxe", ModToolTiers.MOONSTONE);
+    public static final DeferredItem<AxeItem> MOONSTONE_AXE = axe("moonstone_axe", ModToolTiers.MOONSTONE, 7.0F, -3.2F);
+    public static final DeferredItem<ShovelItem> MOONSTONE_SHOVEL = shovel("moonstone_shovel", ModToolTiers.MOONSTONE);
+    public static final DeferredItem<HoeItem> MOONSTONE_HOE =
+            hoe("moonstone_hoe", ModToolTiers.MOONSTONE, -1.0F, -2.0F);
+    public static final DeferredItem<SwordItem> MOONSTONE_SWORD = sword("moonstone_sword", ModToolTiers.MOONSTONE);
+
+    public static final DeferredItem<PickaxeItem> LUMINITE_PICKAXE = pickaxe("luminite_pickaxe", ModToolTiers.LUMINITE);
+    public static final DeferredItem<AxeItem> LUMINITE_AXE = axe("luminite_axe", ModToolTiers.LUMINITE, 6.0F, -3.1F);
+    public static final DeferredItem<ShovelItem> LUMINITE_SHOVEL = shovel("luminite_shovel", ModToolTiers.LUMINITE);
+    public static final DeferredItem<HoeItem> LUMINITE_HOE = hoe("luminite_hoe", ModToolTiers.LUMINITE, -2.0F, -1.0F);
+    public static final DeferredItem<SwordItem> LUMINITE_SWORD = sword("luminite_sword", ModToolTiers.LUMINITE);
+
+    private static DeferredItem<PickaxeItem> pickaxe(String name, Tier tier) {
+        return ITEMS.registerItem(
+                name,
+                p -> new PickaxeItem(tier, p.attributes(DiggerItem.createAttributes(tier, 1.0F, -2.8F))),
+                new Item.Properties());
+    }
+
+    private static DeferredItem<AxeItem> axe(String name, Tier tier, float dmg, float speed) {
+        return ITEMS.registerItem(
+                name,
+                p -> new AxeItem(tier, p.attributes(DiggerItem.createAttributes(tier, dmg, speed))),
+                new Item.Properties());
+    }
+
+    private static DeferredItem<ShovelItem> shovel(String name, Tier tier) {
+        return ITEMS.registerItem(
+                name,
+                p -> new ShovelItem(tier, p.attributes(DiggerItem.createAttributes(tier, 1.5F, -3.0F))),
+                new Item.Properties());
+    }
+
+    private static DeferredItem<HoeItem> hoe(String name, Tier tier, float dmg, float speed) {
+        return ITEMS.registerItem(
+                name,
+                p -> new HoeItem(tier, p.attributes(DiggerItem.createAttributes(tier, dmg, speed))),
+                new Item.Properties());
+    }
+
+    private static DeferredItem<SwordItem> sword(String name, Tier tier) {
+        return ITEMS.registerItem(
+                name,
+                p -> new SwordItem(tier, p.attributes(SwordItem.createAttributes(tier, 3.0F, -2.4F))),
+                new Item.Properties());
+    }
 
     // --- Block items ----------------------------------------------------------------------------
     // Auto-register a simple BlockItem for every registered block EXCEPT the portal interior (placed by

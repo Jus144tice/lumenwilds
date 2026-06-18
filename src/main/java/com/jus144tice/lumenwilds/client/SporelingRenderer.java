@@ -15,12 +15,12 @@ import net.minecraft.resources.ResourceLocation;
  * Renders the Sporeling with the bespoke {@link SporelingModel} (Phase 9b — a fungal creeper with a glowing
  * mushroom cap, replacing the slime placeholder).
  */
-public class SporelingRenderer extends MobRenderer<Sporeling, SporelingModel> {
+public class SporelingRenderer extends MobRenderer<Sporeling, SporelingModel<Sporeling>> {
 
     private static final ResourceLocation TEXTURE = ResourceLocationHelper.modLoc("textures/entity/sporeling.png");
 
     public SporelingRenderer(EntityRendererProvider.Context context) {
-        super(context, new SporelingModel(context.bakeLayer(LumenModelLayers.SPORELING)), 0.3F);
+        super(context, new SporelingModel<>(context.bakeLayer(LumenModelLayers.SPORELING)), 0.3F);
     }
 
     @Override

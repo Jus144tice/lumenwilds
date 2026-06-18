@@ -45,6 +45,15 @@ public class ModItemModelProvider extends ItemModelProvider {
                 continue;
             }
 
+            // Tools (pickaxe/axe/shovel/hoe/sword — all TieredItem) use the held-tool model with a flat
+            // item/<name> texture, so they render in-hand as a tool, not a floating sprite.
+            if (item instanceof net.minecraft.world.item.TieredItem) {
+                getBuilder(name)
+                        .parent(mc("item/handheld"))
+                        .texture("layer0", ResourceLocationHelper.modLoc("item/" + name));
+                continue;
+            }
+
             if (!(item instanceof BlockItem)
                     || name.equals("glowberry") // ItemNameBlockItem, but uses the berry icon (item/glowberry)
                     || name.endsWith("_door")

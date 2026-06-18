@@ -15,8 +15,10 @@ import com.jus144tice.lumenwilds.entity.Mirelurker;
 import com.jus144tice.lumenwilds.entity.Rootback;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
 import com.jus144tice.lumenwilds.entity.SkyJelly;
+import com.jus144tice.lumenwilds.entity.SporeTrader;
 import com.jus144tice.lumenwilds.entity.Sporeling;
 import com.jus144tice.lumenwilds.registry.ModEntities;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
@@ -54,6 +56,7 @@ public final class ModEntityEvents {
         event.put(ModEntities.CRAG_WRAITH.get(), CragWraith.createAttributes().build());
         event.put(
                 ModEntities.ECHO_SENTINEL.get(), EchoSentinel.createAttributes().build());
+        event.put(ModEntities.SPORE_TRADER.get(), SporeTrader.createAttributes().build());
     }
 
     @SubscribeEvent
@@ -137,6 +140,14 @@ public final class ModEntityEvents {
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkAnyLightMonsterSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // Sporeman trader: a peaceful ground creature (an AbstractVillager, not an Animal — so it uses the
+        // base mob spawn rule). Rarity comes from the low weight in the Sporefall Jungle spawners.
+        event.register(
+                ModEntities.SPORE_TRADER.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Mob::checkMobSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
     }
 }

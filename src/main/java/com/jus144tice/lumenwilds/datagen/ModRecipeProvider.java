@@ -81,6 +81,81 @@ public class ModRecipeProvider extends RecipeProvider {
         buildRebuildRecipes(recipeOutput);
         buildLiftshaftRecipes(recipeOutput);
         buildOrphanDropRecipes(recipeOutput);
+        buildToolRecipes(recipeOutput);
+    }
+
+    /** Tool sets (v1.2): Moonstone (from Cobbled Moonstone) + Luminite (from Luminite Ingots), vanilla shapes. */
+    private void buildToolRecipes(RecipeOutput out) {
+        toolSet(
+                out,
+                ModItems.MOONSTONE_PICKAXE.get(),
+                ModItems.MOONSTONE_AXE.get(),
+                ModItems.MOONSTONE_SHOVEL.get(),
+                ModItems.MOONSTONE_HOE.get(),
+                ModItems.MOONSTONE_SWORD.get(),
+                ModBlocks.COBBLED_MOONSTONE.get(),
+                "cobbled_moonstone");
+        toolSet(
+                out,
+                ModItems.LUMINITE_PICKAXE.get(),
+                ModItems.LUMINITE_AXE.get(),
+                ModItems.LUMINITE_SHOVEL.get(),
+                ModItems.LUMINITE_HOE.get(),
+                ModItems.LUMINITE_SWORD.get(),
+                ModItems.LUMINITE_INGOT.get(),
+                "luminite_ingot");
+    }
+
+    private void toolSet(
+            RecipeOutput out,
+            ItemLike pickaxe,
+            ItemLike axe,
+            ItemLike shovel,
+            ItemLike hoe,
+            ItemLike sword,
+            ItemLike mat,
+            String matName) {
+        String crit = "has_" + matName;
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, pickaxe)
+                .pattern("MMM")
+                .pattern(" S ")
+                .pattern(" S ")
+                .define('M', mat)
+                .define('S', Items.STICK)
+                .unlockedBy(crit, has(mat))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, axe)
+                .pattern("MM")
+                .pattern("MS")
+                .pattern(" S")
+                .define('M', mat)
+                .define('S', Items.STICK)
+                .unlockedBy(crit, has(mat))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, shovel)
+                .pattern("M")
+                .pattern("S")
+                .pattern("S")
+                .define('M', mat)
+                .define('S', Items.STICK)
+                .unlockedBy(crit, has(mat))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, hoe)
+                .pattern("MM")
+                .pattern(" S")
+                .pattern(" S")
+                .define('M', mat)
+                .define('S', Items.STICK)
+                .unlockedBy(crit, has(mat))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, sword)
+                .pattern("M")
+                .pattern("M")
+                .pattern("S")
+                .define('M', mat)
+                .define('S', Items.STICK)
+                .unlockedBy(crit, has(mat))
+                .save(out);
     }
 
     /**

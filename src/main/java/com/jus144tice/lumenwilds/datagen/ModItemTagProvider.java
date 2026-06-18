@@ -53,5 +53,42 @@ public class ModItemTagProvider extends ItemTagsProvider {
         tag(ItemTags.HANGING_SIGNS).add(ModItems.GLOWWOOD_HANGING_SIGN.get(), ModItems.GLOWROOT_HANGING_SIGN.get());
         tag(ItemTags.BOATS).add(ModItems.GLOWWOOD_BOAT.get(), ModItems.GLOWROOT_BOAT.get());
         tag(ItemTags.CHEST_BOATS).add(ModItems.GLOWWOOD_CHEST_BOAT.get(), ModItems.GLOWROOT_CHEST_BOAT.get());
+
+        // Tools (v1.2) — the vanilla type tags (read by recipes/other mods) + the enchantability tags so the
+        // Moonstone/Luminite tools enchant exactly like their vanilla counterparts. Mirrors vanilla membership:
+        // all are durability/vanishing-enchantable; mining tools get mining (+ pickaxe/shovel get mining_loot
+        // for Fortune/Silk Touch); axes + swords get the weapon enchants; swords get sword/fire_aspect.
+        var pickaxes =
+                new net.minecraft.world.item.Item[] {ModItems.MOONSTONE_PICKAXE.get(), ModItems.LUMINITE_PICKAXE.get()};
+        var axes = new net.minecraft.world.item.Item[] {ModItems.MOONSTONE_AXE.get(), ModItems.LUMINITE_AXE.get()};
+        var shovels =
+                new net.minecraft.world.item.Item[] {ModItems.MOONSTONE_SHOVEL.get(), ModItems.LUMINITE_SHOVEL.get()};
+        var hoes = new net.minecraft.world.item.Item[] {ModItems.MOONSTONE_HOE.get(), ModItems.LUMINITE_HOE.get()};
+        var swords =
+                new net.minecraft.world.item.Item[] {ModItems.MOONSTONE_SWORD.get(), ModItems.LUMINITE_SWORD.get()};
+
+        tag(ItemTags.PICKAXES).add(pickaxes);
+        tag(ItemTags.AXES).add(axes);
+        tag(ItemTags.SHOVELS).add(shovels);
+        tag(ItemTags.HOES).add(hoes);
+        tag(ItemTags.SWORDS).add(swords);
+
+        var allTools = new net.minecraft.world.item.Item[] {
+            pickaxes[0], pickaxes[1],
+            axes[0], axes[1],
+            shovels[0], shovels[1],
+            hoes[0], hoes[1],
+            swords[0], swords[1]
+        };
+        tag(ItemTags.DURABILITY_ENCHANTABLE).add(allTools);
+        tag(ItemTags.VANISHING_ENCHANTABLE).add(allTools);
+
+        tag(ItemTags.MINING_ENCHANTABLE)
+                .add(pickaxes[0], pickaxes[1], axes[0], axes[1], shovels[0], shovels[1], hoes[0], hoes[1]);
+        tag(ItemTags.MINING_LOOT_ENCHANTABLE).add(pickaxes[0], pickaxes[1], shovels[0], shovels[1]);
+        tag(ItemTags.SHARP_WEAPON_ENCHANTABLE).add(swords[0], swords[1], axes[0], axes[1]);
+        tag(ItemTags.WEAPON_ENCHANTABLE).add(swords[0], swords[1], axes[0], axes[1]);
+        tag(ItemTags.SWORD_ENCHANTABLE).add(swords);
+        tag(ItemTags.FIRE_ASPECT_ENCHANTABLE).add(swords);
     }
 }

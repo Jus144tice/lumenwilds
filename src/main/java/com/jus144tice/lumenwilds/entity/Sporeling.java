@@ -19,15 +19,15 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 /**
- * Sporeling — a small hostile fungal swarm mob of the Sporefall Jungle and Undercrown Caverns. Weak alone
- * but attacks in groups (hurting one alerts the others), and on death it bursts into a <b>spore cloud</b>
- * that briefly clouds vision (Darkness) and mildly slows whoever is caught in it — the bible's "Sporeblind".
+ * Sporeling — a small <b>neutral</b> fungal swarm critter of the Sporefall Jungle and Undercrown Caverns.
+ * Cute and harmless until provoked: it never aggros on sight, but attacking one makes it fight back and
+ * alerts the nearby swarm (the "hurt one, anger the group" identity). On death it bursts into a <b>spore
+ * cloud</b> that briefly clouds vision (Darkness) and mildly slows whoever is caught in it — "Sporeblind".
  *
  * <p>The death cloud is an {@link AreaEffectCloud} (the reusable pattern for later cloud-on-death mobs). A
  * dedicated, bespoke <em>Sporeblind</em> effect with its own screen overlay is a Phase 8 task; here it
@@ -47,9 +47,9 @@ public class Sporeling extends Monster {
         this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(4, new RandomLookAroundGoal(this));
 
-        // Swarm: hurting one alerts nearby Sporelings.
+        // Neutral by default — cute fungal wanderers that DON'T aggro on sight. They only fight back when
+        // attacked, and hurting one still alerts the swarm (the "hurt one, anger the group" identity).
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this).setAlertOthers());
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
     /** Weak, quick swarm member with native low gravity. */

@@ -317,7 +317,15 @@ light 7) — and **fixed a latent v1.1a bug where the Glowroot signs were never 
 `HANGING_SIGN`** (so their text didn't save). It also added glowing **chests**: `#GLOWWOOD_CHEST`/`#GLOWROOT_CHEST`
 (vanilla `ChestBlock` with our shared `ModBlockEntities#LUMEN_CHEST` BE [`block.LumenChestBlockEntity`] +
 `client.LumenChestRenderer`, which picks the species texture from the chests atlas and renders fullbright to
-glow; light 7). Roadmap:
+glow; light 7). **v1.2.0 (playthrough #4):** added a full in-dimension **tool progression** — **Moonstone**
+(stone-tier, from Cobbled Moonstone) and **Luminite** (iron-tier, from Luminite Ingots) pickaxe/axe/shovel/
+hoe/sword sets (`registry.ModToolTiers` + tool items in `ModItems`, enchantable like vanilla); **fixed harvest
+gating** — blocks now carry `#minecraft:needs_stone_tool`/`needs_iron_tool` so a wooden pickaxe no longer mines
+everything and harvest-HUD mods read the right tier (was missing — `requiresCorrectToolForDrops()` with no tier
+tag = "any tool works"); made the **Sporeling neutral** (`entity.Sporeling` — no auto-target, retaliate-only,
+still swarms + death cloud); and added the **Sporeman** (`entity.SporeTrader`) — a rare "fully grown Sporeling"
+wandering **trader** of the Sporefall Jungle (an `AbstractVillager` that sells Lumenwilds goods for Overworld
+valuables; neutral, fights back if struck; reuses the scaled-up `SporelingModel`). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -478,9 +486,11 @@ as `File#member`.
   `#GLOWWOOD_BOAT`/`#GLOWWOOD_CHEST_BOAT` + `#GLOWROOT_BOAT`/`#GLOWROOT_CHEST_BOAT`
   (`BoatItem` over `ModBoatTypes.glowwood()`/`glowroot()`); signs `#GLOWWOOD_SIGN`/`#GLOWROOT_SIGN` (`SignItem`) +
   `#GLOWWOOD_HANGING_SIGN`/`#GLOWROOT_HANGING_SIGN`
-  (`HangingSignItem`) — wall variants share these. A **static loop auto-registers a simple `BlockItem` for
-  every block except `LUMEN_PORTAL`, `LUMENWATER_BLOCK`, and the sign blocks** (runs after the standalone/sign
-  items so the striker stays first in the tab) — new blocks get an item with no edits here.
+  (`HangingSignItem`) — wall variants share these. **Tools (v1.2):** `#MOONSTONE_PICKAXE`/`_AXE`/`_SHOVEL`/
+  `_HOE`/`_SWORD` + `#LUMINITE_*` (built by the private `pickaxe/axe/shovel/hoe/sword` helpers — each wires the
+  `ModToolTiers` tier + `.attributes(...)`); `#SPORE_TRADER_SPAWN_EGG`. A **static loop auto-registers a simple
+  `BlockItem` for every block except `LUMEN_PORTAL`, `LUMENWATER_BLOCK`, and the sign blocks** (runs after the
+  standalone/sign items so the striker stays first in the tab) — new blocks get an item with no edits here.
 - [ModCreativeTabs.java](src/main/java/com/jus144tice/lumenwilds/registry/ModCreativeTabs.java) —
   `#CREATIVE_MODE_TABS`, `#LUMENWILDS_TAB` (id `lumenwilds`, title key `itemGroup.lumenwilds`, icon =
   Lumen Striker). **Auto-populates from `ModItems.ITEMS`** — new items appear without editing this file.
@@ -501,9 +511,16 @@ as `File#member`.
   `#LUMEN_FISH` (`WATER_AMBIENT`, schooling fish, 6f), `#SKY_JELLY` (`CREATURE`, floating, 6g), `#GLOWMOTH`
   (`CREATURE`, neutral flying guardian, 6h), `#ROOTBACK` (`CREATURE`, massive 3.0×2.2 turtle, 6i),
   `#CRAG_WRAITH` (`MONSTER`, flying dive-attacker, 6j) — **all 10 Phase-6 mobs live**; plus `#ECHO_SENTINEL`
-  (`MONSTER`, floating ranged ruin guardian, 10f). Each entity also needs
+  (`MONSTER`, floating ranged ruin guardian, 10f); plus `#SPORE_TRADER` (`CREATURE`, the rare Sporeman
+  wandering trader, v1.2). Each entity also needs
   attributes + spawn placement (`event.ModEntityEvents`), a renderer (`client.LumenwildsClient`), a loot table
   (`loot_table/entities/`), and biome `spawners` entries.
+- [ModToolTiers.java](src/main/java/com/jus144tice/lumenwilds/registry/ModToolTiers.java) — tool material
+  tiers (v1.2): `#MOONSTONE` (stone-tier, `INCORRECT_FOR_STONE_TOOL`, repair = Cobbled Moonstone) + `#LUMINITE`
+  (iron-tier, `INCORRECT_FOR_IRON_TOOL`, repair = Luminite Ingot). A tiny `SimpleTier` record implements
+  `Tier`; the tool items live in `ModItems` (`#MOONSTONE_PICKAXE`…`#LUMINITE_SWORD`, via the `pickaxe/axe/
+  shovel/hoe/sword` helpers), recipes in `ModRecipeProvider#buildToolRecipes`, enchantability + type tags in
+  `ModItemTagProvider`. **Not a DeferredRegister** (tiers are plain objects).
 - [ModEnchantments.java](src/main/java/com/jus144tice/lumenwilds/registry/ModEnchantments.java) — `ResourceKey<Enchantment>`
   handles for the six **fished** enchantments (v1.1g); the enchantments are data (`data/lumenwilds/enchantment/*.json`,
   1.21.1 data-driven), NOT a DeferredRegister — no bus wiring. Armor while-worn (`tick`→`apply_mob_effect`):
@@ -736,10 +753,17 @@ as `File#member`.
   (Moonblossom/Lumenbulb/Glowvine), then flies to hover above the nearest. Shared by the Lantern Beetle (and
   later the Glowmoth).
 - [Sporeling.java](src/main/java/com/jus144tice/lumenwilds/entity/Sporeling.java) — `Monster`, the
-  jungle/cave **swarm** (6d). Weak melee attacker that targets players; `HurtByTargetGoal#setAlertOthers`
-  makes the group aggro together. `#die` bursts a **spore cloud** — an `AreaEffectCloud` (radius 2.5, 80t,
-  spore particle) applying **`ModMobEffects.SPOREBLIND`** (the real effect, 8a) + Darkness (the visibility
-  overlay is Phase 9). Native low gravity. Placeholder render = vanilla slime.
+  jungle/cave **swarm** (6d). **Neutral as of v1.2** — no `NearestAttackableTargetGoal` (doesn't aggro on
+  sight); only `HurtByTargetGoal#setAlertOthers` (fights back when hit + alerts the swarm). `#die` bursts a
+  **spore cloud** — an `AreaEffectCloud` (radius 2.5, 80t, spore particle) applying **`ModMobEffects.SPOREBLIND`**
+  (8a) + Darkness. Native low gravity. Render = bespoke `client.model.SporelingModel`.
+- [SporeTrader.java](src/main/java/com/jus144tice/lumenwilds/entity/SporeTrader.java) — `AbstractVillager`, the
+  **Sporeman** (v1.2) — a rare "fully grown Sporeling" wandering merchant of the Sporefall Jungle. Neutral
+  (`TradeWithPlayerGoal` + stroll/look; `MeleeAttackGoal` + `HurtByTargetGoal` so it retaliates if struck — no
+  auto-target). `#updateTrades` builds a pool of `MerchantOffer`s (Lumenwilds goods sold for Overworld
+  valuables — emeralds, plus premium gold/diamond wares) and offers a random 6–8. `#mobInteract` opens the
+  trade screen (mirrors `WanderingTrader`, excludes our spawn egg). Render = the scaled-up `SporelingModel`
+  (`client.SporeTraderRenderer`, ~1.7×). **Spawn rule uses `Mob::checkMobSpawnRules`** (it's not an `Animal`).
 - [Mirelurker.java](src/main/java/com/jus144tice/lumenwilds/entity/Mirelurker.java) — `Monster`, the Moonmire
   **amphibious** ambusher (6e); the first water-capable mob. `#createNavigation` = `AmphibiousPathNavigation`
   + `setPathfindingMalus(WATER, 0)` so it walks land and water freely; doesn't drown (via the
@@ -1330,8 +1354,11 @@ as `File#member`.
   raw_meat,cooked_meat,raw_fish,cooked_fish,soup}`, `crops`) so lumen foods integrate into Farmer's Delight /
   Create / Delightful (and any `#c:`-aware cooking mod) with no hard dependency.
 - `data/minecraft/tags/block/mineable/{pickaxe,axe,shovel,hoe}.json` + `leaves` (glowwood + glowroot) +
-  `logs.json` (all `_log`/`_wood` blocks — **required for leaf decay to recognise the trunk**, Phase 9d fix);
-  `tags/block/dirt.json`
+  `tags/block/{needs_stone_tool,needs_iron_tool}.json` (v1.2 harvest tiers — stone family vs. valuable
+  ores/crystal/Luminite) + `logs.json` (all `_log`/`_wood` blocks — **required for leaf decay to recognise the
+  trunk**, Phase 9d fix); the tool **item** tags `tags/item/{pickaxes,axes,shovels,hoes,swords}.json` +
+  `tags/item/enchantable/*.json` (v1.2 — type + enchantability for the Moonstone/Luminite tools, from
+  `ModItemTagProvider`); `tags/block/dirt.json`
   adds lumen grass + moonloam (so BushBlock plants survive on Lumenwilds soil); `tags/fluid/water.json`
   adds Lumenwater (source + flowing) to `#minecraft:water` so it behaves as water (Phase 6.0);
   `tags/entity_type/can_breathe_under_water.json` adds the Mirelurker + Lumen Fish (6e/6f, so they don't drown);
@@ -1552,6 +1579,24 @@ as `File#member`.
   in dev, temporarily add `runtimeOnly 'maven.modrinth:create:6.0.10+mc1.21.1'` to `build.gradle` (Create 6
   jarjars Flywheel — no separate dep) and `runServer`; **note a 2-mod repro may NOT trigger an order-sensitive
   pack crash** (it booted clean here), so it confirms the fix doesn't regress more than it proves the fix.
+- **`requiresCorrectToolForDrops()` does NOTHING without a `#needs_*_tool` tag — it defaults to "any tool
+  works."** A block with the flag set but in no `needs_stone/iron/diamond_tool` tag is in no
+  `incorrect_for_*_tool` tag either, so every tier is "correct" → a wooden pickaxe harvests it, and
+  harvest-HUD/tooltip mods (which read the same tags) report it as wood-harvestable. This was the v1.2 bug:
+  the stone/ore blocks all set the flag but were never tiered. Fix: `ModTagProvider` adds them to
+  `BlockTags.NEEDS_STONE_TOOL` / `NEEDS_IRON_TOOL` (vanilla's `incorrect_for_*` tags reference these). The
+  matching tool tiers reuse `INCORRECT_FOR_STONE_TOOL`/`INCORRECT_FOR_IRON_TOOL` so a Moonstone (stone) tool
+  can't drop an iron-tier block and Luminite (iron) can.
+- **A custom tool item's `Item.Properties` needs `.attributes(...)` or the tool has no attack damage/speed.**
+  `new PickaxeItem(tier, props)` only wires the mining `Tool` component; the melee stats come from
+  `props.attributes(DiggerItem.createAttributes(tier, dmg, speed))` (or `SwordItem.createAttributes` for
+  swords) — see `ModItems#pickaxe/axe/shovel/hoe/sword`. And register the tools into the `#minecraft:enchantable/*`
+  item tags (`ModItemTagProvider`) or they can't be enchanted.
+- **A non-`Animal` creature mob can't use `Animal::checkAnimalSpawnRules` in `RegisterSpawnPlacementsEvent`**
+  (the method ref is typed `SpawnPredicate<Animal>`). The Sporeman is an `AbstractVillager` (→ `AgeableMob`,
+  not `Animal`), so it uses `Mob::checkMobSpawnRules`. (Trader mobs reuse `WanderingTrader`'s pattern:
+  `AbstractVillager` + `TradeWithPlayerGoal` + `updateTrades`/`rewardTradeXp`; open the screen with
+  `openTradingScreen`.)
 
 ---
 

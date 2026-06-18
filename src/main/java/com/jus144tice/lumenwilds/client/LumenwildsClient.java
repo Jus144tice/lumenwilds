@@ -105,6 +105,7 @@ public final class LumenwildsClient {
         event.registerEntityRenderer(ModEntities.ROOTBACK.get(), RootbackRenderer::new);
         event.registerEntityRenderer(ModEntities.CRAG_WRAITH.get(), CragWraithRenderer::new);
         event.registerEntityRenderer(ModEntities.ECHO_SENTINEL.get(), EchoSentinelRenderer::new);
+        event.registerEntityRenderer(ModEntities.SPORE_TRADER.get(), SporeTraderRenderer::new);
     }
 
     /**
@@ -125,6 +126,7 @@ public final class LumenwildsClient {
         addGlow(event, ModEntities.ROOTBACK.get(), "rootback");
         addGlow(event, ModEntities.CRAG_WRAITH.get(), "crag_wraith");
         addGlow(event, ModEntities.ECHO_SENTINEL.get(), "echo_sentinel");
+        addGlow(event, ModEntities.SPORE_TRADER.get(), "spore_trader");
     }
 
     private static <T extends Mob, M extends EntityModel<T>> void addGlow(

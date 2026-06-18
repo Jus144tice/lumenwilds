@@ -15,6 +15,7 @@ import com.jus144tice.lumenwilds.entity.Mirelurker;
 import com.jus144tice.lumenwilds.entity.Rootback;
 import com.jus144tice.lumenwilds.entity.ShadeStalker;
 import com.jus144tice.lumenwilds.entity.SkyJelly;
+import com.jus144tice.lumenwilds.entity.SporeTrader;
 import com.jus144tice.lumenwilds.entity.Sporeling;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.entity.EntityType;
@@ -109,6 +110,13 @@ public final class ModEntities {
                     .sized(1.0F, 1.0F)
                     .clientTrackingRange(10)
                     .build("echo_sentinel"));
+
+    /** Sporeman — the rare "fully grown Sporeling" wandering trader of the Sporefall Jungle (v1.2). */
+    public static final DeferredHolder<EntityType<?>, EntityType<SporeTrader>> SPORE_TRADER =
+            ENTITIES.register("spore_trader", () -> EntityType.Builder.of(SporeTrader::new, MobCategory.CREATURE)
+                    .sized(0.9F, 1.6F)
+                    .clientTrackingRange(10)
+                    .build("spore_trader"));
 
     private ModEntities() {}
 }
