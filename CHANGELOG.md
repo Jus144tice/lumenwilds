@@ -6,6 +6,16 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.1.4] - 2026-06-17
+**Hotfix — dedicated-server boot crash with Create installed.**
+
+- Fixed a startup crash (`NullPointerException: unbound create:chocolate_bucket`, reported as a Create
+  `RegisterEvent` failure) that struck large modpacks running **Create** alongside v1.1.3. Create initializes
+  its advancements during the `trigger_type` registry phase, reading fluid buckets registered in the earlier
+  `item` phase; v1.1.3's extra content shifted the modpack's load order enough to surface a latent
+  ordering bug inside Create. Lumenwilds now declares an optional **load-after-Create** ordering so Create
+  always registers first, restoring a known-good order. No gameplay change; harmless when Create is absent.
+
 ## [1.1.3] - 2026-06-17
 **Playthrough #3 — fishing & wood storage:**
 

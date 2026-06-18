@@ -49,3 +49,16 @@ type = "optional"
 versionRange = "*"
 ordering = "NONE"
 side = "BOTH"
+
+# --- Create (optional, ordering only) — v1.1.4 boot-crash fix. Create initializes its advancements during
+# the TRIGGER_TYPES registry phase (Create#onRegister → AllAdvancements), which reads its own fluid buckets
+# registered in the ITEM phase. In a large modpack, v1.1.3's added registrations shifted the mod-load order
+# enough to surface a latent ordering crash inside Create (NPE: unbound create:chocolate_bucket). Forcing
+# Lumenwilds to load AFTER Create makes Create register first in every phase, restoring a known-good order.
+# Optional: if Create is absent this is a no-op.
+[[dependencies.lumenwilds]]
+modId = "create"
+type = "optional"
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"

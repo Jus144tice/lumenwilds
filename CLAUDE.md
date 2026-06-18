@@ -1182,8 +1182,11 @@ as `File#member`.
 
 ## Resources — `src/main/resources`
 
-- [META-INF/neoforge.mods.toml](src/main/resources/META-INF/neoforge.mods.toml) — mod metadata; only
-  `neoforge` + `minecraft` deps (required); `enumExtensions = "META-INF/enumextensions.json"` (Glowwood
+- [META-INF/neoforge.mods.toml](src/main/resources/META-INF/neoforge.mods.toml) — mod metadata; required
+  deps `neoforge` + `minecraft`; **optional** deps `patchouli` (guide) and **`create` (ordering only,
+  `type="optional"` + `ordering="AFTER"`, v1.1.4)** — the latter forces Lumenwilds to register *after* Create
+  to dodge a Create boot crash (see the Create ordering gotcha); it is a pure load-order hint, a no-op when
+  Create is absent, and never a requirement. `enumExtensions = "META-INF/enumextensions.json"` (Glowwood
   `Boat.Type`); `[[mixins]] config = "lumenwilds.mixins.json"` (the 7d.1 day-clock mixins). `pack.mcmeta` →
   `pack_format` 48.
 - `lumenwilds.mixins.json` (resource root) — the Mixin config (`package` = `…lumenwilds.mixin`, JAVA_21, no
@@ -1535,6 +1538,20 @@ as `File#member`.
   from the decompiled sources in the NeoForm cache: `~/.gradle/caches/neoformruntime/intermediate_results/
   sourcesAndCompiledWithNeoForge_*_output.jar`. Extract from there (not the `neoforge-*-sources.jar`,
   which holds only NeoForge's own classes) when you need a vanilla signature.
+- **Cross-mod RegisterEvent crashes report the OTHER mod, but the trigger can be our load-order — fix with an
+  optional ordering dep, and reproduce by adding the mod as a dev `runtimeOnly`.** v1.1.3 boot-crashed large
+  packs running **Create** (`NPE: unbound create:chocolate_bucket`, blamed on Create's `RegisterEvent`).
+  Mechanism (decompiled from the cached Create jar — `javap -p -c`): `Create#onRegister` fires per registry
+  phase and, on the `minecraft:trigger_type` phase, calls `AllAdvancements.register()` whose `<clinit>` reads
+  a fluid bucket registered back in the `minecraft:item` phase. NeoForge's phase order is `block → item →
+  trigger_type → …` (verified via a temp `RegisterEvent` probe logging `event.getRegistryKey()` +
+  `BuiltInRegistries.ITEM.containsKey(create:chocolate_bucket)`), so the bucket is normally bound by
+  `trigger_type` — but a big pack's mod-load order (which v1.1.3's extra registrations shifted) can surface
+  Create's latent ordering bug. Fix: an **optional `ordering="AFTER"` dep on `create`** in `neoforge.mods.toml`
+  (`type="optional"`, so a no-op without Create) → Create registers first in every phase. To reproduce/verify
+  in dev, temporarily add `runtimeOnly 'maven.modrinth:create:6.0.10+mc1.21.1'` to `build.gradle` (Create 6
+  jarjars Flywheel — no separate dep) and `runServer`; **note a 2-mod repro may NOT trigger an order-sensitive
+  pack crash** (it booted clean here), so it confirms the fix doesn't regress more than it proves the fix.
 
 ---
 
