@@ -19,6 +19,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Sky Jelly — a floating jellyfish-like air creature; pure sky ambience and a low-gravity material source
@@ -55,6 +56,10 @@ public class SkyJelly extends Animal {
                 .add(Attributes.MOVEMENT_SPEED, 0.2)
                 .add(Attributes.GRAVITY, 0.01);
     }
+
+    /** A floating jelly takes no fall damage (like vanilla bees) — it drifts, it doesn't crash. */
+    @Override
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {}
 
     @Override
     public void aiStep() {

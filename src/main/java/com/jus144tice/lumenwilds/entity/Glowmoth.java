@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.entity;
 
 import com.jus144tice.lumenwilds.entity.ai.FlyToBlocksGoal;
 import com.jus144tice.lumenwilds.registry.ModBlocks;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -76,6 +77,10 @@ public class Glowmoth extends Animal {
                 .add(Attributes.ATTACK_DAMAGE, 3.0)
                 .add(Attributes.GRAVITY, 0.03);
     }
+
+    /** A flyer takes no fall damage (like vanilla bees) — its low-gravity descents shouldn't kill it. */
+    @Override
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {}
 
     @Override
     public boolean isFood(ItemStack stack) {

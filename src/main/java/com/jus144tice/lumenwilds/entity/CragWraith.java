@@ -4,6 +4,7 @@
  */
 package com.jus144tice.lumenwilds.entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -19,6 +20,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Crag Wraith — the Glasspetal Crags' aerial threat: a fast manta-like flier that <b>dives at players</b>
@@ -66,4 +68,8 @@ public class CragWraith extends Monster {
                 .add(Attributes.FOLLOW_RANGE, 32.0)
                 .add(Attributes.GRAVITY, 0.02);
     }
+
+    /** A flying dive-attacker takes no fall damage (like vanilla bees) — its dives shouldn't hurt it. */
+    @Override
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {}
 }

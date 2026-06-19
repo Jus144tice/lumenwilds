@@ -6,6 +6,21 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-06-18
+**Playthrough #4 follow-up fixes:**
+
+- **Lantern Beetles no longer dive-bomb into the ground and die.** They were taking fall damage from their
+  low-gravity descents toward ground-level flowers/Glowvine and dying on landing (only 4 HP). Flying mobs are
+  now **fall-damage-immune** (like vanilla bees) — Lantern Beetle, Glowmoth, Sky Jelly, Crag Wraith — and the
+  beetle's inappropriate panic-flee (which made it dart at the floor) was removed.
+- **Gravity Repeaters (and Lumen Field Projectors) now drop when mined.** They were missing their loot tables,
+  so they broke into nothing at any tool tier; fixed. (They were always craftable — Gravity Repeater =
+  Shimmerstone + Gravity Lens Fragment + Lumen Relay; Field Projector from the fragment kit.)
+- **Shimmerstone is now obtainable without hunting structures.** Added a craft — **4 Moonstone + 1 Lumen
+  Crystal Shard → 4 Shimmerstone** — and Shimmerstone now generates as ore-blobs in the **Glasspetal Crags**
+  (newly generated Crags). Previously it only existed pre-built into Glasspetal Spires / Vestige Mines, which
+  could dead-end the Gravity Repeater craft.
+
 ## [1.2.0] - 2026-06-17
 **Playthrough #4 — tools, harvest tiers, friendlier Sporelings & a new trader:**
 

@@ -469,6 +469,14 @@ public class ModRecipeProvider extends RecipeProvider {
 
     /** Shimmerstone variants + the two Sporeglass crafts (Phase 4). */
     private void buildShimmerstoneRecipes(RecipeOutput out) {
+        // Base Shimmerstone craft (v1.2.1) — crystal-infused Moonstone, so the set + the Gravity Repeater /
+        // Field Projector are reachable without first finding a Glasspetal Spire. 4 Moonstone + 1 shard → 4.
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.BUILDING_BLOCKS, ModBlocks.SHIMMERSTONE.get(), 4)
+                .requires(ModBlocks.MOONSTONE.get(), 4)
+                .requires(ModItems.LUMEN_CRYSTAL_SHARD.get())
+                .unlockedBy("has_lumen_crystal_shard", has(ModItems.LUMEN_CRYSTAL_SHARD.get()))
+                .save(out);
+
         square2x2(out, ModBlocks.SHIMMERSTONE.get(), ModBlocks.POLISHED_SHIMMERSTONE.get());
         square2x2(out, ModBlocks.POLISHED_SHIMMERSTONE.get(), ModBlocks.SHIMMERSTONE_BRICKS.get());
         square2x2(out, ModBlocks.SHIMMERSTONE_BRICKS.get(), ModBlocks.SHIMMERSTONE_TILES.get());

@@ -746,8 +746,12 @@ as `File#member`.
   `FlyingPathNavigation` (`#createNavigation`) + `FLYING_SPEED`. Non-breeding (`#isFood` false,
   `#getBreedOffspring` null). `#mobInteract` with a glass bottle → catches it (consumes bottle, discards the
   mob) and yields the **Bottled Lantern Beetle block item** (`ModBlocks.BOTTLED_LANTERN_BEETLE`) — a placeable
-  glowing lamp. Goals: panic + `FlyToBlocksGoal` (flowers/lights) + `WaterAvoidingRandomFlyingGoal`.
-  (Moving-light emission deferred → Phase 9.)
+  glowing lamp. Goals: `FlyToBlocksGoal` (flowers/lights) + `WaterAvoidingRandomFlyingGoal` + look.
+  (Moving-light emission deferred → Phase 9.) **v1.2.1:** removed the `PanicGoal` (a ground-mob flee that made
+  the beetle dive at the floor) and overrode `#checkFallDamage` to a no-op — its low-gravity descents toward
+  ground-level attractors were accruing fall distance and killing this 4-HP mob on landing (the "dive-bomb +
+  die" bug). **All flying mobs are now fall-damage-immune** (the same `checkFallDamage` no-op, like vanilla
+  bees): Lantern Beetle, Glowmoth, Sky Jelly, Crag Wraith.
 - [entity/ai/FlyToBlocksGoal.java](src/main/java/com/jus144tice/lumenwilds/entity/ai/FlyToBlocksGoal.java) —
   **reusable** flight goal: throttled scan of a small box for a block matching a `Predicate<BlockState>`
   (Moonblossom/Lumenbulb/Glowvine), then flies to hover above the nearest. Shared by the Lantern Beetle (and
@@ -827,7 +831,9 @@ as `File#member`.
   `#GIANT_GLOWCAP` (5d.3, vanilla `huge_brown_mushroom` with the glowcap blocks), `#LUMENWATER_POOL`
   (5d.4, vanilla `lake` filled with Lumenwater) + `#PATCH_GLOW_ALGAE`/`#PATCH_LUMEN_REEDS`,
   `#UNDERCROWN_GLOWVINE` (5d.5, an `ore` feature threading Glowvine through cave rock), `#STILLBLOOM` (5d.6,
-  the custom giant-flower `StillbloomFeature`) — all live. (The Glowroot *mega* tree is a structure.)
+  the custom giant-flower `StillbloomFeature`), `#SHIMMERSTONE_ORE` (v1.2.1, an `ore` feature — moonstone/
+  deep_moonstone → shimmerstone blobs, in the Glasspetal Crags) — all live. (The Glowroot *mega* tree is a
+  structure.)
 - [LumenPlacedFeatures.java](src/main/java/com/jus144tice/lumenwilds/world/LumenPlacedFeatures.java) —
   same paths under `placed_feature/` (different registry), referenced from `biome/lumen_glade.json`'s
   feature lists: `#LUMEN_CRYSTAL_ORE` (ores step), `#GLOWROOT_TREE_2X2`/`#GLOWROOT_TREE`/`#GLOWWOOD_TREE`
@@ -1172,7 +1178,8 @@ as `File#member`.
   `#buildRecipes`: Lumenbound Stone (`CGC/SAS/CGC`) + Lumen Striker (`I/A/G`); `#buildGlowwoodRecipes` +
   `#buildGlowrootRecipes` (both call the shared `#buildWoodSetRecipes` — full wood set incl. signs, hanging
   signs, boat + chest boat), `#buildMoonstoneRecipes` +
-  `#buildShimmerstoneRecipes` (smelting + 2×2 crafting + stonecutter via helpers `#smelt`/`#square2x2`/`#cut`),
+  `#buildShimmerstoneRecipes` (2×2 crafting + stonecutter via helpers `#square2x2`/`#cut`; **v1.2.1** added the
+  base-Shimmerstone craft `4 Moonstone + 1 Lumen Crystal Shard → 4` so the set isn't structure-gated),
   `#buildLuminiteRecipes` (10a — ore/raw → ingot smelt+blast, ingot ↔ block, the Glowbrick craft
   `L I L / I C I / L I L`, + Glowbrick family cuts/shapes), `#buildResonanceRecipes` (10e — Resonance Core
   from a fragment, Ancient Door from glowbrick, Gravity Lens from fragments + shimmerstone, Lumen Relay),
@@ -1284,7 +1291,8 @@ as `File#member`.
   `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`, `luminite_ore` [10a, dimension-wide via
   the `luminite_ore` biome modifier],
   `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2`
-  [custom feature], `patch_glasspetal` [5d.2], `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
+  [custom feature], `patch_glasspetal` [5d.2], `shimmerstone_ore` [v1.2.1, `ore` blobs in the Glasspetal Crags],
+  `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
   chunk-safe pool feature** — was a crashing vanilla `lake`] +
   `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine` [5d.5] + placed-only `undercrown_crystal`/
   `undercrown_pool`, `stillbloom` [5d.6, custom feature], `lumen_reef` [Phase 9, custom seabed-coral feature on

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    {
+      "item": "lumenwilds:moonstone"
+    },
+    {
+      "item": "lumenwilds:moonstone"
+    },
+    {
+      "item": "lumenwilds:moonstone"
+    },
+    {
+      "item": "lumenwilds:moonstone"
+    },
+    {
+      "item": "lumenwilds:lumen_crystal_shard"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "lumenwilds:shimmerstone"
+  }
+}

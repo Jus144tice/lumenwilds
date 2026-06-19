@@ -40,6 +40,9 @@ public final class LumenPlacedFeatures {
     // Phase 5d.2: surface Glasspetal Cluster patches, used by the Glasspetal Crags biome.
     public static final ResourceKey<PlacedFeature> PATCH_GLASSPETAL = key("patch_glasspetal");
 
+    // v1.2.1: Shimmerstone ore-blobs in the Glasspetal Crags (underground_ores step).
+    public static final ResourceKey<PlacedFeature> SHIMMERSTONE_ORE = key("shimmerstone_ore");
+
     // Phase 5d.3: Giant Glowcap mushrooms, used by the Sporefall Jungle biome.
     public static final ResourceKey<PlacedFeature> GIANT_GLOWCAP = key("giant_glowcap");
 

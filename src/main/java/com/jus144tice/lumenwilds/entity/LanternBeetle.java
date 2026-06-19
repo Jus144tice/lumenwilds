@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.entity;
 
 import com.jus144tice.lumenwilds.entity.ai.FlyToBlocksGoal;
 import com.jus144tice.lumenwilds.registry.ModBlocks;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
@@ -17,7 +18,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.PanicGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -26,6 +26,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * Lantern Beetle — a small glowing flying insect; the dimension's "make it feel alive" ambience mob. It
@@ -56,9 +57,8 @@ public class LanternBeetle extends Animal {
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(1, new PanicGoal(this, 1.25));
         this.goalSelector.addGoal(
-                2,
+                1,
                 new FlyToBlocksGoal(
                         this,
                         state -> state.is(ModBlocks.MOONBLOSSOM.get())
@@ -66,9 +66,17 @@ public class LanternBeetle extends Animal {
                                 || state.is(ModBlocks.GLOWVINE.get()),
                         6,
                         1.0));
-        this.goalSelector.addGoal(3, new WaterAvoidingRandomFlyingGoal(this, 1.0));
-        this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(2, new WaterAvoidingRandomFlyingGoal(this, 1.0));
+        this.goalSelector.addGoal(3, new LookAtPlayerGoal(this, Player.class, 6.0F));
     }
+
+    /**
+     * A flying insect takes no fall damage (like vanilla bees) — its low-gravity descents toward
+     * ground-level flowers/Glowvine were accumulating fall distance and killing this 4-HP mob on landing
+     * (the "dive-bombing into the ground and dying" players saw). Bees override this the same way.
+     */
+    @Override
+    protected void checkFallDamage(double y, boolean onGround, BlockState state, BlockPos pos) {}
 
     /** Tiny, fast flyer with native low gravity. Not breedable. */
     public static AttributeSupplier.Builder createAttributes() {

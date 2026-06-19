@@ -38,6 +38,10 @@ public final class LumenConfiguredFeatures {
     // Phase 5d.2: a surface patch of Glasspetal Cluster crystals, used by the Glasspetal Crags biome.
     public static final ResourceKey<ConfiguredFeature<?, ?>> PATCH_GLASSPETAL = key("patch_glasspetal");
 
+    // v1.2.1: Shimmerstone ore-blobs in the Glasspetal Crags (moonstone/deep_moonstone → shimmerstone) so the
+    // Shimmerstone set + the liftshaft craftables are obtainable without first looting a Glasspetal Spire.
+    public static final ResourceKey<ConfiguredFeature<?, ?>> SHIMMERSTONE_ORE = key("shimmerstone_ore");
+
     // Phase 5d.3: the Giant Glowcap mushroom (vanilla huge_brown_mushroom feature), used by Sporefall Jungle.
     public static final ResourceKey<ConfiguredFeature<?, ?>> GIANT_GLOWCAP = key("giant_glowcap");
 
