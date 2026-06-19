@@ -68,6 +68,9 @@ public final class ModLootTableProvider {
                     dropOther(
                             block,
                             name.startsWith("glowroot") ? ModItems.GLOWROOT_SIGN.get() : ModItems.GLOWWOOD_SIGN.get());
+                } else if (name.equals("lumen_grass_block")) {
+                    // Grass mechanic: silk → Lumen Grass, otherwise → Moonloam (like vanilla grass → dirt).
+                    add(block, b -> createSingleItemTableWithSilkTouch(b, ModBlocks.MOONLOAM.get()));
                 } else if (name.equals("memory_crystal")) {
                     add(block, b -> createOreDrop(b, ModItems.MEMORY_CRYSTAL_SHARD.get())); // silk → block, else shard
                 } else if (name.equals("cracked_gravity_lens")) {

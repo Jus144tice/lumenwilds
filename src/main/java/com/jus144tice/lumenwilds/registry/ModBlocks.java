@@ -114,12 +114,15 @@ public final class ModBlocks {
                     .strength(0.6F)
                     .sound(SoundType.GRAVEL));
 
-    public static final DeferredBlock<Block> LUMEN_GRASS_BLOCK = BLOCKS.registerSimpleBlock(
-            "lumen_grass_block",
-            BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_BLUE)
-                    .strength(0.6F)
-                    .sound(SoundType.GRASS));
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.LumenGrassBlock> LUMEN_GRASS_BLOCK =
+            BLOCKS.registerBlock(
+                    "lumen_grass_block",
+                    com.jus144tice.lumenwilds.block.LumenGrassBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_BLUE)
+                            .strength(0.6F)
+                            .randomTicks() // grass spread / revert (see block.LumenGrassBlock)
+                            .sound(SoundType.GRASS));
 
     public static final DeferredBlock<Block> MOONSTONE = BLOCKS.registerSimpleBlock(
             "moonstone",

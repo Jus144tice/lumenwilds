@@ -398,7 +398,9 @@ as `File#member`.
 - [ModBlocks.java](src/main/java/com/jus144tice/lumenwilds/registry/ModBlocks.java) — `#BLOCKS`
   (`DeferredRegister.Blocks`), ~78 blocks. Core: `#LUMENBOUND_STONE` (portal frame), `#LUMEN_ANCHOR`
   (`block.LumenAnchorBlock`, portal-link device w/ a block entity, 8c), `#LUMEN_PORTAL`
-  (`LumenPortalBlock`, non-solid/glowing), `#MOONLOAM`, `#LUMEN_GRASS_BLOCK`, `#MOONSTONE`/`#COBBLED_MOONSTONE`,
+  (`LumenPortalBlock`, non-solid/glowing), `#MOONLOAM` (the dimension's "dirt"), `#LUMEN_GRASS_BLOCK`
+  (`block.LumenGrassBlock` — the "grass": spreads onto/reverts to Moonloam, drops Moonloam / silk→grass,
+  bone-mealable; v1.2.3), `#MOONSTONE`/`#COBBLED_MOONSTONE`,
   `#GLOWROOT_LOG` (`RotatedPillarBlock`), `#GLOWVINE`, `#LUMENBULB`, `#LUMEN_CRYSTAL_BLOCK`. **Phase 5
   content:** `#MOONBLOSSOM` (`FlowerBlock`, night-vision), `#GLOW_FERN`/`#GLOW_ALGAE`/`#LUMEN_REEDS`
   (`TallGrassBlock` cross flora — the latter two are Moonmire's glowing swamp cover, 5d.4),
@@ -630,6 +632,16 @@ as `File#member`.
   `#useWithoutItem` harvests a mature bush (pops 1–2 Glowberries, reverts to age 1 — renewable), bone meal
   advances age. `ModBlocks#GLOWBERRY_BUSH`; planted by the `ModItems#GLOWBERRY` `ItemNameBlockItem`
   (no own BlockItem); age-conditioned berry loot is hand-authored.
+- [LumenGrassBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenGrassBlock.java) — Lumen Grass
+  (v1.2.3), the dimension's living surface block: a faithful port of vanilla `GrassBlock`/`SpreadingSnowyDirtBlock`
+  keyed to `ModBlocks#MOONLOAM` (the "dirt") + itself (the "grass"), extending `Block` directly (no `SNOWY`
+  property — no snow here). `#randomTick` spreads onto adjacent Moonloam in light / reverts to Moonloam when
+  capped by a light-blocking block; `#canBeGrass`/`#canPropagate` reimplement vanilla's private checks
+  (`LightEngine.getLightBlockInto`). **`#MIN_SPREAD_LIGHT` = 4** (vanilla grass = 9) so the dim dimension still
+  grows grass by sun, moon, OR nearby bioluminescence (`getMaxLocalRawBrightness` includes block light).
+  `BonemealableBlock`: `#performBonemeal` scatters Glow Fern + ~1/10 Moonblossom on nearby grass. Mined → drops
+  Moonloam, silk → grass (the `lumen_grass_block` loot special-case in `ModLootTableProvider`). Registered with
+  `.randomTicks()` in `ModBlocks#LUMEN_GRASS_BLOCK`.
 - [LumenCoralBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenCoralBlock.java) — the glowing
   underwater Lumen Coral frond (Phase 9). A waterlogged (`SimpleWaterloggedBlock`) no-collision cross plant:
   `#WATERLOGGED`, `#getStateForPlacement` (waterlogs in a full water source), `#getFluidState` (returns
@@ -1199,7 +1211,9 @@ as `File#member`.
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
   `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL` + `LUMENWATER_BLOCK`
   (both `noLootTable`) + the liftshaft fields + `GLOWBERRY_BUSH` (hand-authored age-conditioned berry loot),
-  with slab (drops 2) and door (drops 1) special-cased; `memory_crystal` →
+  with slab (drops 2) and door (drops 1) special-cased; `lumen_grass_block` →
+  `createSingleItemTableWithSilkTouch`(MOONLOAM) (silk → grass, else Moonloam — the grass mechanic, v1.2.3);
+  `memory_crystal` →
   `createOreDrop`(MEMORY_CRYSTAL_SHARD); `DropExperienceBlock` → `createOreDrop` (Luminite ores →
   `RAW_LUMINITE`, Lumen Crystal ores → shard); Glowroot wall-signs drop the Glowroot sign item.
 - [ModTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModTagProvider.java) — a `BlockTagsProvider`.
