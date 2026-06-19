@@ -68,10 +68,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 simpleBlock(
                         block,
                         models().cubeBottomTop(
-                                name,
-                                blockTex("lumen_grass_block_side"),
-                                blockTex("lumen_grass_block_bottom"),
-                                blockTex("lumen_grass_block_top")));
+                                        name,
+                                        blockTex("lumen_grass_block_side"),
+                                        blockTex("lumen_grass_block_bottom"),
+                                        blockTex("lumen_grass_block_top")));
             } else if (block instanceof RotatedPillarBlock pillar) {
                 if (name.endsWith("_wood")) {
                     // "Wood" (all-bark) reuses its log's side texture on every face (e.g. glowwood_wood →

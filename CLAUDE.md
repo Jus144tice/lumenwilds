@@ -1086,6 +1086,13 @@ as `File#member`.
 - [GlowmothAggroEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowmothAggroEvents.java) —
   `#onBlockBreak(BlockEvent.BreakEvent)` (6h): when a player breaks a guarded bloom (Moonblossom / any
   Stillbloom part), every `Glowmoth` within ~12 blocks `setTarget`s the culprit — the flower-guardian aggro.
+- [LumenTechTooltips.java](src/main/java/com/jus144tice/lumenwilds/event/LumenTechTooltips.java) — v1.2.2;
+  one `#onItemTooltip(ItemTooltipEvent)` handler adds an aqua-italic "how to use" line to the resonance/
+  gravity tech blocks whose behaviour isn't obvious (Resonance Core, Lumen Conduit, Ancient Door, Lumen Relay,
+  Dormant/Active Light Engine, Gravity Lens, Cracked Gravity Lens, Gravity Repeater, Memory Crystal, Lumen
+  Anchor). A lazily-built item→description `Map` (literals, matching the Lumen Field Projector's own bespoke
+  tooltip, which keeps its mode-aware line and isn't duplicated here). Covers plain `Block`s + custom classes
+  uniformly without an `appendHoverText` per block.
 - [ModBlockEntityTypes.java](src/main/java/com/jus144tice/lumenwilds/event/ModBlockEntityTypes.java) —
   mod-bus `#addSignBlocks(BlockEntityTypeAddBlocksEvent)`: adds the **Glowwood + Glowroot** sign blocks to the
   vanilla `BlockEntityType.SIGN`/`HANGING_SIGN` and the barrels to `BlockEntityType.BARREL` (modded signs/
