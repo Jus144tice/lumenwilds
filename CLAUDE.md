@@ -1163,7 +1163,8 @@ as `File#member`.
   `AmethystClusterBlock` → `directionalBlock` of a cutout cross, `BushBlock` → cutout cross,
   signs → `#registerSigns` (particle model), `LiquidBlock` + `AbstractFieldBlock` → **skipped** (hand-authored
   translucent model — the liftshaft field columns, 11a),
-  else `cube_all`. `#baseTex(name)` resolves a shape's base texture (Glowwood shapes → planks;
+  `lumen_grass_block` → `cubeBottomTop` (real grass: green top, moonloam + grass-fringe sides, moonloam
+  bottom — `block/lumen_grass_block_{top,side,bottom}`), else `cube_all`. `#baseTex(name)` resolves a shape's base texture (Glowwood shapes → planks;
   `_brick`/`_tile` → plural `_bricks`/`_tiles`).
 - [ModItemModelProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModItemModelProvider.java) —
   block items inherit `block/<name>` (via `UncheckedModelFile`, to dodge cross-provider validation);

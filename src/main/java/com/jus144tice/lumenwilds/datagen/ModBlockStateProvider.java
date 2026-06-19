@@ -62,7 +62,17 @@ public class ModBlockStateProvider extends BlockStateProvider {
             if (block instanceof net.minecraft.world.level.block.ChestBlock) {
                 continue; // chest renders via the block-entity renderer — hand-authored particle blockstate
             }
-            if (block instanceof RotatedPillarBlock pillar) {
+            if (name.equals("lumen_grass_block")) {
+                // Grass: a real grass block — green top, moonloam + grass-fringe sides, moonloam bottom
+                // (3-face, painted in the art pass), not the flat cube_all every other simple block gets.
+                simpleBlock(
+                        block,
+                        models().cubeBottomTop(
+                                name,
+                                blockTex("lumen_grass_block_side"),
+                                blockTex("lumen_grass_block_bottom"),
+                                blockTex("lumen_grass_block_top")));
+            } else if (block instanceof RotatedPillarBlock pillar) {
                 if (name.endsWith("_wood")) {
                     // "Wood" (all-bark) reuses its log's side texture on every face (e.g. glowwood_wood →
                     // glowwood_log, stripped_glowroot_wood → stripped_glowroot_log).
