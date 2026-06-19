@@ -1,0 +1,31 @@
+name: Deploy to family server
+
+# When a stable, versioned release is published, tell the minecraft-manager
+# repo (which owns the self-hosted runner on the home box) to install it and
+# restart the family server. The actual install/verify/rollback logic lives in
+# minecraft-manager's scripts/deploy-lumenwilds.sh.
+#
+# Requires a repo secret MC_DEPLOY_DISPATCH_TOKEN: a PAT with permission to
+# send a repository_dispatch to Jus144tice/minecraft-manager
+# (fine-grained PAT scoped to that repo with "Contents: Read and write",
+#  or a classic PAT with the `repo` scope).
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  trigger-deploy:
+    runs-on: ubuntu-latest
+    # Skip drafts and pre-releases — only ship finished, versioned releases.
+    if: ${{ !github.event.release.draft && !github.event.release.prerelease }}
+    steps:
+      - name: Dispatch install to minecraft-manager
+        env:
+          GH_TOKEN: ${{ secrets.MC_DEPLOY_DISPATCH_TOKEN }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          echo "Requesting family-server deploy of $TAG"
+          gh api repos/Jus144tice/minecraft-manager/dispatches \
+            -f event_type=lumenwilds-release \
+            -f "client_payload[tag]=$TAG"
