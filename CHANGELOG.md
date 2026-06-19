@@ -6,6 +6,16 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-06-19
+**Art + usability:**
+
+- **Tech blocks now explain themselves.** The Lumenwright resonance/gravity blocks get a hover description
+  so it's clear how to use them: Resonance Core, Lumen Conduit, Ancient Door, Lumen Relay, Dormant/Active
+  Light Engine, Gravity Lens (+ cracked), Gravity Repeater, Memory Crystal, and the Lumen Anchor.
+- **Art pass** (community contribution): Lumen Grass is now a proper grass block (green top, moonloam sides/
+  bottom) instead of a flat cube, and the Glowroot logs got painted bark + end textures.
+- **Infra:** published releases now auto-deploy to the family server (no gameplay impact).
+
 ## [1.2.1] - 2026-06-18
 **Playthrough #4 follow-up fixes:**
 
