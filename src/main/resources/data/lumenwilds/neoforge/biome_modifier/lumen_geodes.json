@@ -1,0 +1,10 @@
+{
+  "__comment": "Mining overhaul Phase E1: buried Lumen Geodes in all 7 biomes at local_modifications (the vanilla geode step).",
+  "type": "neoforge:add_features",
+  "biomes": [
+    "lumenwilds:lumen_glade", "lumenwilds:glowroot_forest", "lumenwilds:glasspetal_crags",
+    "lumenwilds:sporefall_jungle", "lumenwilds:moonmire", "lumenwilds:undercrown_caverns", "lumenwilds:stillbloom_basin"
+  ],
+  "features": [ "lumenwilds:lumen_geode" ],
+  "step": "local_modifications"
+}

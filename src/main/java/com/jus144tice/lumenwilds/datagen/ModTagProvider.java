@@ -140,7 +140,8 @@ public class ModTagProvider extends BlockTagsProvider {
                     || name.equals("pale_tuff")
                     || name.contains("emberglow")
                     || name.contains("pale_opal")
-                    || name.contains("resonite")) {
+                    || name.contains("resonite")
+                    || name.contains("lumen_crystal")) { // incl. budding + buds + cluster (E1 geode)
                 pickaxe.add(block);
                 // Iron-tier = the dimension's valuable resources (its ores + crystal/metal storage blocks);
                 // everything else pickaxe-mineable is stone-tier (the basic build/stone families).

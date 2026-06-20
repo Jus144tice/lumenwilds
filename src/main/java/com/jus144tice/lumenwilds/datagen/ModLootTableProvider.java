@@ -77,6 +77,11 @@ public final class ModLootTableProvider {
                     add(
                             block,
                             b -> createOreDrop(b, ModItems.GRAVITY_LENS_FRAGMENT.get())); // silk → block, else fragment
+                } else if (name.equals("lumen_crystal_cluster")) {
+                    // Geode cluster (E1): silk → the cluster, else Lumen Crystal Shards (+fortune) — renewable.
+                    add(block, b -> createOreDrop(b, ModItems.LUMEN_CRYSTAL_SHARD.get()));
+                } else if (name.endsWith("_lumen_crystal_bud")) {
+                    add(block, this::createSilkTouchOnlyTable); // buds only drop with Silk Touch (like amethyst)
                 } else if (block instanceof DropExperienceBlock) {
                     // Route each ore to its drop by name (all +silk/fortune via createOreDrop).
                     Item drop;
@@ -117,6 +122,7 @@ public final class ModLootTableProvider {
                     .filter(block -> block != ModBlocks.LUMENWATER_BLOCK.get()) // noLootTable fluid block
                     .filter(block -> block != ModBlocks.ASCENSION_FIELD.get())
                     .filter(block -> block != ModBlocks.DESCENT_FIELD.get()) // noLootTable liftshaft fields
+                    .filter(block -> block != ModBlocks.BUDDING_LUMEN_CRYSTAL.get()) // noLootTable (un-harvestable)
                     // Glowberry Bush has a hand-authored, age-conditioned berry loot table (v1.1c).
                     .filter(block -> block != ModBlocks.GLOWBERRY_BUSH.get())
                     .collect(Collectors.toList());

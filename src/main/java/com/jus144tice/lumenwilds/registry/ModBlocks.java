@@ -6,6 +6,7 @@ package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.block.BottledLanternBeetleBlock;
+import com.jus144tice.lumenwilds.block.BuddingLumenCrystalBlock;
 import com.jus144tice.lumenwilds.block.LumenAnchorBlock;
 import com.jus144tice.lumenwilds.block.LumenCoralBlock;
 import com.jus144tice.lumenwilds.fluid.LumenwaterBlock;
@@ -927,6 +928,31 @@ public final class ModBlocks {
                     .lightLevel(s -> 5)
                     .sound(SoundType.METAL));
 
+    // --- Lumen Geode (v1.3 Phase E1) -------------------------------------------------------------
+    // A buried crystal pocket (the `lumen_geode` feature) lined with Lumen Crystal Block, Shimmerstone, and
+    // Deep Moonstone, with Budding Lumen Crystal growing renewable crystal buds → clusters (shards = the payoff).
+    /** Budding Lumen Crystal — grows the buds below (see block.BuddingLumenCrystalBlock); not harvestable. */
+    public static final DeferredBlock<BuddingLumenCrystalBlock> BUDDING_LUMEN_CRYSTAL = BLOCKS.registerBlock(
+            "budding_lumen_crystal",
+            BuddingLumenCrystalBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_CYAN)
+                    .strength(1.5F)
+                    .randomTicks()
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(s -> 4)
+                    .sound(SoundType.AMETHYST)
+                    .noLootTable());
+
+    public static final DeferredBlock<AmethystClusterBlock> SMALL_LUMEN_CRYSTAL_BUD =
+            lumenBud("small_lumen_crystal_bud", 3.0F, 4.0F, 2);
+    public static final DeferredBlock<AmethystClusterBlock> MEDIUM_LUMEN_CRYSTAL_BUD =
+            lumenBud("medium_lumen_crystal_bud", 4.0F, 3.0F, 3);
+    public static final DeferredBlock<AmethystClusterBlock> LARGE_LUMEN_CRYSTAL_BUD =
+            lumenBud("large_lumen_crystal_bud", 5.0F, 3.0F, 4);
+    public static final DeferredBlock<AmethystClusterBlock> LUMEN_CRYSTAL_CLUSTER =
+            lumenBud("lumen_crystal_cluster", 7.0F, 3.0F, 5);
+
     // --- Glowbrick (Lumenwright luminous architecture, Phase 10a) -------------------------------
     // The signature building material of the Vestige Cities: a luminous alien brick refined from Luminite.
     // Architectural light, NOT a lantern — intact glowbrick glows 6, cracked 3, ancient barely 1, so ruins
@@ -1238,6 +1264,21 @@ public final class ModBlocks {
                 .strength(3.0F, 6.0F)
                 .requiresCorrectToolForDrops()
                 .sound(SoundType.DEEPSLATE);
+    }
+
+    /** Lumen-crystal bud/cluster factory (v1.3 Phase E1): an {@link AmethystClusterBlock} that glows faintly. */
+    private static DeferredBlock<AmethystClusterBlock> lumenBud(
+            String name, float height, float aabbOffset, int light) {
+        return BLOCKS.registerBlock(
+                name,
+                p -> new AmethystClusterBlock(height, aabbOffset, p),
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.COLOR_CYAN)
+                        .noOcclusion()
+                        .strength(1.5F)
+                        .lightLevel(s -> light)
+                        .sound(SoundType.AMETHYST_CLUSTER)
+                        .pushReaction(PushReaction.DESTROY));
     }
 
     /** Ore-block factory (v1.3 Phase C): {@code deep} = the deepslate-tinted tougher variant; {@code light} 0 = none. */

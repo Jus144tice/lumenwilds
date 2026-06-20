@@ -31,8 +31,12 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 - **Resonite armor (Phase D2) — the dimension's first armor.** A full set (helmet/chestplate/leggings/boots)
   crafted from Resonite Ingots: defense between iron and diamond, toughness 1.5, highly enchantable. (Worn-armor
   art is a placeholder ice-blue layer for now.)
-- *(Still part of a multi-phase mining overhaul — cave surprises like geodes and jackpot veins are coming next
-  in 1.3.x. Ore amounts/bands + gear stats are tunable; feedback welcome.)*
+- **Lumen Geodes (Phase E1).** Rare buried crystal pockets — a Deep-Moonstone/Shimmerstone shell around a
+  hollow lined with **Lumen Crystal Block** and glowing **Budding Lumen Crystal** that slowly grows crystal
+  buds → clusters. Mine the clusters for a renewable supply of Lumen Crystal Shards (Silk Touch keeps the
+  crystals). A proper "wow, what's that glow?" cave find.
+- *(Still part of a multi-phase mining overhaul — jackpot veins + cave landmarks are coming next in 1.3.x.
+  Amounts/rarity are tunable; feedback welcome.)*
 
 ## [1.2.2] - 2026-06-19
 **Art + usability:**

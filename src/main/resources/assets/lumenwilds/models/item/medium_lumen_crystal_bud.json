@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lumenwilds:block/medium_lumen_crystal_bud"
+  }
+}

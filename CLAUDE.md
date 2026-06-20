@@ -470,6 +470,12 @@ as `File#member`.
   by name in `ModLootTableProvider` (createOreDrop); harvest tier in `ModTagProvider` (emberglow=stone,
   opal/resonite=iron); recipes in `ModRecipeProvider#buildMiningOreRecipes`. (The existing
   `lumen_crystal_ore`/`luminite_ore` placed features were re-banded — crystal shallow-common, luminite mid.)
+  **Lumen Geode (v1.3 Phase E1):** `#BUDDING_LUMEN_CRYSTAL` (`block.BuddingLumenCrystalBlock`, grows buds;
+  `noLootTable`, un-harvestable) + the 4 `AmethystClusterBlock` stages (`#lumenBud` helper)
+  `#SMALL_LUMEN_CRYSTAL_BUD` → `#MEDIUM_…` → `#LARGE_…` → `#LUMEN_CRYSTAL_CLUSTER` (cluster drops shards via
+  `createOreDrop`, buds Silk-only). The geode reuses existing blocks for its layers (Lumen Crystal Block /
+  Shimmerstone / Deep Moonstone) via the `lumen_geode` `minecraft:geode` feature (+ `lumen_geodes` biome
+  modifier at `local_modifications`).
   **Add a block here → it auto-gets a BlockItem in `ModItems` (loop); add asset + loot via datagen.**
 - [ModWoodTypes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModWoodTypes.java) — bespoke
   `#GLOWWOOD` (`WoodType`, name `lumenwilds:glowwood` → sign textures) + `#GLOWWOOD_SET` (`BlockSetType`),
@@ -1347,6 +1353,7 @@ as `File#member`.
   [custom feature], `patch_glasspetal` [5d.2], `shimmerstone_ore` [v1.2.1, `ore` blobs in the Glasspetal Crags],
   `veinstone_blob`/`pale_tuff_blob` [v1.3 Phase B, `ore` blobs of the accent rocks in the moonstone/deep bands],
   `emberglow_ore`/`pale_opal_ore`/`resonite_ore` [v1.3 Phase C, trapezoid-banded `ore` features, 4 host targets each],
+  `lumen_geode` [v1.3 Phase E1, `minecraft:geode` — budding crystal pocket],
   `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
   chunk-safe pool feature** — was a crashing vanilla `lake`] +
   `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine` [5d.5] + placed-only `undercrown_crystal`/
@@ -1397,7 +1404,8 @@ as `File#member`.
   `deep_cave_pools.json` (the bounded `undercrown_pool` Lumenwater pools into all 7 biomes at `fluid_springs`),
   and `strata_blobs.json` (Phase B — `veinstone_blob` + `pale_tuff_blob` accent-rock blobs into all 7 biomes at
   `underground_ores`), and `mining_ores.json` (Phase C — the three new ores `emberglow_ore`/`pale_opal_ore`/
-  `resonite_ore`, trapezoid-banded, into all 7 biomes at `underground_ores`). The chest loot tables
+  `resonite_ore`, trapezoid-banded, into all 7 biomes at `underground_ores`), and `lumen_geodes.json` (Phase E1
+  — the `lumen_geode` `minecraft:geode` feature into all 7 biomes at `local_modifications`). The chest loot tables
   (`loot_table/chests/*`, Phase 9) are now **tiered** — a guaranteed signature reward pool (enchanted gear/books,
   Lumen Anchor, striker, crystal blocks) + themed mid loot + treasure scaled by structure difficulty (no more
   all-filler chests). Underwater the surface rule places **`lumensand`** as the seabed (was dead moonloam).
