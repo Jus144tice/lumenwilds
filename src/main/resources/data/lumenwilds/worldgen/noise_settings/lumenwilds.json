@@ -160,13 +160,13 @@
                 }
               },
               "argument2": {
-                "__comment": "Cave carve = big cheese CAVERNS (caverns noise) + winding TUNNELS (ridged cave_tunnels noise, carved where |noise| is small) so the caverns link into a connected system. Both depth-gated below ~y52.",
+                "__comment": "Cave carve = big cheese CAVERNS (caverns noise, carve where noise>0.05 at -8.5) + winding TUNNELS (ridged cave_tunnels noise, carve where |noise|<0.06 at -7.0) so caverns link into a connected system. v1.3 mining overhaul: the depth-mask top was raised from y52 to ~y90 (the from_y below) so caves reach UP into the commonly-mined upper stone (the surface is tall ~y70-170; a mine dug into a hill used to sit entirely ABOVE the y52 cave zone = solid rock the whole way). Carve STRENGTH is the original/proven value — only the reach changed. To tune feel: raise/lower from_y (cave-zone top); for denser/sparser caves make the caverns add-offset more positive / more negative (e.g. -0.05 -> 0.0 = more) + the multiplier.",
                 "type": "minecraft:add",
                 "argument1": {
                   "type": "minecraft:mul",
                   "argument1": {
                     "type": "minecraft:y_clamped_gradient",
-                    "from_y": 52,
+                    "from_y": 90,
                     "to_y": -5,
                     "from_value": 0.0,
                     "to_value": 1.0
@@ -189,7 +189,7 @@
                   "type": "minecraft:mul",
                   "argument1": {
                     "type": "minecraft:y_clamped_gradient",
-                    "from_y": 52,
+                    "from_y": 90,
                     "to_y": -5,
                     "from_value": 0.0,
                     "to_value": 1.0

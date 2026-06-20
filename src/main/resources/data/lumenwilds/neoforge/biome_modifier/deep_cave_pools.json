@@ -1,0 +1,15 @@
+{
+  "__comment": "Mining overhaul Phase A: scatters glowing Lumenwater pools through the deep caves of ALL biomes (the bible's glowing underground pools). Uses the bounded, chunk-safe lumenwater_pool feature via the undercrown_pool placed feature (NEVER minecraft:lake — that crashes chunk-gen), which is rarity-filtered so pools stay sparse + cheap. fluid_springs step; single feature there → no cycle.",
+  "type": "neoforge:add_features",
+  "biomes": [
+    "lumenwilds:lumen_glade",
+    "lumenwilds:glowroot_forest",
+    "lumenwilds:glasspetal_crags",
+    "lumenwilds:sporefall_jungle",
+    "lumenwilds:moonmire",
+    "lumenwilds:undercrown_caverns",
+    "lumenwilds:stillbloom_basin"
+  ],
+  "features": "lumenwilds:undercrown_pool",
+  "step": "fluid_springs"
+}

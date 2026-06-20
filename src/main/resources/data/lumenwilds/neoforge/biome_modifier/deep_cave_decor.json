@@ -1,0 +1,14 @@
+{
+  "__comment": "Mining overhaul Phase A: makes the deep caves in the SURFACE biomes alive like the Undercrown. Injects undercrown_decor (wall crystals + hanging glowvine + floor glow ferns; the all-in-one UndercrownDecorFeature) at the underground_decoration step. The Undercrown biome already lists undercrown_decor in its own feature list, so it's not included here (avoids doubling). Single feature per step → no feature-order cycle.",
+  "type": "neoforge:add_features",
+  "biomes": [
+    "lumenwilds:lumen_glade",
+    "lumenwilds:glowroot_forest",
+    "lumenwilds:glasspetal_crags",
+    "lumenwilds:sporefall_jungle",
+    "lumenwilds:moonmire",
+    "lumenwilds:stillbloom_basin"
+  ],
+  "features": "lumenwilds:undercrown_decor",
+  "step": "underground_decoration"
+}

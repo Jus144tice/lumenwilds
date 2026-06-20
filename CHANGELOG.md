@@ -6,6 +6,18 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-06-19
+**Mining overhaul, Phase A — reachable, alive caves:**
+
+- **Caves now reach the mining band.** The dimension's terrain is tall (surface ~y70–170) but caves only
+  carved below y52, so a mine dug into the upper stone sat entirely *above* the cave zone — solid rock all the
+  way down. The cave zone now starts at ~**y90**, so straight mining actually breaks into caverns.
+- **The deep is alive everywhere.** All biomes' deep caves now grow the Undercrown's character — wall
+  crystals, hanging glowvine, glow ferns — plus scattered glowing **Lumenwater pools** (previously only the
+  Undercrown biome had this; everywhere else was bare stone).
+- *(This is the first of a multi-phase mining overhaul — strata variety, new ores + depth-banding, a deep gear
+  tier, and cave surprises like geodes are coming in 1.3.x. Cave density is tunable; feedback welcome.)*
+
 ## [1.2.2] - 2026-06-19
 **Art + usability:**
 

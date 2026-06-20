@@ -1289,8 +1289,10 @@ as `File#member`.
   BIG (xz 0.35, regional plateaus/basins ≈ continents), MID (xz 1.0, main local relief), SHARP (xz 2.2, rugged
   cliff faces) — swings the surface ~y0..170: deep **Lumenwater seas** in the basins, high cliffs on the rises.
   **Noise CAVES** (big cheese **caverns** [`lumenwilds:caverns`, strength −8.5] + winding **tunnels** [`lumenwilds:cave_tunnels`,
-  a ridged carve where `|noise|` is small] so caverns link into a system, depth-gated below ~y52 → ~28% of the deep
-  hollow, meeting the surface biomes' vanilla carvers so you can cave down) hollow the deep into the
+  a ridged carve where `|noise|` is small] so caverns link into a system, depth-gated below **~y90** [the cave-zone
+  `from_y`; raised from y52 in the v1.3 mining overhaul so caves reach UP into the commonly-mined upper stone — the
+  tall ~y70-170 terrain meant a mine dug into a hill used to sit entirely above the y52 cave zone = solid rock all
+  the way down], meeting the surface biomes' vanilla carvers so you can cave down) hollow the deep into the
   **Undercrown** — folded INSIDE the `interpolated`/`squeeze` tree (adding it OUTSIDE does NOT carve — see gotcha).
   The Undercrown is decorated as a living crystal grotto by `world.feature.UndercrownDecorFeature` (`undercrown_decor`:
   crystals on cave rock faces + glowing Glowvine/Glow-Fern on floors) instead of the old floating-prone `lake` pool.
@@ -1358,7 +1360,11 @@ as `File#member`.
 - `data/lumenwilds/neoforge/biome_modifier/*` — `lumen_reef.json` (the project's **first NeoForge biome
   modifier**, `neoforge:add_features`: injects `lumen_reef` into the 6 surface biomes at `vegetal_decoration`,
   avoiding each biome's feature list + the order topo-sort), `glowberry.json` (Glowberry Bush on green biomes),
-  and `luminite_ore.json` (10a — `luminite_ore` into all 7 biomes at `underground_ores`). The chest loot tables
+  `luminite_ore.json` (10a — `luminite_ore` into all 7 biomes at `underground_ores`), and **v1.3 mining overhaul
+  Phase A**: `deep_cave_decor.json` (injects `undercrown_decor` — wall crystals + hanging glowvine + glow ferns —
+  into the 6 surface biomes at `underground_decoration` so their deep caves are alive like the Undercrown) +
+  `deep_cave_pools.json` (the bounded `undercrown_pool` Lumenwater pools into all 7 biomes at `fluid_springs`).
+  The chest loot tables
   (`loot_table/chests/*`, Phase 9) are now **tiered** — a guaranteed signature reward pool (enchanted gear/books,
   Lumen Anchor, striker, crystal blocks) + themed mid loot + treasure scaled by structure difficulty (no more
   all-filler chests). Underwater the surface rule places **`lumensand`** as the seabed (was dead moonloam).
