@@ -537,8 +537,10 @@ as `File#member`.
   (`loot_table/entities/`), and biome `spawners` entries.
 - [ModToolTiers.java](src/main/java/com/jus144tice/lumenwilds/registry/ModToolTiers.java) — tool material
   tiers (v1.2): `#MOONSTONE` (stone-tier, `INCORRECT_FOR_STONE_TOOL`, repair = Cobbled Moonstone) + `#LUMINITE`
-  (iron-tier, `INCORRECT_FOR_IRON_TOOL`, repair = Luminite Ingot). A tiny `SimpleTier` record implements
-  `Tier`; the tool items live in `ModItems` (`#MOONSTONE_PICKAXE`…`#LUMINITE_SWORD`, via the `pickaxe/axe/
+  (iron-tier, `INCORRECT_FOR_IRON_TOOL`, repair = Luminite Ingot) + **`#RESONITE`** (v1.3 Phase D — the top,
+  **diamond-capable** tier, `INCORRECT_FOR_DIAMOND_TOOL`, uses 900 / speed 8 / atk 3 / ench 18, repair =
+  Resonite Ingot). A tiny `SimpleTier` record implements
+  `Tier`; the tool items live in `ModItems` (`#MOONSTONE_PICKAXE`…`#RESONITE_SWORD`, via the `pickaxe/axe/
   shovel/hoe/sword` helpers), recipes in `ModRecipeProvider#buildToolRecipes`, enchantability + type tags in
   `ModItemTagProvider`. **Not a DeferredRegister** (tiers are plain objects).
 - [ModEnchantments.java](src/main/java/com/jus144tice/lumenwilds/registry/ModEnchantments.java) — `ResourceKey<Enchantment>`

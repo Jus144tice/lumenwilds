@@ -409,6 +409,13 @@ public final class ModItems {
     public static final DeferredItem<HoeItem> LUMINITE_HOE = hoe("luminite_hoe", ModToolTiers.LUMINITE, -2.0F, -1.0F);
     public static final DeferredItem<SwordItem> LUMINITE_SWORD = sword("luminite_sword", ModToolTiers.LUMINITE);
 
+    // Resonite tools (v1.3 Phase D) — the dimension's top, diamond-capable tier (see ModToolTiers#RESONITE).
+    public static final DeferredItem<PickaxeItem> RESONITE_PICKAXE = pickaxe("resonite_pickaxe", ModToolTiers.RESONITE);
+    public static final DeferredItem<AxeItem> RESONITE_AXE = axe("resonite_axe", ModToolTiers.RESONITE, 7.0F, -3.0F);
+    public static final DeferredItem<ShovelItem> RESONITE_SHOVEL = shovel("resonite_shovel", ModToolTiers.RESONITE);
+    public static final DeferredItem<HoeItem> RESONITE_HOE = hoe("resonite_hoe", ModToolTiers.RESONITE, -3.0F, 0.0F);
+    public static final DeferredItem<SwordItem> RESONITE_SWORD = sword("resonite_sword", ModToolTiers.RESONITE);
+
     private static DeferredItem<PickaxeItem> pickaxe(String name, Tier tier) {
         return ITEMS.registerItem(
                 name,

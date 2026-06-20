@@ -151,6 +151,15 @@ public class ModRecipeProvider extends RecipeProvider {
                 ModItems.LUMINITE_SWORD.get(),
                 ModItems.LUMINITE_INGOT.get(),
                 "luminite_ingot");
+        toolSet(
+                out,
+                ModItems.RESONITE_PICKAXE.get(),
+                ModItems.RESONITE_AXE.get(),
+                ModItems.RESONITE_SHOVEL.get(),
+                ModItems.RESONITE_HOE.get(),
+                ModItems.RESONITE_SWORD.get(),
+                ModItems.RESONITE_INGOT.get(),
+                "resonite_ingot");
     }
 
     private void toolSet(

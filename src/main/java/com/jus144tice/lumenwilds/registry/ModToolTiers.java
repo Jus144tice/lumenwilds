@@ -40,6 +40,20 @@ public final class ModToolTiers {
     public static final Tier LUMINITE = new SimpleTier(
             BlockTags.INCORRECT_FOR_IRON_TOOL, 300, 6.0F, 2.0F, 14, () -> Ingredient.of(ModItems.LUMINITE_INGOT.get()));
 
+    /**
+     * {@link #RESONITE} — the dimension's <b>top tier</b> (v1.3 Phase D), the deep's chase reward. Diamond-
+     * mining-capable ({@code INCORRECT_FOR_DIAMOND_TOOL}); durability between diamond (1561) and below netherite,
+     * a touch faster than diamond, high enchantability. Mined as the rarest, deepest ore (Resonite) and repaired
+     * with {@code Resonite Ingot}.
+     */
+    public static final Tier RESONITE = new SimpleTier(
+            BlockTags.INCORRECT_FOR_DIAMOND_TOOL,
+            900,
+            8.0F,
+            3.0F,
+            18,
+            () -> Ingredient.of(ModItems.RESONITE_INGOT.get()));
+
     private ModToolTiers() {}
 
     /** Minimal {@link Tier} implementation (the repair ingredient is built lazily — items register first). */

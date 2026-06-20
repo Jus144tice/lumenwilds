@@ -58,14 +58,21 @@ public class ModItemTagProvider extends ItemTagsProvider {
         // Moonstone/Luminite tools enchant exactly like their vanilla counterparts. Mirrors vanilla membership:
         // all are durability/vanishing-enchantable; mining tools get mining (+ pickaxe/shovel get mining_loot
         // for Fortune/Silk Touch); axes + swords get the weapon enchants; swords get sword/fire_aspect.
-        var pickaxes =
-                new net.minecraft.world.item.Item[] {ModItems.MOONSTONE_PICKAXE.get(), ModItems.LUMINITE_PICKAXE.get()};
-        var axes = new net.minecraft.world.item.Item[] {ModItems.MOONSTONE_AXE.get(), ModItems.LUMINITE_AXE.get()};
-        var shovels =
-                new net.minecraft.world.item.Item[] {ModItems.MOONSTONE_SHOVEL.get(), ModItems.LUMINITE_SHOVEL.get()};
-        var hoes = new net.minecraft.world.item.Item[] {ModItems.MOONSTONE_HOE.get(), ModItems.LUMINITE_HOE.get()};
-        var swords =
-                new net.minecraft.world.item.Item[] {ModItems.MOONSTONE_SWORD.get(), ModItems.LUMINITE_SWORD.get()};
+        var pickaxes = new net.minecraft.world.item.Item[] {
+            ModItems.MOONSTONE_PICKAXE.get(), ModItems.LUMINITE_PICKAXE.get(), ModItems.RESONITE_PICKAXE.get()
+        };
+        var axes = new net.minecraft.world.item.Item[] {
+            ModItems.MOONSTONE_AXE.get(), ModItems.LUMINITE_AXE.get(), ModItems.RESONITE_AXE.get()
+        };
+        var shovels = new net.minecraft.world.item.Item[] {
+            ModItems.MOONSTONE_SHOVEL.get(), ModItems.LUMINITE_SHOVEL.get(), ModItems.RESONITE_SHOVEL.get()
+        };
+        var hoes = new net.minecraft.world.item.Item[] {
+            ModItems.MOONSTONE_HOE.get(), ModItems.LUMINITE_HOE.get(), ModItems.RESONITE_HOE.get()
+        };
+        var swords = new net.minecraft.world.item.Item[] {
+            ModItems.MOONSTONE_SWORD.get(), ModItems.LUMINITE_SWORD.get(), ModItems.RESONITE_SWORD.get()
+        };
 
         tag(ItemTags.PICKAXES).add(pickaxes);
         tag(ItemTags.AXES).add(axes);
