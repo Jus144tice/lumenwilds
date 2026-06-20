@@ -2,13 +2,22 @@
   "values": [
     "lumenwilds:moonstone_pickaxe",
     "lumenwilds:luminite_pickaxe",
+    "lumenwilds:resonite_pickaxe",
     "lumenwilds:moonstone_axe",
     "lumenwilds:luminite_axe",
+    "lumenwilds:resonite_axe",
     "lumenwilds:moonstone_shovel",
     "lumenwilds:luminite_shovel",
+    "lumenwilds:resonite_shovel",
     "lumenwilds:moonstone_hoe",
     "lumenwilds:luminite_hoe",
+    "lumenwilds:resonite_hoe",
     "lumenwilds:moonstone_sword",
-    "lumenwilds:luminite_sword"
+    "lumenwilds:luminite_sword",
+    "lumenwilds:resonite_sword",
+    "lumenwilds:resonite_helmet",
+    "lumenwilds:resonite_chestplate",
+    "lumenwilds:resonite_leggings",
+    "lumenwilds:resonite_boots"
   ]
 }

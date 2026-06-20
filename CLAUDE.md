@@ -382,7 +382,7 @@ as `File#member`.
 - [Lumenwilds.java](src/main/java/com/jus144tice/lumenwilds/Lumenwilds.java) — `@Mod` class.
   `#MOD_ID` (`"lumenwilds"`), `#MOD_NAME` (`"The Lumenwilds"`), `#LOGGER`. Ctor registers these
   DeferredRegisters to the **mod bus**: `ModSounds`, `ModParticles`, `ModMobEffects`, `ModPotions`,
-  `ModFluidTypes`, `ModFluids`, `ModBlocks`, `ModItems`, `ModStructures` (`STRUCTURE_TYPES` + `STRUCTURE_PIECES`),
+  `ModFluidTypes`, `ModFluids`, `ModBlocks`, `ModItems`, `ModArmorMaterials`, `ModStructures` (`STRUCTURE_TYPES` + `STRUCTURE_PIECES`),
   `ModBlockEntities`, `ModEntities`, `ModMenus`, `ModCreativeTabs`. Also calls `ModWoodTypes#init()` first (WoodType/
   BlockSetType must register before blocks build). Also `container.registerConfig(COMMON, LumenConfig.SPEC)`
   (Phase 9h). `#onCommonSetup` logs only. **When you add a new (non-empty) DeferredRegister, register it here.**
@@ -507,8 +507,10 @@ as `File#member`.
   (`BoatItem` over `ModBoatTypes.glowwood()`/`glowroot()`); signs `#GLOWWOOD_SIGN`/`#GLOWROOT_SIGN` (`SignItem`) +
   `#GLOWWOOD_HANGING_SIGN`/`#GLOWROOT_HANGING_SIGN`
   (`HangingSignItem`) — wall variants share these. **Tools (v1.2):** `#MOONSTONE_PICKAXE`/`_AXE`/`_SHOVEL`/
-  `_HOE`/`_SWORD` + `#LUMINITE_*` (built by the private `pickaxe/axe/shovel/hoe/sword` helpers — each wires the
-  `ModToolTiers` tier + `.attributes(...)`); `#SPORE_TRADER_SPAWN_EGG`. A **static loop auto-registers a simple
+  `_HOE`/`_SWORD` + `#LUMINITE_*` + `#RESONITE_*` (v1.3 Phase D1; built by the private
+  `pickaxe/axe/shovel/hoe/sword` helpers — each wires the `ModToolTiers` tier + `.attributes(...)`). **Armor
+  (v1.3 Phase D2):** `#RESONITE_HELMET`/`#RESONITE_CHESTPLATE`/`#RESONITE_LEGGINGS`/`#RESONITE_BOOTS`
+  (`ArmorItem`, via the `armor` helper over `ModArmorMaterials.RESONITE`). `#SPORE_TRADER_SPAWN_EGG`. A **static loop auto-registers a simple
   `BlockItem` for every block except `LUMEN_PORTAL`, `LUMENWATER_BLOCK`, and the sign blocks** (runs after the
   standalone/sign items so the striker stays first in the tab) — new blocks get an item with no edits here.
 - [ModCreativeTabs.java](src/main/java/com/jus144tice/lumenwilds/registry/ModCreativeTabs.java) —
@@ -543,6 +545,13 @@ as `File#member`.
   `Tier`; the tool items live in `ModItems` (`#MOONSTONE_PICKAXE`…`#RESONITE_SWORD`, via the `pickaxe/axe/
   shovel/hoe/sword` helpers), recipes in `ModRecipeProvider#buildToolRecipes`, enchantability + type tags in
   `ModItemTagProvider`. **Not a DeferredRegister** (tiers are plain objects).
+- [ModArmorMaterials.java](src/main/java/com/jus144tice/lumenwilds/registry/ModArmorMaterials.java) — the
+  dimension's first **armor material** (v1.3 Phase D2): `#ARMOR_MATERIALS` (`DeferredRegister<ArmorMaterial>`
+  on `Registries.ARMOR_MATERIAL`, wired on the mod bus) + `#RESONITE` (`Holder<ArmorMaterial>` — defense
+  between iron and diamond, toughness 1.5, ench 18, repair = Resonite Ingot, worn texture asset
+  `lumenwilds:resonite` → `textures/models/armor/resonite_layer_{1,2}.png`). The 4 `ArmorItem`s
+  (`ModItems#RESONITE_HELMET`…`#RESONITE_BOOTS`, via the `armor` helper, base durability 36×slot), recipes in
+  `ModRecipeProvider#buildArmorRecipes`, slot + enchantability item tags in `ModItemTagProvider`.
 - [ModEnchantments.java](src/main/java/com/jus144tice/lumenwilds/registry/ModEnchantments.java) — `ResourceKey<Enchantment>`
   handles for the six **fished** enchantments (v1.1g); the enchantments are data (`data/lumenwilds/enchantment/*.json`,
   1.21.1 data-driven), NOT a DeferredRegister — no bus wiring. Armor while-worn (`tick`→`apply_mob_effect`):

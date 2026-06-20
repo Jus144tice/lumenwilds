@@ -80,22 +80,49 @@ public class ModItemTagProvider extends ItemTagsProvider {
         tag(ItemTags.HOES).add(hoes);
         tag(ItemTags.SWORDS).add(swords);
 
-        var allTools = new net.minecraft.world.item.Item[] {
-            pickaxes[0], pickaxes[1],
-            axes[0], axes[1],
-            shovels[0], shovels[1],
-            hoes[0], hoes[1],
-            swords[0], swords[1]
-        };
+        var miners = concat(pickaxes, axes, shovels, hoes); // mining tools
+        var allTools = concat(miners, swords);
         tag(ItemTags.DURABILITY_ENCHANTABLE).add(allTools);
         tag(ItemTags.VANISHING_ENCHANTABLE).add(allTools);
 
-        tag(ItemTags.MINING_ENCHANTABLE)
-                .add(pickaxes[0], pickaxes[1], axes[0], axes[1], shovels[0], shovels[1], hoes[0], hoes[1]);
-        tag(ItemTags.MINING_LOOT_ENCHANTABLE).add(pickaxes[0], pickaxes[1], shovels[0], shovels[1]);
-        tag(ItemTags.SHARP_WEAPON_ENCHANTABLE).add(swords[0], swords[1], axes[0], axes[1]);
-        tag(ItemTags.WEAPON_ENCHANTABLE).add(swords[0], swords[1], axes[0], axes[1]);
+        tag(ItemTags.MINING_ENCHANTABLE).add(miners);
+        tag(ItemTags.MINING_LOOT_ENCHANTABLE).add(concat(pickaxes, shovels));
+        tag(ItemTags.SHARP_WEAPON_ENCHANTABLE).add(concat(swords, axes));
+        tag(ItemTags.WEAPON_ENCHANTABLE).add(concat(swords, axes));
         tag(ItemTags.SWORD_ENCHANTABLE).add(swords);
         tag(ItemTags.FIRE_ASPECT_ENCHANTABLE).add(swords);
+
+        // Resonite armor (v1.3 Phase D2) — slot + enchantability tags so it equips + enchants like vanilla armor.
+        var helmet = ModItems.RESONITE_HELMET.get();
+        var chest = ModItems.RESONITE_CHESTPLATE.get();
+        var legs = ModItems.RESONITE_LEGGINGS.get();
+        var boots = ModItems.RESONITE_BOOTS.get();
+        var allArmor = new net.minecraft.world.item.Item[] {helmet, chest, legs, boots};
+        tag(ItemTags.HEAD_ARMOR).add(helmet);
+        tag(ItemTags.CHEST_ARMOR).add(chest);
+        tag(ItemTags.LEG_ARMOR).add(legs);
+        tag(ItemTags.FOOT_ARMOR).add(boots);
+        tag(ItemTags.HEAD_ARMOR_ENCHANTABLE).add(helmet);
+        tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(chest);
+        tag(ItemTags.LEG_ARMOR_ENCHANTABLE).add(legs);
+        tag(ItemTags.FOOT_ARMOR_ENCHANTABLE).add(boots);
+        tag(ItemTags.ARMOR_ENCHANTABLE).add(allArmor);
+        tag(ItemTags.EQUIPPABLE_ENCHANTABLE).add(allArmor);
+        tag(ItemTags.DURABILITY_ENCHANTABLE).add(allArmor);
+        tag(ItemTags.VANISHING_ENCHANTABLE).add(allArmor);
+    }
+
+    private static net.minecraft.world.item.Item[] concat(net.minecraft.world.item.Item[]... groups) {
+        int n = 0;
+        for (var g : groups) {
+            n += g.length;
+        }
+        var out = new net.minecraft.world.item.Item[n];
+        int i = 0;
+        for (var g : groups) {
+            System.arraycopy(g, 0, out, i, g.length);
+            i += g.length;
+        }
+        return out;
     }
 }

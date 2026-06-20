@@ -27,9 +27,12 @@ All notable changes to The Lumenwilds are documented here. The format is based o
   All three also generate inside the new Veinstone/Pale Tuff rock. Iron-tier (Luminite pickaxe) for Opal + Resonite.
 - **Resonite tools (Phase D1).** The deep's chase reward: a full **diamond-capable** tool set
   (pickaxe/axe/shovel/hoe/sword) smithed from Resonite Ingots — a touch faster than diamond, highly
-  enchantable, the dimension's top tier. (Resonite armor is the next step.)
-- *(Still part of a multi-phase mining overhaul — Resonite armor and cave surprises like geodes are coming
-  next in 1.3.x. Ore amounts/bands + tool stats are tunable; feedback welcome.)*
+  enchantable, the dimension's top tier.
+- **Resonite armor (Phase D2) — the dimension's first armor.** A full set (helmet/chestplate/leggings/boots)
+  crafted from Resonite Ingots: defense between iron and diamond, toughness 1.5, highly enchantable. (Worn-armor
+  art is a placeholder ice-blue layer for now.)
+- *(Still part of a multi-phase mining overhaul — cave surprises like geodes and jackpot veins are coming next
+  in 1.3.x. Ore amounts/bands + gear stats are tunable; feedback welcome.)*
 
 ## [1.2.2] - 2026-06-19
 **Art + usability:**

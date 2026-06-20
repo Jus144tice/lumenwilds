@@ -83,6 +83,38 @@ public class ModRecipeProvider extends RecipeProvider {
         buildOrphanDropRecipes(recipeOutput);
         buildToolRecipes(recipeOutput);
         buildMiningOreRecipes(recipeOutput);
+        buildArmorRecipes(recipeOutput);
+    }
+
+    /** v1.3 Phase D2: the Resonite armor set, standard vanilla armor crafting patterns. */
+    private void buildArmorRecipes(RecipeOutput out) {
+        ItemLike ingot = ModItems.RESONITE_INGOT.get();
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.RESONITE_HELMET.get())
+                .pattern("MMM")
+                .pattern("M M")
+                .define('M', ingot)
+                .unlockedBy("has_resonite_ingot", has(ingot))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.RESONITE_CHESTPLATE.get())
+                .pattern("M M")
+                .pattern("MMM")
+                .pattern("MMM")
+                .define('M', ingot)
+                .unlockedBy("has_resonite_ingot", has(ingot))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.RESONITE_LEGGINGS.get())
+                .pattern("MMM")
+                .pattern("M M")
+                .pattern("M M")
+                .define('M', ingot)
+                .unlockedBy("has_resonite_ingot", has(ingot))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.RESONITE_BOOTS.get())
+                .pattern("M M")
+                .pattern("M M")
+                .define('M', ingot)
+                .unlockedBy("has_resonite_ingot", has(ingot))
+                .save(out);
     }
 
     /** v1.3 Phase C ores: Emberglow + Pale Opal block↔9, Resonite ore/raw → ingot (smelt+blast) → block. */

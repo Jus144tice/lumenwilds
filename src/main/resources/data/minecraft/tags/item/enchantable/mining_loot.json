@@ -2,7 +2,9 @@
   "values": [
     "lumenwilds:moonstone_pickaxe",
     "lumenwilds:luminite_pickaxe",
+    "lumenwilds:resonite_pickaxe",
     "lumenwilds:moonstone_shovel",
-    "lumenwilds:luminite_shovel"
+    "lumenwilds:luminite_shovel",
+    "lumenwilds:resonite_shovel"
   ]
 }

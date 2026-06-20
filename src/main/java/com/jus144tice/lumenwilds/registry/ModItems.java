@@ -10,6 +10,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.BucketItem;
@@ -416,6 +417,13 @@ public final class ModItems {
     public static final DeferredItem<HoeItem> RESONITE_HOE = hoe("resonite_hoe", ModToolTiers.RESONITE, -3.0F, 0.0F);
     public static final DeferredItem<SwordItem> RESONITE_SWORD = sword("resonite_sword", ModToolTiers.RESONITE);
 
+    // Resonite armor (v1.3 Phase D2) — the dimension's first armor set (see ModArmorMaterials#RESONITE).
+    public static final DeferredItem<ArmorItem> RESONITE_HELMET = armor("resonite_helmet", ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> RESONITE_CHESTPLATE =
+            armor("resonite_chestplate", ArmorItem.Type.CHESTPLATE);
+    public static final DeferredItem<ArmorItem> RESONITE_LEGGINGS = armor("resonite_leggings", ArmorItem.Type.LEGGINGS);
+    public static final DeferredItem<ArmorItem> RESONITE_BOOTS = armor("resonite_boots", ArmorItem.Type.BOOTS);
+
     private static DeferredItem<PickaxeItem> pickaxe(String name, Tier tier) {
         return ITEMS.registerItem(
                 name,
@@ -448,6 +456,14 @@ public final class ModItems {
         return ITEMS.registerItem(
                 name,
                 p -> new SwordItem(tier, p.attributes(SwordItem.createAttributes(tier, 3.0F, -2.4F))),
+                new Item.Properties());
+    }
+
+    /** Resonite armor piece (v1.3 Phase D2). Base durability 36 (a touch above diamond's 33) × the slot factor. */
+    private static DeferredItem<ArmorItem> armor(String name, ArmorItem.Type type) {
+        return ITEMS.registerItem(
+                name,
+                p -> new ArmorItem(ModArmorMaterials.RESONITE, type, p.durability(type.getDurability(36))),
                 new Item.Properties());
     }
 

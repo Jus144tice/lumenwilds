@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_resonite_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:resonite_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:resonite_boots"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_resonite_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:resonite_boots"
+    ]
+  }
+}

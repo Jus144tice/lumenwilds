@@ -5,6 +5,7 @@
 package com.jus144tice.lumenwilds;
 
 import com.jus144tice.lumenwilds.config.LumenConfig;
+import com.jus144tice.lumenwilds.registry.ModArmorMaterials;
 import com.jus144tice.lumenwilds.registry.ModBlockEntities;
 import com.jus144tice.lumenwilds.registry.ModBlocks;
 import com.jus144tice.lumenwilds.registry.ModCreativeTabs;
@@ -71,6 +72,7 @@ public final class Lumenwilds {
         ModFluids.FLUIDS.register(modBus);
         ModBlocks.BLOCKS.register(modBus);
         ModItems.ITEMS.register(modBus);
+        ModArmorMaterials.ARMOR_MATERIALS.register(modBus);
         ModFeatures.FEATURES.register(modBus);
         ModStructures.STRUCTURE_TYPES.register(modBus);
         ModStructures.STRUCTURE_PIECES.register(modBus);
