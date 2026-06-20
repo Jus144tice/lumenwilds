@@ -6,8 +6,10 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
-## [1.3.0] - 2026-06-19
-**Mining overhaul, Phase A — reachable, alive caves:**
+## [1.3.0] - 2026-06-20
+**Mining overhaul (Phases A–E) — a complete rework of the Lumenwilds mining loop: reachable lively caves,
+varied strata, new depth-banded ores, a deep gear tier (tools + the dimension's first armor), and cave
+surprises (geodes, jackpot veins, landmarks):**
 
 - **Caves now reach the mining band.** The dimension's terrain is tall (surface ~y70–170) but caves only
   carved below y52, so a mine dug into the upper stone sat entirely *above* the cave zone — solid rock all the
