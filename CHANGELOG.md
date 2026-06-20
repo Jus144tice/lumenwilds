@@ -35,8 +35,12 @@ All notable changes to The Lumenwilds are documented here. The format is based o
   hollow lined with **Lumen Crystal Block** and glowing **Budding Lumen Crystal** that slowly grows crystal
   buds → clusters. Mine the clusters for a renewable supply of Lumen Crystal Shards (Silk Touch keeps the
   crystals). A proper "wow, what's that glow?" cave find.
-- *(Still part of a multi-phase mining overhaul — jackpot veins + cave landmarks are coming next in 1.3.x.
-  Amounts/rarity are tunable; feedback welcome.)*
+- **Jackpot veins (Phase E2).** Occasional big, rare deep deposits of Luminite and Resonite (copper-vein
+  style) — the satisfying "hit the motherlode" moment that makes a deep dig pay off.
+- **Cave landmarks (Phase E3).** Two more reasons to look around down there: glowing **Lumen Crystal Block
+  pockets** embedded in the deep stone, and **Glowcap mushrooms** now growing on cave floors underground (not
+  just in the jungle).
+- *(This completes the v1.3 mining overhaul (Phases A–E). All amounts/rarity are tunable — feedback welcome.)*
 
 ## [1.2.2] - 2026-06-19
 **Art + usability:**

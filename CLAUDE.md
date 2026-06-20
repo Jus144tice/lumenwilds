@@ -609,7 +609,9 @@ as `File#member`.
   instead of 1-block bits); `#GLOWCAP`
   (`world.feature.GlowcapFeature`) — the ordinary Sporefall Glowcap mushroom: **bell-shaped, size-varied
   (small/medium/large) and 3-coloured** (red / `GIANT_GLOWCAP_AZURE` / `GIANT_GLOWCAP_VIOLET`), replacing the flat
-  vanilla `huge_brown_mushroom` (Phase 9 variation; the mega is still the `MegaGlowcap` structure).
+  vanilla `huge_brown_mushroom` (Phase 9 variation; the mega is still the `MegaGlowcap` structure). **v1.3 E3:**
+  `#isGround` also accepts the deep stones (deep_moonstone/veinstone/pale_tuff) so the same feature grows
+  **underground glowcaps** on cave floors (via the `underground_glowcap` placed feature).
 - [ModStructures.java](src/main/java/com/jus144tice/lumenwilds/registry/ModStructures.java) —
   `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` + `#GLOWROOT_TREE_PIECE` (the mega Glowroot
   tree), `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom), `#ROOTSHRINE` +
@@ -1354,6 +1356,8 @@ as `File#member`.
   `veinstone_blob`/`pale_tuff_blob` [v1.3 Phase B, `ore` blobs of the accent rocks in the moonstone/deep bands],
   `emberglow_ore`/`pale_opal_ore`/`resonite_ore` [v1.3 Phase C, trapezoid-banded `ore` features, 4 host targets each],
   `lumen_geode` [v1.3 Phase E1, `minecraft:geode` — budding crystal pocket],
+  `luminite_vein`/`resonite_vein` [E2, big rare `ore` jackpot deposits], `crystal_pocket` [E3, glowing
+  Lumen-Crystal-Block blobs], `underground_glowcap` [E3, reuses `giant_glowcap` on cave floors],
   `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
   chunk-safe pool feature** — was a crashing vanilla `lake`] +
   `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine` [5d.5] + placed-only `undercrown_crystal`/
@@ -1405,7 +1409,10 @@ as `File#member`.
   and `strata_blobs.json` (Phase B — `veinstone_blob` + `pale_tuff_blob` accent-rock blobs into all 7 biomes at
   `underground_ores`), and `mining_ores.json` (Phase C — the three new ores `emberglow_ore`/`pale_opal_ore`/
   `resonite_ore`, trapezoid-banded, into all 7 biomes at `underground_ores`), and `lumen_geodes.json` (Phase E1
-  — the `lumen_geode` `minecraft:geode` feature into all 7 biomes at `local_modifications`). The chest loot tables
+  — the `lumen_geode` `minecraft:geode` feature into all 7 biomes at `local_modifications`), and `jackpot_veins.json`
+  (E2 — `luminite_vein`/`resonite_vein` big deep deposits at `underground_ores`), `cave_landmarks.json` (E3 —
+  `crystal_pocket` glowing-crystal-block blobs at `underground_ores`), `cave_glowcaps.json` (E3 —
+  `underground_glowcap` at `vegetal_decoration`). The chest loot tables
   (`loot_table/chests/*`, Phase 9) are now **tiered** — a guaranteed signature reward pool (enchanted gear/books,
   Lumen Anchor, striker, crystal blocks) + themed mid loot + treasure scaled by structure difficulty (no more
   all-filler chests). Underwater the surface rule places **`lumensand`** as the seabed (was dead moonloam).

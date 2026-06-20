@@ -87,9 +87,13 @@ public class GlowcapFeature extends Feature<NoneFeatureConfiguration> {
     }
 
     private static boolean isGround(BlockState state) {
+        // Surface soil + any Lumenwilds stone floor (so underground glowcaps grow on deep cave floors too, E3).
         return state.is(ModBlocks.LUMEN_GRASS_BLOCK.get())
                 || state.is(ModBlocks.MOONLOAM.get())
-                || state.is(ModBlocks.MOONSTONE.get());
+                || state.is(ModBlocks.MOONSTONE.get())
+                || state.is(ModBlocks.DEEP_MOONSTONE.get())
+                || state.is(ModBlocks.VEINSTONE.get())
+                || state.is(ModBlocks.PALE_TUFF.get());
     }
 
     private static void fillDisc(WorldGenLevel level, int cx, int y, int cz, double radius, BlockState state) {
