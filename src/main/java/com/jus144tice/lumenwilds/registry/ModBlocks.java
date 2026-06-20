@@ -132,6 +132,12 @@ public final class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.STONE));
 
+    /**
+     * Veinstone (v1.3 mining overhaul, Phase B) — a granite/andesite-style accent rock generated as blobs
+     * through the Moonstone band, so the upper strata aren't a flat sea of Moonstone. Stone-tier; drops self.
+     */
+    public static final DeferredBlock<Block> VEINSTONE = BLOCKS.registerSimpleBlock("veinstone", moonstoneProps());
+
     public static final DeferredBlock<Block> COBBLED_MOONSTONE = BLOCKS.registerSimpleBlock(
             "cobbled_moonstone",
             BlockBehaviour.Properties.of()
@@ -750,6 +756,14 @@ public final class ModBlocks {
     // --- Deep Moonstone (deepslate analog, deeper layers) (Phase 4) -----------------------------
 
     public static final DeferredBlock<Block> DEEP_MOONSTONE = deepCube("deep_moonstone");
+
+    /**
+     * Pale Tuff (v1.3 mining overhaul, Phase B) — a soft, pale tuff-style accent rock generated as blobs
+     * through the Deep Moonstone band, breaking up the deep strata (and a host for deep ores in Phase C).
+     * Deepslate-tier hardness; drops self.
+     */
+    public static final DeferredBlock<Block> PALE_TUFF = BLOCKS.registerSimpleBlock("pale_tuff", deepProps());
+
     public static final DeferredBlock<Block> COBBLED_DEEP_MOONSTONE = deepCube("cobbled_deep_moonstone");
     public static final DeferredBlock<Block> POLISHED_DEEP_MOONSTONE = deepCube("polished_deep_moonstone");
     public static final DeferredBlock<Block> DEEP_MOONSTONE_BRICKS = deepCube("deep_moonstone_bricks");

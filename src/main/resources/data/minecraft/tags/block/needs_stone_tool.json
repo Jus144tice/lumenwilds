@@ -2,6 +2,7 @@
   "values": [
     "lumenwilds:lumenbound_stone",
     "lumenwilds:moonstone",
+    "lumenwilds:veinstone",
     "lumenwilds:cobbled_moonstone",
     "lumenwilds:glasspetal_block",
     "lumenwilds:glasspetal_cluster",
@@ -25,6 +26,7 @@
     "lumenwilds:smooth_moonstone_stairs",
     "lumenwilds:smooth_moonstone_slab",
     "lumenwilds:deep_moonstone",
+    "lumenwilds:pale_tuff",
     "lumenwilds:cobbled_deep_moonstone",
     "lumenwilds:polished_deep_moonstone",
     "lumenwilds:deep_moonstone_bricks",

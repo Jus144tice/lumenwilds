@@ -1,0 +1,18 @@
+{
+  "__comment": "Mining overhaul Phase B: scatters two accent rocks as ore-style blobs so the strata aren't a flat moonstone->deep-moonstone column. veinstone in the Moonstone band, pale_tuff in the Deep Moonstone band. underground_ores step (they also become hosts for the Phase-C deep ores). All 7 biomes.",
+  "type": "neoforge:add_features",
+  "biomes": [
+    "lumenwilds:lumen_glade",
+    "lumenwilds:glowroot_forest",
+    "lumenwilds:glasspetal_crags",
+    "lumenwilds:sporefall_jungle",
+    "lumenwilds:moonmire",
+    "lumenwilds:undercrown_caverns",
+    "lumenwilds:stillbloom_basin"
+  ],
+  "features": [
+    "lumenwilds:veinstone_blob",
+    "lumenwilds:pale_tuff_blob"
+  ],
+  "step": "underground_ores"
+}

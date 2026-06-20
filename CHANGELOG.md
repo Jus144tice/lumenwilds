@@ -15,8 +15,11 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 - **The deep is alive everywhere.** All biomes' deep caves now grow the Undercrown's character — wall
   crystals, hanging glowvine, glow ferns — plus scattered glowing **Lumenwater pools** (previously only the
   Undercrown biome had this; everywhere else was bare stone).
-- *(This is the first of a multi-phase mining overhaul — strata variety, new ores + depth-banding, a deep gear
-  tier, and cave surprises like geodes are coming in 1.3.x. Cave density is tunable; feedback welcome.)*
+- **Strata variety (Phase B).** Two new accent rocks break up the old Moonstone→Deep-Moonstone monotony,
+  generated as blobs through the stone: **Veinstone** (a violet granite-like rock in the Moonstone band) and
+  **Pale Tuff** (a soft pale rock in the deep). Both are new building blocks too.
+- *(This is part of a multi-phase mining overhaul — new ores + depth-banding, a deep gear tier, and cave
+  surprises like geodes are coming in 1.3.x. Cave density + strata amounts are tunable; feedback welcome.)*
 
 ## [1.2.2] - 2026-06-19
 **Art + usability:**

@@ -135,7 +135,9 @@ public class ModTagProvider extends BlockTagsProvider {
                     || name.endsWith("_cluster")
                     || name.equals("lumenbound_stone")
                     || name.equals("lumen_crystal_block")
-                    || name.equals("glasspetal_block")) {
+                    || name.equals("glasspetal_block")
+                    || name.equals("veinstone")
+                    || name.equals("pale_tuff")) {
                 pickaxe.add(block);
                 // Iron-tier = the dimension's valuable resources (its ores + crystal/metal storage blocks);
                 // everything else pickaxe-mineable is stone-tier (the basic build/stone families).

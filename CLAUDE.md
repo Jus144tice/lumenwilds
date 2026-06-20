@@ -454,6 +454,10 @@ as `File#member`.
   (`#GLOWROOT_LOG`/`#GLOWROOT_LEAVES`/`#GLOWROOT_SAPLING` declared earlier); Moonstone set (smooth/bricks/chiseled/tiles/**cracked_bricks** + stairs/slabs/
   walls); Deep Moonstone (deepslate-analog: cobbled/polished/bricks/tiles/**cracked_bricks** + shapes); Shimmerstone
   (polished/bricks/tiles/pillar/glass + shapes); Sporeglass (`TransparentBlock`) + pane (`IronBarsBlock`).
+  **Mining-overhaul strata (v1.3 Phase B):** `#VEINSTONE` (granite-style accent rock, `moonstoneProps`,
+  generated as blobs in the Moonstone band) + `#PALE_TUFF` (`deepProps`, blobs in the Deep Moonstone band) —
+  both drop-self stone-tier blocks that break up the strata (+ future deep-ore hosts); blobs via
+  `worldgen/.../{veinstone,pale_tuff}_blob` + the `strata_blobs` biome modifier.
   **Add a block here → it auto-gets a BlockItem in `ModItems` (loop); add asset + loot via datagen.**
 - [ModWoodTypes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModWoodTypes.java) — bespoke
   `#GLOWWOOD` (`WoodType`, name `lumenwilds:glowwood` → sign textures) + `#GLOWWOOD_SET` (`BlockSetType`),
@@ -1316,6 +1320,7 @@ as `File#member`.
   the `luminite_ore` biome modifier],
   `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2`
   [custom feature], `patch_glasspetal` [5d.2], `shimmerstone_ore` [v1.2.1, `ore` blobs in the Glasspetal Crags],
+  `veinstone_blob`/`pale_tuff_blob` [v1.3 Phase B, `ore` blobs of the accent rocks in the moonstone/deep bands],
   `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
   chunk-safe pool feature** — was a crashing vanilla `lake`] +
   `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine` [5d.5] + placed-only `undercrown_crystal`/
@@ -1363,8 +1368,9 @@ as `File#member`.
   `luminite_ore.json` (10a — `luminite_ore` into all 7 biomes at `underground_ores`), and **v1.3 mining overhaul
   Phase A**: `deep_cave_decor.json` (injects `undercrown_decor` — wall crystals + hanging glowvine + glow ferns —
   into the 6 surface biomes at `underground_decoration` so their deep caves are alive like the Undercrown) +
-  `deep_cave_pools.json` (the bounded `undercrown_pool` Lumenwater pools into all 7 biomes at `fluid_springs`).
-  The chest loot tables
+  `deep_cave_pools.json` (the bounded `undercrown_pool` Lumenwater pools into all 7 biomes at `fluid_springs`),
+  and `strata_blobs.json` (Phase B — `veinstone_blob` + `pale_tuff_blob` accent-rock blobs into all 7 biomes at
+  `underground_ores`). The chest loot tables
   (`loot_table/chests/*`, Phase 9) are now **tiered** — a guaranteed signature reward pool (enchanted gear/books,
   Lumen Anchor, striker, crystal blocks) + themed mid loot + treasure scaled by structure difficulty (no more
   all-filler chests). Underwater the surface rule places **`lumensand`** as the seabed (was dead moonloam).
