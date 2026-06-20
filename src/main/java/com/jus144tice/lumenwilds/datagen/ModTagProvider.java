@@ -137,11 +137,21 @@ public class ModTagProvider extends BlockTagsProvider {
                     || name.equals("lumen_crystal_block")
                     || name.equals("glasspetal_block")
                     || name.equals("veinstone")
-                    || name.equals("pale_tuff")) {
+                    || name.equals("pale_tuff")
+                    || name.contains("emberglow")
+                    || name.contains("pale_opal")
+                    || name.contains("resonite")) {
                 pickaxe.add(block);
                 // Iron-tier = the dimension's valuable resources (its ores + crystal/metal storage blocks);
                 // everything else pickaxe-mineable is stone-tier (the basic build/stone families).
-                if (name.endsWith("_ore") || name.equals("lumen_crystal_block") || name.equals("luminite_block")) {
+                // Exception: Emberglow (the fuel ore) is a cheap, stone-tier mine like coal.
+                if (name.contains("emberglow")) {
+                    needsStone.add(block);
+                } else if (name.endsWith("_ore")
+                        || name.equals("lumen_crystal_block")
+                        || name.equals("luminite_block")
+                        || name.equals("pale_opal_block")
+                        || name.equals("resonite_block")) {
                     needsIron.add(block);
                 } else {
                     needsStone.add(block);

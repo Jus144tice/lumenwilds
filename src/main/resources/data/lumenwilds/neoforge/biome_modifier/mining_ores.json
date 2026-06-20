@@ -1,0 +1,14 @@
+{
+  "__comment": "Mining overhaul Phase C: injects the three new ores into all 7 biomes at underground_ores, depth-banded (trapezoid) so digging deeper pays off — Emberglow (fuel, common-mid), Pale Opal (gem, deep), Resonite (rare deep treasure). They also spawn in the Phase-B veinstone/pale_tuff host rock.",
+  "type": "neoforge:add_features",
+  "biomes": [
+    "lumenwilds:lumen_glade", "lumenwilds:glowroot_forest", "lumenwilds:glasspetal_crags",
+    "lumenwilds:sporefall_jungle", "lumenwilds:moonmire", "lumenwilds:undercrown_caverns", "lumenwilds:stillbloom_basin"
+  ],
+  "features": [
+    "lumenwilds:emberglow_ore",
+    "lumenwilds:pale_opal_ore",
+    "lumenwilds:resonite_ore"
+  ],
+  "step": "underground_ores"
+}

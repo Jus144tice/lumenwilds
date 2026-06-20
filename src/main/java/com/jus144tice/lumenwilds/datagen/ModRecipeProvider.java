@@ -82,6 +82,53 @@ public class ModRecipeProvider extends RecipeProvider {
         buildLiftshaftRecipes(recipeOutput);
         buildOrphanDropRecipes(recipeOutput);
         buildToolRecipes(recipeOutput);
+        buildMiningOreRecipes(recipeOutput);
+    }
+
+    /** v1.3 Phase C ores: Emberglow + Pale Opal block↔9, Resonite ore/raw → ingot (smelt+blast) → block. */
+    private void buildMiningOreRecipes(RecipeOutput out) {
+        nineBlock(out, ModItems.EMBERGLOW.get(), ModBlocks.EMBERGLOW_BLOCK.get(), "emberglow");
+        nineBlock(out, ModItems.PALE_OPAL.get(), ModBlocks.PALE_OPAL_BLOCK.get(), "pale_opal");
+
+        Ingredient resoniteOres = Ingredient.of(ModBlocks.RESONITE_ORE.get(), ModBlocks.DEEP_RESONITE_ORE.get());
+        SimpleCookingRecipeBuilder.smelting(resoniteOres, RecipeCategory.MISC, ModItems.RESONITE_INGOT.get(), 1.0F, 200)
+                .unlockedBy("has_resonite_ore", has(ModBlocks.RESONITE_ORE.get()))
+                .save(out, id("resonite_ingot_from_smelting_ore"));
+        SimpleCookingRecipeBuilder.blasting(resoniteOres, RecipeCategory.MISC, ModItems.RESONITE_INGOT.get(), 1.0F, 100)
+                .unlockedBy("has_resonite_ore", has(ModBlocks.RESONITE_ORE.get()))
+                .save(out, id("resonite_ingot_from_blasting_ore"));
+        SimpleCookingRecipeBuilder.smelting(
+                        Ingredient.of(ModItems.RAW_RESONITE.get()),
+                        RecipeCategory.MISC,
+                        ModItems.RESONITE_INGOT.get(),
+                        1.0F,
+                        200)
+                .unlockedBy("has_raw_resonite", has(ModItems.RAW_RESONITE.get()))
+                .save(out, id("resonite_ingot_from_smelting_raw"));
+        SimpleCookingRecipeBuilder.blasting(
+                        Ingredient.of(ModItems.RAW_RESONITE.get()),
+                        RecipeCategory.MISC,
+                        ModItems.RESONITE_INGOT.get(),
+                        1.0F,
+                        100)
+                .unlockedBy("has_raw_resonite", has(ModItems.RAW_RESONITE.get()))
+                .save(out, id("resonite_ingot_from_blasting_raw"));
+        nineBlock(out, ModItems.RESONITE_INGOT.get(), ModBlocks.RESONITE_BLOCK.get(), "resonite");
+    }
+
+    /** item ↔ 3×3 storage block (mirrors the vanilla ingot/block pattern). */
+    private void nineBlock(RecipeOutput out, ItemLike item, ItemLike block, String key) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, block)
+                .pattern("###")
+                .pattern("###")
+                .pattern("###")
+                .define('#', item)
+                .unlockedBy("has_" + key, has(item))
+                .save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, item, 9)
+                .requires(block)
+                .unlockedBy("has_" + key + "_block", has(block))
+                .save(out, id(key + "_from_block"));
     }
 
     /** Tool sets (v1.2): Moonstone (from Cobbled Moonstone) + Luminite (from Luminite Ingots), vanilla shapes. */

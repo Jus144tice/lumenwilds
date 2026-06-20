@@ -78,10 +78,19 @@ public final class ModLootTableProvider {
                             block,
                             b -> createOreDrop(b, ModItems.GRAVITY_LENS_FRAGMENT.get())); // silk → block, else fragment
                 } else if (block instanceof DropExperienceBlock) {
-                    // Luminite ores → raw_luminite; the Lumen Crystal ores → shard (both +silk/fortune).
-                    Item drop = name.contains("luminite")
-                            ? ModItems.RAW_LUMINITE.get()
-                            : ModItems.LUMEN_CRYSTAL_SHARD.get();
+                    // Route each ore to its drop by name (all +silk/fortune via createOreDrop).
+                    Item drop;
+                    if (name.contains("emberglow")) {
+                        drop = ModItems.EMBERGLOW.get();
+                    } else if (name.contains("pale_opal")) {
+                        drop = ModItems.PALE_OPAL.get();
+                    } else if (name.contains("resonite")) {
+                        drop = ModItems.RAW_RESONITE.get();
+                    } else if (name.contains("luminite")) {
+                        drop = ModItems.RAW_LUMINITE.get();
+                    } else {
+                        drop = ModItems.LUMEN_CRYSTAL_SHARD.get();
+                    }
                     add(block, b -> createOreDrop(b, drop));
                 } else if (block instanceof net.minecraft.world.level.block.LeavesBlock) {
                     // Real leaves loot (NOT drop-self): shears/silk → block, else sapling/stick/mostly nothing.

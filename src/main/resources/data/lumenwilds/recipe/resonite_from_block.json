@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lumenwilds:resonite_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "lumenwilds:resonite_ingot"
+  }
+}

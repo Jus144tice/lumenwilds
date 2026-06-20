@@ -880,6 +880,53 @@ public final class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.METAL));
 
+    // --- Mining-overhaul ores (v1.3 Phase C) -----------------------------------------------------
+    // Three new ores, each with a deep variant (DEEPSLATE-tinted, tougher), generated in the moonstone +
+    // deep-moonstone + veinstone + pale_tuff rock (worldgen) and depth-banded so digging deeper pays off.
+    // Loot routes by name in ModLootTableProvider (createOreDrop); harvest tier in ModTagProvider.
+    /** Emberglow — the dimension's coal/fuel analog (drops Emberglow, a furnace fuel). Faint glow 3. */
+    public static final DeferredBlock<DropExperienceBlock> EMBERGLOW_ORE = oreBlock("emberglow_ore", 1, 3, false, 3);
+
+    public static final DeferredBlock<DropExperienceBlock> DEEP_EMBERGLOW_ORE =
+            oreBlock("deep_emberglow_ore", 1, 3, true, 3);
+    /** Pale Opal — a decorative/trade gem (drops Pale Opal). Non-glowing, deep. */
+    public static final DeferredBlock<DropExperienceBlock> PALE_OPAL_ORE = oreBlock("pale_opal_ore", 2, 5, false, 0);
+
+    public static final DeferredBlock<DropExperienceBlock> DEEP_PALE_OPAL_ORE =
+            oreBlock("deep_pale_opal_ore", 2, 5, true, 0);
+    /** Resonite — the rare deep treasure (drops Raw Resonite → ingot → the Phase-D gear tier). Cold glow 5. */
+    public static final DeferredBlock<DropExperienceBlock> RESONITE_ORE = oreBlock("resonite_ore", 3, 7, false, 5);
+
+    public static final DeferredBlock<DropExperienceBlock> DEEP_RESONITE_ORE =
+            oreBlock("deep_resonite_ore", 3, 7, true, 5);
+
+    /** Emberglow Block — fuel storage (a fuel block, like a coal block; see event.ModFuels). Glow 3. */
+    public static final DeferredBlock<Block> EMBERGLOW_BLOCK = BLOCKS.registerSimpleBlock(
+            "emberglow_block",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(s -> 3)
+                    .sound(SoundType.STONE));
+    /** Pale Opal Block — decorative gem storage. */
+    public static final DeferredBlock<Block> PALE_OPAL_BLOCK = BLOCKS.registerSimpleBlock(
+            "pale_opal_block",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.QUARTZ)
+                    .strength(3.0F, 3.0F)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.AMETHYST));
+    /** Resonite Block — refined resonite-ingot storage; glows with the Lumenwrights' resonant cold light. */
+    public static final DeferredBlock<Block> RESONITE_BLOCK = BLOCKS.registerSimpleBlock(
+            "resonite_block",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_BLUE)
+                    .strength(5.0F, 6.0F)
+                    .requiresCorrectToolForDrops()
+                    .lightLevel(s -> 5)
+                    .sound(SoundType.METAL));
+
     // --- Glowbrick (Lumenwright luminous architecture, Phase 10a) -------------------------------
     // The signature building material of the Vestige Cities: a luminous alien brick refined from Luminite.
     // Architectural light, NOT a lantern — intact glowbrick glows 6, cracked 3, ancient barely 1, so ruins
@@ -1191,6 +1238,20 @@ public final class ModBlocks {
                 .strength(3.0F, 6.0F)
                 .requiresCorrectToolForDrops()
                 .sound(SoundType.DEEPSLATE);
+    }
+
+    /** Ore-block factory (v1.3 Phase C): {@code deep} = the deepslate-tinted tougher variant; {@code light} 0 = none. */
+    private static DeferredBlock<DropExperienceBlock> oreBlock(
+            String name, int xpMin, int xpMax, boolean deep, int light) {
+        return BLOCKS.registerBlock(
+                name,
+                props -> new DropExperienceBlock(UniformInt.of(xpMin, xpMax), props),
+                BlockBehaviour.Properties.of()
+                        .mapColor(deep ? MapColor.DEEPSLATE : MapColor.STONE)
+                        .strength(deep ? 4.5F : 3.0F, 3.0F)
+                        .requiresCorrectToolForDrops()
+                        .lightLevel(s -> light)
+                        .sound(deep ? SoundType.DEEPSLATE : SoundType.STONE));
     }
 
     private static DeferredBlock<Block> moonCube(String name) {

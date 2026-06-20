@@ -1,0 +1,6 @@
+{
+  "values": {
+    "lumenwilds:emberglow": { "burn_time": 1600 },
+    "lumenwilds:emberglow_block": { "burn_time": 16000 }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 9,
+    "targets": [
+      { "state": { "Name": "lumenwilds:emberglow_ore" }, "target": { "predicate_type": "minecraft:block_match", "block": "lumenwilds:moonstone" } },
+      { "state": { "Name": "lumenwilds:emberglow_ore" }, "target": { "predicate_type": "minecraft:block_match", "block": "lumenwilds:veinstone" } },
+      { "state": { "Name": "lumenwilds:deep_emberglow_ore" }, "target": { "predicate_type": "minecraft:block_match", "block": "lumenwilds:deep_moonstone" } },
+      { "state": { "Name": "lumenwilds:deep_emberglow_ore" }, "target": { "predicate_type": "minecraft:block_match", "block": "lumenwilds:pale_tuff" } }
+    ]
+  }
+}

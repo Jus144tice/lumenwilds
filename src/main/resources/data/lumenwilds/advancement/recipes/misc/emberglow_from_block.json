@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_emberglow_block": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:emberglow_block"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:emberglow_from_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_emberglow_block"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:emberglow_from_block"
+    ]
+  }
+}

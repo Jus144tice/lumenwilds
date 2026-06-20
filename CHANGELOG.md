@@ -18,8 +18,15 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 - **Strata variety (Phase B).** Two new accent rocks break up the old Moonstone→Deep-Moonstone monotony,
   generated as blobs through the stone: **Veinstone** (a violet granite-like rock in the Moonstone band) and
   **Pale Tuff** (a soft pale rock in the deep). Both are new building blocks too.
-- *(This is part of a multi-phase mining overhaul — new ores + depth-banding, a deep gear tier, and cave
-  surprises like geodes are coming in 1.3.x. Cave density + strata amounts are tunable; feedback welcome.)*
+- **New ores + a depth curve (Phase C).** Three new ores, depth-banded so digging deeper pays off (and the
+  old ores re-banded to match — Lumen Crystal shallow, Luminite mid):
+  - **Emberglow** (common, mid depth) — the dimension's coal: smelt with it (a real furnace fuel), or store it
+    as an Emberglow Block. Stone-tier to mine.
+  - **Pale Opal** (uncommon, deep) — a pale decorative gem + storage block.
+  - **Resonite** (rare, deepest) — raw → smelt to a Resonite Ingot → the new gear tier (coming next). Cold-glowing.
+  All three also generate inside the new Veinstone/Pale Tuff rock. Iron-tier (Luminite pickaxe) for Opal + Resonite.
+- *(Still part of a multi-phase mining overhaul — the deep gear tier (Resonite tools + armor) and cave
+  surprises like geodes are coming next in 1.3.x. Ore amounts/bands are tunable; feedback welcome.)*
 
 ## [1.2.2] - 2026-06-19
 **Art + usability:**

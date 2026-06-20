@@ -456,8 +456,20 @@ as `File#member`.
   (polished/bricks/tiles/pillar/glass + shapes); Sporeglass (`TransparentBlock`) + pane (`IronBarsBlock`).
   **Mining-overhaul strata (v1.3 Phase B):** `#VEINSTONE` (granite-style accent rock, `moonstoneProps`,
   generated as blobs in the Moonstone band) + `#PALE_TUFF` (`deepProps`, blobs in the Deep Moonstone band) —
-  both drop-self stone-tier blocks that break up the strata (+ future deep-ore hosts); blobs via
+  both drop-self stone-tier blocks that break up the strata (+ deep-ore hosts); blobs via
   `worldgen/.../{veinstone,pale_tuff}_blob` + the `strata_blobs` biome modifier.
+  **Mining-overhaul ores (v1.3 Phase C):** three new ores (+ deep variant + storage block each), built by the
+  `#oreBlock` helper (`DropExperienceBlock`, deepslate-tint for the deep variant), generated in
+  moonstone/deep_moonstone/veinstone/pale_tuff and **depth-banded** (trapezoid) so deeper = better:
+  `#EMBERGLOW_ORE`/`#DEEP_EMBERGLOW_ORE` (drops `ModItems#EMBERGLOW`, the coal/furnace-fuel analog — fuel via
+  the `data_maps/item/furnace_fuels.json` data map, NOT a Java event; stone-tier; glow 3) + `#EMBERGLOW_BLOCK`
+  (a fuel block); `#PALE_OPAL_ORE`/`#DEEP_PALE_OPAL_ORE` (drops `ModItems#PALE_OPAL`, a deep gem; iron-tier) +
+  `#PALE_OPAL_BLOCK`; `#RESONITE_ORE`/`#DEEP_RESONITE_ORE` (drops `ModItems#RAW_RESONITE` → ingot → the Phase-D
+  gear tier; rare, deepest; glow 5) + `#RESONITE_BLOCK`. Worldgen: `worldgen/.../{emberglow,pale_opal,resonite}_ore`
+  (configured 4-target + trapezoid-banded placed) + the `mining_ores` biome modifier (all 7 biomes). Loot routes
+  by name in `ModLootTableProvider` (createOreDrop); harvest tier in `ModTagProvider` (emberglow=stone,
+  opal/resonite=iron); recipes in `ModRecipeProvider#buildMiningOreRecipes`. (The existing
+  `lumen_crystal_ore`/`luminite_ore` placed features were re-banded — crystal shallow-common, luminite mid.)
   **Add a block here → it auto-gets a BlockItem in `ModItems` (loop); add asset + loot via datagen.**
 - [ModWoodTypes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModWoodTypes.java) — bespoke
   `#GLOWWOOD` (`WoodType`, name `lumenwilds:glowwood` → sign textures) + `#GLOWWOOD_SET` (`BlockSetType`),
@@ -471,6 +483,8 @@ as `File#member`.
   (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`, **durable: `stacksTo(1)
   .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
   `#LIVING_FIBER`, `#RAW_LUMINITE`/`#LUMINITE_INGOT` (10a — ore → raw → smelt to ingot; ingot crafts Glowbrick),
+  `#EMBERGLOW` (v1.3 Phase C — furnace fuel via the `furnace_fuels` data map), `#PALE_OPAL` (gem),
+  `#RAW_RESONITE`/`#RESONITE_INGOT` (Phase C — ore → raw → smelt; ingot → the Phase-D gear tier),
   `#MEMORY_CRYSTAL_SHARD` + six `#GLYPH_TABLET_*` (`item.GlyphTabletItem`, lore items, 10c),
   `#RESONANCE_CORE_FRAGMENT` (10e — crafts the Resonance Core; loot/Echo-Sentinel drop),
   `#GRAVITY_LENS_FRAGMENT` (10e.2 — from a cracked lens / loot; crafts the Gravity Lens + future projector),
@@ -1321,6 +1335,7 @@ as `File#member`.
   `patch_moonblossom`, `patch_glow_fern`, `glowwood_tree`, `glowroot_tree` [1×1], `glowroot_tree_2x2`
   [custom feature], `patch_glasspetal` [5d.2], `shimmerstone_ore` [v1.2.1, `ore` blobs in the Glasspetal Crags],
   `veinstone_blob`/`pale_tuff_blob` [v1.3 Phase B, `ore` blobs of the accent rocks in the moonstone/deep bands],
+  `emberglow_ore`/`pale_opal_ore`/`resonite_ore` [v1.3 Phase C, trapezoid-banded `ore` features, 4 host targets each],
   `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
   chunk-safe pool feature** — was a crashing vanilla `lake`] +
   `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine` [5d.5] + placed-only `undercrown_crystal`/
@@ -1370,7 +1385,8 @@ as `File#member`.
   into the 6 surface biomes at `underground_decoration` so their deep caves are alive like the Undercrown) +
   `deep_cave_pools.json` (the bounded `undercrown_pool` Lumenwater pools into all 7 biomes at `fluid_springs`),
   and `strata_blobs.json` (Phase B — `veinstone_blob` + `pale_tuff_blob` accent-rock blobs into all 7 biomes at
-  `underground_ores`). The chest loot tables
+  `underground_ores`), and `mining_ores.json` (Phase C — the three new ores `emberglow_ore`/`pale_opal_ore`/
+  `resonite_ore`, trapezoid-banded, into all 7 biomes at `underground_ores`). The chest loot tables
   (`loot_table/chests/*`, Phase 9) are now **tiered** — a guaranteed signature reward pool (enchanted gear/books,
   Lumen Anchor, striker, crystal blocks) + themed mid loot + treasure scaled by structure difficulty (no more
   all-filler chests). Underwater the surface rule places **`lumensand`** as the seabed (was dead moonloam).

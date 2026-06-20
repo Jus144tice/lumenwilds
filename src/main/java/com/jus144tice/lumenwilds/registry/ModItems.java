@@ -63,6 +63,14 @@ public final class ModItems {
     public static final DeferredItem<Item> RAW_LUMINITE = ITEMS.registerSimpleItem("raw_luminite");
     public static final DeferredItem<Item> LUMINITE_INGOT = ITEMS.registerSimpleItem("luminite_ingot");
 
+    // Mining-overhaul materials (v1.3 Phase C). Emberglow = furnace fuel (the dimension's coal analog; burn
+    // time wired in event.ModFuels); Pale Opal = a decorative/trade gem; Raw Resonite → smelt to Resonite
+    // Ingot → the Phase-D gear tier. Dropped by their ores (ModLootTableProvider#createOreDrop, by name).
+    public static final DeferredItem<Item> EMBERGLOW = ITEMS.registerSimpleItem("emberglow");
+    public static final DeferredItem<Item> PALE_OPAL = ITEMS.registerSimpleItem("pale_opal");
+    public static final DeferredItem<Item> RAW_RESONITE = ITEMS.registerSimpleItem("raw_resonite");
+    public static final DeferredItem<Item> RESONITE_INGOT = ITEMS.registerSimpleItem("resonite_ingot");
+
     // Lore items (Phase 10c) — recovered from the Vestige Cities. Memory crystal shards (a broken piece of
     // ancient data storage; future crafting/repair) + six Ancient Glyph Tablets (right-click to read a fragment
     // of the Lumenwrights' story; see GlyphTabletItem). The lore lines are deliberately short and mysterious.

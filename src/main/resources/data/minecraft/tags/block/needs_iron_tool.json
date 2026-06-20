@@ -5,6 +5,12 @@
     "lumenwilds:deep_lumen_crystal_ore",
     "lumenwilds:luminite_ore",
     "lumenwilds:deep_luminite_ore",
-    "lumenwilds:luminite_block"
+    "lumenwilds:luminite_block",
+    "lumenwilds:pale_opal_ore",
+    "lumenwilds:deep_pale_opal_ore",
+    "lumenwilds:resonite_ore",
+    "lumenwilds:deep_resonite_ore",
+    "lumenwilds:pale_opal_block",
+    "lumenwilds:resonite_block"
   ]
 }

@@ -1,16 +1,9 @@
 {
   "feature": "lumenwilds:luminite_ore",
   "placement": [
-    { "type": "minecraft:count", "count": 6 },
+    { "type": "minecraft:count", "count": 8 },
     { "type": "minecraft:in_square" },
-    {
-      "type": "minecraft:height_range",
-      "height": {
-        "type": "minecraft:uniform",
-        "min_inclusive": { "absolute": -32 },
-        "max_inclusive": { "absolute": 96 }
-      }
-    },
+    { "type": "minecraft:height_range", "height": { "type": "minecraft:trapezoid", "min_inclusive": { "absolute": -48 }, "max_inclusive": { "absolute": 16 } } },
     { "type": "minecraft:biome" }
   ]
 }
