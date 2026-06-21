@@ -125,6 +125,30 @@ public final class ModBlocks {
                             .randomTicks() // grass spread / revert (see block.LumenGrassBlock)
                             .sound(SoundType.GRASS));
 
+    // Farming soil (v1.4 Phase F1) — Moonloam is the "dirt": hoe it → Lumen Farmland, shovel Lumen Grass →
+    // Lumen Dirt Path (see event.LumenFarmingEvents). Both revert to Moonloam; farmland hydrates from Lumenwater.
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.LumenFarmlandBlock> LUMEN_FARMLAND =
+            BLOCKS.registerBlock(
+                    "lumen_farmland",
+                    com.jus144tice.lumenwilds.block.LumenFarmlandBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_BLUE)
+                            .strength(0.6F)
+                            .randomTicks()
+                            .sound(SoundType.GRAVEL)
+                            .isViewBlocking((s, l, p) -> true)
+                            .isSuffocating((s, l, p) -> true));
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.LumenDirtPathBlock> LUMEN_DIRT_PATH =
+            BLOCKS.registerBlock(
+                    "lumen_dirt_path",
+                    com.jus144tice.lumenwilds.block.LumenDirtPathBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_BLUE)
+                            .strength(0.65F)
+                            .sound(SoundType.GRASS)
+                            .isViewBlocking((s, l, p) -> true)
+                            .isSuffocating((s, l, p) -> true));
+
     public static final DeferredBlock<Block> MOONSTONE = BLOCKS.registerSimpleBlock(
             "moonstone",
             BlockBehaviour.Properties.of()

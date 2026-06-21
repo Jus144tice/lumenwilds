@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "moisture=0": { "model": "lumenwilds:block/lumen_farmland" },
+    "moisture=1": { "model": "lumenwilds:block/lumen_farmland" },
+    "moisture=2": { "model": "lumenwilds:block/lumen_farmland" },
+    "moisture=3": { "model": "lumenwilds:block/lumen_farmland" },
+    "moisture=4": { "model": "lumenwilds:block/lumen_farmland" },
+    "moisture=5": { "model": "lumenwilds:block/lumen_farmland" },
+    "moisture=6": { "model": "lumenwilds:block/lumen_farmland" },
+    "moisture=7": { "model": "lumenwilds:block/lumen_farmland_moist" }
+  }
+}

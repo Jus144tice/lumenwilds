@@ -400,7 +400,9 @@ as `File#member`.
   (`block.LumenAnchorBlock`, portal-link device w/ a block entity, 8c), `#LUMEN_PORTAL`
   (`LumenPortalBlock`, non-solid/glowing), `#MOONLOAM` (the dimension's "dirt"), `#LUMEN_GRASS_BLOCK`
   (`block.LumenGrassBlock` — the "grass": spreads onto/reverts to Moonloam, drops Moonloam / silk→grass,
-  bone-mealable; v1.2.3), `#MOONSTONE`/`#COBBLED_MOONSTONE`,
+  bone-mealable; v1.2.3), `#LUMEN_FARMLAND` (`block.LumenFarmlandBlock`, the tilled-soil farmland; v1.4 F1) +
+  `#LUMEN_DIRT_PATH` (`block.LumenDirtPathBlock`) — Moonloam's Stone-analog farming soil (hoe/shovel via
+  `event.LumenFarmingEvents`; both revert to Moonloam), `#MOONSTONE`/`#COBBLED_MOONSTONE`,
   `#GLOWROOT_LOG` (`RotatedPillarBlock`), `#GLOWVINE`, `#LUMENBULB`, `#LUMEN_CRYSTAL_BLOCK`. **Phase 5
   content:** `#MOONBLOSSOM` (`FlowerBlock`, night-vision), `#GLOW_FERN`/`#GLOW_ALGAE`/`#LUMEN_REEDS`
   (`TallGrassBlock` cross flora — the latter two are Moonmire's glowing swamp cover, 5d.4),
@@ -669,6 +671,15 @@ as `File#member`.
   `#useWithoutItem` harvests a mature bush (pops 1–2 Glowberries, reverts to age 1 — renewable), bone meal
   advances age. `ModBlocks#GLOWBERRY_BUSH`; planted by the `ModItems#GLOWBERRY` `ItemNameBlockItem`
   (no own BlockItem); age-conditioned berry loot is hand-authored.
+- [LumenFarmlandBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenFarmlandBlock.java) +
+  [LumenDirtPathBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenDirtPathBlock.java) — the
+  farming soil (v1.4 F1). Faithful `FarmBlock`/`DirtPathBlock` clones keyed to `ModBlocks#MOONLOAM` (every
+  vanilla `instanceof FarmBlock` check — crop placement, moisture growth bonus, stem→gourd — works free).
+  **Lumenwater hydrates the farmland with no extra code** (`isNearWater`→`canBeHydrated`; Lumenwater is in
+  `#minecraft:water` + `canHydrate(true)`). Both override the revert/place methods to use Moonloam (vanilla
+  hardcodes DIRT). Hand-authored blockstate/models (15px top; farmland moisture 0-6/7 → dry/moist); loot drops
+  Moonloam; blockstate-provider skips `FarmBlock`/`DirtPathBlock`. `CODEC` typed to the parent (the parent
+  narrowed `codec()` — target-typing still builds our subclass).
 - [LumenGrassBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenGrassBlock.java) — Lumen Grass
   (v1.2.3), the dimension's living surface block: a faithful port of vanilla `GrassBlock`/`SpreadingSnowyDirtBlock`
   keyed to `ModBlocks#MOONLOAM` (the "dirt") + itself (the "grass"), extending `Block` directly (no `SNOWY`
@@ -1120,6 +1131,11 @@ as `File#member`.
   fills into `ModItems.LUMEN_NECTAR` (bloom not consumed — renewable, like honey).
   *(Glowberry harvest moved into `block.GlowberryBushBlock#useWithoutItem` in v1.1c — the old
   `GlowberryInteractEvents` was deleted.)*
+- [LumenFarmingEvents.java](src/main/java/com/jus144tice/lumenwilds/event/LumenFarmingEvents.java) —
+  `#onToolModify(BlockEvent.BlockToolModificationEvent)` (v1.4 F1): `HOE_TILL` on Moonloam/Lumen Grass (with
+  air above — must be checked here, vanilla won't for modded blocks) → `LUMEN_FARMLAND`; `SHOVEL_FLATTEN` →
+  `LUMEN_DIRT_PATH`. Pure handler (`setFinalState` only, simulate-safe). NeoForge 1.21.1 has no till/flatten
+  data map — this event is the hook.
 - [MemoryCrystalInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/MemoryCrystalInteractEvents.java)
   — `#onRightClickBlock` (10c): right-clicking a `ModBlocks#MEMORY_CRYSTAL` prints a fragment chosen
   deterministically from the block position (`#FRAGMENTS`, some broken/unreadable; the liftshaft/mine lore

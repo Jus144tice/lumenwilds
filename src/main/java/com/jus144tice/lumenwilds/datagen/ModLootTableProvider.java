@@ -71,6 +71,9 @@ public final class ModLootTableProvider {
                 } else if (name.equals("lumen_grass_block")) {
                     // Grass mechanic: silk → Lumen Grass, otherwise → Moonloam (like vanilla grass → dirt).
                     add(block, b -> createSingleItemTableWithSilkTouch(b, ModBlocks.MOONLOAM.get()));
+                } else if (name.equals("lumen_farmland") || name.equals("lumen_dirt_path")) {
+                    // Farmland/path drop Moonloam when broken (like vanilla farmland/path → dirt).
+                    add(block, b -> createSingleItemTable(ModBlocks.MOONLOAM.get()));
                 } else if (name.equals("moonstone")) {
                     // Stone analog: silk → Moonstone, else → Cobbled Moonstone (smelt back to Moonstone).
                     add(block, b -> createSingleItemTableWithSilkTouch(b, ModBlocks.COBBLED_MOONSTONE.get()));

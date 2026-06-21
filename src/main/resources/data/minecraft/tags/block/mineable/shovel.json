@@ -2,6 +2,8 @@
   "values": [
     "lumenwilds:moonloam",
     "lumenwilds:lumen_grass_block",
+    "lumenwilds:lumen_farmland",
+    "lumenwilds:lumen_dirt_path",
     "lumenwilds:lumensand"
   ]
 }

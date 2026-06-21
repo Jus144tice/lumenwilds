@@ -1,0 +1,4 @@
+{
+  "parent": "minecraft:block/template_farmland",
+  "textures": { "dirt": "lumenwilds:block/moonloam", "top": "lumenwilds:block/lumen_farmland" }
+}

@@ -62,6 +62,10 @@ public class ModBlockStateProvider extends BlockStateProvider {
             if (block instanceof net.minecraft.world.level.block.ChestBlock) {
                 continue; // chest renders via the block-entity renderer — hand-authored particle blockstate
             }
+            if (block instanceof net.minecraft.world.level.block.FarmBlock
+                    || block instanceof net.minecraft.world.level.block.DirtPathBlock) {
+                continue; // farmland (moisture-keyed top) + path — hand-authored 15px-top models (F1)
+            }
             if (name.equals("lumen_grass_block")) {
                 // Grass: a real grass block — green top, moonloam + grass-fringe sides, moonloam bottom
                 // (3-face, painted in the art pass), not the flat cube_all every other simple block gets.
