@@ -6,6 +6,10 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.3.2] - 2026-06-21
+- **Glowvine is now climbable** — climb the hanging cave strands and surface vines like ladders/vines
+  (added to `#minecraft:climbable`).
+
 ## [1.3.1] - 2026-06-20
 **Moonstone is now a proper Stone analog (and Deep Moonstone a Deepslate analog):**
 

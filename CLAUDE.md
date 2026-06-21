@@ -1263,7 +1263,8 @@ as `File#member`.
   `ancient_door` → pickaxe). **v1.1.1:** also tags the Glowwood/Glowroot wood-species blocks into the vanilla
   wood **block** tags (`PLANKS`, `WOODEN_SLABS|STAIRS|FENCES|DOORS|TRAPDOORS|BUTTONS|PRESSURE_PLATES`,
   `FENCE_GATES`, `STANDING_SIGNS`/`WALL_SIGNS`/`CEILING_HANGING_SIGNS`/`WALL_HANGING_SIGNS`, `LOGS_THAT_BURN`,
-  `SAPLINGS`) — gated on the species name so the stone families/glowcap aren't included.
+  `SAPLINGS`) — gated on the species name so the stone families/glowcap aren't included. **v1.3.2:** Glowvine →
+  `#minecraft:climbable` (also hand-authored in `data/minecraft/tags/block/climbable.json`).
 - [ModItemTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModItemTagProvider.java) — an
   `ItemTagsProvider` (v1.1.1; wired in `DataGenerators` with `ModTagProvider#contentsGetter`). Mirrors the wood
   block tags onto the matching **item** tags via `#copy` (`#minecraft:planks` etc. — what recipes read, so the

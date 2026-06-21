@@ -45,6 +45,9 @@ public class ModTagProvider extends BlockTagsProvider {
         var needsStone = tag(BlockTags.NEEDS_STONE_TOOL);
         var needsIron = tag(BlockTags.NEEDS_IRON_TOOL);
 
+        // Glowvine is climbable like vines/weeping vines (the hanging cave strands + surface vine).
+        tag(BlockTags.CLIMBABLE).add(ModBlocks.GLOWVINE.get());
+
         // Vanilla wood-set block tags (v1.1.1) — so the Glowwood + Glowroot sets behave as real wood
         // (#minecraft:planks → crafting table/chest/etc., fence/door/sign/button/plate behaviour, burnable
         // logs, saplings). The matching ITEM tags (what recipes read) are mirrored in ModItemTagProvider.
