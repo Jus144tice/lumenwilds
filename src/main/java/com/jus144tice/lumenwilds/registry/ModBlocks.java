@@ -424,6 +424,37 @@ public final class ModBlocks {
             p -> new AttachedStemBlock(bKey("glowgourd_stem"), bKey("glowgourd"), iKey("glowgourd_seeds"), p),
             attachedStemProps());
 
+    // --- Alien crops (v1.4 F4) ------------------------------------------------------------------
+    /** Glimmerreed — the Lumenwater-loving cane (a plain sugar-cane: grows on Moonloam beside Lumenwater, since
+     * Lumenwater is #minecraft:water + hydrates). Glows. Planted/dropped via the GLIMMERREED item (no own item). */
+    public static final DeferredBlock<net.minecraft.world.level.block.SugarCaneBlock> GLIMMERREED =
+            BLOCKS.registerBlock(
+                    "glimmerreed",
+                    net.minecraft.world.level.block.SugarCaneBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.PLANT)
+                            .randomTicks()
+                            .instabreak()
+                            .lightLevel(s -> 5)
+                            .sound(SoundType.GRASS)
+                            .pushReaction(PushReaction.DESTROY));
+    /** Duskbean — the darkness-loving crop (grows in the dark, AGE_3). */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.DuskbeanCropBlock> DUSKBEAN_CROP =
+            BLOCKS.registerBlock(
+                    "duskbean_crop",
+                    com.jus144tice.lumenwilds.block.DuskbeanCropBlock::new,
+                    cropProps()
+                            .lightLevel(s ->
+                                    cropGlow(s.getValue(com.jus144tice.lumenwilds.block.DuskbeanCropBlock.AGE), 3)));
+    /** Cavecap — the stone-grown cave fungus (grows on Moonstone/strata, AGE_3). */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.CavecapCropBlock> CAVECAP_CROP =
+            BLOCKS.registerBlock(
+                    "cavecap_crop",
+                    com.jus144tice.lumenwilds.block.CavecapCropBlock::new,
+                    cropProps()
+                            .lightLevel(s ->
+                                    cropGlow(s.getValue(com.jus144tice.lumenwilds.block.CavecapCropBlock.AGE), 3)));
+
     // --- Stillbloom Basin — the giant Stillbloom flower (Phase 5d.6) ----------------------------
     // Three soft, glowing blocks assembled by StillbloomFeature into a 3–8-tall giant flower: a stem
     // column carrying a petal dome around a brilliant core. The brightest blocks in the dimension.

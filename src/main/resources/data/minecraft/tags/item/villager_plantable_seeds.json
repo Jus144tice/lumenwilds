@@ -1,8 +1,7 @@
 {
   "replace": false,
   "values": [
-    "lumenwilds:lumengrain_seeds",
-    "lumenwilds:glimmerroot",
-    "lumenwilds:moonbeet_seeds"
+    "lumenwilds:lumengrain_seeds", "lumenwilds:glimmerroot", "lumenwilds:moonbeet_seeds",
+    "lumenwilds:duskbean", "lumenwilds:cavecap"
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lumenwilds:glimmerreed"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:lumen_sugar"
+  }
+}

@@ -163,6 +163,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
                 ModelFile m = models().orientable(
                                 name, blockTex("glowgourd_side"), blockTex(name + "_front"), blockTex("glowgourd_top"));
                 horizontalBlock(block, m);
+            } else if (block instanceof net.minecraft.world.level.block.SugarCaneBlock) {
+                // Glimmerreed: a cutout cross (sugar-cane style), one model for all AGE states.
+                simpleBlock(block, models().cross(name, blockTex(name)).renderType("minecraft:cutout"));
             } else if (name.equals("moonmelon") || name.equals("glowgourd")) {
                 // Gourd blocks: a cube with distinct side + top (melon/pumpkin style).
                 simpleBlock(block, models().cubeColumn(name, blockTex(name + "_side"), blockTex(name + "_top")));

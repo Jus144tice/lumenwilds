@@ -1,0 +1,1 @@
+{ "type": "neoforge:add_features", "biomes": [ "lumenwilds:moonmire" ], "features": "lumenwilds:patch_glimmerreed", "step": "vegetal_decoration" }

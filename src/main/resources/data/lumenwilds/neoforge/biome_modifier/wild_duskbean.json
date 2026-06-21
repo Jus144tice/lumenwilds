@@ -1,0 +1,1 @@
+{ "type": "neoforge:add_features", "biomes": [ "lumenwilds:moonmire", "lumenwilds:glowroot_forest" ], "features": "lumenwilds:patch_duskbean", "step": "vegetal_decoration" }

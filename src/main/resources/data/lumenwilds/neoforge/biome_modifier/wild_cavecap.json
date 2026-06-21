@@ -1,0 +1,1 @@
+{ "type": "neoforge:add_features", "biomes": [ "lumenwilds:undercrown_caverns" ], "features": "lumenwilds:patch_cavecap", "step": "vegetal_decoration" }

@@ -99,6 +99,24 @@ public final class ModLootTableProvider {
                                     ModItems.MOONBEET.get(),
                                     ModItems.MOONBEET_SEEDS.get(),
                                     matureCond(block, com.jus144tice.lumenwilds.block.MoonbeetCropBlock.AGE, 3)));
+                } else if (name.equals("glimmerreed")) {
+                    dropOther(block, ModItems.GLIMMERREED.get()); // cane drops the reed item
+                } else if (name.equals("duskbean_crop")) {
+                    add(
+                            block,
+                            createCropDrops(
+                                    block,
+                                    ModItems.DUSKBEAN.get(),
+                                    ModItems.DUSKBEAN.get(),
+                                    matureCond(block, com.jus144tice.lumenwilds.block.DuskbeanCropBlock.AGE, 3)));
+                } else if (name.equals("cavecap_crop")) {
+                    add(
+                            block,
+                            createCropDrops(
+                                    block,
+                                    ModItems.CAVECAP.get(),
+                                    ModItems.CAVECAP.get(),
+                                    matureCond(block, com.jus144tice.lumenwilds.block.CavecapCropBlock.AGE, 3)));
                 } else if (name.equals("moonstone")) {
                     // Stone analog: silk → Moonstone, else → Cobbled Moonstone (smelt back to Moonstone).
                     add(block, b -> createSingleItemTableWithSilkTouch(b, ModBlocks.COBBLED_MOONSTONE.get()));

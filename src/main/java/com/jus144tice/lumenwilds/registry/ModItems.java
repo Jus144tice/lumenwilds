@@ -245,6 +245,40 @@ public final class ModItems {
             props -> new ItemNameBlockItem(ModBlocks.GLOWGOURD_STEM.get(), props),
             new Item.Properties());
 
+    // Alien crops (v1.4 F4).
+    /** Glimmerreed — the Lumenwater cane item: plants the reed + crafts Lumen Sugar. */
+    public static final DeferredItem<ItemNameBlockItem> GLIMMERREED = ITEMS.registerItem(
+            "glimmerreed", props -> new ItemNameBlockItem(ModBlocks.GLIMMERREED.get(), props), new Item.Properties());
+
+    public static final DeferredItem<Item> LUMEN_SUGAR = ITEMS.registerSimpleItem("lumen_sugar");
+    /** Duskbean — the darkness crop's bean: edible (raw) + the seed. */
+    public static final DeferredItem<ItemNameBlockItem> DUSKBEAN = ITEMS.registerItem(
+            "duskbean",
+            props -> new ItemNameBlockItem(ModBlocks.DUSKBEAN_CROP.get(), props),
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(0.3F)
+                            .build()));
+    /** Roasted Duskbean — smelted; a hearty snack. */
+    public static final DeferredItem<Item> ROASTED_DUSKBEAN = ITEMS.registerItem(
+            "roasted_duskbean",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(5)
+                            .saturationModifier(0.6F)
+                            .build()));
+    /** Cavecap — the stone-grown cave fungus: edible + the seed. */
+    public static final DeferredItem<ItemNameBlockItem> CAVECAP = ITEMS.registerItem(
+            "cavecap",
+            props -> new ItemNameBlockItem(ModBlocks.CAVECAP_CROP.get(), props),
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(3)
+                            .saturationModifier(0.4F)
+                            .build()));
+
     /** Lumenwater bucket (Phase 5e) — picks up/places the {@link ModFluids#LUMENWATER} source. */
     public static final DeferredItem<BucketItem> LUMENWATER_BUCKET = ITEMS.registerItem(
             "lumenwater_bucket",
@@ -568,6 +602,9 @@ public final class ModItems {
                     || block == ModBlocks.ATTACHED_MOONMELON_STEM
                     || block == ModBlocks.GLOWGOURD_STEM
                     || block == ModBlocks.ATTACHED_GLOWGOURD_STEM
+                    || block == ModBlocks.GLIMMERREED // planted/dropped via the GLIMMERREED item (F4)
+                    || block == ModBlocks.DUSKBEAN_CROP
+                    || block == ModBlocks.CAVECAP_CROP
                     || block.getId().getPath().contains("sign")) {
                 continue;
             }

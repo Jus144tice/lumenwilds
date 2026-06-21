@@ -116,6 +116,27 @@ public class ModRecipeProvider extends RecipeProvider {
                 .requires(ModBlocks.GLOWGOURD.get())
                 .unlockedBy("has_glowgourd", has(ModBlocks.GLOWGOURD.get()))
                 .save(out);
+        // Alien crops (F4): Lumen Sugar from Glimmerreed (cane→sugar); Roasted Duskbean (smelt/smoke).
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.LUMEN_SUGAR.get())
+                .requires(ModItems.GLIMMERREED.get())
+                .unlockedBy("has_glimmerreed", has(ModItems.GLIMMERREED.get()))
+                .save(out);
+        SimpleCookingRecipeBuilder.smelting(
+                        Ingredient.of(ModItems.DUSKBEAN.get()),
+                        RecipeCategory.FOOD,
+                        ModItems.ROASTED_DUSKBEAN.get(),
+                        0.2F,
+                        200)
+                .unlockedBy("has_duskbean", has(ModItems.DUSKBEAN.get()))
+                .save(out);
+        SimpleCookingRecipeBuilder.smoking(
+                        Ingredient.of(ModItems.DUSKBEAN.get()),
+                        RecipeCategory.FOOD,
+                        ModItems.ROASTED_DUSKBEAN.get(),
+                        0.2F,
+                        100)
+                .unlockedBy("has_duskbean", has(ModItems.DUSKBEAN.get()))
+                .save(out, id("roasted_duskbean_from_smoking"));
     }
 
     /** v1.3 Phase D2: the Resonite armor set, standard vanilla armor crafting patterns. */

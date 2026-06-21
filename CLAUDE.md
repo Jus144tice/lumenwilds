@@ -697,6 +697,15 @@ as `File#member`.
   — no registration-order issue); seeds = `ItemNameBlockItem`s over the stems. Gourds spawn on Moonloam / Lumen
   Grass / farmland for free (`#minecraft:dirt`). Blockstate-provider has Stem/AttachedStem/CarvedPumpkin/gourd
   branches; loot via `createStemDrops`/`createAttachedStemDrops` (Moonmelon → slices).
+- **Alien crops (v1.4 F4)** — the three twist crops: `ModBlocks#GLIMMERREED` (a plain vanilla `SugarCaneBlock`
+  — grows on Moonloam beside **Lumenwater** for free, since Lumenwater is `#minecraft:water` + hydrates; glows;
+  → Lumen Sugar), [DuskbeanCropBlock](src/main/java/com/jus144tice/lumenwilds/block/DuskbeanCropBlock.java)
+  (the **darkness** crop — `#randomTick` only advances when `getMaxLocalRawBrightness <= 7`; AGE_3), and
+  [CavecapCropBlock](src/main/java/com/jus144tice/lumenwilds/block/CavecapCropBlock.java) (the **stone-grown**
+  cave fungus — `#mayPlaceOn` accepts Moonstone/Deep Moonstone/Veinstone/Pale Tuff/Moonloam, no tilling; AGE_3).
+  Items `#DUSKBEAN`/`#CAVECAP` (edible seed-items) + `#GLIMMERREED`/`#LUMEN_SUGAR`/`#ROASTED_DUSKBEAN`; wild
+  patches (`wild_glimmerreed` Moonmire, `wild_duskbean` Moonmire/Forest, `wild_cavecap` Undercrown cave floors
+  via `environment_scan`); SugarCaneBlock blockstate branch (cross).
 - [LumenGrassBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenGrassBlock.java) — Lumen Grass
   (v1.2.3), the dimension's living surface block: a faithful port of vanilla `GrassBlock`/`SpreadingSnowyDirtBlock`
   keyed to `ModBlocks#MOONLOAM` (the "dirt") + itself (the "grass"), extending `Block` directly (no `SNOWY`
@@ -1398,6 +1407,7 @@ as `File#member`.
   Lumen-Crystal-Block blobs], `underground_glowcap` [E3, reuses `giant_glowcap` on cave floors],
   `patch_lumengrain`/`patch_glimmerroot`/`patch_moonbeet` [v1.4 Farming F2, wild crop `random_patch`es],
   `patch_moonmelon`/`patch_glowgourd` [v1.4 F3, wild gourd patches],
+  `patch_glimmerreed`/`patch_duskbean`/`patch_cavecap` [v1.4 F4, alien-crop patches; cavecap on cave floors],
   `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
   chunk-safe pool feature** — was a crashing vanilla `lake`] +
   `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine` [5d.5] + placed-only `undercrown_crystal`/

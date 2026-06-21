@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "cookingtime": 200,
+  "experience": 0.2,
+  "ingredient": {
+    "item": "lumenwilds:duskbean"
+  },
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:roasted_duskbean"
+  }
+}
