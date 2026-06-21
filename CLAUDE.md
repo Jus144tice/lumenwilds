@@ -325,7 +325,15 @@ everything and harvest-HUD mods read the right tier (was missing — `requiresCo
 tag = "any tool works"); made the **Sporeling neutral** (`entity.Sporeling` — no auto-target, retaliate-only,
 still swarms + death cloud); and added the **Sporeman** (`entity.SporeTrader`) — a rare "fully grown Sporeling"
 wandering **trader** of the Sporefall Jungle (an `AbstractVillager` that sells Lumenwilds goods for Overworld
-valuables; neutral, fights back if struck; reuses the scaled-up `SporelingModel`). Roadmap:
+valuables; neutral, fights back if struck; reuses the scaled-up `SporelingModel`). **v1.3 (mining overhaul) is
+complete** (reachable/alive caves, Veinstone/Pale Tuff strata, the Emberglow/Pale Opal/Resonite ore curve,
+the Resonite tool tier + first armor, Lumen Geodes/jackpot veins/cave landmarks); **v1.3.2** made Glowvine
+climbable. **v1.4 (farming overhaul) is complete (F1–F5):** Moonloam tills to **Lumen Farmland** (+ Lumen Dirt
+Path) via `event.LumenFarmingEvents`, hydrated by Lumenwater; eight native crops on `block.LumenCropBlock`
+(extends vanilla `CropBlock`) + gourds (`StemBlock`/`GlowgourdBlock`) + a Lumenwater cane — each with an alien
+twist (grow in dim light / in darkness [Duskbean] / on cave stone [Cavecap] / by Lumenwater [Glimmerreed]; all
+glow); seeds from wild patches + Glow Fern drops; lumen-only + lumen×overworld dishes; full `#c:` cooking-mod +
+auto-replant tag integration + composter + a Patchouli farming entry. Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -1487,6 +1495,14 @@ as `File#member`.
   is `runtimeOnly` in `build.gradle` (Modrinth maven) + `optional` in `neoforge.mods.toml`. **Entry text uses
   real `$(l:entryId)…$(/l)` cross-links, never bare `$(l)`** (which renders `[ERROR]`).
 - `data/neoforge/data_maps/block/strippables.json` — axe-stripping (glowwood/glowroot log+wood → stripped).
+- `data/neoforge/data_maps/item/furnace_fuels.json` (v1.3) + `data_maps/item/compostables.json` (v1.4 Farming —
+  the crops/seeds/produce/dishes are compostable).
+- **Farming (v1.4, F1–F5):** Patchouli `entries/farming.json`; wild-crop biome modifiers (`wild_crops`,
+  `wild_moonmelon`/`wild_glowgourd`, `wild_glimmerreed`/`wild_duskbean`/`wild_cavecap`) + `worldgen/.../patch_*`
+  features; `data/minecraft/tags/block/{crops,maintains_farmland}.json`, `tags/item/villager_plantable_seeds.json`,
+  `data/c/tags/item/{crops,seeds,foods*}.json`. The crops/dishes are the `Lumen*Block`/`*CropBlock` classes
+  (see block/ + the ModBlocks crop/gourd/alien registrations); dishes are `ModItems` foods built by
+  `ModRecipeProvider#buildFarmingRecipes`.
 - `data/c/tags/item/*` (v1.1e) — the universal `#c:` convention food/crop tags (`foods`, `foods/{fruit,berry,
   raw_meat,cooked_meat,raw_fish,cooked_fish,soup}`, `crops`) so lumen foods integrate into Farmer's Delight /
   Create / Delightful (and any `#c:`-aware cooking mod) with no hard dependency.

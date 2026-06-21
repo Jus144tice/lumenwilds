@@ -6,6 +6,27 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-06-21
+**Farming overhaul — a full alien farming tree.** (Also includes the climbable Glowvine from 1.3.2.)
+
+- **Till the soil.** Hoe Moonloam or Lumen Grass into **Lumen Farmland**; shovel them into a **Lumen Dirt
+  Path**. Farmland is hydrated by **Lumenwater** (which makes crops grow much faster) — dig irrigation.
+- **Eight native crops**, each with an alien twist. Light barely matters (they grow in the dim twilight);
+  mature crops glow:
+  - **Lumengrain** (wheat → Glowloaf), **Glimmerroot** (carrot; the root is its own seed → Gilded
+    Glimmerroot), **Moonbeet** (beetroot → Moonbeet Soup).
+  - **Moonmelon** (a glowing melon → slices) and **Glowgourd** (a pumpkin you shear-carve into a glowing
+    face).
+  - **Glimmerreed** — a cane that grows beside Lumenwater (→ Lumen Sugar).
+  - **Duskbean** — grows *in the dark* (an alien inversion).
+  - **Cavecap** — grows on bare cave stone; farm the Undercrown, no soil needed.
+- **Seeds two ways:** wild crop patches across the world, and seeds dropped by breaking Glow Fern.
+- **Cooking, lumen-only and hybrid:** Glowloaf, Moonbeet Soup, Dusk Stew, plus lumen×overworld dishes — Gilded
+  Glimmerroot, Wilds Pie (Glowgourd + Lumen Sugar + egg), Lumen Cookie (Lumengrain + cocoa). Everything is
+  compostable and tagged into the universal `#c:` crop/seed/food tags, so cooking mods (Farmer's Delight,
+  Create, Delightful) and auto-replant mods just work.
+- An in-game **Farming guide entry** (Patchouli).
+
 ## [1.3.2] - 2026-06-21
 - **Glowvine is now climbable** — climb the hanging cave strands and surface vines like ladders/vines
   (added to `#minecraft:climbable`).

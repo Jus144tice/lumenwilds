@@ -279,6 +279,37 @@ public final class ModItems {
                             .saturationModifier(0.4F)
                             .build()));
 
+    // Dishes (v1.4 F5) — lumen-only + lumen×overworld hybrids.
+    /** Wilds Pie — hybrid: Glowgourd + Lumen Sugar + (overworld) egg. A hearty slice of two worlds. */
+    public static final DeferredItem<Item> WILDS_PIE = ITEMS.registerItem(
+            "wilds_pie",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(8)
+                            .saturationModifier(0.8F)
+                            .build()));
+    /** Lumen Cookie — hybrid: Lumengrain + (overworld) cocoa beans → 8. */
+    public static final DeferredItem<Item> LUMEN_COOKIE = ITEMS.registerItem(
+            "lumen_cookie",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(0.1F)
+                            .build()));
+    /** Dusk Stew — a hearty lumen stew (Roasted Duskbean + Cavecap + Glimmerroot + bowl), returns the bowl. */
+    public static final DeferredItem<Item> DUSK_STEW = ITEMS.registerItem(
+            "dusk_stew",
+            Item::new,
+            new Item.Properties()
+                    .stacksTo(1)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(9)
+                            .saturationModifier(0.9F)
+                            .usingConvertsTo(Items.BOWL)
+                            .build()));
+
     /** Lumenwater bucket (Phase 5e) — picks up/places the {@link ModFluids#LUMENWATER} source. */
     public static final DeferredItem<BucketItem> LUMENWATER_BUCKET = ITEMS.registerItem(
             "lumenwater_bucket",

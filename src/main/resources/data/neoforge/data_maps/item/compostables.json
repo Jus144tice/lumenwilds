@@ -1,0 +1,19 @@
+{
+  "values": {
+    "lumenwilds:lumengrain_seeds": { "chance": 0.3 },
+    "lumenwilds:moonbeet_seeds": { "chance": 0.3 },
+    "lumenwilds:moonmelon_seeds": { "chance": 0.3 },
+    "lumenwilds:glowgourd_seeds": { "chance": 0.3 },
+    "lumenwilds:lumengrain": { "chance": 0.65 },
+    "lumenwilds:glimmerroot": { "chance": 0.65 },
+    "lumenwilds:moonbeet": { "chance": 0.65 },
+    "lumenwilds:duskbean": { "chance": 0.65 },
+    "lumenwilds:cavecap": { "chance": 0.65 },
+    "lumenwilds:moonmelon_slice": { "chance": 0.5 },
+    "lumenwilds:glimmerreed": { "chance": 0.5 },
+    "lumenwilds:moonmelon": { "chance": 0.65 },
+    "lumenwilds:glowgourd": { "chance": 0.65 },
+    "lumenwilds:glowloaf": { "chance": 0.85 },
+    "lumenwilds:wilds_pie": { "chance": 1.0 }
+  }
+}

@@ -1,1 +1,7 @@
-{ "values": [ "lumenwilds:glowcap_stew", "lumenwilds:moonbeet_soup" ] }
+{
+  "values": [
+    "lumenwilds:glowcap_stew",
+    "lumenwilds:moonbeet_soup",
+    "lumenwilds:dusk_stew"
+  ]
+}

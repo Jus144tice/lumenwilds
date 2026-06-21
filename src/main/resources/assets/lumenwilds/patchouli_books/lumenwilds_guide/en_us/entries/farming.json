@@ -1,0 +1,49 @@
+{
+  "name": "Farming",
+  "icon": "lumenwilds:glimmerroot",
+  "category": "lumenwilds:flora_and_food",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Moonloam is the Lumenwilds' soil. Till it (or Lumen Grass) with a hoe to make $(l:farming)Lumen Farmland$(/l), or flatten it with a shovel for a path. Crops grow in the dim twilight — light barely matters here — and $(l:lumenwater)Lumenwater$(/l) hydrates farmland and makes crops grow much faster, so dig an irrigation channel."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Seeds come two ways: break wild crop patches scattered across the surface, or harvest seeds by breaking Glow Fern. Bone meal works on everything (it's native to both worlds). Most crops also grow slowly on bare Moonloam — but tilled, watered farmland is far better. Mature crops glow."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "lumenwilds:lumengrain_seeds",
+      "text": "$(l:farming)Lumengrain$(/l) — the wheat of the Wilds. Grind three into a $(l:farming)Glowloaf$(/l)."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "lumenwilds:glimmerroot",
+      "text": "Glimmerroot — a glowing root; the harvested root is its own seed (and a snack). Wrap it in gold for a $(l:farming)Gilded Glimmerroot$(/l) (night vision)."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "lumenwilds:moonmelon_seeds",
+      "text": "Moonmelon grows from a stem like a melon — but the gourd glows. Break it for slices. Glowgourd is the pumpkin's cousin: shear it to carve a glowing face."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Alien crops$(/bold) break the rules:$(br)$(li)$(l:farming)Glimmerreed$(/l) grows in tall canes beside Lumenwater.$(li)$(l:farming)Duskbean$(/l) grows $(italic)in the dark$(/italic) — keep it shaded.$(li)$(l:farming)Cavecap$(/l) grows on bare cave stone — farm the $(l:beneath_the_crown)Undercrown$(/l), no soil needed."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "lumenwilds:glowloaf",
+      "text": "Glowloaf — the staple bread."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "lumenwilds:wilds_pie",
+      "text": "Wilds Pie — Glowgourd + Lumen Sugar + an egg from home. Two worlds in one slice."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "lumenwilds:dusk_stew",
+      "text": "Dusk Stew — a hearty bowl of the dark harvest."
+    }
+  ]
+}

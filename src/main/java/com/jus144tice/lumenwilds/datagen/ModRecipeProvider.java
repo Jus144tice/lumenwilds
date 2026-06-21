@@ -137,6 +137,27 @@ public class ModRecipeProvider extends RecipeProvider {
                         100)
                 .unlockedBy("has_duskbean", has(ModItems.DUSKBEAN.get()))
                 .save(out, id("roasted_duskbean_from_smoking"));
+
+        // Dishes (F5): lumen-only + lumen×overworld hybrids.
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.WILDS_PIE.get())
+                .requires(ModBlocks.GLOWGOURD.get())
+                .requires(ModItems.LUMEN_SUGAR.get())
+                .requires(Items.EGG)
+                .unlockedBy("has_glowgourd", has(ModBlocks.GLOWGOURD.get()))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.LUMEN_COOKIE.get(), 8)
+                .pattern("GCG")
+                .define('G', ModItems.LUMENGRAIN.get())
+                .define('C', Items.COCOA_BEANS)
+                .unlockedBy("has_lumengrain", has(ModItems.LUMENGRAIN.get()))
+                .save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.DUSK_STEW.get())
+                .requires(Items.BOWL)
+                .requires(ModItems.ROASTED_DUSKBEAN.get())
+                .requires(ModItems.CAVECAP.get())
+                .requires(ModItems.GLIMMERROOT.get())
+                .unlockedBy("has_roasted_duskbean", has(ModItems.ROASTED_DUSKBEAN.get()))
+                .save(out);
     }
 
     /** v1.3 Phase D2: the Resonite armor set, standard vanilla armor crafting patterns. */

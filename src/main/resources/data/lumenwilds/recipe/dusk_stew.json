@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "lumenwilds:roasted_duskbean"
+    },
+    {
+      "item": "lumenwilds:cavecap"
+    },
+    {
+      "item": "lumenwilds:glimmerroot"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:dusk_stew"
+  }
+}
