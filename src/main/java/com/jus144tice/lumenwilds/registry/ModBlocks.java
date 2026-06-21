@@ -16,6 +16,7 @@ import java.util.Optional;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.AmethystClusterBlock;
+import net.minecraft.world.level.block.AttachedStemBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.CeilingHangingSignBlock;
@@ -35,6 +36,7 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.StandingSignBlock;
+import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.block.TallGrassBlock;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
@@ -370,6 +372,57 @@ public final class ModBlocks {
                     cropProps()
                             .lightLevel(s ->
                                     cropGlow(s.getValue(com.jus144tice.lumenwilds.block.MoonbeetCropBlock.AGE), 3)));
+
+    // --- Gourds (v1.4 F3) — melon/pumpkin-analog stem crops. Stems reference fruit/seed by ResourceKey (lazy,
+    // no registration-order issue). Seeds are ItemNameBlockItems over the stems (planted on tilled/native soil).
+    /** Moonmelon — the glowing melon-analog gourd (a light source); broken for slices. */
+    public static final DeferredBlock<Block> MOONMELON = BLOCKS.registerSimpleBlock(
+            "moonmelon",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_LIGHT_GREEN)
+                    .strength(1.0F)
+                    .lightLevel(s -> 9)
+                    .sound(SoundType.WOOD)
+                    .pushReaction(PushReaction.DESTROY));
+
+    public static final DeferredBlock<StemBlock> MOONMELON_STEM = BLOCKS.registerBlock(
+            "moonmelon_stem",
+            p -> new StemBlock(bKey("moonmelon"), bKey("attached_moonmelon_stem"), iKey("moonmelon_seeds"), p),
+            stemProps());
+    public static final DeferredBlock<AttachedStemBlock> ATTACHED_MOONMELON_STEM = BLOCKS.registerBlock(
+            "attached_moonmelon_stem",
+            p -> new AttachedStemBlock(bKey("moonmelon_stem"), bKey("moonmelon"), iKey("moonmelon_seeds"), p),
+            attachedStemProps());
+
+    /** Glowgourd — the pumpkin-analog gourd; shear it to carve a glowing Carved Glowgourd. */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.GlowgourdBlock> GLOWGOURD = BLOCKS.registerBlock(
+            "glowgourd",
+            com.jus144tice.lumenwilds.block.GlowgourdBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_ORANGE)
+                    .strength(1.0F)
+                    .lightLevel(s -> 5)
+                    .sound(SoundType.WOOD)
+                    .pushReaction(PushReaction.DESTROY));
+
+    public static final DeferredBlock<net.minecraft.world.level.block.CarvedPumpkinBlock> CARVED_GLOWGOURD =
+            BLOCKS.registerBlock(
+                    "carved_glowgourd",
+                    net.minecraft.world.level.block.CarvedPumpkinBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_ORANGE)
+                            .strength(1.0F)
+                            .lightLevel(s -> 11)
+                            .sound(SoundType.WOOD)
+                            .pushReaction(PushReaction.DESTROY));
+    public static final DeferredBlock<StemBlock> GLOWGOURD_STEM = BLOCKS.registerBlock(
+            "glowgourd_stem",
+            p -> new StemBlock(bKey("glowgourd"), bKey("attached_glowgourd_stem"), iKey("glowgourd_seeds"), p),
+            stemProps());
+    public static final DeferredBlock<AttachedStemBlock> ATTACHED_GLOWGOURD_STEM = BLOCKS.registerBlock(
+            "attached_glowgourd_stem",
+            p -> new AttachedStemBlock(bKey("glowgourd_stem"), bKey("glowgourd"), iKey("glowgourd_seeds"), p),
+            attachedStemProps());
 
     // --- Stillbloom Basin — the giant Stillbloom flower (Phase 5d.6) ----------------------------
     // Three soft, glowing blocks assembled by StillbloomFeature into a 3–8-tall giant flower: a stem
@@ -1320,6 +1373,41 @@ public final class ModBlocks {
                 .instabreak()
                 .sound(SoundType.CROP)
                 .pushReaction(PushReaction.DESTROY);
+    }
+
+    /** Stem (gourd crop) properties — passable, random-ticking, instant-break. */
+    private static BlockBehaviour.Properties stemProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.PLANT)
+                .noCollission()
+                .randomTicks()
+                .instabreak()
+                .sound(SoundType.HARD_CROP)
+                .pushReaction(PushReaction.DESTROY);
+    }
+
+    /** Attached-stem properties (the bent stem once a gourd has grown). */
+    private static BlockBehaviour.Properties attachedStemProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.PLANT)
+                .noCollission()
+                .instabreak()
+                .sound(SoundType.WOOD)
+                .pushReaction(PushReaction.DESTROY);
+    }
+
+    /** A {@code ResourceKey<Block>} for {@code lumenwilds:<n>} (lazy stem→fruit wiring; no registration order). */
+    private static net.minecraft.resources.ResourceKey<Block> bKey(String n) {
+        return net.minecraft.resources.ResourceKey.create(
+                net.minecraft.core.registries.Registries.BLOCK,
+                com.jus144tice.lumenwilds.util.ResourceLocationHelper.modLoc(n));
+    }
+
+    /** A {@code ResourceKey<Item>} for {@code lumenwilds:<n>} (the stem's seed item). */
+    private static net.minecraft.resources.ResourceKey<net.minecraft.world.item.Item> iKey(String n) {
+        return net.minecraft.resources.ResourceKey.create(
+                net.minecraft.core.registries.Registries.ITEM,
+                com.jus144tice.lumenwilds.util.ResourceLocationHelper.modLoc(n));
     }
 
     /** Bioluminescent crop glow by age: dark when young, faint mid-growth, brighter when mature. */

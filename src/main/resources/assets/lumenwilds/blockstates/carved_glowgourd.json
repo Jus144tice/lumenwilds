@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "lumenwilds:block/carved_glowgourd",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "lumenwilds:block/carved_glowgourd"
+    },
+    "facing=south": {
+      "model": "lumenwilds:block/carved_glowgourd",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "lumenwilds:block/carved_glowgourd",
+      "y": 270
+    }
+  }
+}

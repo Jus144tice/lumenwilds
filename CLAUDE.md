@@ -689,6 +689,14 @@ as `File#member`.
   `BeetrootBlock`). `ModBlocks#LUMENGRAIN_CROP`/`#GLIMMERROOT_CROP`/`#MOONBEET_CROP` (no own BlockItem — planted
   via the seed `ItemNameBlockItem`s; mature stages glow via `#cropGlow`); blockstate-provider has a `CropBlock`
   age-stage branch; loot via `createCropDrops`; `#minecraft:crops` + `#maintains_farmland` tags.
+- [GlowgourdBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GlowgourdBlock.java) — the gourds
+  (v1.4 F3). Glowgourd (pumpkin analog) `#useItemOn` shears-carves into `ModBlocks#CARVED_GLOWGOURD` (a vanilla
+  `CarvedPumpkinBlock`, glowing/wearable) + drops seeds — a glowing jack-o'-lantern. `ModBlocks#MOONMELON` (the
+  melon analog, a glowing gourd → slices) + Glowgourd use vanilla `StemBlock`/`AttachedStemBlock`
+  (`#MOONMELON_STEM`/`#GLOWGOURD_STEM` + attached) wired to fruit/seed by **ResourceKey** (`#bKey`/`#iKey`, lazy
+  — no registration-order issue); seeds = `ItemNameBlockItem`s over the stems. Gourds spawn on Moonloam / Lumen
+  Grass / farmland for free (`#minecraft:dirt`). Blockstate-provider has Stem/AttachedStem/CarvedPumpkin/gourd
+  branches; loot via `createStemDrops`/`createAttachedStemDrops` (Moonmelon → slices).
 - [LumenGrassBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenGrassBlock.java) — Lumen Grass
   (v1.2.3), the dimension's living surface block: a faithful port of vanilla `GrassBlock`/`SpreadingSnowyDirtBlock`
   keyed to `ModBlocks#MOONLOAM` (the "dirt") + itself (the "grass"), extending `Block` directly (no `SNOWY`
@@ -1389,6 +1397,7 @@ as `File#member`.
   `luminite_vein`/`resonite_vein` [E2, big rare `ore` jackpot deposits], `crystal_pocket` [E3, glowing
   Lumen-Crystal-Block blobs], `underground_glowcap` [E3, reuses `giant_glowcap` on cave floors],
   `patch_lumengrain`/`patch_glimmerroot`/`patch_moonbeet` [v1.4 Farming F2, wild crop `random_patch`es],
+  `patch_moonmelon`/`patch_glowgourd` [v1.4 F3, wild gourd patches],
   `giant_glowcap` [5d.3], `lumenwater_pool` [5d.4, **custom
   chunk-safe pool feature** — was a crashing vanilla `lake`] +
   `patch_glow_algae` + `patch_lumen_reeds`, `undercrown_glowvine` [5d.5] + placed-only `undercrown_crystal`/
@@ -1445,7 +1454,8 @@ as `File#member`.
   `crystal_pocket` glowing-crystal-block blobs at `underground_ores`), `cave_glowcaps.json` (E3 —
   `underground_glowcap` at `vegetal_decoration`), and `wild_crops.json` (v1.4 Farming F2 —
   `patch_lumengrain`/`patch_glimmerroot`/`patch_moonbeet` into the green surface biomes at `vegetal_decoration`;
-  Glow Fern loot also drops crop seeds — the "both" seed sourcing). The chest loot tables
+  Glow Fern loot also drops crop seeds — the "both" seed sourcing), and `wild_moonmelon.json`/`wild_glowgourd.json`
+  (v1.4 F3 — Moonmelon patches in Sporefall Jungle, Glowgourd patches in the grassy biomes). The chest loot tables
   (`loot_table/chests/*`, Phase 9) are now **tiered** — a guaranteed signature reward pool (enchanted gear/books,
   Lumen Anchor, striker, crystal blocks) + themed mid loot + treasure scaled by structure difficulty (no more
   all-filler chests). Underwater the surface rule places **`lumensand`** as the seabed (was dead moonloam).

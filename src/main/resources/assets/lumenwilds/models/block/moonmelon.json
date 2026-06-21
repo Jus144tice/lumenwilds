@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "lumenwilds:block/moonmelon_top",
+    "side": "lumenwilds:block/moonmelon_side"
+  }
+}

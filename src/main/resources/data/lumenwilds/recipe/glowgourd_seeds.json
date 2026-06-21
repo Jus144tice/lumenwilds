@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lumenwilds:glowgourd"
+    }
+  ],
+  "result": {
+    "count": 4,
+    "id": "lumenwilds:glowgourd_seeds"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "__comment": "Wild moonmelon patch (v1.4 F3) — gourds scattered on the surface; break for slices/seeds.",
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 4, "xz_spread": 7, "y_spread": 3,
+    "feature": {
+      "feature": { "type": "minecraft:simple_block", "config": {
+        "to_place": { "type": "minecraft:simple_state_provider", "state": { "Name": "lumenwilds:moonmelon" } } } },
+      "placement": [
+        { "type": "minecraft:block_predicate_filter",
+          "predicate": { "type": "minecraft:would_survive", "state": { "Name": "lumenwilds:moonmelon" } } } ]
+    }
+  }
+}

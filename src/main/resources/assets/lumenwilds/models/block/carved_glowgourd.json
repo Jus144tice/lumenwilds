@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "lumenwilds:block/carved_glowgourd_front",
+    "side": "lumenwilds:block/glowgourd_side",
+    "top": "lumenwilds:block/glowgourd_top"
+  }
+}

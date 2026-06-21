@@ -107,6 +107,15 @@ public class ModRecipeProvider extends RecipeProvider {
                 .define('r', ModItems.GLIMMERROOT.get())
                 .unlockedBy("has_glimmerroot", has(ModItems.GLIMMERROOT.get()))
                 .save(out);
+        // Gourd seeds (F3): Moonmelon slice → 1 seed (like melon); Glowgourd → 4 seeds (like pumpkin).
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.MOONMELON_SEEDS.get())
+                .requires(ModItems.MOONMELON_SLICE.get())
+                .unlockedBy("has_moonmelon_slice", has(ModItems.MOONMELON_SLICE.get()))
+                .save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.GLOWGOURD_SEEDS.get(), 4)
+                .requires(ModBlocks.GLOWGOURD.get())
+                .unlockedBy("has_glowgourd", has(ModBlocks.GLOWGOURD.get()))
+                .save(out);
     }
 
     /** v1.3 Phase D2: the Resonite armor set, standard vanilla armor crafting patterns. */

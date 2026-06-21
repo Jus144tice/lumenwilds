@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "lumenwilds:block/attached_glowgourd_stem",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "lumenwilds:block/attached_glowgourd_stem",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "lumenwilds:block/attached_glowgourd_stem"
+    },
+    "facing=west": {
+      "model": "lumenwilds:block/attached_glowgourd_stem",
+      "y": 90
+    }
+  }
+}

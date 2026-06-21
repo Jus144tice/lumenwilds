@@ -1,0 +1,7 @@
+{
+  "__comment": "Wild Moonmelons in the densest biome (like vanilla melons in jungle).",
+  "type": "neoforge:add_features",
+  "biomes": [ "lumenwilds:sporefall_jungle" ],
+  "features": "lumenwilds:patch_moonmelon",
+  "step": "vegetal_decoration"
+}

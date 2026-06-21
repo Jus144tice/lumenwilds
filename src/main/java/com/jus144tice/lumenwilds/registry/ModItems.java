@@ -227,6 +227,24 @@ public final class ModItems {
                             .usingConvertsTo(Items.BOWL)
                             .build()));
 
+    // Gourds (v1.4 F3). Seeds plant the stems; Moonmelon breaks into slices (a snack).
+    public static final DeferredItem<ItemNameBlockItem> MOONMELON_SEEDS = ITEMS.registerItem(
+            "moonmelon_seeds",
+            props -> new ItemNameBlockItem(ModBlocks.MOONMELON_STEM.get(), props),
+            new Item.Properties());
+    public static final DeferredItem<Item> MOONMELON_SLICE = ITEMS.registerItem(
+            "moonmelon_slice",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(2)
+                            .saturationModifier(0.3F)
+                            .build()));
+    public static final DeferredItem<ItemNameBlockItem> GLOWGOURD_SEEDS = ITEMS.registerItem(
+            "glowgourd_seeds",
+            props -> new ItemNameBlockItem(ModBlocks.GLOWGOURD_STEM.get(), props),
+            new Item.Properties());
+
     /** Lumenwater bucket (Phase 5e) — picks up/places the {@link ModFluids#LUMENWATER} source. */
     public static final DeferredItem<BucketItem> LUMENWATER_BUCKET = ITEMS.registerItem(
             "lumenwater_bucket",
@@ -546,6 +564,10 @@ public final class ModItems {
                     || block == ModBlocks.LUMENGRAIN_CROP // crops planted via seed ItemNameBlockItems (v1.4)
                     || block == ModBlocks.GLIMMERROOT_CROP
                     || block == ModBlocks.MOONBEET_CROP
+                    || block == ModBlocks.MOONMELON_STEM // gourd stems planted via seeds; no own item (F3)
+                    || block == ModBlocks.ATTACHED_MOONMELON_STEM
+                    || block == ModBlocks.GLOWGOURD_STEM
+                    || block == ModBlocks.ATTACHED_GLOWGOURD_STEM
                     || block.getId().getPath().contains("sign")) {
                 continue;
             }

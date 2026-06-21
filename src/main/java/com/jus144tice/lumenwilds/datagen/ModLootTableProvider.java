@@ -116,6 +116,23 @@ public final class ModLootTableProvider {
                     add(block, b -> createOreDrop(b, ModItems.LUMEN_CRYSTAL_SHARD.get()));
                 } else if (name.endsWith("_lumen_crystal_bud")) {
                     add(block, this::createSilkTouchOnlyTable); // buds only drop with Silk Touch (like amethyst)
+                } else if (block instanceof net.minecraft.world.level.block.StemBlock) {
+                    Item seed = name.startsWith("moonmelon")
+                            ? ModItems.MOONMELON_SEEDS.get()
+                            : ModItems.GLOWGOURD_SEEDS.get();
+                    add(block, createStemDrops(block, seed));
+                } else if (block instanceof net.minecraft.world.level.block.AttachedStemBlock) {
+                    Item seed = name.startsWith("moonmelon")
+                            ? ModItems.MOONMELON_SEEDS.get()
+                            : ModItems.GLOWGOURD_SEEDS.get();
+                    add(block, createAttachedStemDrops(block, seed));
+                } else if (name.equals("moonmelon")) {
+                    add(
+                            block,
+                            createSingleItemTable(
+                                    ModItems.MOONMELON_SLICE.get(),
+                                    net.minecraft.world.level.storage.loot.providers.number.UniformGenerator.between(
+                                            3.0F, 7.0F)));
                 } else if (block instanceof DropExperienceBlock) {
                     // Route each ore to its drop by name (all +silk/fortune via createOreDrop).
                     Item drop;

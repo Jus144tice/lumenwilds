@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/stem_fruit",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "stem": "lumenwilds:block/attached_glowgourd_stem"
+  }
+}

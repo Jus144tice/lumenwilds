@@ -1,0 +1,7 @@
+{
+  "__comment": "Wild Glowgourds across the grassy biomes (like vanilla pumpkins).",
+  "type": "neoforge:add_features",
+  "biomes": [ "lumenwilds:lumen_glade", "lumenwilds:glowroot_forest", "lumenwilds:stillbloom_basin" ],
+  "features": "lumenwilds:patch_glowgourd",
+  "step": "vegetal_decoration"
+}

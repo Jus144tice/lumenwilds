@@ -126,6 +126,46 @@ public class ModBlockStateProvider extends BlockStateProvider {
                         .forAllStates(state -> net.neoforged.neoforge.client.model.generators.ConfiguredModel.builder()
                                 .modelFile(stages[state.getValue(ageProp)])
                                 .build());
+            } else if (block instanceof net.minecraft.world.level.block.StemBlock) {
+                // Gourd stem: 8 vanilla stem_growth parents keyed to AGE, textured with our stem sprite.
+                ModelFile[] stages = new ModelFile[8];
+                for (int a = 0; a <= 7; a++) {
+                    stages[a] = models().withExistingParent(name + "_stage" + a, "minecraft:block/stem_growth" + a)
+                            .texture("stem", blockTex(name))
+                            .renderType("minecraft:cutout");
+                }
+                getVariantBuilder(block)
+                        .forAllStates(s -> net.neoforged.neoforge.client.model.generators.ConfiguredModel.builder()
+                                .modelFile(stages[
+                                        s.getValue(
+                                                net.minecraft.world.level.block.state.properties.BlockStateProperties
+                                                        .AGE_7)])
+                                .build());
+            } else if (block instanceof net.minecraft.world.level.block.AttachedStemBlock) {
+                ModelFile m = models().withExistingParent(name, "minecraft:block/stem_fruit")
+                        .texture("stem", blockTex(name))
+                        .renderType("minecraft:cutout");
+                getVariantBuilder(block).forAllStates(s -> {
+                    int rot =
+                            switch (s.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING)) {
+                                case WEST -> 90;
+                                case NORTH -> 180;
+                                case EAST -> 270;
+                                default -> 0;
+                            };
+                    return net.neoforged.neoforge.client.model.generators.ConfiguredModel.builder()
+                            .modelFile(m)
+                            .rotationY(rot)
+                            .build();
+                });
+            } else if (block instanceof net.minecraft.world.level.block.CarvedPumpkinBlock) {
+                // Carved Glowgourd — a glowing face block, oriented to FACING (side/top reuse the gourd).
+                ModelFile m = models().orientable(
+                                name, blockTex("glowgourd_side"), blockTex(name + "_front"), blockTex("glowgourd_top"));
+                horizontalBlock(block, m);
+            } else if (name.equals("moonmelon") || name.equals("glowgourd")) {
+                // Gourd blocks: a cube with distinct side + top (melon/pumpkin style).
+                simpleBlock(block, models().cubeColumn(name, blockTex(name + "_side"), blockTex(name + "_top")));
             } else if (block instanceof BushBlock) {
                 // Flowers/ferns/etc. render as a cutout cross.
                 simpleBlock(block, models().cross(name, blockTex(name)).renderType("minecraft:cutout"));
