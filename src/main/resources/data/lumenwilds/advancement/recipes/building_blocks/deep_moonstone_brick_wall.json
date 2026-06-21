@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_deep_moonstone_bricks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:deep_moonstone_bricks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:deep_moonstone_brick_wall"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_deep_moonstone_bricks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:deep_moonstone_brick_wall"
+    ]
+  }
+}

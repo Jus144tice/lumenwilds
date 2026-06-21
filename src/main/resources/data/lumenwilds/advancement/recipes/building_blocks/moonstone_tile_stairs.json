@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_moonstone_tiles": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:moonstone_tiles"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:moonstone_tile_stairs"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_moonstone_tiles"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:moonstone_tile_stairs"
+    ]
+  }
+}

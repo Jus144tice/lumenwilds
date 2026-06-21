@@ -683,6 +683,87 @@ public class ModRecipeProvider extends RecipeProvider {
                 ModBlocks.DEEP_MOONSTONE_TILE_SLAB.get())) {
             cut(out, d, v, 2);
         }
+
+        // Crafting-table stairs/slab/wall for every building variant (a non-stonecutter path, like vanilla
+        // stone). Each variant's shapes come from THAT variant (cobbled → cobbled stairs, etc.), not the base.
+        stoneShapes(
+                out,
+                ModBlocks.COBBLED_MOONSTONE.get(),
+                ModBlocks.COBBLED_MOONSTONE_STAIRS.get(),
+                ModBlocks.COBBLED_MOONSTONE_SLAB.get(),
+                ModBlocks.COBBLED_MOONSTONE_WALL.get());
+        stoneShapes(
+                out,
+                ModBlocks.MOONSTONE.get(),
+                ModBlocks.MOONSTONE_STAIRS.get(),
+                ModBlocks.MOONSTONE_SLAB.get(),
+                ModBlocks.MOONSTONE_WALL.get());
+        stoneShapes(
+                out,
+                ModBlocks.SMOOTH_MOONSTONE.get(),
+                ModBlocks.SMOOTH_MOONSTONE_STAIRS.get(),
+                ModBlocks.SMOOTH_MOONSTONE_SLAB.get(),
+                null); // smooth has no wall
+        stoneShapes(
+                out,
+                ModBlocks.MOONSTONE_BRICKS.get(),
+                ModBlocks.MOONSTONE_BRICK_STAIRS.get(),
+                ModBlocks.MOONSTONE_BRICK_SLAB.get(),
+                ModBlocks.MOONSTONE_BRICK_WALL.get());
+        stoneShapes(
+                out,
+                ModBlocks.MOONSTONE_TILES.get(),
+                ModBlocks.MOONSTONE_TILE_STAIRS.get(),
+                ModBlocks.MOONSTONE_TILE_SLAB.get(),
+                ModBlocks.MOONSTONE_TILE_WALL.get());
+        stoneShapes(
+                out,
+                ModBlocks.COBBLED_DEEP_MOONSTONE.get(),
+                ModBlocks.COBBLED_DEEP_MOONSTONE_STAIRS.get(),
+                ModBlocks.COBBLED_DEEP_MOONSTONE_SLAB.get(),
+                ModBlocks.COBBLED_DEEP_MOONSTONE_WALL.get());
+        stoneShapes(
+                out,
+                ModBlocks.POLISHED_DEEP_MOONSTONE.get(),
+                ModBlocks.POLISHED_DEEP_MOONSTONE_STAIRS.get(),
+                ModBlocks.POLISHED_DEEP_MOONSTONE_SLAB.get(),
+                ModBlocks.POLISHED_DEEP_MOONSTONE_WALL.get());
+        stoneShapes(
+                out,
+                ModBlocks.DEEP_MOONSTONE_BRICKS.get(),
+                ModBlocks.DEEP_MOONSTONE_BRICK_STAIRS.get(),
+                ModBlocks.DEEP_MOONSTONE_BRICK_SLAB.get(),
+                ModBlocks.DEEP_MOONSTONE_BRICK_WALL.get());
+        stoneShapes(
+                out,
+                ModBlocks.DEEP_MOONSTONE_TILES.get(),
+                ModBlocks.DEEP_MOONSTONE_TILE_STAIRS.get(),
+                ModBlocks.DEEP_MOONSTONE_TILE_SLAB.get(),
+                ModBlocks.DEEP_MOONSTONE_TILE_WALL.get());
+    }
+
+    /** Crafting-table stairs (4)/slab (6)/wall (6) for a stone variant; {@code wall} may be null. */
+    private void stoneShapes(RecipeOutput out, ItemLike base, ItemLike stairs, ItemLike slab, ItemLike wall) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, stairs, 4)
+                .pattern("#  ")
+                .pattern("## ")
+                .pattern("###")
+                .define('#', base)
+                .unlockedBy("has_" + path(base), has(base))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, slab, 6)
+                .pattern("###")
+                .define('#', base)
+                .unlockedBy("has_" + path(base), has(base))
+                .save(out);
+        if (wall != null) {
+            ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, wall, 6)
+                    .pattern("###")
+                    .pattern("###")
+                    .define('#', base)
+                    .unlockedBy("has_" + path(base), has(base))
+                    .save(out);
+        }
     }
 
     private void smelt(RecipeOutput out, ItemLike from, ItemLike to) {

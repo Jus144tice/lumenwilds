@@ -6,6 +6,18 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-06-20
+**Moonstone is now a proper Stone analog (and Deep Moonstone a Deepslate analog):**
+
+- **Mining Moonstone now drops Cobbled Moonstone** (Silk Touch still gets the smooth Moonstone block), exactly
+  like Stone → Cobblestone. Deep Moonstone likewise drops **Cobbled Deep Moonstone**. This also makes Cobbled
+  Moonstone — and the Moonstone tool set that's crafted from it — properly obtainable by mining.
+- **Smelting chain** (already in, now actually reachable): Cobbled Moonstone → Moonstone → Smooth Moonstone;
+  Cobbled Deep Moonstone → Deep Moonstone.
+- **Full crafting paths.** Every variant (cobbled, smooth, bricks, tiles, polished + their stairs/slabs/walls)
+  is now craftable at a **crafting table** too, not just the stonecutter — each shape sourced from its own block
+  (Cobbled → Cobbled Stairs, etc.), matching vanilla stone.
+
 ## [1.3.0] - 2026-06-20
 **Mining overhaul (Phases A–E) — a complete rework of the Lumenwilds mining loop: reachable lively caves,
 varied strata, new depth-banded ores, a deep gear tier (tools + the dimension's first armor), and cave

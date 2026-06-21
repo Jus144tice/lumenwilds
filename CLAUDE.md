@@ -1236,7 +1236,10 @@ as `File#member`.
   `#buildGlowrootRecipes` (both call the shared `#buildWoodSetRecipes` — full wood set incl. signs, hanging
   signs, boat + chest boat), `#buildMoonstoneRecipes` +
   `#buildShimmerstoneRecipes` (2×2 crafting + stonecutter via helpers `#square2x2`/`#cut`; **v1.2.1** added the
-  base-Shimmerstone craft `4 Moonstone + 1 Lumen Crystal Shard → 4` so the set isn't structure-gated),
+  base-Shimmerstone craft `4 Moonstone + 1 Lumen Crystal Shard → 4` so the set isn't structure-gated;
+  **v1.3.1** — Moonstone is now a full Stone analog: the smelt chain (Cobbled→Moonstone→Smooth,
+  Cobbled Deep→Deep) plus crafting-table stairs/slab/wall for every variant via `#stoneShapes`, each sourced
+  from its own block),
   `#buildLuminiteRecipes` (10a — ore/raw → ingot smelt+blast, ingot ↔ block, the Glowbrick craft
   `L I L / I C I / L I L`, + Glowbrick family cuts/shapes), `#buildResonanceRecipes` (10e — Resonance Core
   from a fragment, Ancient Door from glowbrick, Gravity Lens from fragments + shimmerstone, Lumen Relay),
@@ -1250,7 +1253,8 @@ as `File#member`.
   (both `noLootTable`) + the liftshaft fields + `GLOWBERRY_BUSH` (hand-authored age-conditioned berry loot),
   with slab (drops 2) and door (drops 1) special-cased; `lumen_grass_block` →
   `createSingleItemTableWithSilkTouch`(MOONLOAM) (silk → grass, else Moonloam — the grass mechanic, v1.2.3);
-  `memory_crystal` →
+  `moonstone`/`deep_moonstone` → `createSingleItemTableWithSilkTouch`(cobbled variant) (silk → self, else
+  Cobbled — the Stone/Deepslate analog, v1.3.1); `memory_crystal` →
   `createOreDrop`(MEMORY_CRYSTAL_SHARD); `DropExperienceBlock` → `createOreDrop` (Luminite ores →
   `RAW_LUMINITE`, Lumen Crystal ores → shard); Glowroot wall-signs drop the Glowroot sign item.
 - [ModTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModTagProvider.java) — a `BlockTagsProvider`.
