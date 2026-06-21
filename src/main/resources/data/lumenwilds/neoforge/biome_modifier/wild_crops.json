@@ -1,0 +1,17 @@
+{
+  "__comment": "Wild native crop patches (v1.4 Farming) across the green surface biomes — harvest for seeds.",
+  "type": "neoforge:add_features",
+  "biomes": [
+    "lumenwilds:lumen_glade",
+    "lumenwilds:glowroot_forest",
+    "lumenwilds:sporefall_jungle",
+    "lumenwilds:moonmire",
+    "lumenwilds:stillbloom_basin"
+  ],
+  "features": [
+    "lumenwilds:patch_lumengrain",
+    "lumenwilds:patch_glimmerroot",
+    "lumenwilds:patch_moonbeet"
+  ],
+  "step": "vegetal_decoration"
+}

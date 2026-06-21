@@ -110,6 +110,22 @@ public class ModBlockStateProvider extends BlockStateProvider {
             } else if (block instanceof AmethystClusterBlock) {
                 // Crystal clusters (Glasspetal) — a cutout cross rotated to the FACING direction.
                 directionalBlock(block, models().cross(name, blockTex(name)).renderType("minecraft:cutout"));
+            } else if (block instanceof net.minecraft.world.level.block.CropBlock crop) {
+                // Crops: a per-age cutout "crop" model (block/<name>_stage<age>), keyed to the AGE property.
+                int max = crop.getMaxAge();
+                var ageProp = max <= 3
+                        ? net.minecraft.world.level.block.state.properties.BlockStateProperties.AGE_3
+                        : net.minecraft.world.level.block.state.properties.BlockStateProperties.AGE_7;
+                ModelFile[] stages = new ModelFile[max + 1];
+                for (int a = 0; a <= max; a++) {
+                    stages[a] = models().withExistingParent(name + "_stage" + a, "minecraft:block/crop")
+                            .texture("crop", blockTex(name + "_stage" + a))
+                            .renderType("minecraft:cutout");
+                }
+                getVariantBuilder(block)
+                        .forAllStates(state -> net.neoforged.neoforge.client.model.generators.ConfiguredModel.builder()
+                                .modelFile(stages[state.getValue(ageProp)])
+                                .build());
             } else if (block instanceof BushBlock) {
                 // Flowers/ferns/etc. render as a cutout cross.
                 simpleBlock(block, models().cross(name, blockTex(name)).renderType("minecraft:cutout"));

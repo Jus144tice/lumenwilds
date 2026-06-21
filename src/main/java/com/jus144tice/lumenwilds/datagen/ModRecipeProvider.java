@@ -84,6 +84,29 @@ public class ModRecipeProvider extends RecipeProvider {
         buildToolRecipes(recipeOutput);
         buildMiningOreRecipes(recipeOutput);
         buildArmorRecipes(recipeOutput);
+        buildFarmingRecipes(recipeOutput);
+    }
+
+    /** v1.4 Farming dishes — lumen-only (Glowloaf, Moonbeet Soup) + a lumen×overworld hybrid (Gilded Glimmerroot). */
+    private void buildFarmingRecipes(RecipeOutput out) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.GLOWLOAF.get())
+                .pattern("###")
+                .define('#', ModItems.LUMENGRAIN.get())
+                .unlockedBy("has_lumengrain", has(ModItems.LUMENGRAIN.get()))
+                .save(out);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.FOOD, ModItems.MOONBEET_SOUP.get())
+                .requires(Items.BOWL)
+                .requires(ModItems.MOONBEET.get(), 6)
+                .unlockedBy("has_moonbeet", has(ModItems.MOONBEET.get()))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.FOOD, ModItems.GILDED_GLIMMERROOT.get())
+                .pattern("ggg")
+                .pattern("grg")
+                .pattern("ggg")
+                .define('g', Items.GOLD_NUGGET)
+                .define('r', ModItems.GLIMMERROOT.get())
+                .unlockedBy("has_glimmerroot", has(ModItems.GLIMMERROOT.get()))
+                .save(out);
     }
 
     /** v1.3 Phase D2: the Resonite armor set, standard vanilla armor crafting patterns. */

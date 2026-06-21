@@ -74,6 +74,31 @@ public final class ModLootTableProvider {
                 } else if (name.equals("lumen_farmland") || name.equals("lumen_dirt_path")) {
                     // Farmland/path drop Moonloam when broken (like vanilla farmland/path → dirt).
                     add(block, b -> createSingleItemTable(ModBlocks.MOONLOAM.get()));
+                } else if (name.equals("lumengrain_crop")) {
+                    add(
+                            block,
+                            createCropDrops(
+                                    block,
+                                    ModItems.LUMENGRAIN.get(),
+                                    ModItems.LUMENGRAIN_SEEDS.get(),
+                                    matureCond(block, net.minecraft.world.level.block.CropBlock.AGE, 7)));
+                } else if (name.equals("glimmerroot_crop")) {
+                    // Glimmerroot: the root is both produce and seed (like carrots).
+                    add(
+                            block,
+                            createCropDrops(
+                                    block,
+                                    ModItems.GLIMMERROOT.get(),
+                                    ModItems.GLIMMERROOT.get(),
+                                    matureCond(block, net.minecraft.world.level.block.CropBlock.AGE, 7)));
+                } else if (name.equals("moonbeet_crop")) {
+                    add(
+                            block,
+                            createCropDrops(
+                                    block,
+                                    ModItems.MOONBEET.get(),
+                                    ModItems.MOONBEET_SEEDS.get(),
+                                    matureCond(block, com.jus144tice.lumenwilds.block.MoonbeetCropBlock.AGE, 3)));
                 } else if (name.equals("moonstone")) {
                     // Stone analog: silk → Moonstone, else → Cobbled Moonstone (smelt back to Moonstone).
                     add(block, b -> createSingleItemTableWithSilkTouch(b, ModBlocks.COBBLED_MOONSTONE.get()));
@@ -122,6 +147,15 @@ public final class ModLootTableProvider {
         @Override
         protected Iterable<Block> getKnownBlocks() {
             return lootableBlocks();
+        }
+
+        /** "Crop is at its max age" loot condition (for createCropDrops). */
+        private static net.minecraft.world.level.storage.loot.predicates.LootItemCondition.Builder matureCond(
+                Block crop, net.minecraft.world.level.block.state.properties.IntegerProperty age, int max) {
+            return net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition
+                    .hasBlockStateProperties(crop)
+                    .setProperties(net.minecraft.advancements.critereon.StatePropertiesPredicate.Builder.properties()
+                            .hasProperty(age, max));
         }
 
         private static List<Block> lootableBlocks() {

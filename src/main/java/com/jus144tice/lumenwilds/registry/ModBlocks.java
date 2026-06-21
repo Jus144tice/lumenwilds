@@ -349,6 +349,28 @@ public final class ModBlocks {
                             .sound(SoundType.SWEET_BERRY_BUSH)
                             .pushReaction(PushReaction.DESTROY));
 
+    // --- Native crops (v1.4 Farming) — grow in dim light, faster on Lumenwater-hydrated Lumen Farmland.
+    // Mature stages glow faintly (bioluminescence). Planted via ItemNameBlockItem seeds (no own BlockItem).
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.LumengrainCropBlock> LUMENGRAIN_CROP =
+            BLOCKS.registerBlock(
+                    "lumengrain_crop",
+                    com.jus144tice.lumenwilds.block.LumengrainCropBlock::new,
+                    cropProps()
+                            .lightLevel(s -> cropGlow(s.getValue(net.minecraft.world.level.block.CropBlock.AGE), 7)));
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.GlimmerrootCropBlock> GLIMMERROOT_CROP =
+            BLOCKS.registerBlock(
+                    "glimmerroot_crop",
+                    com.jus144tice.lumenwilds.block.GlimmerrootCropBlock::new,
+                    cropProps()
+                            .lightLevel(s -> cropGlow(s.getValue(net.minecraft.world.level.block.CropBlock.AGE), 7)));
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.MoonbeetCropBlock> MOONBEET_CROP =
+            BLOCKS.registerBlock(
+                    "moonbeet_crop",
+                    com.jus144tice.lumenwilds.block.MoonbeetCropBlock::new,
+                    cropProps()
+                            .lightLevel(s ->
+                                    cropGlow(s.getValue(com.jus144tice.lumenwilds.block.MoonbeetCropBlock.AGE), 3)));
+
     // --- Stillbloom Basin — the giant Stillbloom flower (Phase 5d.6) ----------------------------
     // Three soft, glowing blocks assembled by StillbloomFeature into a 3–8-tall giant flower: a stem
     // column carrying a petal dome around a brilliant core. The brightest blocks in the dimension.
@@ -1288,6 +1310,27 @@ public final class ModBlocks {
                 .strength(3.0F, 6.0F)
                 .requiresCorrectToolForDrops()
                 .sound(SoundType.DEEPSLATE);
+    }
+
+    /** Shared crop block properties (v1.4 Farming): passable, random-ticking, instant-break, crop sound. */
+    private static BlockBehaviour.Properties cropProps() {
+        return BlockBehaviour.Properties.of()
+                .noCollission()
+                .randomTicks()
+                .instabreak()
+                .sound(SoundType.CROP)
+                .pushReaction(PushReaction.DESTROY);
+    }
+
+    /** Bioluminescent crop glow by age: dark when young, faint mid-growth, brighter when mature. */
+    private static int cropGlow(int age, int maxAge) {
+        if (age >= maxAge) {
+            return 5;
+        }
+        if (age >= maxAge - (maxAge >= 7 ? 4 : 1)) {
+            return 2;
+        }
+        return 0;
     }
 
     /** Lumen-crystal bud/cluster factory (v1.3 Phase E1): an {@link AmethystClusterBlock} that glows faintly. */

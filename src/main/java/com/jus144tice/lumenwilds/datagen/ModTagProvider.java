@@ -48,6 +48,11 @@ public class ModTagProvider extends BlockTagsProvider {
         // Glowvine is climbable like vines/weeping vines (the hanging cave strands + surface vine).
         tag(BlockTags.CLIMBABLE).add(ModBlocks.GLOWVINE.get());
 
+        // Crops (v1.4 Farming): #minecraft:crops (some harvest/farm mods read it) + #maintains_farmland (so
+        // farmland under an unattended crop doesn't revert to Moonloam when dry). Populated in the loop below.
+        var crops = tag(BlockTags.CROPS);
+        var maintainsFarmland = tag(BlockTags.MAINTAINS_FARMLAND);
+
         // Vanilla wood-set block tags (v1.1.1) — so the Glowwood + Glowroot sets behave as real wood
         // (#minecraft:planks → crafting table/chest/etc., fence/door/sign/button/plate behaviour, burnable
         // logs, saplings). The matching ITEM tags (what recipes read) are mirrored in ModItemTagProvider.
@@ -74,6 +79,11 @@ public class ModTagProvider extends BlockTagsProvider {
             }
             net.minecraft.world.level.block.Block block = holder.get();
             String name = holder.getId().getPath();
+            // Non-exclusive: crops join #minecraft:crops + #maintains_farmland (auto-covers every CropBlock).
+            if (block instanceof net.minecraft.world.level.block.CropBlock) {
+                crops.add(block);
+                maintainsFarmland.add(block);
+            }
             // Non-exclusive: logs/wood are both axe-mineable AND #minecraft:logs (for leaf decay).
             if (name.endsWith("_log") || name.endsWith("_wood")) {
                 logs.add(block);

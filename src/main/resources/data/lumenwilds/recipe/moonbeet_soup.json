@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:bowl"
+    },
+    {
+      "item": "lumenwilds:moonbeet"
+    },
+    {
+      "item": "lumenwilds:moonbeet"
+    },
+    {
+      "item": "lumenwilds:moonbeet"
+    },
+    {
+      "item": "lumenwilds:moonbeet"
+    },
+    {
+      "item": "lumenwilds:moonbeet"
+    },
+    {
+      "item": "lumenwilds:moonbeet"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:moonbeet_soup"
+  }
+}

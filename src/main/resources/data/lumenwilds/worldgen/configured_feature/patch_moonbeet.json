@@ -1,0 +1,24 @@
+{
+  "__comment": "Wild moonbeet patch (v1.4 Farming) — native crops growing on the surface; harvest for seeds.",
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 8,
+    "xz_spread": 6,
+    "y_spread": 2,
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:simple_state_provider",
+            "state": { "Name": "lumenwilds:moonbeet_crop", "Properties": { "age": "3" } }
+          }
+        }
+      },
+      "placement": [
+        { "type": "minecraft:block_predicate_filter",
+          "predicate": { "type": "minecraft:would_survive", "state": { "Name": "lumenwilds:moonbeet_crop", "Properties": { "age": "3" } } } }
+      ]
+    }
+  }
+}

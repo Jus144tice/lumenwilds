@@ -165,6 +165,68 @@ public final class ModItems {
                             .effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 200, 0), 1.0F)
                             .build()));
 
+    // --- Farming (v1.4) — native crops, seeds, and dishes (lumen-only + lumen×overworld hybrids) ----------
+    // Seeds are ItemNameBlockItems (right-click tilled soil to plant); the crop blocks skip the auto-BlockItem loop.
+    public static final DeferredItem<ItemNameBlockItem> LUMENGRAIN_SEEDS = ITEMS.registerItem(
+            "lumengrain_seeds",
+            props -> new ItemNameBlockItem(ModBlocks.LUMENGRAIN_CROP.get(), props),
+            new Item.Properties());
+    public static final DeferredItem<Item> LUMENGRAIN = ITEMS.registerSimpleItem("lumengrain");
+    /** Glowloaf — the lumen-only bread (3 Lumengrain). */
+    public static final DeferredItem<Item> GLOWLOAF = ITEMS.registerItem(
+            "glowloaf",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(6)
+                            .saturationModifier(0.6F)
+                            .build()));
+
+    /** Glimmerroot — the carrot analog: the harvested root IS the seed (plantable) and is edible raw. */
+    public static final DeferredItem<ItemNameBlockItem> GLIMMERROOT = ITEMS.registerItem(
+            "glimmerroot",
+            props -> new ItemNameBlockItem(ModBlocks.GLIMMERROOT_CROP.get(), props),
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(3)
+                            .saturationModifier(0.3F)
+                            .build()));
+    /** Gilded Glimmerroot — the golden-carrot analog (Glimmerroot + gold), a hearty night-vision food (hybrid). */
+    public static final DeferredItem<Item> GILDED_GLIMMERROOT = ITEMS.registerItem(
+            "gilded_glimmerroot",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(6)
+                            .saturationModifier(1.0F)
+                            .effect(() -> new MobEffectInstance(MobEffects.NIGHT_VISION, 300, 0), 1.0F)
+                            .alwaysEdible()
+                            .build()));
+
+    public static final DeferredItem<ItemNameBlockItem> MOONBEET_SEEDS = ITEMS.registerItem(
+            "moonbeet_seeds",
+            props -> new ItemNameBlockItem(ModBlocks.MOONBEET_CROP.get(), props),
+            new Item.Properties());
+    public static final DeferredItem<Item> MOONBEET = ITEMS.registerItem(
+            "moonbeet",
+            Item::new,
+            new Item.Properties()
+                    .food(new FoodProperties.Builder()
+                            .nutrition(1)
+                            .saturationModifier(0.6F)
+                            .build()));
+    /** Moonbeet Soup — lumen-only stew (6 Moonbeet + bowl), returns the bowl. */
+    public static final DeferredItem<Item> MOONBEET_SOUP = ITEMS.registerItem(
+            "moonbeet_soup",
+            Item::new,
+            new Item.Properties()
+                    .stacksTo(1)
+                    .food(new FoodProperties.Builder()
+                            .nutrition(6)
+                            .saturationModifier(0.6F)
+                            .usingConvertsTo(Items.BOWL)
+                            .build()));
+
     /** Lumenwater bucket (Phase 5e) — picks up/places the {@link ModFluids#LUMENWATER} source. */
     public static final DeferredItem<BucketItem> LUMENWATER_BUCKET = ITEMS.registerItem(
             "lumenwater_bucket",
@@ -481,6 +543,9 @@ public final class ModItems {
                     || block
                             == ModBlocks
                                     .GLOWBERRY_BUSH // planted by the Glowberry item (ItemNameBlockItem), no own item
+                    || block == ModBlocks.LUMENGRAIN_CROP // crops planted via seed ItemNameBlockItems (v1.4)
+                    || block == ModBlocks.GLIMMERROOT_CROP
+                    || block == ModBlocks.MOONBEET_CROP
                     || block.getId().getPath().contains("sign")) {
                 continue;
             }

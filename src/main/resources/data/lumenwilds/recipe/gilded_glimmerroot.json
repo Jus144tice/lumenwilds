@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "g": {
+      "item": "minecraft:gold_nugget"
+    },
+    "r": {
+      "item": "lumenwilds:glimmerroot"
+    }
+  },
+  "pattern": [
+    "ggg",
+    "grg",
+    "ggg"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:gilded_glimmerroot"
+  }
+}

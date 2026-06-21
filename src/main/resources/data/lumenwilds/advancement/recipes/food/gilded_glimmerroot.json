@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_glimmerroot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:glimmerroot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:gilded_glimmerroot"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_glimmerroot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:gilded_glimmerroot"
+    ]
+  }
+}
