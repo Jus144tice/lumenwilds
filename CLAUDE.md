@@ -524,9 +524,10 @@ as `File#member`.
   `#GLOWWOOD_HANGING_SIGN`/`#GLOWROOT_HANGING_SIGN`
   (`HangingSignItem`) — wall variants share these. **Tools (v1.2):** `#MOONSTONE_PICKAXE`/`_AXE`/`_SHOVEL`/
   `_HOE`/`_SWORD` + `#LUMINITE_*` + `#RESONITE_*` (v1.3 Phase D1; built by the private
-  `pickaxe/axe/shovel/hoe/sword` helpers — each wires the `ModToolTiers` tier + `.attributes(...)`). **Armor
-  (v1.3 Phase D2):** `#RESONITE_HELMET`/`#RESONITE_CHESTPLATE`/`#RESONITE_LEGGINGS`/`#RESONITE_BOOTS`
-  (`ArmorItem`, via the `armor` helper over `ModArmorMaterials.RESONITE`). `#SPORE_TRADER_SPAWN_EGG`. A **static loop auto-registers a simple
+  `pickaxe/axe/shovel/hoe/sword` helpers — each wires the `ModToolTiers` tier + `.attributes(...)`). **Armor:**
+  `#LUMINITE_HELMET`…`#LUMINITE_BOOTS` (iron-tier, v1.4.1) + `#RESONITE_HELMET`…`#RESONITE_BOOTS` (v1.3 D2) —
+  `ArmorItem`s via the shared `armor(name, type, material, baseDurability)` helper over the `ModArmorMaterials`.
+  `#SPORE_TRADER_SPAWN_EGG`. A **static loop auto-registers a simple
   `BlockItem` for every block except `LUMEN_PORTAL`, `LUMENWATER_BLOCK`, and the sign blocks** (runs after the
   standalone/sign items so the striker stays first in the tab) — new blocks get an item with no edits here.
 - [ModCreativeTabs.java](src/main/java/com/jus144tice/lumenwilds/registry/ModCreativeTabs.java) —
@@ -562,12 +563,14 @@ as `File#member`.
   shovel/hoe/sword` helpers), recipes in `ModRecipeProvider#buildToolRecipes`, enchantability + type tags in
   `ModItemTagProvider`. **Not a DeferredRegister** (tiers are plain objects).
 - [ModArmorMaterials.java](src/main/java/com/jus144tice/lumenwilds/registry/ModArmorMaterials.java) — the
-  dimension's first **armor material** (v1.3 Phase D2): `#ARMOR_MATERIALS` (`DeferredRegister<ArmorMaterial>`
-  on `Registries.ARMOR_MATERIAL`, wired on the mod bus) + `#RESONITE` (`Holder<ArmorMaterial>` — defense
-  between iron and diamond, toughness 1.5, ench 18, repair = Resonite Ingot, worn texture asset
-  `lumenwilds:resonite` → `textures/models/armor/resonite_layer_{1,2}.png`). The 4 `ArmorItem`s
-  (`ModItems#RESONITE_HELMET`…`#RESONITE_BOOTS`, via the `armor` helper, base durability 36×slot), recipes in
-  `ModRecipeProvider#buildArmorRecipes`, slot + enchantability item tags in `ModItemTagProvider`.
+  **armor materials** (`#ARMOR_MATERIALS`, `DeferredRegister<ArmorMaterial>` on `Registries.ARMOR_MATERIAL`,
+  wired on the mod bus): `#LUMINITE` (v1.4.1 — **iron-tier**, vanilla iron defense/toughness 0/ench 9, repair =
+  Luminite Ingot, layer `lumenwilds:luminite`) + `#RESONITE` (v1.3 D2 — between iron and diamond, toughness
+  1.5, ench 18, repair = Resonite Ingot, layer `lumenwilds:resonite`). Worn textures
+  `textures/models/armor/<mat>_layer_{1,2}.png`. The 8 `ArmorItem`s (`ModItems#LUMINITE_HELMET`…`_BOOTS`,
+  `#RESONITE_HELMET`…`_BOOTS`, via the shared `armor(name, type, material, baseDurability)` helper — Luminite
+  base 15, Resonite 36), recipes in `ModRecipeProvider#buildArmorRecipes` (`#armorSet` helper), slot +
+  enchantability item tags in `ModItemTagProvider#armorTags`.
 - [ModEnchantments.java](src/main/java/com/jus144tice/lumenwilds/registry/ModEnchantments.java) — `ResourceKey<Enchantment>`
   handles for the six **fished** enchantments (v1.1g); the enchantments are data (`data/lumenwilds/enchantment/*.json`,
   1.21.1 data-driven), NOT a DeferredRegister — no bus wiring. Armor while-worn (`tick`→`apply_mob_effect`):

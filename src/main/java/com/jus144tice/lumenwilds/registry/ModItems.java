@@ -562,12 +562,25 @@ public final class ModItems {
     public static final DeferredItem<HoeItem> RESONITE_HOE = hoe("resonite_hoe", ModToolTiers.RESONITE, -3.0F, 0.0F);
     public static final DeferredItem<SwordItem> RESONITE_SWORD = sword("resonite_sword", ModToolTiers.RESONITE);
 
+    // Luminite armor (v1.4.1) — the iron-equivalent set (matches the Luminite iron-tier tools).
+    public static final DeferredItem<ArmorItem> LUMINITE_HELMET =
+            armor("luminite_helmet", ArmorItem.Type.HELMET, ModArmorMaterials.LUMINITE, 15);
+    public static final DeferredItem<ArmorItem> LUMINITE_CHESTPLATE =
+            armor("luminite_chestplate", ArmorItem.Type.CHESTPLATE, ModArmorMaterials.LUMINITE, 15);
+    public static final DeferredItem<ArmorItem> LUMINITE_LEGGINGS =
+            armor("luminite_leggings", ArmorItem.Type.LEGGINGS, ModArmorMaterials.LUMINITE, 15);
+    public static final DeferredItem<ArmorItem> LUMINITE_BOOTS =
+            armor("luminite_boots", ArmorItem.Type.BOOTS, ModArmorMaterials.LUMINITE, 15);
+
     // Resonite armor (v1.3 Phase D2) — the dimension's first armor set (see ModArmorMaterials#RESONITE).
-    public static final DeferredItem<ArmorItem> RESONITE_HELMET = armor("resonite_helmet", ArmorItem.Type.HELMET);
+    public static final DeferredItem<ArmorItem> RESONITE_HELMET =
+            armor("resonite_helmet", ArmorItem.Type.HELMET, ModArmorMaterials.RESONITE, 36);
     public static final DeferredItem<ArmorItem> RESONITE_CHESTPLATE =
-            armor("resonite_chestplate", ArmorItem.Type.CHESTPLATE);
-    public static final DeferredItem<ArmorItem> RESONITE_LEGGINGS = armor("resonite_leggings", ArmorItem.Type.LEGGINGS);
-    public static final DeferredItem<ArmorItem> RESONITE_BOOTS = armor("resonite_boots", ArmorItem.Type.BOOTS);
+            armor("resonite_chestplate", ArmorItem.Type.CHESTPLATE, ModArmorMaterials.RESONITE, 36);
+    public static final DeferredItem<ArmorItem> RESONITE_LEGGINGS =
+            armor("resonite_leggings", ArmorItem.Type.LEGGINGS, ModArmorMaterials.RESONITE, 36);
+    public static final DeferredItem<ArmorItem> RESONITE_BOOTS =
+            armor("resonite_boots", ArmorItem.Type.BOOTS, ModArmorMaterials.RESONITE, 36);
 
     private static DeferredItem<PickaxeItem> pickaxe(String name, Tier tier) {
         return ITEMS.registerItem(
@@ -605,10 +618,14 @@ public final class ModItems {
     }
 
     /** Resonite armor piece (v1.3 Phase D2). Base durability 36 (a touch above diamond's 33) × the slot factor. */
-    private static DeferredItem<ArmorItem> armor(String name, ArmorItem.Type type) {
+    private static DeferredItem<ArmorItem> armor(
+            String name,
+            ArmorItem.Type type,
+            net.minecraft.core.Holder<net.minecraft.world.item.ArmorMaterial> material,
+            int baseDurability) {
         return ITEMS.registerItem(
                 name,
-                p -> new ArmorItem(ModArmorMaterials.RESONITE, type, p.durability(type.getDurability(36))),
+                p -> new ArmorItem(material, type, p.durability(type.getDurability(baseDurability))),
                 new Item.Properties());
     }
 

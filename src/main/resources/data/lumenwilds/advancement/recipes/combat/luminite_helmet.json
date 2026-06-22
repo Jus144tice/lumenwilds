@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_luminite_ingot": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:luminite_ingot"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:luminite_helmet"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_luminite_ingot"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:luminite_helmet"
+    ]
+  }
+}

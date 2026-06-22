@@ -162,32 +162,59 @@ public class ModRecipeProvider extends RecipeProvider {
 
     /** v1.3 Phase D2: the Resonite armor set, standard vanilla armor crafting patterns. */
     private void buildArmorRecipes(RecipeOutput out) {
-        ItemLike ingot = ModItems.RESONITE_INGOT.get();
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.RESONITE_HELMET.get())
+        armorSet(
+                out,
+                ModItems.LUMINITE_INGOT.get(),
+                "luminite_ingot",
+                ModItems.LUMINITE_HELMET.get(),
+                ModItems.LUMINITE_CHESTPLATE.get(),
+                ModItems.LUMINITE_LEGGINGS.get(),
+                ModItems.LUMINITE_BOOTS.get());
+        armorSet(
+                out,
+                ModItems.RESONITE_INGOT.get(),
+                "resonite_ingot",
+                ModItems.RESONITE_HELMET.get(),
+                ModItems.RESONITE_CHESTPLATE.get(),
+                ModItems.RESONITE_LEGGINGS.get(),
+                ModItems.RESONITE_BOOTS.get());
+    }
+
+    /** The four vanilla armor crafting patterns for a material's ingot. */
+    private void armorSet(
+            RecipeOutput out,
+            ItemLike ingot,
+            String key,
+            ItemLike helmet,
+            ItemLike chest,
+            ItemLike legs,
+            ItemLike boots) {
+        String crit = "has_" + key;
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, helmet)
                 .pattern("MMM")
                 .pattern("M M")
                 .define('M', ingot)
-                .unlockedBy("has_resonite_ingot", has(ingot))
+                .unlockedBy(crit, has(ingot))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.RESONITE_CHESTPLATE.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, chest)
                 .pattern("M M")
                 .pattern("MMM")
                 .pattern("MMM")
                 .define('M', ingot)
-                .unlockedBy("has_resonite_ingot", has(ingot))
+                .unlockedBy(crit, has(ingot))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.RESONITE_LEGGINGS.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, legs)
                 .pattern("MMM")
                 .pattern("M M")
                 .pattern("M M")
                 .define('M', ingot)
-                .unlockedBy("has_resonite_ingot", has(ingot))
+                .unlockedBy(crit, has(ingot))
                 .save(out);
-        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.RESONITE_BOOTS.get())
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, boots)
                 .pattern("M M")
                 .pattern("M M")
                 .define('M', ingot)
-                .unlockedBy("has_resonite_ingot", has(ingot))
+                .unlockedBy(crit, has(ingot))
                 .save(out);
     }
 

@@ -34,6 +34,25 @@ public final class ModArmorMaterials {
     public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS =
             DeferredRegister.create(Registries.ARMOR_MATERIAL, Lumenwilds.MOD_ID);
 
+    /** Luminite armor — iron-tier (matches the {@link ModToolTiers#LUMINITE} iron-equivalent tools): vanilla
+     * iron defense/toughness/enchantability, repaired with Luminite Ingot. */
+    public static final Holder<ArmorMaterial> LUMINITE = ARMOR_MATERIALS.register(
+            "luminite",
+            () -> new ArmorMaterial(
+                    Util.make(new EnumMap<>(ArmorItem.Type.class), m -> {
+                        m.put(ArmorItem.Type.BOOTS, 2);
+                        m.put(ArmorItem.Type.LEGGINGS, 5);
+                        m.put(ArmorItem.Type.CHESTPLATE, 6);
+                        m.put(ArmorItem.Type.HELMET, 2);
+                        m.put(ArmorItem.Type.BODY, 5);
+                    }),
+                    9, // enchantmentValue (iron)
+                    SoundEvents.ARMOR_EQUIP_IRON,
+                    () -> Ingredient.of(ModItems.LUMINITE_INGOT.get()),
+                    List.of(new ArmorMaterial.Layer(ResourceLocationHelper.modLoc("luminite"))),
+                    0.0F, // toughness (iron)
+                    0.0F)); // knockbackResistance
+
     /** Resonite armor — between iron and diamond defense, toughness 1.5; the endgame Lumenwilds set. */
     public static final Holder<ArmorMaterial> RESONITE = ARMOR_MATERIALS.register(
             "resonite",

@@ -92,12 +92,25 @@ public class ModItemTagProvider extends ItemTagsProvider {
         tag(ItemTags.SWORD_ENCHANTABLE).add(swords);
         tag(ItemTags.FIRE_ASPECT_ENCHANTABLE).add(swords);
 
-        // Resonite armor (v1.3 Phase D2) — slot + enchantability tags so it equips + enchants like vanilla armor.
-        var helmet = ModItems.RESONITE_HELMET.get();
-        var chest = ModItems.RESONITE_CHESTPLATE.get();
-        var legs = ModItems.RESONITE_LEGGINGS.get();
-        var boots = ModItems.RESONITE_BOOTS.get();
-        var allArmor = new net.minecraft.world.item.Item[] {helmet, chest, legs, boots};
+        // Armor sets (Luminite v1.4.1, Resonite v1.3 D2) — slot + enchantability tags, like vanilla armor.
+        armorTags(
+                ModItems.LUMINITE_HELMET.get(),
+                ModItems.LUMINITE_CHESTPLATE.get(),
+                ModItems.LUMINITE_LEGGINGS.get(),
+                ModItems.LUMINITE_BOOTS.get());
+        armorTags(
+                ModItems.RESONITE_HELMET.get(),
+                ModItems.RESONITE_CHESTPLATE.get(),
+                ModItems.RESONITE_LEGGINGS.get(),
+                ModItems.RESONITE_BOOTS.get());
+    }
+
+    private void armorTags(
+            net.minecraft.world.item.Item helmet,
+            net.minecraft.world.item.Item chest,
+            net.minecraft.world.item.Item legs,
+            net.minecraft.world.item.Item boots) {
+        var all = new net.minecraft.world.item.Item[] {helmet, chest, legs, boots};
         tag(ItemTags.HEAD_ARMOR).add(helmet);
         tag(ItemTags.CHEST_ARMOR).add(chest);
         tag(ItemTags.LEG_ARMOR).add(legs);
@@ -106,10 +119,10 @@ public class ModItemTagProvider extends ItemTagsProvider {
         tag(ItemTags.CHEST_ARMOR_ENCHANTABLE).add(chest);
         tag(ItemTags.LEG_ARMOR_ENCHANTABLE).add(legs);
         tag(ItemTags.FOOT_ARMOR_ENCHANTABLE).add(boots);
-        tag(ItemTags.ARMOR_ENCHANTABLE).add(allArmor);
-        tag(ItemTags.EQUIPPABLE_ENCHANTABLE).add(allArmor);
-        tag(ItemTags.DURABILITY_ENCHANTABLE).add(allArmor);
-        tag(ItemTags.VANISHING_ENCHANTABLE).add(allArmor);
+        tag(ItemTags.ARMOR_ENCHANTABLE).add(all);
+        tag(ItemTags.EQUIPPABLE_ENCHANTABLE).add(all);
+        tag(ItemTags.DURABILITY_ENCHANTABLE).add(all);
+        tag(ItemTags.VANISHING_ENCHANTABLE).add(all);
     }
 
     private static net.minecraft.world.item.Item[] concat(net.minecraft.world.item.Item[]... groups) {

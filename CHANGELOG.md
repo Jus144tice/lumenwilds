@@ -6,6 +6,11 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.1] - 2026-06-21
+- **Luminite armor.** Since Luminite is the iron-equivalent (same tools/stats), it now crafts into a full
+  armor set (helmet/chestplate/leggings/boots) at iron-tier defense, enchantable and repairable with Luminite
+  Ingots — the mid-game counterpart to the Resonite (diamond-tier) set.
+
 ## [1.4.0] - 2026-06-21
 **Farming overhaul — a full alien farming tree.** (Also includes the climbable Glowvine from 1.3.2.)
 
