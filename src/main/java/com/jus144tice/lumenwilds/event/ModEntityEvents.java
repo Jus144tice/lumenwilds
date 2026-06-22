@@ -50,6 +50,9 @@ public final class ModEntityEvents {
         event.put(ModEntities.SPORELING.get(), Sporeling.createAttributes().build());
         event.put(ModEntities.MIRELURKER.get(), Mirelurker.createAttributes().build());
         event.put(ModEntities.LUMEN_FISH.get(), LumenFish.createAttributes().build());
+        event.put(
+                ModEntities.PRISMFIN.get(),
+                com.jus144tice.lumenwilds.entity.Prismfin.createAttributes().build());
         event.put(ModEntities.SKY_JELLY.get(), SkyJelly.createAttributes().build());
         event.put(ModEntities.GLOWMOTH.get(), Glowmoth.createAttributes().build());
         event.put(ModEntities.ROOTBACK.get(), Rootback.createAttributes().build());
@@ -101,6 +104,13 @@ public final class ModEntityEvents {
         // Lumen Fish: in the water, like vanilla cod/salmon.
         event.register(
                 ModEntities.LUMEN_FISH.get(),
+                SpawnPlacementTypes.IN_WATER,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                WaterAnimal::checkSurfaceWaterAnimalSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // Prismfin: the tropical aquarium fish — same water placement.
+        event.register(
+                ModEntities.PRISMFIN.get(),
                 SpawnPlacementTypes.IN_WATER,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 WaterAnimal::checkSurfaceWaterAnimalSpawnRules,

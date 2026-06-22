@@ -4,7 +4,6 @@
  */
 package com.jus144tice.lumenwilds.client.model;
 
-import com.jus144tice.lumenwilds.entity.LumenFish;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -14,12 +13,13 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 
 /**
- * Bespoke Lumen Fish model (Phase 9b) — a small glowing schooling fish: a slim body, a swishing tail fin, and
- * a little dorsal fin. Replaces the cod placeholder.
+ * Bespoke small-fish model (Phase 9b) — a slim body, a swishing tail fin, and a little dorsal fin. Used by the
+ * Lumen Fish and (v1.4.2) the Prismfin (generic over the entity type; only the texture differs).
  */
-public class LumenFishModel extends HierarchicalModel<LumenFish> {
+public class LumenFishModel<T extends Entity> extends HierarchicalModel<T> {
 
     private final ModelPart root;
     private final ModelPart tail;
@@ -52,12 +52,7 @@ public class LumenFishModel extends HierarchicalModel<LumenFish> {
 
     @Override
     public void setupAnim(
-            LumenFish entity,
-            float limbSwing,
-            float limbSwingAmount,
-            float ageInTicks,
-            float headYaw,
-            float headPitch) {
+            T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float headYaw, float headPitch) {
         float speed = entity.isInWater() ? 1.0F : 1.8F;
         this.tail.yRot = -Mth.cos(ageInTicks * 0.2F * speed) * 0.7F;
     }

@@ -1,12 +1,20 @@
 {
-  "__comment": "Moonmire (Phase 5d.4) — the bible's glowing swamp. A dark, misty wetland whose pools are filled with real Lumenwater (5e), so the water itself glows brighter than anywhere else. Dense Lumen Reeds + Glow Algae fringe the channels; sparse Glowroot trees stand with their roots in the mire. Soft Moonmud floor + Bogroot wood are deferred (see Phase 9). Shallow-water slowdown / fog-cover danger is the bible's intent; mobs arrive in Phase 6.",
+  "__comment": "Moonmire (Phase 5d.4) \u00e2\u20ac\u201d the bible's glowing swamp. A dark, misty wetland whose pools are filled with real Lumenwater (5e), so the water itself glows brighter than anywhere else. Dense Lumen Reeds + Glow Algae fringe the channels; sparse Glowroot trees stand with their roots in the mire. Soft Moonmud floor + Bogroot wood are deferred (see Phase 9). Shallow-water slowdown / fog-cover danger is the bible's intent; mobs arrive in Phase 6.",
   "has_precipitation": false,
   "temperature": 0.5,
   "downfall": 1.0,
   "effects": {
     "ambient_sound": "minecraft:ambient.soul_sand_valley.loop",
-    "additions_sound": { "sound": "minecraft:ambient.soul_sand_valley.additions", "tick_chance": 0.0111 },
-    "music": { "sound": "minecraft:music.nether.soul_sand_valley", "min_delay": 12000, "max_delay": 24000, "replace_current_music": false },
+    "additions_sound": {
+      "sound": "minecraft:ambient.soul_sand_valley.additions",
+      "tick_chance": 0.0111
+    },
+    "music": {
+      "sound": "minecraft:music.nether.soul_sand_valley",
+      "min_delay": 12000,
+      "max_delay": 24000,
+      "replace_current_music": false
+    },
     "fog_color": 1454122,
     "sky_color": 1188894,
     "water_color": 2801824,
@@ -21,16 +29,24 @@
     }
   },
   "carvers": {
-    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
   },
   "features": [
     [],
-    ["lumenwilds:lumenwater_pool"],
+    [
+      "lumenwilds:lumenwater_pool"
+    ],
     [],
     [],
     [],
     [],
-    ["lumenwilds:lumen_crystal_ore"],
+    [
+      "lumenwilds:lumen_crystal_ore"
+    ],
     [],
     [],
     [
@@ -45,16 +61,42 @@
     "ambient": [],
     "axolotls": [],
     "creature": [
-      { "type": "lumenwilds:glowmoth", "weight": 10, "minCount": 2, "maxCount": 4 },
-      { "type": "lumenwilds:sky_jelly", "weight": 6, "minCount": 1, "maxCount": 2 }
+      {
+        "type": "lumenwilds:glowmoth",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 4
+      },
+      {
+        "type": "lumenwilds:sky_jelly",
+        "weight": 6,
+        "minCount": 1,
+        "maxCount": 2
+      }
     ],
     "misc": [],
     "monster": [
-      { "type": "lumenwilds:mirelurker", "weight": 60, "minCount": 2, "maxCount": 4 }
+      {
+        "type": "lumenwilds:mirelurker",
+        "weight": 60,
+        "minCount": 2,
+        "maxCount": 4
+      }
     ],
     "underground_water_creature": [],
     "water_ambient": [
-      { "type": "lumenwilds:lumen_fish", "weight": 15, "minCount": 4, "maxCount": 8 }
+      {
+        "type": "lumenwilds:lumen_fish",
+        "weight": 15,
+        "minCount": 4,
+        "maxCount": 8
+      },
+      {
+        "type": "lumenwilds:prismfin",
+        "weight": 8,
+        "minCount": 3,
+        "maxCount": 6
+      }
     ],
     "water_creature": []
   },

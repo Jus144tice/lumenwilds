@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "axis=y,waterlogged=false": {
+      "model": "lumenwilds:block/glowroot_post"
+    },
+    "axis=y,waterlogged=true": {
+      "model": "lumenwilds:block/glowroot_post"
+    },
+    "axis=z,waterlogged=false": {
+      "model": "lumenwilds:block/glowroot_post",
+      "x": 90
+    },
+    "axis=z,waterlogged=true": {
+      "model": "lumenwilds:block/glowroot_post",
+      "x": 90
+    },
+    "axis=x,waterlogged=false": {
+      "model": "lumenwilds:block/glowroot_post",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,waterlogged=true": {
+      "model": "lumenwilds:block/glowroot_post",
+      "x": 90,
+      "y": 90
+    }
+  }
+}

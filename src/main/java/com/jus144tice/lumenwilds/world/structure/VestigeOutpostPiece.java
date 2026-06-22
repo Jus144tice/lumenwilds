@@ -83,6 +83,10 @@ public class VestigeOutpostPiece extends StructurePiece {
             BlockPos pos) {
         RandomSource rand = RandomSource.create(
                 origin.getX() * 341873128712L ^ origin.getZ() * 132897987541L ^ (long) origin.getY());
+
+        // v1.4.2: wipe the footprint first so this remnant overrides whatever generated here before it
+        // (trees, a vanilla/modded structure, an overlapping ruin); natural terrain + caves below kept.
+        VestigeDecay.clearArea(level, writeBox, this.getBoundingBox(), origin.getY() - 1);
         boolean alongX = rand.nextBoolean();
 
         road(level, writeBox, rand, alongX);

@@ -76,6 +76,14 @@ public final class ModEntities {
                     .clientTrackingRange(4)
                     .build("lumen_fish"));
 
+    /** Prismfin (v1.4.2) — the catchable tropical aquarium fish. */
+    public static final DeferredHolder<EntityType<?>, EntityType<com.jus144tice.lumenwilds.entity.Prismfin>> PRISMFIN =
+            ENTITIES.register("prismfin", () -> EntityType.Builder.of(
+                            com.jus144tice.lumenwilds.entity.Prismfin::new, MobCategory.WATER_AMBIENT)
+                    .sized(0.5F, 0.4F)
+                    .clientTrackingRange(4)
+                    .build("prismfin"));
+
     /** Sky Jelly — the floating, drifting air ambience mob (Phase 6g). */
     public static final DeferredHolder<EntityType<?>, EntityType<SkyJelly>> SKY_JELLY =
             ENTITIES.register("sky_jelly", () -> EntityType.Builder.of(SkyJelly::new, MobCategory.CREATURE)

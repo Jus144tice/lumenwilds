@@ -333,7 +333,21 @@ Path) via `event.LumenFarmingEvents`, hydrated by Lumenwater; eight native crops
 (extends vanilla `CropBlock`) + gourds (`StemBlock`/`GlowgourdBlock`) + a Lumenwater cane — each with an alien
 twist (grow in dim light / in darkness [Duskbean] / on cave stone [Cavecap] / by Lumenwater [Glimmerreed]; all
 glow); seeds from wild patches + Glow Fern drops; lumen-only + lumen×overworld dishes; full `#c:` cooking-mod +
-auto-replant tag integration + composter + a Patchouli farming entry. Roadmap:
+auto-replant tag integration + composter + a Patchouli farming entry. **v1.4.1** gave Luminite a full iron-tier
+armor set. **v1.4.2 (playthrough fixes):** **Lumenwater no longer deals fall damage** (`event.LumenFallEvents`,
+a `LivingFallEvent` handler — the custom FluidType isn't seen by vanilla's water fall-reset, so cancel the
+damage when standing in a `#minecraft:water` fluid); the **in-dimension chest loot is now lumen-only** (the 9
+`loot_table/chests/*` tables swap Overworld diamonds/iron/netherite/emeralds/enchanted-books for lumen
+equivalents — Resonite/Luminite/Shimmerstone/Lumen Crystal; the Overworld `lumenbound_ruins` cache is left as-is,
+it's the portal tutorial); **Glowwood + Glowroot each gained bookshelf/ladder/wooden-post variants** (Quark
+parity — Quark strips the vanilla recipes for its own per-wood variants but doesn't know our modded woods;
+`block.WoodPostBlock` is the thin waterloggable post, ladders are `#climbable`, all glowing/emissive, craftable
+with no mod dependency); the **Prismfin** (`entity.Prismfin`) is a catchable tropical aquarium fish — a vivid
+bucketable schooling fish (`PRISMFIN_BUCKET`) reusing the Lumen Fish groundwork (the shared `client.model.LumenFishModel`
+is now generic over the entity type); and **Vestige remnants take precedence** over whatever generated first
+(`world.structure.VestigeDecay#clearArea` wipes each surface ruin's footprint — trees/foreign structures — before
+it builds, preserving natural terrain + caves; run at the top of `VestigeCity/Outpost/Spire/GlasspetalSpires/Rootshrine`
+`postProcess`; force-gen-verified chunk-safe, 0 exceptions). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -547,7 +561,8 @@ as `File#member`.
 - [ModEntities.java](src/main/java/com/jus144tice/lumenwilds/registry/ModEntities.java) — `#ENTITIES`; the
   native fauna (Phase 6). `#LUMEN_GRAZER` (`CREATURE`, 6a), `#SHADE_STALKER` (`MONSTER`, 6b), `#LANTERN_BEETLE`
   (`CREATURE`, flying, 6c), `#SPORELING` (`MONSTER`, swarm, 6d), `#MIRELURKER` (`MONSTER`, amphibious, 6e),
-  `#LUMEN_FISH` (`WATER_AMBIENT`, schooling fish, 6f), `#SKY_JELLY` (`CREATURE`, floating, 6g), `#GLOWMOTH`
+  `#LUMEN_FISH` (`WATER_AMBIENT`, schooling fish, 6f), `#PRISMFIN` (`WATER_AMBIENT`, the catchable tropical
+  aquarium fish, v1.4.2), `#SKY_JELLY` (`CREATURE`, floating, 6g), `#GLOWMOTH`
   (`CREATURE`, neutral flying guardian, 6h), `#ROOTBACK` (`CREATURE`, massive 3.0×2.2 turtle, 6i),
   `#CRAG_WRAITH` (`MONSTER`, flying dive-attacker, 6j) — **all 10 Phase-6 mobs live**; plus `#ECHO_SENTINEL`
   (`MONSTER`, floating ranged ruin guardian, 10f); plus `#SPORE_TRADER` (`CREATURE`, the rare Sporeman
@@ -682,6 +697,15 @@ as `File#member`.
   `#useWithoutItem` harvests a mature bush (pops 1–2 Glowberries, reverts to age 1 — renewable), bone meal
   advances age. `ModBlocks#GLOWBERRY_BUSH`; planted by the `ModItems#GLOWBERRY` `ItemNameBlockItem`
   (no own BlockItem); age-conditioned berry loot is hand-authored.
+- [WoodPostBlock.java](src/main/java/com/jus144tice/lumenwilds/block/WoodPostBlock.java) — the wood **post**
+  (v1.4.2, Quark parity), a `RotatedPillarBlock` + `SimpleWaterloggedBlock`: a thin 6×6 vertical column (per-axis
+  `VoxelShape`), built from the stripped-log texture, emissive/glowing. `CODEC` typed `MapCodec<RotatedPillarBlock>`
+  (the parent narrows `codec()`). `ModBlocks#GLOWWOOD_POST`/`#GLOWROOT_POST`. The species' **bookshelf** is a plain
+  glowing `Block` (`#GLOWWOOD_BOOKSHELF`/`#GLOWROOT_BOOKSHELF`, emissive cube_column model, side=books/end=planks)
+  and the **ladder** is a vanilla `LadderBlock` (`#GLOWWOOD_LADDER`/`#GLOWROOT_LADDER`, cutout model, in
+  `#minecraft:climbable`); all three are hand-authored (skipped in `ModBlockStateProvider`), craftable via
+  `ModRecipeProvider#buildWoodVariantRecipes` (bookshelf 6 planks+3 books, ladder 6 planks→3, post 3 stripped
+  logs→6), drop-self.
 - [LumenFarmlandBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenFarmlandBlock.java) +
   [LumenDirtPathBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenDirtPathBlock.java) — the
   farming soil (v1.4 F1). Faithful `FarmBlock`/`DirtPathBlock` clones keyed to `ModBlocks#MOONLOAM` (every
@@ -877,6 +901,13 @@ as `File#member`.
   sounds. **Bucketable** (`#getBucketItemStack` → `ModItems.LUMEN_FISH_BUCKET`, a `MobBucketItem`). Drops Raw
   Mirefish (the edible-fish source). Native low gravity; in `#minecraft:can_breathe_under_water`. Spawns
   `IN_WATER` (`WaterAnimal::checkSurfaceWaterAnimalSpawnRules`). Placeholder render = vanilla cod.
+- [Prismfin.java](src/main/java/com/jus144tice/lumenwilds/entity/Prismfin.java) — `AbstractSchoolingFish`,
+  the catchable **tropical aquarium fish** (v1.4.2). A near-identical twin of `LumenFish` (low gravity,
+  `#minecraft:can_breathe_under_water`, `IN_WATER` spawn) — only the vivid texture, tropical-fish sounds, and
+  bucket differ. Bucketable (`#getBucketItemStack` → `ModItems.PRISMFIN_BUCKET`, a water `MobBucketItem` — bucket
+  it into a tank for an aquarium). Spawns in Moonmire + the surface seas (`water_ambient`). Renders via
+  `client.PrismfinRenderer`, reusing the shared generic `client.model.LumenFishModel` (the `LUMEN_FISH` layer) +
+  emissive glow.
 - [SkyJelly.java](src/main/java/com/jus144tice/lumenwilds/entity/SkyJelly.java) — `Animal`, the floating
   air-ambience drifter (6g). Reuses the flight setup (`FlyingMoveControl` + `FlyingPathNavigation`) but with a
   **near-zero `GRAVITY` (0.01)** so it hovers, and only a slow `WaterAvoidingRandomFlyingGoal` + a look goal —
@@ -1025,7 +1056,10 @@ as `File#member`.
   `#overgrow` (creeps lumen grass/glow fern/moonblossom/glowvine onto air), `#fillFoundation` (roots to
   ground), `#weatheredFoundation` (10h.2 — roots with a crumbling moonstone/moonloam mix so slope foundations
   read as ancient broken supports, not bare grey pillars; used by the surface city/outpost), `#set`
-  (box-clipped). **Tune the decay/overgrowth feel here.**
+  (box-clipped); `#clearArea` (v1.4.2 — wipes a ruin's footprint of non-terrain solids [trees/foreign
+  structures] before it builds, so the remnant **takes precedence over whatever generated first**; bounded to
+  the current chunk's writeBox ∩ piece box, terrain + caves below `minClearY` preserved; called at the top of
+  each surface piece's `postProcess`). **Tune the decay/overgrowth feel here.**
 - [VestigeOutpostStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeOutpostStructure.java)
   / [VestigeOutpostPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/VestigeOutpostPiece.java)
   — the **Small Vestige Outpost** (10b), the first/smallest Lumenwright ruin. `#findGenerationPoint` anchors
@@ -1173,6 +1207,11 @@ as `File#member`.
   air above — must be checked here, vanilla won't for modded blocks) → `LUMEN_FARMLAND`; `SHOVEL_FLATTEN` →
   `LUMEN_DIRT_PATH`. Pure handler (`setFinalState` only, simulate-safe). NeoForge 1.21.1 has no till/flatten
   data map — this event is the hook.
+- [LumenFallEvents.java](src/main/java/com/jus144tice/lumenwilds/event/LumenFallEvents.java) — `#onFall(LivingFallEvent)`
+  (v1.4.2): cancels fall damage when the entity's feet/eyes are in a `#minecraft:water` fluid — so jumping into
+  **Lumenwater** breaks your fall like real water. Needed because Lumenwater's custom `FluidType` ≠ vanilla
+  `WATER_TYPE`, and NeoForge's `Entity#updateFluidHeightAndDoFluidPushing(FluidTags.WATER)` keys on the FluidType
+  (not the tag), so vanilla never reset `fallDistance` for it. No-op over real water (vanilla handles that).
 - [MemoryCrystalInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/MemoryCrystalInteractEvents.java)
   — `#onRightClickBlock` (10c): right-clicking a `ModBlocks#MEMORY_CRYSTAL` prints a fragment chosen
   deterministically from the block position (`#FRAGMENTS`, some broken/unreadable; the liftshaft/mine lore

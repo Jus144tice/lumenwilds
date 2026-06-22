@@ -1,0 +1,7 @@
+{
+  "parent": "lumenwilds:block/_emissive_cube_column",
+  "textures": {
+    "end": "lumenwilds:block/glowroot_planks",
+    "side": "lumenwilds:block/glowroot_bookshelf"
+  }
+}

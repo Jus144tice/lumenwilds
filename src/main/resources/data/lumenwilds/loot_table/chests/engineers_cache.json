@@ -6,22 +6,132 @@
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
-        { "type": "minecraft:item", "name": "lumenwilds:resonance_core_fragment", "weight": 6 },
-        { "type": "minecraft:item", "name": "lumenwilds:gravity_lens_fragment", "weight": 6 },
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_relay", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] }
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:resonance_core_fragment",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:gravity_lens_fragment",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:lumen_relay",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        }
       ]
     },
     {
       "__comment": "Conduit parts, materials, and odd foreign scrap.",
-      "rolls": { "type": "minecraft:uniform", "min": 3.0, "max": 5.0 },
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 3.0,
+        "max": 5.0
+      },
       "bonus_rolls": 0.0,
       "entries": [
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_conduit", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 6.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:luminite_ingot", "weight": 9, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:crystal_dust", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:air_gel", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_shard", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:redstone", "weight": 4, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 4.0 } } ] }
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:lumen_conduit",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:luminite_ingot",
+          "weight": 9,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:crystal_dust",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:air_gel",
+          "weight": 6,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 3.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:lumen_crystal_shard",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:crystal_dust",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        }
       ]
     }
   ],

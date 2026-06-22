@@ -6,11 +6,14 @@ package com.jus144tice.lumenwilds.world.structure;
 
 import com.jus144tice.lumenwilds.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.neoforged.neoforge.common.Tags;
 
 /**
  * Shared ruin processors for the Vestige City structures (Phase 10b+). The Lumenwright cities are never
@@ -150,6 +153,71 @@ public final class VestigeDecay {
             case 4 -> ModBlocks.ROOTED_MOONSTONE.get().defaultBlockState();
             default -> ModBlocks.MOONLOAM.get().defaultBlockState();
         };
+    }
+
+    /**
+     * Clears the ruin's footprint <em>before</em> it builds so a Lumenwright remnant <b>takes precedence over
+     * whatever generated there first</b> — trees growing through it, a vanilla/modded structure, an overlapping
+     * Lumenwilds ruin. Iterates only the current chunk's {@code writeBox} intersected with the piece's
+     * {@code pieceBox} (chunk-safe — never touches a neighbour chunk), from {@code minClearY} up to the box top,
+     * and removes every <em>non-terrain</em> solid (trees, planks, foreign structure blocks) to air. Natural
+     * terrain (stone/dirt/sand/ores + the Lumenwilds ground blocks) and fluids are <b>left intact</b>, so the
+     * piece's own foundation refills as normal and caves/ground below {@code minClearY} are never gutted.
+     */
+    public static void clearArea(WorldGenLevel level, BoundingBox writeBox, BoundingBox pieceBox, int minClearY) {
+        int x0 = Math.max(writeBox.minX(), pieceBox.minX());
+        int x1 = Math.min(writeBox.maxX(), pieceBox.maxX());
+        int z0 = Math.max(writeBox.minZ(), pieceBox.minZ());
+        int z1 = Math.min(writeBox.maxZ(), pieceBox.maxZ());
+        int y0 = Math.max(Math.max(writeBox.minY(), pieceBox.minY()), minClearY);
+        int y1 = Math.min(writeBox.maxY(), pieceBox.maxY());
+        BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
+        BlockState air = Blocks.AIR.defaultBlockState();
+        for (int x = x0; x <= x1; x++) {
+            for (int z = z0; z <= z1; z++) {
+                for (int y = y0; y <= y1; y++) {
+                    p.set(x, y, z);
+                    if (isClearable(level.getBlockState(p))) {
+                        level.setBlock(p, air, 2);
+                    }
+                }
+            }
+        }
+    }
+
+    /** A block the ruin should wipe from its air column: a non-terrain solid (tree/plant/foreign structure). */
+    private static boolean isClearable(BlockState s) {
+        if (s.isAir() || !s.getFluidState().isEmpty()) {
+            return false;
+        }
+        if (s.is(BlockTags.LOGS) || s.is(BlockTags.LEAVES) || s.is(BlockTags.SAPLINGS)) {
+            return true; // trees growing through the ruin (the common case)
+        }
+        return !isNaturalTerrain(s);
+    }
+
+    /** Natural worldgen ground (vanilla + Lumenwilds) — never cleared, so the ruin sits in real terrain. */
+    private static boolean isNaturalTerrain(BlockState s) {
+        if (s.is(BlockTags.DIRT)
+                || s.is(BlockTags.BASE_STONE_OVERWORLD)
+                || s.is(BlockTags.SAND)
+                || s.is(Tags.Blocks.ORES)
+                || s.is(Tags.Blocks.GRAVELS)
+                || s.is(Tags.Blocks.STONES)) {
+            return true;
+        }
+        Block b = s.getBlock();
+        return b == ModBlocks.MOONSTONE.get()
+                || b == ModBlocks.DEEP_MOONSTONE.get()
+                || b == ModBlocks.MOONLOAM.get()
+                || b == ModBlocks.LUMEN_GRASS_BLOCK.get()
+                || b == ModBlocks.VEINSTONE.get()
+                || b == ModBlocks.PALE_TUFF.get()
+                || b == ModBlocks.LUMENSAND.get()
+                || b == ModBlocks.LUMEN_CRYSTAL_ORE.get()
+                || b == ModBlocks.DEEP_LUMEN_CRYSTAL_ORE.get()
+                || b == ModBlocks.LUMINITE_ORE.get()
+                || b == ModBlocks.DEEP_LUMINITE_ORE.get();
     }
 
     /** Box-clipped block set (no-op outside the write box, so chunk-gen never reaches a neighbour). */

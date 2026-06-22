@@ -1,12 +1,19 @@
 {
-  "__comment": "Lumen Glade — the baseline arrival biome (Phase 5a). Blue grass + blue-green fog palette per the bible; vegetation and native mobs come in later 5x passes (features/spawners are empty for now).",
+  "__comment": "Lumen Glade \u00e2\u20ac\u201d the baseline arrival biome (Phase 5a). Blue grass + blue-green fog palette per the bible; vegetation and native mobs come in later 5x passes (features/spawners are empty for now).",
   "has_precipitation": false,
   "temperature": 0.7,
   "downfall": 0.5,
   "effects": {
-    "music": { "sound": "minecraft:music.overworld.meadow", "min_delay": 12000, "max_delay": 24000, "replace_current_music": false },
+    "music": {
+      "sound": "minecraft:music.overworld.meadow",
+      "min_delay": 12000,
+      "max_delay": 24000,
+      "replace_current_music": false
+    },
     "particle": {
-      "options": { "type": "lumenwilds:lumen_spore" },
+      "options": {
+        "type": "lumenwilds:lumen_spore"
+      },
       "probability": 0.004
     },
     "fog_color": 3502202,
@@ -23,7 +30,11 @@
     }
   },
   "carvers": {
-    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
   },
   "features": [
     [],
@@ -32,7 +43,9 @@
     [],
     [],
     [],
-    ["lumenwilds:lumen_crystal_ore"],
+    [
+      "lumenwilds:lumen_crystal_ore"
+    ],
     [],
     [],
     [
@@ -48,17 +61,48 @@
     "ambient": [],
     "axolotls": [],
     "creature": [
-      { "type": "lumenwilds:lumen_grazer", "weight": 12, "minCount": 3, "maxCount": 6 },
-      { "type": "lumenwilds:lantern_beetle", "weight": 10, "minCount": 3, "maxCount": 5 },
-      { "type": "lumenwilds:rootback", "weight": 2, "minCount": 2, "maxCount": 3 }
+      {
+        "type": "lumenwilds:lumen_grazer",
+        "weight": 12,
+        "minCount": 3,
+        "maxCount": 6
+      },
+      {
+        "type": "lumenwilds:lantern_beetle",
+        "weight": 10,
+        "minCount": 3,
+        "maxCount": 5
+      },
+      {
+        "type": "lumenwilds:rootback",
+        "weight": 2,
+        "minCount": 2,
+        "maxCount": 3
+      }
     ],
     "misc": [],
     "monster": [
-      { "type": "lumenwilds:shade_stalker", "weight": 40, "minCount": 2, "maxCount": 4 }
+      {
+        "type": "lumenwilds:shade_stalker",
+        "weight": 40,
+        "minCount": 2,
+        "maxCount": 4
+      }
     ],
     "underground_water_creature": [],
     "water_ambient": [
-      { "type": "lumenwilds:lumen_fish", "weight": 8, "minCount": 3, "maxCount": 6 }
+      {
+        "type": "lumenwilds:lumen_fish",
+        "weight": 8,
+        "minCount": 3,
+        "maxCount": 6
+      },
+      {
+        "type": "lumenwilds:prismfin",
+        "weight": 8,
+        "minCount": 3,
+        "maxCount": 6
+      }
     ],
     "water_creature": []
   },

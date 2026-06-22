@@ -1,5 +1,5 @@
 {
-  "__comment": "Sporefall Jungle (Phase 5d.3) — the densest biome: a thick alien rainforest of enormous glowing mushrooms, dense undergrowth, and the constant drift of glowing spores (the 'Sporefall'). Palette shifts to a lush, misty green. The ambient warped_spore particle stands in for the Sporefall look; the full timed event (brighter pulses, stronger bonemeal) is Phase 7.",
+  "__comment": "Sporefall Jungle (Phase 5d.3) \u00e2\u20ac\u201d the densest biome: a thick alien rainforest of enormous glowing mushrooms, dense undergrowth, and the constant drift of glowing spores (the 'Sporefall'). Palette shifts to a lush, misty green. The ambient warped_spore particle stands in for the Sporefall look; the full timed event (brighter pulses, stronger bonemeal) is Phase 7.",
   "has_precipitation": false,
   "temperature": 0.9,
   "downfall": 0.9,
@@ -105,6 +105,12 @@
         "weight": 12,
         "minCount": 4,
         "maxCount": 8
+      },
+      {
+        "type": "lumenwilds:prismfin",
+        "weight": 8,
+        "minCount": 3,
+        "maxCount": 6
       }
     ],
     "water_creature": []

@@ -2,40 +2,191 @@
   "type": "minecraft:chest",
   "pools": [
     {
-      "__comment": "Deepest dungeon — a guaranteed standout reward (Shade-Stalker-guarded).",
+      "__comment": "Deepest dungeon \u00e2\u20ac\u201d a guaranteed standout reward (Shade-Stalker-guarded).",
       "rolls": 1.0,
       "bonus_rolls": 0.0,
       "entries": [
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_anchor", "weight": 5 },
-        { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 5, "functions": [ { "function": "minecraft:enchant_randomly", "options": "#minecraft:on_random_loot" } ] },
-        { "type": "minecraft:item", "name": "minecraft:diamond_chestplate", "weight": 3, "functions": [ { "function": "minecraft:enchant_with_levels", "levels": { "type": "minecraft:uniform", "min": 25.0, "max": 35.0 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:enchanted_golden_apple", "weight": 2 },
-        { "type": "minecraft:item", "name": "minecraft:netherite_scrap", "weight": 2, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] }
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:lumen_anchor",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:lumen_crystal_block",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:resonite_chestplate",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:gilded_glimmerroot",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:resonite_ingot",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        }
       ]
     },
     {
       "__comment": "Relic hoard.",
-      "rolls": { "type": "minecraft:uniform", "min": 4.0, "max": 6.0 },
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 4.0,
+        "max": 6.0
+      },
       "bonus_rolls": 0.0,
       "entries": [
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_shard", "weight": 11, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 4.0, "max": 9.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:echo_dust", "weight": 9, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_block", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 4.0 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:experience_bottle", "weight": 7, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 3.0, "max": 8.0 } } ] },
-        { "type": "minecraft:item", "name": "lumenwilds:shimmerstone", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 3.0, "max": 8.0 } } ] }
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:lumen_crystal_shard",
+          "weight": 11,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 4.0,
+                "max": 9.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:echo_dust",
+          "weight": 9,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:resonite_ingot",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 5.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:lumen_crystal_block",
+          "weight": 7,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:lumen_crystal_shard",
+          "weight": 7,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3.0,
+                "max": 8.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:shimmerstone",
+          "weight": 6,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 3.0,
+                "max": 8.0
+              }
+            }
+          ]
+        }
       ]
     },
     {
       "__comment": "Rarer haul.",
-      "rolls": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 },
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 1.0,
+        "max": 2.0
+      },
       "bonus_rolls": 0.0,
       "entries": [
-        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 4.0 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:book", "weight": 6, "functions": [ { "function": "minecraft:enchant_randomly" } ] },
-        { "type": "minecraft:item", "name": "minecraft:diamond_block", "weight": 2 },
-        { "type": "minecraft:item", "name": "minecraft:netherite_upgrade_smithing_template", "weight": 2 },
-        { "type": "minecraft:empty", "weight": 3 }
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:resonite_ingot",
+          "weight": 6,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:lumen_crystal_shard",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:resonite_block",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "lumenwilds:resonite_block",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 3
+        }
       ]
     }
   ],

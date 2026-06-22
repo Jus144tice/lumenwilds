@@ -66,6 +66,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
                     || block instanceof net.minecraft.world.level.block.DirtPathBlock) {
                 continue; // farmland (moisture-keyed top) + path — hand-authored 15px-top models (F1)
             }
+            if (name.endsWith("_bookshelf") || name.endsWith("_ladder") || name.endsWith("_post")) {
+                continue; // wood variants (v1.4.2) — hand-authored emissive bookshelf / cutout ladder / post column
+            }
             if (name.equals("lumen_grass_block")) {
                 // Grass: a real grass block — green top, moonloam + grass-fringe sides, moonloam bottom
                 // (3-face, painted in the art pass), not the flat cube_all every other simple block gets.

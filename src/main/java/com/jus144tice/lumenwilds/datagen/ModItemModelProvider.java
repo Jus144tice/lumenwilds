@@ -59,6 +59,7 @@ public class ModItemModelProvider extends ItemModelProvider {
                     // item/<name> icon, not their crop block's texture.
                     || item instanceof net.minecraft.world.item.ItemNameBlockItem
                     || name.endsWith("_door")
+                    || name.endsWith("_ladder") // wood ladder = flat inventory sprite (v1.4.2)
                     || name.endsWith("_pane")
                     || name.endsWith("_sign")
                     || name.endsWith("_chest")) { // chest = flat inventory icon (the block is BER-rendered)

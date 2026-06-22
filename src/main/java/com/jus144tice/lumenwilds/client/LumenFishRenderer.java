@@ -15,12 +15,12 @@ import net.minecraft.resources.ResourceLocation;
  * Renders the Lumen Fish with the bespoke {@link LumenFishModel} (Phase 9b — a small glowing schooling fish,
  * replacing the cod placeholder).
  */
-public class LumenFishRenderer extends MobRenderer<LumenFish, LumenFishModel> {
+public class LumenFishRenderer extends MobRenderer<LumenFish, LumenFishModel<LumenFish>> {
 
     private static final ResourceLocation TEXTURE = ResourceLocationHelper.modLoc("textures/entity/lumen_fish.png");
 
     public LumenFishRenderer(EntityRendererProvider.Context context) {
-        super(context, new LumenFishModel(context.bakeLayer(LumenModelLayers.LUMEN_FISH)), 0.2F);
+        super(context, new LumenFishModel<>(context.bakeLayer(LumenModelLayers.LUMEN_FISH)), 0.2F);
     }
 
     @Override

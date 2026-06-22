@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "L": {
+      "item": "lumenwilds:stripped_glowroot_log"
+    }
+  },
+  "pattern": [
+    "L",
+    "L",
+    "L"
+  ],
+  "result": {
+    "count": 6,
+    "id": "lumenwilds:glowroot_post"
+  }
+}

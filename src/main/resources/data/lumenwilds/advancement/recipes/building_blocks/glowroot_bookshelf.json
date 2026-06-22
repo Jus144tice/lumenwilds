@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_glowroot_planks": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:glowroot_planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:glowroot_bookshelf"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_glowroot_planks"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:glowroot_bookshelf"
+    ]
+  }
+}

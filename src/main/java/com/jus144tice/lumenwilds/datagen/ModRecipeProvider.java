@@ -85,6 +85,56 @@ public class ModRecipeProvider extends RecipeProvider {
         buildMiningOreRecipes(recipeOutput);
         buildArmorRecipes(recipeOutput);
         buildFarmingRecipes(recipeOutput);
+        buildWoodVariantRecipes(recipeOutput);
+    }
+
+    /** v1.4.2 wood variants — bookshelf/ladder/post for both species (Quark parity). */
+    private void buildWoodVariantRecipes(RecipeOutput out) {
+        woodVariants(
+                out,
+                ModBlocks.GLOWWOOD_PLANKS.get(),
+                ModBlocks.STRIPPED_GLOWWOOD_LOG.get(),
+                ModBlocks.GLOWWOOD_BOOKSHELF.get(),
+                ModBlocks.GLOWWOOD_LADDER.get(),
+                ModBlocks.GLOWWOOD_POST.get());
+        woodVariants(
+                out,
+                ModBlocks.GLOWROOT_PLANKS.get(),
+                ModBlocks.STRIPPED_GLOWROOT_LOG.get(),
+                ModBlocks.GLOWROOT_BOOKSHELF.get(),
+                ModBlocks.GLOWROOT_LADDER.get(),
+                ModBlocks.GLOWROOT_POST.get());
+    }
+
+    private void woodVariants(
+            RecipeOutput out,
+            ItemLike planks,
+            ItemLike strippedLog,
+            ItemLike bookshelf,
+            ItemLike ladder,
+            ItemLike post) {
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, bookshelf)
+                .pattern("PPP")
+                .pattern("BBB")
+                .pattern("PPP")
+                .define('P', planks)
+                .define('B', Items.BOOK)
+                .unlockedBy("has_" + path(planks), has(planks))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ladder, 3)
+                .pattern("P P")
+                .pattern("PPP")
+                .pattern("P P")
+                .define('P', planks)
+                .unlockedBy("has_" + path(planks), has(planks))
+                .save(out);
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, post, 6)
+                .pattern("L")
+                .pattern("L")
+                .pattern("L")
+                .define('L', strippedLog)
+                .unlockedBy("has_" + path(strippedLog), has(strippedLog))
+                .save(out);
     }
 
     /** v1.4 Farming dishes — lumen-only (Glowloaf, Moonbeet Soup) + a lumen×overworld hybrid (Gilded Glimmerroot). */

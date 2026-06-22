@@ -852,6 +852,27 @@ public final class ModBlocks {
             props -> new net.minecraft.world.level.block.ChestBlock(props, () -> ModBlockEntities.LUMEN_CHEST.get()),
             barrelProps());
 
+    // --- Wood variants (v1.4.2, Quark parity) — bookshelf + ladder + post for both species. All glow like
+    // the rest of the wood sets. Chests + barrels already exist above. Limonero/other-mod woods are Quark's job.
+    public static final DeferredBlock<Block> GLOWWOOD_BOOKSHELF =
+            BLOCKS.registerSimpleBlock("glowwood_bookshelf", planksProps());
+    public static final DeferredBlock<Block> GLOWROOT_BOOKSHELF =
+            BLOCKS.registerSimpleBlock("glowroot_bookshelf", glowrootPlanksProps());
+    public static final DeferredBlock<net.minecraft.world.level.block.LadderBlock> GLOWWOOD_LADDER =
+            BLOCKS.registerBlock("glowwood_ladder", net.minecraft.world.level.block.LadderBlock::new, ladderProps());
+    public static final DeferredBlock<net.minecraft.world.level.block.LadderBlock> GLOWROOT_LADDER =
+            BLOCKS.registerBlock("glowroot_ladder", net.minecraft.world.level.block.LadderBlock::new, ladderProps());
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.WoodPostBlock> GLOWWOOD_POST =
+            BLOCKS.registerBlock(
+                    "glowwood_post",
+                    com.jus144tice.lumenwilds.block.WoodPostBlock::new,
+                    planksProps().noOcclusion());
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.WoodPostBlock> GLOWROOT_POST =
+            BLOCKS.registerBlock(
+                    "glowroot_post",
+                    com.jus144tice.lumenwilds.block.WoodPostBlock::new,
+                    glowrootPlanksProps().noOcclusion());
+
     // --- Moonstone stone set (Phase 4) ----------------------------------------------------------
     // MOONSTONE + COBBLED_MOONSTONE are declared above. Cube variants first, then stairs/slabs/walls.
 
@@ -1543,6 +1564,17 @@ public final class ModBlocks {
                 .strength(2.5F)
                 .lightLevel(state -> 7)
                 .sound(SoundType.WOOD);
+    }
+
+    /** Wood ladder properties (v1.4.2) — thin, climbable, glowing like the wood sets. */
+    private static BlockBehaviour.Properties ladderProps() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.WOOD)
+                .strength(0.4F)
+                .lightLevel(state -> 5)
+                .sound(SoundType.LADDER)
+                .noOcclusion()
+                .pushReaction(PushReaction.DESTROY);
     }
 
     /** Glowroot logs/wood — the self-lit species; emissive-rendered + emits light 7. */

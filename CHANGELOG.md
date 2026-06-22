@@ -6,6 +6,25 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.2] - 2026-06-22
+**Playthrough fixes.**
+
+- **No fall damage in Lumenwater.** Jumping into Lumenwater from a height now behaves like water — it breaks
+  your fall and deals no damage (the custom glowing fluid wasn't recognised by vanilla's water fall-reset).
+- **Lumenwilds chests are lumen-only.** The in-dimension structure chests (caches, reliquaries, vaults,
+  spires, mine caches, shrines) no longer hand out Overworld loot — diamonds/iron/netherite/emeralds/enchanted
+  books are swapped for their lumen counterparts (Resonite/Luminite/Shimmerstone/Lumen Crystal, etc.). *(The
+  Overworld Lumenbound Ruins cache keeps its iron/amethyst/gold — those teach you to build the portal.)*
+- **Wood variants for Glowwood + Glowroot.** Each species now has a **bookshelf**, **ladder**, and **wooden
+  post** (all glowing) — so Quark (which removes the vanilla recipes for its own per-wood variants but doesn't
+  know about modded woods) no longer leaves you unable to craft them. Craftable directly; no mod dependency.
+- **Prismfin — a catchable tropical fish.** A vivid, multi-hued schooling fish of the glowing water. Scoop one
+  with a water bucket (a **Bucket of Prismfin**) and set up a tank for an aquarium. Spawns in the Moonmire and
+  the surface seas.
+- **Lumenwright remnants take precedence.** Vestige cities/outposts/spires, Glasspetal Spires, and Rootshrines
+  now wipe their footprint before building, so they override whatever generated there first (trees growing
+  through them, an overlapping structure) — natural terrain and caves underneath are left intact.
+
 ## [1.4.1] - 2026-06-21
 - **Luminite armor.** Since Luminite is the iron-equivalent (same tools/stats), it now crafts into a full
   armor set (helmet/chestplate/leggings/boots) at iron-tier defense, enchantable and repairable with Luminite

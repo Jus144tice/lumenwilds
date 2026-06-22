@@ -1,0 +1,47 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "lumenwilds:block/glowwood_ladder",
+    "texture": "lumenwilds:block/glowwood_ladder"
+  },
+  "render_type": "minecraft:cutout",
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        15.2
+      ],
+      "to": [
+        16,
+        16,
+        15.2
+      ],
+      "shade": false,
+      "neoforge_data": {
+        "block_light": 7,
+        "sky_light": 0
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "south": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#texture"
+        }
+      }
+    }
+  ]
+}

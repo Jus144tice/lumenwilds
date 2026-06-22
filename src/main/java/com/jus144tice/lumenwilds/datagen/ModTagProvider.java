@@ -46,7 +46,11 @@ public class ModTagProvider extends BlockTagsProvider {
         var needsIron = tag(BlockTags.NEEDS_IRON_TOOL);
 
         // Glowvine is climbable like vines/weeping vines (the hanging cave strands + surface vine).
-        tag(BlockTags.CLIMBABLE).add(ModBlocks.GLOWVINE.get());
+        // Wood ladders (v1.4.2) are climbable too.
+        tag(BlockTags.CLIMBABLE)
+                .add(ModBlocks.GLOWVINE.get())
+                .add(ModBlocks.GLOWWOOD_LADDER.get())
+                .add(ModBlocks.GLOWROOT_LADDER.get());
 
         // Crops (v1.4 Farming): #minecraft:crops (some harvest/farm mods read it) + #maintains_farmland (so
         // farmland under an unattended crop doesn't revert to Moonloam when dry). Populated in the loop below.

@@ -224,6 +224,8 @@
   "item.lumenwilds.mirelurker_spawn_egg": "Mirelurker Spawn Egg",
   "item.lumenwilds.lumen_fish_bucket": "Bucket of Lumen Fish",
   "item.lumenwilds.lumen_fish_spawn_egg": "Lumen Fish Spawn Egg",
+  "item.lumenwilds.prismfin_bucket": "Bucket of Prismfin",
+  "item.lumenwilds.prismfin_spawn_egg": "Prismfin Spawn Egg",
   "item.lumenwilds.sky_jelly_spawn_egg": "Sky Jelly Spawn Egg",
   "item.lumenwilds.glow_scales": "Glow Scales",
   "item.lumenwilds.glowmoth_spawn_egg": "Glowmoth Spawn Egg",
@@ -265,6 +267,7 @@
   "entity.lumenwilds.sporeling": "Sporeling",
   "entity.lumenwilds.mirelurker": "Mirelurker",
   "entity.lumenwilds.lumen_fish": "Lumen Fish",
+  "entity.lumenwilds.prismfin": "Prismfin",
   "entity.lumenwilds.sky_jelly": "Sky Jelly",
   "entity.lumenwilds.glowmoth": "Glowmoth",
   "entity.lumenwilds.rootback": "Rootback",
@@ -334,5 +337,11 @@
   "block.lumenwilds.glowroot_barrel": "Glowroot Barrel",
   "block.lumenwilds.glowwood_barrel": "Glowwood Barrel",
   "block.lumenwilds.glowroot_chest": "Glowroot Chest",
-  "block.lumenwilds.glowwood_chest": "Glowwood Chest"
+  "block.lumenwilds.glowwood_chest": "Glowwood Chest",
+  "block.lumenwilds.glowwood_bookshelf": "Glowwood Bookshelf",
+  "block.lumenwilds.glowroot_bookshelf": "Glowroot Bookshelf",
+  "block.lumenwilds.glowwood_ladder": "Glowwood Ladder",
+  "block.lumenwilds.glowroot_ladder": "Glowroot Ladder",
+  "block.lumenwilds.glowwood_post": "Glowwood Post",
+  "block.lumenwilds.glowroot_post": "Glowroot Post"
 }

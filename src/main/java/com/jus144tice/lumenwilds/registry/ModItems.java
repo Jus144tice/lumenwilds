@@ -449,6 +449,16 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.LUMEN_FISH, 0x2E6A7A, 0x8FE8D0, props),
             new Item.Properties());
 
+    // Prismfin (v1.4.2) — the catchable tropical aquarium fish (bucket into a Lumenwater tank).
+    public static final DeferredItem<MobBucketItem> PRISMFIN_BUCKET = ITEMS.registerItem(
+            "prismfin_bucket",
+            props -> new MobBucketItem(ModEntities.PRISMFIN.get(), Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, props),
+            new Item.Properties().stacksTo(1));
+    public static final DeferredItem<DeferredSpawnEggItem> PRISMFIN_SPAWN_EGG = ITEMS.registerItem(
+            "prismfin_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.PRISMFIN, 0xE0556B, 0x46C8E6, props),
+            new Item.Properties());
+
     /** Sky Jelly (6g): spawn egg (it drops the existing {@link #AIR_GEL}). */
     public static final DeferredItem<DeferredSpawnEggItem> SKY_JELLY_SPAWN_EGG = ITEMS.registerItem(
             "sky_jelly_spawn_egg",

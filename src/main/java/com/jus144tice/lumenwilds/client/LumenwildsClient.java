@@ -100,6 +100,7 @@ public final class LumenwildsClient {
         event.registerEntityRenderer(ModEntities.SPORELING.get(), SporelingRenderer::new);
         event.registerEntityRenderer(ModEntities.MIRELURKER.get(), MirelurkerRenderer::new);
         event.registerEntityRenderer(ModEntities.LUMEN_FISH.get(), LumenFishRenderer::new);
+        event.registerEntityRenderer(ModEntities.PRISMFIN.get(), PrismfinRenderer::new);
         event.registerEntityRenderer(ModEntities.SKY_JELLY.get(), SkyJellyRenderer::new);
         event.registerEntityRenderer(ModEntities.GLOWMOTH.get(), GlowmothRenderer::new);
         event.registerEntityRenderer(ModEntities.ROOTBACK.get(), RootbackRenderer::new);
@@ -122,6 +123,7 @@ public final class LumenwildsClient {
         addGlow(event, ModEntities.GLOWMOTH.get(), "glowmoth");
         addGlow(event, ModEntities.SPORELING.get(), "sporeling");
         addGlow(event, ModEntities.LUMEN_FISH.get(), "lumen_fish");
+        addGlow(event, ModEntities.PRISMFIN.get(), "prismfin");
         addGlow(event, ModEntities.LUMEN_GRAZER.get(), "lumen_grazer");
         addGlow(event, ModEntities.ROOTBACK.get(), "rootback");
         addGlow(event, ModEntities.CRAG_WRAITH.get(), "crag_wraith");
