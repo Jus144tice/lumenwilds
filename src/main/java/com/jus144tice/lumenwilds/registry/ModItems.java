@@ -449,10 +449,12 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.LUMEN_FISH, 0x2E6A7A, 0x8FE8D0, props),
             new Item.Properties());
 
-    // Prismfin (v1.4.2) — the catchable tropical aquarium fish (bucket into a Lumenwater tank).
+    // Prismfin (v1.4.2) — the catchable tropical aquarium fish. The bucket places glowing **Lumenwater** (now a
+    // real, swimmable water via mixin.EntityMixin), so emptying it makes a true glowing aquarium.
     public static final DeferredItem<MobBucketItem> PRISMFIN_BUCKET = ITEMS.registerItem(
             "prismfin_bucket",
-            props -> new MobBucketItem(ModEntities.PRISMFIN.get(), Fluids.WATER, SoundEvents.BUCKET_EMPTY_FISH, props),
+            props -> new MobBucketItem(
+                    ModEntities.PRISMFIN.get(), ModFluids.LUMENWATER.get(), SoundEvents.BUCKET_EMPTY_FISH, props),
             new Item.Properties().stacksTo(1));
     public static final DeferredItem<DeferredSpawnEggItem> PRISMFIN_SPAWN_EGG = ITEMS.registerItem(
             "prismfin_spawn_egg",

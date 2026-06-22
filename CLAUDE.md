@@ -334,9 +334,9 @@ Path) via `event.LumenFarmingEvents`, hydrated by Lumenwater; eight native crops
 twist (grow in dim light / in darkness [Duskbean] / on cave stone [Cavecap] / by Lumenwater [Glimmerreed]; all
 glow); seeds from wild patches + Glow Fern drops; lumen-only + lumen×overworld dishes; full `#c:` cooking-mod +
 auto-replant tag integration + composter + a Patchouli farming entry. **v1.4.1** gave Luminite a full iron-tier
-armor set. **v1.4.2 (playthrough fixes):** **Lumenwater no longer deals fall damage** (`event.LumenFallEvents`,
-a `LivingFallEvent` handler — the custom FluidType isn't seen by vanilla's water fall-reset, so cancel the
-damage when standing in a `#minecraft:water` fluid); the **in-dimension chest loot is now lumen-only** (the 9
+armor set. **v1.4.2 (playthrough fixes):** **Lumenwater no longer deals fall damage** (originally a
+`LivingFallEvent` patch; **superseded in v1.4.3** by making Lumenwater real water — see below); the
+**in-dimension chest loot is now lumen-only** (the 9
 `loot_table/chests/*` tables swap Overworld diamonds/iron/netherite/emeralds/enchanted-books for lumen
 equivalents — Resonite/Luminite/Shimmerstone/Lumen Crystal; the Overworld `lumenbound_ruins` cache is left as-is,
 it's the portal tutorial); **Glowwood + Glowroot each gained bookshelf/ladder/wooden-post variants** (Quark
@@ -347,7 +347,16 @@ bucketable schooling fish (`PRISMFIN_BUCKET`) reusing the Lumen Fish groundwork 
 is now generic over the entity type); and **Vestige remnants take precedence** over whatever generated first
 (`world.structure.VestigeDecay#clearArea` wipes each surface ruin's footprint — trees/foreign structures — before
 it builds, preserving natural terrain + caves; run at the top of `VestigeCity/Outpost/Spire/GlasspetalSpires/Rootshrine`
-`postProcess`; force-gen-verified chunk-safe, 0 exceptions). Roadmap:
+`postProcess`; force-gen-verified chunk-safe, 0 exceptions). **v1.4.3 (Lumenwater is real water):** instead of
+patching each water interaction, **`mixin.EntityMixin` bridges Lumenwater into the engine's water checks** —
+NeoForge routes them all through the vanilla water `FluidType` (which our custom `LUMENWATER_TYPE` wasn't), so
+the mixin makes a query for the water type's height also count Lumenwater (`getFluidTypeHeight`) and the
+eye-in-water check also fire in Lumenwater (`isEyeInFluid`). Now `isInWater()` is genuinely true → swimming
+physics, buoyancy, no fall damage (vanilla's own `resetFallDistance`), underwater breathing, boats, and fishing
+all work natively, while the teal glow/fog is unchanged (the eye *type* stays Lumenwater for rendering). The
+1.4.2 `LumenFallEvents` patch was deleted (subsumed). The **Prismfin bucket now places Lumenwater** so the
+aquarium glows (the fish swims because Lumenwater is now water). *Headless-verified: a vanilla cod survived
+submerged in Lumenwater — impossible unless `isInWater()` is true.* Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -904,8 +913,9 @@ as `File#member`.
 - [Prismfin.java](src/main/java/com/jus144tice/lumenwilds/entity/Prismfin.java) — `AbstractSchoolingFish`,
   the catchable **tropical aquarium fish** (v1.4.2). A near-identical twin of `LumenFish` (low gravity,
   `#minecraft:can_breathe_under_water`, `IN_WATER` spawn) — only the vivid texture, tropical-fish sounds, and
-  bucket differ. Bucketable (`#getBucketItemStack` → `ModItems.PRISMFIN_BUCKET`, a water `MobBucketItem` — bucket
-  it into a tank for an aquarium). Spawns in Moonmire + the surface seas (`water_ambient`). Renders via
+  bucket differ. Bucketable (`#getBucketItemStack` → `ModItems.PRISMFIN_BUCKET`, a `MobBucketItem` that places
+  **Lumenwater** (v1.4.3) — empty it for a glowing tank where the fish swims, since Lumenwater is now real water
+  via `mixin.EntityMixin`). Spawns in Moonmire + the surface seas (`water_ambient`). Renders via
   `client.PrismfinRenderer`, reusing the shared generic `client.model.LumenFishModel` (the `LUMEN_FISH` layer) +
   emissive glow.
 - [SkyJelly.java](src/main/java/com/jus144tice/lumenwilds/entity/SkyJelly.java) — `Animal`, the floating
@@ -1137,7 +1147,16 @@ as `File#member`.
   clears the generated loot then rolls `#table` (mirrors `neoforge:add_table` but replaces instead of adds).
   Codec registered in `registry.ModLootModifiers`.
 
-### mixin/ + world/time/ — the half-rate day clock (7d.1) + FishingHook (v1.1.3)
+### mixin/ + world/time/ — the half-rate day clock (7d.1) + FishingHook (v1.1.3) + Lumenwater-is-water (v1.4.3)
+- [EntityMixin.java](src/main/java/com/jus144tice/lumenwilds/mixin/EntityMixin.java) — **makes Lumenwater
+  behave as real water** (v1.4.3). `@Mixin(Entity.class)`, two HEAD-cancellable injects: `getFluidTypeHeight`
+  (when queried for the vanilla `WATER_TYPE`, also counts the entity's Lumenwater height → `isInFluidType(WATER)`
+  / `isInWater()` go true → swim physics, buoyancy, vanilla's own `resetFallDistance`, boats, fishing) and
+  `isEyeInFluid(FluidTags.WATER)` (true when the eyes are in Lumenwater → breathing/drowning + `isUnderWater()`).
+  `@Shadow`s the NeoForge `forgeFluidTypeHeight` map + `forgeFluidTypeOnEyes` field. The eye *type* stays
+  `LUMENWATER_TYPE` so the teal fog/glow render is unchanged — this only bridges the gameplay checks. **This is
+  the systemic replacement for per-interaction water patches** (the v1.4.2 `LumenFallEvents` was deleted). See
+  the FluidType-vs-water gotcha. Listed in `lumenwilds.mixins.json`.
 - [FishingHookMixin.java](src/main/java/com/jus144tice/lumenwilds/mixin/FishingHookMixin.java) — `@Redirect`s
   the `BlockState#is(Block)` water checks in `FishingHook#catchingFish` so the approaching-bubble + splash
   particles also fire over Lumenwater (vanilla hardcodes them to `Blocks.WATER`). Listed in `lumenwilds.mixins.json`.
@@ -1207,11 +1226,8 @@ as `File#member`.
   air above — must be checked here, vanilla won't for modded blocks) → `LUMEN_FARMLAND`; `SHOVEL_FLATTEN` →
   `LUMEN_DIRT_PATH`. Pure handler (`setFinalState` only, simulate-safe). NeoForge 1.21.1 has no till/flatten
   data map — this event is the hook.
-- [LumenFallEvents.java](src/main/java/com/jus144tice/lumenwilds/event/LumenFallEvents.java) — `#onFall(LivingFallEvent)`
-  (v1.4.2): cancels fall damage when the entity's feet/eyes are in a `#minecraft:water` fluid — so jumping into
-  **Lumenwater** breaks your fall like real water. Needed because Lumenwater's custom `FluidType` ≠ vanilla
-  `WATER_TYPE`, and NeoForge's `Entity#updateFluidHeightAndDoFluidPushing(FluidTags.WATER)` keys on the FluidType
-  (not the tag), so vanilla never reset `fallDistance` for it. No-op over real water (vanilla handles that).
+  *(Fall damage in Lumenwater was a separate v1.4.2 `LivingFallEvent` patch here; removed in v1.4.3 when
+  `mixin.EntityMixin` made Lumenwater real water — vanilla then resets fall distance itself.)*
 - [MemoryCrystalInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/MemoryCrystalInteractEvents.java)
   — `#onRightClickBlock` (10c): right-clicking a `ModBlocks#MEMORY_CRYSTAL` prints a fragment chosen
   deterministically from the block position (`#FRAGMENTS`, some broken/unreadable; the liftshaft/mine lore
@@ -1377,7 +1393,7 @@ as `File#member`.
   `Boat.Type`); `[[mixins]] config = "lumenwilds.mixins.json"` (the 7d.1 day-clock mixins). `pack.mcmeta` →
   `pack_format` 48.
 - `lumenwilds.mixins.json` (resource root) — the Mixin config (`package` = `…lumenwilds.mixin`, JAVA_21, no
-  `refmap`); lists `ServerLevelMixin` + `DerivedLevelDataMixin`.
+  `refmap`); lists `ServerLevelMixin`, `DerivedLevelDataMixin`, `FishingHookMixin`, and `EntityMixin`.
 - `META-INF/enumextensions.json` — the Glowwood `Boat.Type` entry (constant name `lumenwilds_glowwood` is
   a Java identifier; the constructor's name string `lumenwilds:glowwood` drives textures). See `ModBoatTypes`.
 - `assets/lumenwilds/`: `blockstates/`, `models/block|item/`, `textures/block|item/` (**Phase 9 world-art pass:
@@ -1716,6 +1732,23 @@ as `File#member`.
   `#minecraft:water` fluid tag — so a modded water block (Lumenwater) catches fish but shows no strike
   animation. Fix is a mixin redirecting those `BlockState#is(Block)` checks to also accept the modded water
   (`mixin.FishingHookMixin`). (The lure-ripple `FISHING` particles aren't gated, which is why it half-worked.)
+- **A custom-`FluidType` "water" is NOT water for entity physics — bridge it at the `getFluidTypeHeight` +
+  `isEyeInFluid` chokepoints, don't patch each interaction.** NeoForge routes EVERY entity water check through
+  the **vanilla `WATER_TYPE` FluidType**, not the `#minecraft:water` fluid tag: `isInWater()` ←
+  `wasTouchingWater` ← `updateFluidHeightAndDoFluidPushing(FluidTags.WATER)` → `isInFluidType(WATER_TYPE)` →
+  **`getFluidTypeHeight(WATER_TYPE) > 0`** (`IEntityExtension#isInFluidType(FluidType)`); and underwater/breath
+  ← `isEyeInFluid(FluidTags.WATER)` → `isEyeInFluidType(WATER_TYPE)` → `forgeFluidTypeOnEyes == WATER_TYPE`.
+  Lumenwater carries its own `LUMENWATER_TYPE` (needed for the teal render), so all of these were false → it
+  wasn't water for swimming, buoyancy, fall-reset (`Entity` line ~1278 `resetFallDistance()` only fires when
+  the WATER query is true), or drowning. The fix (`mixin.EntityMixin`, v1.4.3) is **two** HEAD-cancellable
+  injects on `Entity`: `getFluidTypeHeight` returns `max(water, lumenwater)` when asked for `WATER_TYPE`, and
+  `isEyeInFluid(WATER)` returns true when `forgeFluidTypeOnEyes == LUMENWATER_TYPE`. That single bridge makes
+  the engine treat Lumenwater as water everywhere while the eye *type* (hence fog/glow render) stays Lumenwater.
+  **Don't** add a custom `FluidType` and then chase each broken interaction with its own event handler (we did
+  that for fall damage in 1.4.2, then deleted it). **Verify functionally**, not just by boot: a vanilla cod
+  (NOT in `#minecraft:can_breathe_under_water`) summoned submerged in Lumenwater **survives** only if
+  `isInWater()` is true — out of water it dries out and dies. (`getFluidTypeHeight` is `final` + `forgeFluidTypeHeight`/
+  `forgeFluidTypeOnEyes` are NeoForge-added fields — all `@Shadow`-able since the runtime is mojmap-patched.)
 - **1.21.1 data-driven enchantment schema (verified from source — easy to get wrong):** `supported_items`/
   `primary_items` use the `#minecraft:enchantable/<foot_armor|head_armor|chest_armor|sword|weapon|…>` tags (NOT
   `*_enchantable`). "While worn/held" = a `minecraft:tick` effect (`List<ConditionalEffect<EnchantmentEntityEffect>>`,

@@ -6,6 +6,20 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.3] - 2026-06-22
+**Lumenwater is now real, swimmable water.**
+
+- **The root fix.** Instead of patching each water interaction one at a time, a single `mixin.EntityMixin`
+  bridges Lumenwater into the engine's water checks (NeoForge routes them all through the vanilla water
+  *FluidType*, which Lumenwater wasn't). Now `isInWater()` is genuinely true in Lumenwater — so **swimming
+  physics, buoyancy, no fall damage, underwater breathing, boats, and fishing all work natively**, while the
+  water keeps its teal glow (its eye-fog type is unchanged). The 1.4.2 `LivingFallEvent` fall-damage patch is
+  removed — the systemic fix subsumes it.
+- **A true glowing aquarium.** The **Bucket of Prismfin** now places **Lumenwater** (not plain water), so
+  emptying it builds a glowing tank where the fish actually swims. *(In the Overworld, loose Lumenwater still
+  slowly reverts to ordinary water per the dimension's anti-OP rule — build the aquarium in the Lumenwilds to
+  keep it glowing.)*
+
 ## [1.4.2] - 2026-06-22
 **Playthrough fixes.**
 
