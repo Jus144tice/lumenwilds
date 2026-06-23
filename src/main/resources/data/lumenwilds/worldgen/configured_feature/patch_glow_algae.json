@@ -8,11 +8,24 @@
       "feature": {
         "type": "minecraft:simple_block",
         "config": {
-          "to_place": { "type": "minecraft:simple_state_provider", "state": { "Name": "lumenwilds:glow_algae" } }
+          "to_place": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "lumenwilds:glow_algae"
+            }
+          }
         }
       },
       "placement": [
-        { "type": "minecraft:block_predicate_filter", "predicate": { "type": "minecraft:matching_blocks", "blocks": "minecraft:air" } }
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:would_survive",
+            "state": {
+              "Name": "lumenwilds:glow_algae"
+            }
+          }
+        }
       ]
     }
   }

@@ -6,6 +6,16 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.5] - 2026-06-23
+**Worldgen plant placement fixes.**
+
+- **Gourds no longer float.** Wild Glowgourds/Moonmelons could generate hanging in mid-air on slopes and
+  cliffs (a full-block plant "survives" anywhere, and `random_patch` scatters tries without re-finding the
+  ground per column). They now require solid ground directly below, like vanilla pumpkins —
+  force-gen-verified: 0 of 16 generated gourds were floating.
+- **No more plants on top of plants.** Glow Algae and Lumen Reeds were placing in any air cell (including above
+  other plants); they now require valid soil (`would_survive`), like the other flora.
+
 ## [1.4.4] - 2026-06-23
 **Weather, wool, and infinite water.**
 

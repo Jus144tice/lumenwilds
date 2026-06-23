@@ -1803,6 +1803,13 @@ as `File#member`.
   moonblossoms/glow ferns generated floating on top of glowberry bushes (the v1.1b bug). `would_survive` (the
   block's own `canSurvive`, what `patch_glowberry` already used) only places where the plant is actually
   supported. Every flora `random_patch` here now uses `would_survive` + `WORLD_SURFACE_WG`.
+  **But `would_survive` is NOT enough for a FULL-BLOCK "plant" (the gourds — Glowgourd/Moonmelon).** A solid
+  block's `canSurvive` is `true` *everywhere* (no support check), so `would_survive` passes in mid-air — and
+  because `random_patch` scatters its tries in a box around ONE surface-sampled center *without re-finding the
+  ground per column*, a try on a slope/cliff lands in mid-air and the gourd "survives" there → **floating
+  gourds** (v1.4.5 bug). Fix = vanilla pumpkin's pattern: an `all_of` predicate adding
+  `{"type":"matching_block_tag","offset":[0,-1,0],"tag":"minecraft:dirt"}` so a gourd only places with ground
+  directly below (`patch_glowgourd`/`patch_moonmelon`). Force-gen-verified: 0/16 gourds floating.
 - **`DeferredRegister.getEntries()` yields `DeferredHolder`**, not `DeferredBlock`/`DeferredItem` —
   iterate with `var`. `registerSimpleBlockItem(...)` returns `DeferredItem<BlockItem>`.
 - **`@EventBusSubscriber` takes NO `bus` param** (NeoForge 21.1.1+): the `bus`/`Bus` value is **ignored** and
