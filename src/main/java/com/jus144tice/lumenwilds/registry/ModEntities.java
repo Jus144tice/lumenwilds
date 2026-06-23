@@ -126,5 +126,13 @@ public final class ModEntities {
                     .clientTrackingRange(10)
                     .build("spore_trader"));
 
+    /** Lumen Silkworm — the small glowing larva that drops Lumensilk (the dimension's wool source, v1.4.4). */
+    public static final DeferredHolder<EntityType<?>, EntityType<com.jus144tice.lumenwilds.entity.LumenSilkworm>>
+            LUMEN_SILKWORM = ENTITIES.register("lumen_silkworm", () -> EntityType.Builder.of(
+                    com.jus144tice.lumenwilds.entity.LumenSilkworm::new, MobCategory.CREATURE)
+            .sized(0.5F, 0.4F)
+            .clientTrackingRange(8)
+            .build("lumen_silkworm"));
+
     private ModEntities() {}
 }

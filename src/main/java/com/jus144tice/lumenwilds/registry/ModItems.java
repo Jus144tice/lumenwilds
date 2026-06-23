@@ -461,6 +461,14 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.PRISMFIN, 0xE0556B, 0x46C8E6, props),
             new Item.Properties());
 
+    // Lumen Silkworm (v1.4.4) — Lumensilk (crafts into white wool, so beds) + the spawn egg.
+    public static final DeferredItem<Item> LUMENSILK =
+            ITEMS.register("lumensilk", () -> new Item(new Item.Properties()));
+    public static final DeferredItem<DeferredSpawnEggItem> LUMEN_SILKWORM_SPAWN_EGG = ITEMS.registerItem(
+            "lumen_silkworm_spawn_egg",
+            props -> new DeferredSpawnEggItem(ModEntities.LUMEN_SILKWORM, 0xCFE8D8, 0x7FE0C0, props),
+            new Item.Properties());
+
     /** Sky Jelly (6g): spawn egg (it drops the existing {@link #AIR_GEL}). */
     public static final DeferredItem<DeferredSpawnEggItem> SKY_JELLY_SPAWN_EGG = ITEMS.registerItem(
             "sky_jelly_spawn_egg",

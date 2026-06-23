@@ -356,7 +356,17 @@ physics, buoyancy, no fall damage (vanilla's own `resetFallDistance`), underwate
 all work natively, while the teal glow/fog is unchanged (the eye *type* stays Lumenwater for rendering). The
 1.4.2 `LumenFallEvents` patch was deleted (subsumed). The **Prismfin bucket now places Lumenwater** so the
 aquarium glows (the fish swims because Lumenwater is now water). *Headless-verified: a vanilla cod survived
-submerged in Lumenwater — impossible unless `isInWater()` is true.* Roadmap:
+submerged in Lumenwater — impossible unless `isInWater()` is true.* **v1.4.4 (weather, wool, infinite water):**
+**Lumenwater forms infinite sources** (two adjacent sources → a new source, `ModFluidTypes.LUMENWATER_TYPE`
+`canConvertToSource(true)`; in-dimension only — the Overworld reversion still applies; verified in the
+Lumenwilds, where a flanked gap converts to a `level=0` source); the **Lumen Silkworm** (`entity.LumenSilkworm`)
+is the dimension's wool source — a small glowing breedable bug (breeds on Glow Fern) that drops **Lumensilk**
+(`ModItems#LUMENSILK`), and **4 Lumensilk craft a white wool** (`recipe/lumensilk_to_wool.json`), so beds are
+now obtainable (`bed_works` was always true; wool was the gap); and the dimension now has **weather** — the 6
+surface biomes set `has_precipitation: true` (Undercrown excluded), so they get **occasional rain** (shared with
+the Overworld's clock; never snow — temps 0.3–0.9), rendered as bespoke **glowing teal "Lumenwater rain"**
+(`client.LumenDimensionEffects#renderSnowAndRain` fully replaces vanilla rain via the NeoForge hook: a teal
+streak texture, teal tint, full-bright glow). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -557,7 +567,8 @@ as `File#member`.
   `#CREATIVE_MODE_TABS`, `#LUMENWILDS_TAB` (id `lumenwilds`, title key `itemGroup.lumenwilds`, icon =
   Lumen Striker). **Auto-populates from `ModItems.ITEMS`** — new items appear without editing this file.
 - [ModFluidTypes.java](src/main/java/com/jus144tice/lumenwilds/registry/ModFluidTypes.java) — `#FLUID_TYPES`
-  (`NeoForgeRegistries.Keys.FLUID_TYPES`); `#LUMENWATER_TYPE` (`FluidType`, light 4, no infinite source). The
+  (`NeoForgeRegistries.Keys.FLUID_TYPES`); `#LUMENWATER_TYPE` (`FluidType`, light 4, `canConvertToSource(true)`
+  so two adjacent sources form an infinite source — v1.4.4). The
   non-state half of Lumenwater (5e). **Functions as water (Phase 6.0):** `canExtinguish`/`canHydrate`/
   `supportsBoating` set (swim/drown/push default true) **and** both fluids are in `#minecraft:water`
   (`data/minecraft/tags/fluid/water.json`) **and `#c:water`** (`data/c/tags/fluid/water.json`, v1.1i) — so
@@ -898,6 +909,13 @@ as `File#member`.
   valuables — emeralds, plus premium gold/diamond wares) and offers a random 6–8. `#mobInteract` opens the
   trade screen (mirrors `WanderingTrader`, excludes our spawn egg). Render = the scaled-up `SporelingModel`
   (`client.SporeTraderRenderer`, ~1.7×). **Spawn rule uses `Mob::checkMobSpawnRules`** (it's not an `Animal`).
+- [LumenSilkworm.java](src/main/java/com/jus144tice/lumenwilds/entity/LumenSilkworm.java) — `Animal`, the
+  dimension's **wool source** (v1.4.4). A small (0.5×0.4) glowing passive bug on the `LumenGrazer` template:
+  panic/breed/tempt-on-Glow-Fern/stroll/look, native low gravity, 4 HP. Drops **Lumensilk**
+  (`loot_table/entities/lumen_silkworm`), which crafts to white wool (`recipe/lumensilk_to_wool`) → beds.
+  Breeds with Glow Fern (`#isSilkwormFood`) so silk is renewable. `ModEntities#LUMEN_SILKWORM` (CREATURE,
+  `ON_GROUND` animal spawn), spawners in glade/forest/jungle `creature`; render = bespoke
+  `client.model.LumenSilkwormModel` (segmented worm) + emissive glow.
 - [Mirelurker.java](src/main/java/com/jus144tice/lumenwilds/entity/Mirelurker.java) — `Monster`, the Moonmire
   **amphibious** ambusher (6e); the first water-capable mob. `#createNavigation` = `AmphibiousPathNavigation`
   + `setPathfindingMalus(WATER, 0)` so it walks land and water freely; doesn't drown (via the
@@ -1278,7 +1296,12 @@ as `File#member`.
   **twilight dome** (inline `TRIANGLE_FAN` disc), a weak blurred sun, and **Veyra** — an oversized pale moon
   (`#VEYRA_RADIUS` 55 vs. vanilla 20) from `textures/environment/veyra.png`; structure mirrors vanilla
   `LevelRenderer#renderSky` on 1.21.1. `#getBrightnessDependentFogColor` tints fog teal-indigo;
-  `#getSunriseColor` returns null (no horizon band). **Visual-only — verify via `runClient`, not a server.**
+  `#getSunriseColor` returns null (no horizon band). **`#renderSnowAndRain` (v1.4.4)** overrides the NeoForge
+  `DimensionSpecialEffects` hook (returns true to replace vanilla) and draws **glowing teal "Lumenwater rain"**
+  — the vanilla rain-quad loop re-implemented (rain-only; no snow) with a teal streak texture
+  (`textures/environment/lumen_rain.png`), a teal vertex tint, and `LightTexture.FULL_BRIGHT` so the drops
+  glow; per-column radial billboard width replaces the inaccessible `LevelRenderer.rainSizeX/Z`. Needs the
+  biomes' `has_precipitation: true` + the shared Overworld rain clock. **Visual-only — verify via `runClient`, not a server.**
 - `LumenwildsClient#onRegisterParticleProviders(RegisterParticleProvidersEvent)` (7b) — render factories for
   the atmosphere particles, **reusing vanilla classes** (Lumen Spore → `EndRodParticle.Provider`, Glow
   Pollen → `SuspendedTownParticle.Provider`, Crystal Shimmer → `GlowParticle.GlowSquidProvider`, and the 11d
@@ -1460,7 +1483,9 @@ as `File#member`.
   `biome/undercrown_caverns.json` (5d.5, deep cave biome) + `biome/stillbloom_basin.json` (5d.6, rare bright
   sanctuary). **Every biome's `effects` now also carries (7b) an ambient `particle` and (7c) a vanilla-sourced
   soundscape** — `ambient_sound`/`additions_sound`/`music` (Nether ambience loops for the alien biomes, calm
-  overworld music for the open ones) + the existing `mood_sound`. Worldgen continues: `noise/hills.json` (terrain
+  overworld music for the open ones) + the existing `mood_sound`. **The 6 surface biomes set
+  `has_precipitation: true` (v1.4.4) so it rains** (Undercrown excluded; rendered as glowing teal rain by
+  `client.LumenDimensionEffects#renderSnowAndRain`). Worldgen continues: `noise/hills.json` (terrain
   relief) + `noise/caverns.json` (the deep cave-carve 3D noise, Phase 9),
   `configured_feature/` + `placed_feature/` (`lumen_crystal_ore`, `luminite_ore` [10a, dimension-wide via
   the `luminite_ore` biome modifier],
@@ -1666,6 +1691,13 @@ as `File#member`.
 - **Dev worlds use a RANDOM seed each `runServer` — pin `level-seed` in `run/server.properties` before comparing
   terrain numbers across builds** (absolute height/sea/cave counts swing wildly by seed; I burned several runs
   comparing different worlds before pinning the seed).
+- **Test Lumenwater behaviour IN the Lumenwilds, never the Overworld — `fluid.LumenwaterBlock` reverts to
+  vanilla water out-of-dimension, so an Overworld `/setblock lumenwilds:lumenwater` becomes `minecraft:water`
+  and every `if block lumenwilds:lumenwater` check fails.** This silently invalidated an infinite-source test
+  (the placed sources read as "gone" because they'd reverted) and would mask a Lumenwater-specific bug behind
+  vanilla water's identical behaviour. Build a glass channel at a high Y (≈y180, above the ~y125 terrain cap)
+  via `execute in lumenwilds:lumenwilds run …`, forceload that dim, and run the checks `in lumenwilds:lumenwilds`.
+  (`canConvertToSource(true)` was verified this way: two flanking sources convert the gap to a `level=0` source.)
 - **Custom logs MUST be in `#minecraft:logs` or ALL leaves decay (incl. ones touching the trunk).**
   `LeavesBlock`'s distance check (`getDistanceAt`) only counts a neighbour as "distance 0" if it `is(BlockTags.LOGS)`
   — there is no Forge hook for it. Our Glowwood/Glowroot logs were never added to that tag, so every leaf computed

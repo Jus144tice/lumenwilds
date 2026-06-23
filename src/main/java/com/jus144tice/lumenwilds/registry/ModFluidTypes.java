@@ -19,22 +19,22 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
  * water</em> — boats float, fire is extinguished, farmland hydrates, and (overworld + native) fish survive
  * (Phase 6.0): the swim/drown/push capabilities default true, here we add {@code canExtinguish}/
  * {@code canHydrate}/{@code supportsBoating}, and both fluids are added to {@code #minecraft:water} (the tag
- * that drives the vanilla {@code FluidTags.WATER} checks). It stays anti-OP: it cannot form infinite sources
- * ({@code canConvertToSource(false)}), and placed outside the Lumenwilds it decays to ordinary water (see
- * {@code fluid.LumenwaterBlock}).</p>
+ * that drives the vanilla {@code FluidTags.WATER} checks). Two adjacent sources form an infinite source like
+ * vanilla water ({@code canConvertToSource(true)}, v1.4.4); the anti-OP gate is that, placed outside the
+ * Lumenwilds, it decays to ordinary water (see {@code fluid.LumenwaterBlock}).</p>
  */
 public final class ModFluidTypes {
 
     public static final DeferredRegister<FluidType> FLUID_TYPES =
             DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, Lumenwilds.MOD_ID);
 
-    /** Lumenwater — glows faintly (light 4) and behaves as water (Phase 6.0), but forms no infinite sources. */
+    /** Lumenwater — glows faintly (light 4) and behaves as water (Phase 6.0), incl. infinite sources (v1.4.4). */
     public static final DeferredHolder<FluidType, FluidType> LUMENWATER_TYPE = FLUID_TYPES.register(
             "lumenwater",
             () -> new FluidType(FluidType.Properties.create()
                     .descriptionId("fluid_type.lumenwilds.lumenwater")
                     .lightLevel(4)
-                    .canConvertToSource(false)
+                    .canConvertToSource(true) // two adjacent sources form infinite Lumenwater, like vanilla water
                     .supportsBoating(true)
                     .canExtinguish(true)
                     .canHydrate(true)));

@@ -1,6 +1,6 @@
 {
   "__comment": "Glowroot Forest (Phase 5d.1) \u00e2\u20ac\u201d the bible's signature wood biome. A dim, dense forest of giant self-lit Glowroot trees over a dark teal floor. Darker fog than the Lumen Glade; the light comes from the trees, not the sky. Reuses the 5c-3 Glowroot tree features at forest density.",
-  "has_precipitation": false,
+  "has_precipitation": true,
   "temperature": 0.6,
   "downfall": 0.7,
   "effects": {
@@ -95,6 +95,12 @@
         "weight": 2,
         "minCount": 2,
         "maxCount": 3
+      },
+      {
+        "type": "lumenwilds:lumen_silkworm",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 4
       }
     ],
     "misc": [],

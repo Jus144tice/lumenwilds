@@ -1,6 +1,6 @@
 {
-  "__comment": "Glasspetal Crags (Phase 5d.2) — the bible's sharp crystal highlands. The palette shifts from the dimension's blue-green to BLUE-VIOLET; light comes from mineral growth (Glasspetal Clusters + exposed Lumen Crystal Ore), not plants. Hostile flyers spawn here in Phase 6. Per-biome terrain DRAMA (cliffs/spires/floating fragments) is a later refinement — terrain height is currently shared across biomes.",
-  "has_precipitation": false,
+  "__comment": "Glasspetal Crags (Phase 5d.2) \u00e2\u20ac\u201d the bible's sharp crystal highlands. The palette shifts from the dimension's blue-green to BLUE-VIOLET; light comes from mineral growth (Glasspetal Clusters + exposed Lumen Crystal Ore), not plants. Hostile flyers spawn here in Phase 6. Per-biome terrain DRAMA (cliffs/spires/floating fragments) is a later refinement \u00e2\u20ac\u201d terrain height is currently shared across biomes.",
+  "has_precipitation": true,
   "temperature": 0.3,
   "downfall": 0.3,
   "effects": {

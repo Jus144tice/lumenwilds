@@ -6,6 +6,21 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.4] - 2026-06-23
+**Weather, wool, and infinite water.**
+
+- **Infinite Lumenwater sources.** Two Lumenwater source blocks placed close together now form an infinite
+  source, exactly like vanilla water (`canConvertToSource`) — so you can scoop endlessly and run Lumenwater
+  farms/aquariums. *(In the Lumenwilds; carried to the Overworld it still reverts to ordinary water — which is
+  itself infinite — per the anti-OP rule.)*
+- **Wool at last — the Lumen Silkworm.** The Lumenwilds had no wool animal (so no beds). A small glowing
+  **Lumen Silkworm** now grazes the leafy biomes; it's breedable with Glow Fern and drops **Lumensilk**, and
+  **4 Lumensilk craft into white wool** — so you can finally make beds. (Beds already worked here; you just had
+  no wool.)
+- **It rains in the Lumenwilds.** The surface biomes now get occasional rain — and it's bespoke **glowing teal
+  "Lumenwater rain"** (the dimension rains its own native water). No snow (the climate's too warm). Rain also
+  hydrates Lumen Farmland.
+
 ## [1.4.3] - 2026-06-22
 **Lumenwater is now real, swimmable water.**
 

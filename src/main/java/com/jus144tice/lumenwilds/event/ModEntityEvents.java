@@ -60,12 +60,23 @@ public final class ModEntityEvents {
         event.put(
                 ModEntities.ECHO_SENTINEL.get(), EchoSentinel.createAttributes().build());
         event.put(ModEntities.SPORE_TRADER.get(), SporeTrader.createAttributes().build());
+        event.put(
+                ModEntities.LUMEN_SILKWORM.get(),
+                com.jus144tice.lumenwilds.entity.LumenSilkworm.createAttributes()
+                        .build());
     }
 
     @SubscribeEvent
     public static void onRegisterSpawnPlacements(final RegisterSpawnPlacementsEvent event) {
         event.register(
                 ModEntities.LUMEN_GRAZER.get(),
+                SpawnPlacementTypes.ON_GROUND,
+                Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                Animal::checkAnimalSpawnRules,
+                RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        // Lumen Silkworm: a passive ground bug, standard animal spawn rule.
+        event.register(
+                ModEntities.LUMEN_SILKWORM.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Animal::checkAnimalSpawnRules,

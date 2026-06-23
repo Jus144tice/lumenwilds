@@ -17,11 +17,17 @@ import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.DimensionSpecialEffects;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LightTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
 
@@ -44,6 +50,10 @@ public class LumenDimensionEffects extends DimensionSpecialEffects {
 
     private static final ResourceLocation VEYRA = ResourceLocationHelper.modLoc("textures/environment/veyra.png");
     private static final ResourceLocation SUN = ResourceLocation.withDefaultNamespace("textures/environment/sun.png");
+
+    /** Bespoke glowing-teal rain streak texture — "it rains Lumenwater" (v1.4.4). */
+    private static final ResourceLocation LUMEN_RAIN =
+            ResourceLocationHelper.modLoc("textures/environment/lumen_rain.png");
 
     /** Veyra is huge — the vanilla moon quad is 20; the sun 30. */
     private static final float VEYRA_RADIUS = 55.0F;
@@ -155,6 +165,127 @@ public class LumenDimensionEffects extends DimensionSpecialEffects {
         RenderSystem.disableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.depthMask(true);
+        return true;
+    }
+
+    /**
+     * Bespoke <b>glowing teal "Lumenwater rain"</b> (v1.4.4) — the dimension rains its own native water. This
+     * fully replaces vanilla rain rendering (the NeoForge {@code DimensionSpecialEffects#renderSnowAndRain} hook); the geometry
+     * mirrors vanilla {@code LevelRenderer#renderSnowAndRain} (rain-only — the Lumenwilds never snows), but uses
+     * a teal streak texture, a teal vertex tint, and <b>full-bright light</b> so the drops glow.
+     *
+     * <p><b>Verification note:</b> like the sky, only visible via {@code runClient} in the dimension while it's
+     * raining ({@code /weather rain}); compiles + registers cleanly, the look is tuned in-client.</p>
+     */
+    @Override
+    public boolean renderSnowAndRain(
+            ClientLevel level,
+            int ticks,
+            float partialTick,
+            LightTexture lightTexture,
+            double camX,
+            double camY,
+            double camZ) {
+        float rain = level.getRainLevel(partialTick);
+        if (rain <= 0.0F) {
+            return true; // we own rain for this dimension; nothing to draw right now
+        }
+        lightTexture.turnOnLightLayer();
+
+        int camXi = Mth.floor(camX);
+        int camYi = Mth.floor(camY);
+        int camZi = Mth.floor(camZ);
+        int range = Minecraft.useFancyGraphics() ? 10 : 5;
+
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder buffer = null;
+
+        RenderSystem.disableCull();
+        RenderSystem.enableBlend();
+        RenderSystem.enableDepthTest();
+        RenderSystem.depthMask(Minecraft.useShaderTransparency());
+        RenderSystem.setShader(GameRenderer::getParticleShader);
+        RenderSystem.setShaderTexture(0, LUMEN_RAIN);
+
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for (int z = camZi - range; z <= camZi + range; z++) {
+            for (int x = camXi - range; x <= camXi + range; x++) {
+                pos.set(x, camYi, z);
+                Biome biome = level.getBiome(pos).value();
+                if (!biome.hasPrecipitation()) {
+                    continue;
+                }
+                int groundY = level.getHeight(Heightmap.Types.MOTION_BLOCKING, x, z);
+                int bottomY = Math.max(camYi - range, groundY);
+                int topY = Math.max(camYi + range, groundY);
+                if (bottomY == topY) {
+                    continue;
+                }
+                int lightY = Math.max(groundY, camYi);
+                RandomSource rng =
+                        RandomSource.create((long) (x * x * 3121 + x * 45238971 ^ z * z * 418711 + z * 13761));
+
+                if (buffer == null) {
+                    buffer = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
+                }
+
+                int anim = ticks & 131071;
+                int phase = x * x * 3121 + x * 45238971 + z * z * 418711 + z * 13761 & 0xFF;
+                float speed = 3.0F + rng.nextFloat();
+                float uvScroll = -((float) (anim + phase) + partialTick) / 32.0F * speed % 32.0F;
+                double dx = (double) x + 0.5 - camX;
+                double dz = (double) z + 0.5 - camZ;
+                float dist = (float) Math.sqrt(dx * dx + dz * dz) / (float) range;
+                float alpha = ((1.0F - dist * dist) * 0.5F + 0.5F) * rain;
+                pos.set(x, lightY, z);
+                int light = LightTexture.FULL_BRIGHT; // glow: drops render at max brightness
+
+                // Per-column radial billboard direction (gives the streak its width, like vanilla rainSizeX/Z).
+                double rdx = x - camXi;
+                double rdz = z - camZi;
+                double rlen = Math.sqrt(rdx * rdx + rdz * rdz);
+                if (rlen < 1.0e-4) {
+                    rdx = 1.0;
+                    rdz = 0.0;
+                    rlen = 1.0;
+                }
+                double d0 = rdx / rlen * 0.5;
+                double d1 = rdz / rlen * 0.5;
+
+                // glowing teal Lumenwater tint
+                float r = 0.34F;
+                float g = 0.95F;
+                float b = 0.86F;
+                buffer.addVertex((float) ((double) x - camX - d0 + 0.5), (float) ((double) topY - camY), (float)
+                                ((double) z - camZ - d1 + 0.5))
+                        .setUv(0.0F, (float) bottomY * 0.25F + uvScroll)
+                        .setColor(r, g, b, alpha)
+                        .setLight(light);
+                buffer.addVertex((float) ((double) x - camX + d0 + 0.5), (float) ((double) topY - camY), (float)
+                                ((double) z - camZ + d1 + 0.5))
+                        .setUv(1.0F, (float) bottomY * 0.25F + uvScroll)
+                        .setColor(r, g, b, alpha)
+                        .setLight(light);
+                buffer.addVertex((float) ((double) x - camX + d0 + 0.5), (float) ((double) bottomY - camY), (float)
+                                ((double) z - camZ + d1 + 0.5))
+                        .setUv(1.0F, (float) topY * 0.25F + uvScroll)
+                        .setColor(r, g, b, alpha)
+                        .setLight(light);
+                buffer.addVertex((float) ((double) x - camX - d0 + 0.5), (float) ((double) bottomY - camY), (float)
+                                ((double) z - camZ - d1 + 0.5))
+                        .setUv(0.0F, (float) topY * 0.25F + uvScroll)
+                        .setColor(r, g, b, alpha)
+                        .setLight(light);
+            }
+        }
+
+        if (buffer != null) {
+            BufferUploader.drawWithShader(buffer.buildOrThrow());
+        }
+
+        RenderSystem.depthMask(true);
+        RenderSystem.disableBlend();
+        lightTexture.turnOffLightLayer();
         return true;
     }
 }

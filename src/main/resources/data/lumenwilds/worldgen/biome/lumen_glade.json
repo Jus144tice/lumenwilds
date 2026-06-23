@@ -1,6 +1,6 @@
 {
   "__comment": "Lumen Glade \u00e2\u20ac\u201d the baseline arrival biome (Phase 5a). Blue grass + blue-green fog palette per the bible; vegetation and native mobs come in later 5x passes (features/spawners are empty for now).",
-  "has_precipitation": false,
+  "has_precipitation": true,
   "temperature": 0.7,
   "downfall": 0.5,
   "effects": {
@@ -78,6 +78,12 @@
         "weight": 2,
         "minCount": 2,
         "maxCount": 3
+      },
+      {
+        "type": "lumenwilds:lumen_silkworm",
+        "weight": 10,
+        "minCount": 2,
+        "maxCount": 4
       }
     ],
     "misc": [],
