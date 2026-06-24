@@ -157,7 +157,7 @@ public class ModTagProvider extends BlockTagsProvider {
                     || name.equals("lumenbound_stone")
                     || name.equals("lumen_crystal_block")
                     || name.equals("glasspetal_block")
-                    || name.equals("veinstone")
+                    || name.contains("veinstone")
                     || name.equals("pale_tuff")
                     || name.contains("emberglow")
                     || name.contains("pale_opal")

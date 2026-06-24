@@ -367,7 +367,18 @@ now obtainable (`bed_works` was always true; wool was the gap); and the dimensio
 surface biomes set `has_precipitation: true` (Undercrown excluded), so they get **occasional rain** (shared with
 the Overworld's clock; never snow — temps 0.3–0.9), rendered as bespoke **glowing teal "Lumenwater rain"**
 (`client.LumenDimensionEffects#renderSnowAndRain` fully replaces vanilla rain via the NeoForge hook: a teal
-streak texture, teal tint, full-bright glow). Roadmap:
+streak texture, teal tint, full-bright glow). **v1.4.5** fixed floating gourds + plants-on-plants (worldgen
+patch predicates). **v1.4.6** fixed a crash placing the glowing wood chests (`block.LumenChestBlock`, a
+`ChestBlock` subclass — see the chest gotcha). **v1.4.7 (playthrough fixes + torches):** **Shade Stalkers are
+surface-only** (removed from the `undercrown_caverns` biome) and the **Deep Hush** ambient event spawns the
+underground **Sporeling** swarm (not stalkers) **gated on darkness** (`world.event.LumenEventManager#spawnInCave`
+now checks `getMaxLocalRawBrightness <= 7`, so a lit base is safe — the event-spawn loophole that put stalkers
+in lit houses); **Veinstone gained a build tree** (`ModBlocks#POLISHED_VEINSTONE`/`#VEINSTONE_BRICKS` + stairs/
+slabs/walls, crafted + stonecut via `ModRecipeProvider#buildVeinstoneRecipes`, reusing the generic `moon*`
+helpers); and **Emberglow Torches** (`ModBlocks#EMBERGLOW_TORCH`/`#EMBERGLOW_WALL_TORCH`, a vanilla `TorchBlock`/
+`WallTorchBlock` pair with a greenish-blue flame [reusing vanilla `SOUL_FIRE_FLAME` — a custom particle can't be
+`.get()`-ed in a block factory, see gotcha], a `StandingAndWallBlockItem`, light 14, crafted Emberglow-over-stick).
+Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -883,7 +894,8 @@ as `File#member`.
   core hostile (6b). Fast dark ambush predator (targets players: `NearestAttackableTargetGoal` + `HurtByTarget`,
   `MeleeAttackGoal`) that **flees bright light at top priority** (`FleeBrightLightGoal`, above attacking —
   daylight/cores/lanterns ward it off). Native low gravity in `#createAttributes`. Spawns in low light
-  (`Monster::checkMonsterSpawnRules`) in Forest/Glade/Jungle/Undercrown. Placeholder render = vanilla spider.
+  (`Monster::checkMonsterSpawnRules`) in Forest/Glade/Jungle — **surface only** (removed from the Undercrown in
+  v1.4.7; a surface predator underground made no sense). Placeholder render = vanilla spider.
 - [entity/ai/FleeBrightLightGoal.java](src/main/java/com/jus144tice/lumenwilds/entity/ai/FleeBrightLightGoal.java)
   — the **reusable** "living light keeps danger away" `Goal`: when the mob's `getMaxLocalRawBrightness` (block
   + day-adjusted sky) ≥ a threshold, it bolts to a sampled darker spot. Covers both natural and Lumen light,
@@ -1207,7 +1219,9 @@ as `File#member`.
 - [world/event/LumenEventManager.java](src/main/java/com/jus144tice/lumenwilds/world/event/LumenEventManager.java)
   — the server scheduler (transient static state, reset on server stop). `#tick` advances the timer and runs
   `#applyOngoing` (per-event **boosted spawns** near players: Sporefall→Sporelings in the jungle,
-  Moonwake→Lantern Beetles, Deep Hush→Shade Stalkers underground, all capped + placement-checked); `#roll`
+  Moonwake→Lantern Beetles, Deep Hush→**Sporelings** underground [v1.4.7: was Shade Stalkers — a surface mob;
+  `#spawnInCave` is now **darkness-gated** `getMaxLocalRawBrightness <= 7` so a lit base is safe], all capped +
+  placement-checked); `#roll`
   picks the next event (Moonwake is night-only, using the Lumenwilds' half-rate clock); `#setActive` logs +
   `PacketDistributor.sendToPlayersInDimension(LumenEventPayload)`. **Timing constants** (`INITIAL_DELAY`,
   `COOLDOWN/EVENT_MIN/MAX`) tune the cadence.
@@ -1860,6 +1874,15 @@ as `File#member`.
   `BlockTags.NEEDS_STONE_TOOL` / `NEEDS_IRON_TOOL` (vanilla's `incorrect_for_*` tags reference these). The
   matching tool tiers reuse `INCORRECT_FOR_STONE_TOOL`/`INCORRECT_FOR_IRON_TOOL` so a Moonstone (stone) tool
   can't drop an iron-tier block and Luminite (iron) can.
+- **A custom `ParticleType` can't be `.get()`-ed inside a block factory — the BLOCK registry fires before the
+  PARTICLE_TYPE registry, so the particle is still unbound.** `new TorchBlock(MY_PARTICLE.get(), props)` in a
+  `registerBlock` lambda throws **`NullPointerException: Trying to access unbound value: ResourceKey[…particle_type/…]`**
+  at registration (and cascades — later blocks like `resonance_core` then read as unbound too, masking the root).
+  Constructors that need a concrete `SimpleParticleType` (TorchBlock/WallTorchBlock) must be handed an
+  ALREADY-bound particle — use a vanilla one (the Emberglow Torch reuses `ParticleTypes.SOUL_FIRE_FLAME` for its
+  greenish-blue flame, v1.4.7) or, to use a bespoke particle, subclass the block and resolve it lazily in
+  `animateTick` (which runs long after all registries are bound). DeferredRegister order in the `@Mod` ctor does
+  NOT fix this — inter-registry firing order is fixed by the game, not by your registration order.
 - **A plain vanilla `ChestBlock` IGNORES the block-entity-type supplier you pass it — `ChestBlock#newBlockEntity`
   hardcodes `new ChestBlockEntity(pos, state)` (type `minecraft:chest`).** So registering a modded chest as
   `new ChestBlock(props, () -> MY_CHEST_TYPE)` places a `minecraft:chest` BE at your block, and the chunk's

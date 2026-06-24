@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "lumenwilds:block/polished_veinstone",
+    "side": "lumenwilds:block/polished_veinstone",
+    "top": "lumenwilds:block/polished_veinstone"
+  }
+}

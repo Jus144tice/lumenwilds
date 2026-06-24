@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "lumenwilds:emberglow"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "E",
+    "S"
+  ],
+  "result": {
+    "count": 4,
+    "id": "lumenwilds:emberglow_torch"
+  }
+}

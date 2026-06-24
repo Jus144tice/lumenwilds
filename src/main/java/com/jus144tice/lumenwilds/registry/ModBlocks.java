@@ -165,6 +165,22 @@ public final class ModBlocks {
      */
     public static final DeferredBlock<Block> VEINSTONE = BLOCKS.registerSimpleBlock("veinstone", moonstoneProps());
 
+    // Veinstone build set (v1.4.7) — gives the accent rock a real build tree (polished + bricks + shapes),
+    // crafted + stonecut like the Moonstone family. Reuses the generic moon* helpers (same moonstoneProps).
+    public static final DeferredBlock<Block> POLISHED_VEINSTONE = moonCube("polished_veinstone");
+    public static final DeferredBlock<Block> VEINSTONE_BRICKS = moonCube("veinstone_bricks");
+    public static final DeferredBlock<StairBlock> VEINSTONE_STAIRS = moonStairs("veinstone_stairs", VEINSTONE);
+    public static final DeferredBlock<SlabBlock> VEINSTONE_SLAB = moonSlab("veinstone_slab");
+    public static final DeferredBlock<WallBlock> VEINSTONE_WALL = moonWall("veinstone_wall");
+    public static final DeferredBlock<StairBlock> POLISHED_VEINSTONE_STAIRS =
+            moonStairs("polished_veinstone_stairs", POLISHED_VEINSTONE);
+    public static final DeferredBlock<SlabBlock> POLISHED_VEINSTONE_SLAB = moonSlab("polished_veinstone_slab");
+    public static final DeferredBlock<WallBlock> POLISHED_VEINSTONE_WALL = moonWall("polished_veinstone_wall");
+    public static final DeferredBlock<StairBlock> VEINSTONE_BRICK_STAIRS =
+            moonStairs("veinstone_brick_stairs", VEINSTONE_BRICKS);
+    public static final DeferredBlock<SlabBlock> VEINSTONE_BRICK_SLAB = moonSlab("veinstone_brick_slab");
+    public static final DeferredBlock<WallBlock> VEINSTONE_BRICK_WALL = moonWall("veinstone_brick_wall");
+
     public static final DeferredBlock<Block> COBBLED_MOONSTONE = BLOCKS.registerSimpleBlock(
             "cobbled_moonstone",
             BlockBehaviour.Properties.of()
@@ -1059,6 +1075,22 @@ public final class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .lightLevel(s -> 3)
                     .sound(SoundType.STONE));
+    // Emberglow Torch (v1.4.7) — a torch crafted from Emberglow (the fuel material) that burns with a bespoke
+    // greenish-blue flame (ModParticles#EMBERGLOW_FLAME). Functions exactly like a vanilla torch (light 14,
+    // floor + wall placement). The wall variant has no own item; the standing torch item places both.
+    public static final DeferredBlock<net.minecraft.world.level.block.TorchBlock> EMBERGLOW_TORCH =
+            BLOCKS.registerBlock(
+                    "emberglow_torch",
+                    props -> new net.minecraft.world.level.block.TorchBlock(
+                            net.minecraft.core.particles.ParticleTypes.SOUL_FIRE_FLAME, props),
+                    torchProps());
+    public static final DeferredBlock<net.minecraft.world.level.block.WallTorchBlock> EMBERGLOW_WALL_TORCH =
+            BLOCKS.registerBlock(
+                    "emberglow_wall_torch",
+                    props -> new net.minecraft.world.level.block.WallTorchBlock(
+                            net.minecraft.core.particles.ParticleTypes.SOUL_FIRE_FLAME, props),
+                    torchProps().lootFrom(EMBERGLOW_TORCH));
+
     /** Pale Opal Block — decorative gem storage. */
     public static final DeferredBlock<Block> PALE_OPAL_BLOCK = BLOCKS.registerSimpleBlock(
             "pale_opal_block",
@@ -1562,6 +1594,16 @@ public final class ModBlocks {
                 .strength(2.5F)
                 .lightLevel(state -> 7)
                 .sound(SoundType.WOOD);
+    }
+
+    /** Torch behaviour (v1.4.7) — exactly like a vanilla torch: no collision, instant break, light 14. */
+    private static BlockBehaviour.Properties torchProps() {
+        return BlockBehaviour.Properties.of()
+                .noCollission()
+                .instabreak()
+                .lightLevel(state -> 14)
+                .sound(SoundType.WOOD)
+                .pushReaction(PushReaction.DESTROY);
     }
 
     /** Wood ladder properties (v1.4.2) — thin, climbable, glowing like the wood sets. */

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "lumenwilds:veinstone"
+  },
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:polished_veinstone_stairs"
+  }
+}

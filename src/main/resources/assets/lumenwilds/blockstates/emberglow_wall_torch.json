@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=east":  { "model": "lumenwilds:block/emberglow_wall_torch" },
+    "facing=south": { "model": "lumenwilds:block/emberglow_wall_torch", "y": 90 },
+    "facing=west":  { "model": "lumenwilds:block/emberglow_wall_torch", "y": 180 },
+    "facing=north": { "model": "lumenwilds:block/emberglow_wall_torch", "y": 270 }
+  }
+}

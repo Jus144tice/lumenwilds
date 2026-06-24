@@ -203,6 +203,8 @@ public final class ModLootTableProvider {
                     .filter(block -> block != ModBlocks.BUDDING_LUMEN_CRYSTAL.get()) // noLootTable (un-harvestable)
                     // Glowberry Bush has a hand-authored, age-conditioned berry loot table (v1.1c).
                     .filter(block -> block != ModBlocks.GLOWBERRY_BUSH.get())
+                    // Wall torch drops the standing torch via lootFrom (no own table), like vanilla (v1.4.7).
+                    .filter(block -> block != ModBlocks.EMBERGLOW_WALL_TORCH.get())
                     .collect(Collectors.toList());
         }
     }

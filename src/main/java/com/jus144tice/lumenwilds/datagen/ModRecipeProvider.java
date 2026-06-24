@@ -74,6 +74,7 @@ public class ModRecipeProvider extends RecipeProvider {
         buildGlowwoodRecipes(recipeOutput);
         buildGlowrootRecipes(recipeOutput);
         buildMoonstoneRecipes(recipeOutput);
+        buildVeinstoneRecipes(recipeOutput);
         buildShimmerstoneRecipes(recipeOutput);
         buildLumenCrystalRecipes(recipeOutput);
         buildLuminiteRecipes(recipeOutput);
@@ -272,6 +273,15 @@ public class ModRecipeProvider extends RecipeProvider {
     private void buildMiningOreRecipes(RecipeOutput out) {
         nineBlock(out, ModItems.EMBERGLOW.get(), ModBlocks.EMBERGLOW_BLOCK.get(), "emberglow");
         nineBlock(out, ModItems.PALE_OPAL.get(), ModBlocks.PALE_OPAL_BLOCK.get(), "pale_opal");
+
+        // Emberglow Torch (v1.4.7) — like the vanilla coal torch: Emberglow over a stick → 4 torches.
+        ShapedRecipeBuilder.shaped(RecipeCategory.DECORATIONS, ModBlocks.EMBERGLOW_TORCH.get(), 4)
+                .pattern("E")
+                .pattern("S")
+                .define('E', ModItems.EMBERGLOW.get())
+                .define('S', Items.STICK)
+                .unlockedBy("has_emberglow", has(ModItems.EMBERGLOW.get()))
+                .save(out);
 
         Ingredient resoniteOres = Ingredient.of(ModBlocks.RESONITE_ORE.get(), ModBlocks.DEEP_RESONITE_ORE.get());
         SimpleCookingRecipeBuilder.smelting(resoniteOres, RecipeCategory.MISC, ModItems.RESONITE_INGOT.get(), 1.0F, 200)
@@ -894,6 +904,56 @@ public class ModRecipeProvider extends RecipeProvider {
     }
 
     /** Crafting-table stairs (4)/slab (6)/wall (6) for a stone variant; {@code wall} may be null. */
+    /** Veinstone build set (v1.4.7) — polished + bricks + shapes, crafted + stonecut like Moonstone. */
+    private void buildVeinstoneRecipes(RecipeOutput out) {
+        Block v = ModBlocks.VEINSTONE.get();
+        Block pv = ModBlocks.POLISHED_VEINSTONE.get();
+        Block vb = ModBlocks.VEINSTONE_BRICKS.get();
+
+        // 2×2 crafting: veinstone → polished → bricks.
+        square2x2(out, v, pv);
+        square2x2(out, pv, vb);
+
+        // Crafting-table stairs/slab/wall for each base.
+        stoneShapes(
+                out,
+                v,
+                ModBlocks.VEINSTONE_STAIRS.get(),
+                ModBlocks.VEINSTONE_SLAB.get(),
+                ModBlocks.VEINSTONE_WALL.get());
+        stoneShapes(
+                out,
+                pv,
+                ModBlocks.POLISHED_VEINSTONE_STAIRS.get(),
+                ModBlocks.POLISHED_VEINSTONE_SLAB.get(),
+                ModBlocks.POLISHED_VEINSTONE_WALL.get());
+        stoneShapes(
+                out,
+                vb,
+                ModBlocks.VEINSTONE_BRICK_STAIRS.get(),
+                ModBlocks.VEINSTONE_BRICK_SLAB.get(),
+                ModBlocks.VEINSTONE_BRICK_WALL.get());
+
+        // Stonecutter: veinstone → every veinstone variant.
+        cut(out, v, pv, 1);
+        cut(out, v, vb, 1);
+        for (Block s : List.of(
+                ModBlocks.VEINSTONE_STAIRS.get(),
+                ModBlocks.VEINSTONE_WALL.get(),
+                ModBlocks.POLISHED_VEINSTONE_STAIRS.get(),
+                ModBlocks.POLISHED_VEINSTONE_WALL.get(),
+                ModBlocks.VEINSTONE_BRICK_STAIRS.get(),
+                ModBlocks.VEINSTONE_BRICK_WALL.get())) {
+            cut(out, v, s, 1);
+        }
+        for (Block s : List.of(
+                ModBlocks.VEINSTONE_SLAB.get(),
+                ModBlocks.POLISHED_VEINSTONE_SLAB.get(),
+                ModBlocks.VEINSTONE_BRICK_SLAB.get())) {
+            cut(out, v, s, 2);
+        }
+    }
+
     private void stoneShapes(RecipeOutput out, ItemLike base, ItemLike stairs, ItemLike slab, ItemLike wall) {
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, stairs, 4)
                 .pattern("#  ")

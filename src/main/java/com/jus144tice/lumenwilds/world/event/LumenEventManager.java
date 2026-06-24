@@ -126,10 +126,12 @@ public final class LumenEventManager {
             case DEEP_HUSH:
                 if (t % 160L == 0L) {
                     for (ServerPlayer player : level.players()) {
+                        // Underground swarm pressure = Sporelings (the cave mob), NOT Shade Stalkers — those are
+                        // a surface predator and shouldn't appear underground (playtest v1.4.7).
                         if (player.getBlockY() < 40
                                 && !level.canSeeSky(player.blockPosition())
-                                && countNearby(level, player, ModEntities.SHADE_STALKER.get()) < 4) {
-                            spawnInCave(level, player, ModEntities.SHADE_STALKER.get());
+                                && countNearby(level, player, ModEntities.SPORELING.get()) < 6) {
+                            spawnInCave(level, player, ModEntities.SPORELING.get());
                         }
                     }
                 }
@@ -164,6 +166,7 @@ public final class LumenEventManager {
         int z = player.getBlockZ() + (rand.nextBoolean() ? 1 : -1) * (4 + rand.nextInt(8));
         BlockPos pos = new BlockPos(x, player.getBlockY(), z);
         if (level.isLoaded(pos)
+                && level.getMaxLocalRawBrightness(pos) <= 7 // respect lighting: a lit base is safe (v1.4.7)
                 && level.getBlockState(pos).isAir()
                 && level.getBlockState(pos.above()).isAir()
                 && level.getBlockState(pos.below()).isFaceSturdy(level, pos.below(), net.minecraft.core.Direction.UP)) {

@@ -6,6 +6,20 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.7] - 2026-06-23
+**Playthrough fixes + Emberglow torches.**
+
+- **Shade Stalkers are surface-only now.** They no longer spawn in the Undercrown caverns (a surface ambush
+  predator underground made no sense), and the Deep Hush ambient event — which used to force-spawn them right
+  next to a deep player regardless of light — now (a) spawns the underground **Sporeling** swarm instead, and
+  (b) **respects lighting**, so a lit base is safe. Natural surface spawns already respected light; this closes
+  the event-spawn loophole that put stalkers inside lit houses.
+- **Veinstone has a build tree.** The accent rock now has **Polished Veinstone** and **Veinstone Bricks**, each
+  with stairs/slabs/walls — crafted and stonecut like the Moonstone family.
+- **Emberglow Torches.** Craft Emberglow (the fuel material) over a stick into torches that burn with a
+  greenish-blue flame. They work exactly like a normal torch (floor + wall placement, light 14) — the
+  Lumenwilds' own torch variant.
+
 ## [1.4.6] - 2026-06-23
 **Crash fix: placing a glowing wood chest.**
 

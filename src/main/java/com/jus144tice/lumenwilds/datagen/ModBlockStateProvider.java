@@ -69,6 +69,9 @@ public class ModBlockStateProvider extends BlockStateProvider {
             if (name.endsWith("_bookshelf") || name.endsWith("_ladder") || name.endsWith("_post")) {
                 continue; // wood variants (v1.4.2) — hand-authored emissive bookshelf / cutout ladder / post column
             }
+            if (name.endsWith("_torch")) {
+                continue; // torches (v1.4.7) — hand-authored template_torch / template_torch_wall models
+            }
             if (name.equals("lumen_grass_block")) {
                 // Grass: a real grass block — green top, moonloam + grass-fringe sides, moonloam bottom
                 // (3-face, painted in the art pass), not the flat cube_all every other simple block gets.

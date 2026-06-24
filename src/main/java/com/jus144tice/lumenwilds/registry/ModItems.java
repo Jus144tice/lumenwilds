@@ -469,6 +469,17 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.LUMEN_SILKWORM, 0xCFE8D8, 0x7FE0C0, props),
             new Item.Properties());
 
+    // Emberglow Torch (v1.4.7) — one item places the floor torch or, on a wall, the wall torch (like vanilla).
+    public static final DeferredItem<net.minecraft.world.item.StandingAndWallBlockItem> EMBERGLOW_TORCH =
+            ITEMS.registerItem(
+                    "emberglow_torch",
+                    props -> new net.minecraft.world.item.StandingAndWallBlockItem(
+                            ModBlocks.EMBERGLOW_TORCH.get(),
+                            ModBlocks.EMBERGLOW_WALL_TORCH.get(),
+                            props,
+                            net.minecraft.core.Direction.DOWN),
+                    new Item.Properties());
+
     /** Sky Jelly (6g): spawn egg (it drops the existing {@link #AIR_GEL}). */
     public static final DeferredItem<DeferredSpawnEggItem> SKY_JELLY_SPAWN_EGG = ITEMS.registerItem(
             "sky_jelly_spawn_egg",
@@ -673,6 +684,8 @@ public final class ModItems {
                     || block == ModBlocks.GLIMMERREED // planted/dropped via the GLIMMERREED item (F4)
                     || block == ModBlocks.DUSKBEAN_CROP
                     || block == ModBlocks.CAVECAP_CROP
+                    || block == ModBlocks.EMBERGLOW_TORCH // custom StandingAndWallBlockItem below (v1.4.7)
+                    || block == ModBlocks.EMBERGLOW_WALL_TORCH // wall variant has no own item
                     || block.getId().getPath().contains("sign")) {
                 continue;
             }

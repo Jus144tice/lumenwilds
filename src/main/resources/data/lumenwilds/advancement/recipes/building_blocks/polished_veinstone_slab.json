@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_polished_veinstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lumenwilds:polished_veinstone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lumenwilds:polished_veinstone_slab"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_polished_veinstone"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lumenwilds:polished_veinstone_slab"
+    ]
+  }
+}

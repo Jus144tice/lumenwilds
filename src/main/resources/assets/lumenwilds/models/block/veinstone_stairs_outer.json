@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "lumenwilds:block/veinstone",
+    "side": "lumenwilds:block/veinstone",
+    "top": "lumenwilds:block/veinstone"
+  }
+}

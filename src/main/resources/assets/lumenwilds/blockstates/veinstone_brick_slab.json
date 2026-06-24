@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "lumenwilds:block/veinstone_brick_slab"
+    },
+    "type=double": {
+      "model": "lumenwilds:block/veinstone_bricks"
+    },
+    "type=top": {
+      "model": "lumenwilds:block/veinstone_brick_slab_top"
+    }
+  }
+}

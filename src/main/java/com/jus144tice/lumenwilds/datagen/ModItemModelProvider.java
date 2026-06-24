@@ -65,7 +65,9 @@ public class ModItemModelProvider extends ItemModelProvider {
                     || name.endsWith("_chest")) { // chest = flat inventory icon (the block is BER-rendered)
                 basicItem(item); // item/generated, layer0 = item/<name>
             } else if (item instanceof BlockItem bi
-                    && (bi.getBlock() instanceof BushBlock || bi.getBlock() instanceof AmethystClusterBlock)) {
+                    && (bi.getBlock() instanceof BushBlock
+                            || bi.getBlock() instanceof AmethystClusterBlock
+                            || name.endsWith("_torch"))) { // torch = flat icon from its block texture (v1.4.7)
                 // Flowers/ferns/crystal clusters render flat in the inventory, from their block texture.
                 getBuilder(name).parent(mc("item/generated")).texture("layer0", tex(name));
             } else if (name.endsWith("_fence")) {

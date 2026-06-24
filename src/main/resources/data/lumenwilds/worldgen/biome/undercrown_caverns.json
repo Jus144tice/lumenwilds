@@ -1,14 +1,24 @@
 {
-  "__comment": "Undercrown Caverns (Phase 5d.5) — the bible's underground heart. A DEPTH-placed cave biome (see the noise_settings depth router + the deep multi_noise point): it replaces the surface biomes in the deep caves. Naturally lit, not pitch black — dense Lumen Crystal Ore + Glowvine veins thread the rock and Lumenwater pools glow in the hollows. Root pillars + giant glowcaps + larger caverns are deferred (Phase 9).",
+  "__comment": "Undercrown Caverns (Phase 5d.5) \u00e2\u20ac\u201d the bible's underground heart. A DEPTH-placed cave biome (see the noise_settings depth router + the deep multi_noise point): it replaces the surface biomes in the deep caves. Naturally lit, not pitch black \u00e2\u20ac\u201d dense Lumen Crystal Ore + Glowvine veins thread the rock and Lumenwater pools glow in the hollows. Root pillars + giant glowcaps + larger caverns are deferred (Phase 9).",
   "has_precipitation": false,
   "temperature": 0.4,
   "downfall": 0.5,
   "effects": {
     "ambient_sound": "minecraft:ambient.nether_wastes.loop",
-    "additions_sound": { "sound": "minecraft:ambient.nether_wastes.additions", "tick_chance": 0.0111 },
-    "music": { "sound": "minecraft:music.nether.nether_wastes", "min_delay": 12000, "max_delay": 24000, "replace_current_music": false },
+    "additions_sound": {
+      "sound": "minecraft:ambient.nether_wastes.additions",
+      "tick_chance": 0.0111
+    },
+    "music": {
+      "sound": "minecraft:music.nether.nether_wastes",
+      "min_delay": 12000,
+      "max_delay": 24000,
+      "replace_current_music": false
+    },
     "particle": {
-      "options": { "type": "lumenwilds:lumen_spore" },
+      "options": {
+        "type": "lumenwilds:lumen_spore"
+      },
       "probability": 0.004
     },
     "fog_color": 662046,
@@ -25,7 +35,11 @@
     }
   },
   "carvers": {
-    "air": ["minecraft:cave", "minecraft:cave_extra_underground", "minecraft:canyon"]
+    "air": [
+      "minecraft:cave",
+      "minecraft:cave_extra_underground",
+      "minecraft:canyon"
+    ]
   },
   "features": [
     [],
@@ -37,7 +51,9 @@
     [
       "lumenwilds:undercrown_crystal"
     ],
-    ["lumenwilds:undercrown_decor"],
+    [
+      "lumenwilds:undercrown_decor"
+    ],
     [],
     [],
     []
@@ -48,9 +64,18 @@
     "creature": [],
     "misc": [],
     "monster": [
-      { "type": "lumenwilds:shade_stalker", "weight": 70, "minCount": 3, "maxCount": 5 },
-      { "type": "lumenwilds:sporeling", "weight": 60, "minCount": 3, "maxCount": 6 },
-      { "type": "lumenwilds:echo_sentinel", "weight": 5, "minCount": 1, "maxCount": 1 }
+      {
+        "type": "lumenwilds:sporeling",
+        "weight": 60,
+        "minCount": 3,
+        "maxCount": 6
+      },
+      {
+        "type": "lumenwilds:echo_sentinel",
+        "weight": 5,
+        "minCount": 1,
+        "maxCount": 1
+      }
     ],
     "underground_water_creature": [],
     "water_ambient": [],

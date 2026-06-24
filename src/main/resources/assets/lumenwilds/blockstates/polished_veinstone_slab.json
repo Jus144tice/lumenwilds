@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "lumenwilds:block/polished_veinstone_slab"
+    },
+    "type=double": {
+      "model": "lumenwilds:block/polished_veinstone"
+    },
+    "type=top": {
+      "model": "lumenwilds:block/polished_veinstone_slab_top"
+    }
+  }
+}
