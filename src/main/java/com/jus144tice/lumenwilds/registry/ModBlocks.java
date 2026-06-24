@@ -840,17 +840,15 @@ public final class ModBlocks {
     public static final DeferredBlock<net.minecraft.world.level.block.BarrelBlock> GLOWROOT_BARREL =
             BLOCKS.registerBlock("glowroot_barrel", net.minecraft.world.level.block.BarrelBlock::new, barrelProps());
 
-    // Chests reuse the vanilla ChestBlock but with OUR shared block entity type (ModBlockEntities#LUMEN_CHEST)
-    // so the bespoke client.LumenChestRenderer can give each species its own glowing texture. Light 7.
-    public static final DeferredBlock<net.minecraft.world.level.block.ChestBlock> GLOWWOOD_CHEST = BLOCKS.registerBlock(
-            "glowwood_chest",
-            props -> new net.minecraft.world.level.block.ChestBlock(props, () -> ModBlockEntities.LUMEN_CHEST.get()),
-            barrelProps());
+    // Chests use block.LumenChestBlock (a ChestBlock subclass) so they actually create our LumenChestBlockEntity
+    // (ModBlockEntities#LUMEN_CHEST) — a plain ChestBlock hardcodes a vanilla minecraft:chest BE and crashes on
+    // placement at our block (v1.4.6 fix). The bespoke client.LumenChestRenderer gives each species its glowing
+    // texture. Light 7.
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.LumenChestBlock> GLOWWOOD_CHEST =
+            BLOCKS.registerBlock("glowwood_chest", com.jus144tice.lumenwilds.block.LumenChestBlock::new, barrelProps());
 
-    public static final DeferredBlock<net.minecraft.world.level.block.ChestBlock> GLOWROOT_CHEST = BLOCKS.registerBlock(
-            "glowroot_chest",
-            props -> new net.minecraft.world.level.block.ChestBlock(props, () -> ModBlockEntities.LUMEN_CHEST.get()),
-            barrelProps());
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.LumenChestBlock> GLOWROOT_CHEST =
+            BLOCKS.registerBlock("glowroot_chest", com.jus144tice.lumenwilds.block.LumenChestBlock::new, barrelProps());
 
     // --- Wood variants (v1.4.2, Quark parity) — bookshelf + ladder + post for both species. All glow like
     // the rest of the wood sets. Chests + barrels already exist above. Limonero/other-mod woods are Quark's job.

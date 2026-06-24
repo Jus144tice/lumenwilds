@@ -315,9 +315,10 @@ wood storage:** `#GLOWWOOD_BARREL`/`#GLOWROOT_BARREL` (vanilla `BarrelBlock` add
 via `event.ModBlockEntityTypes`, like the signs; emissive `_emissive_cube_bottom_top` models so they glow +
 light 7) — and **fixed a latent v1.1a bug where the Glowroot signs were never added to `BlockEntityType.SIGN`/
 `HANGING_SIGN`** (so their text didn't save). It also added glowing **chests**: `#GLOWWOOD_CHEST`/`#GLOWROOT_CHEST`
-(vanilla `ChestBlock` with our shared `ModBlockEntities#LUMEN_CHEST` BE [`block.LumenChestBlockEntity`] +
-`client.LumenChestRenderer`, which picks the species texture from the chests atlas and renders fullbright to
-glow; light 7). **v1.2.0 (playthrough #4):** added a full in-dimension **tool progression** — **Moonstone**
+(`block.LumenChestBlock` — a `ChestBlock` subclass — with our shared `ModBlockEntities#LUMEN_CHEST` BE
+[`block.LumenChestBlockEntity`] + `client.LumenChestRenderer`, which picks the species texture from the chests
+atlas and renders fullbright to glow; light 7). *(v1.4.6: these were a plain `ChestBlock` until a crash fix —
+see the chest gotcha.)* **v1.2.0 (playthrough #4):** added a full in-dimension **tool progression** — **Moonstone**
 (stone-tier, from Cobbled Moonstone) and **Luminite** (iron-tier, from Luminite Ingots) pickaxe/axe/shovel/
 hoe/sword sets (`registry.ModToolTiers` + tool items in `ModItems`, enchantable like vanilla); **fixed harvest
 gating** — blocks now carry `#minecraft:needs_stone_tool`/`needs_iron_tool` so a wooden pickaxe no longer mines
@@ -706,9 +707,14 @@ as `File#member`.
   the 1:1-scaled position — so an anchored return lands precisely.
 
 ### block/ — custom block behaviours
+- [LumenChestBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenChestBlock.java) — the glowing wood
+  chest block (v1.4.6), a `ChestBlock` subclass whose only job is to override `#newBlockEntity` to create a
+  `LumenChestBlockEntity` (vanilla `ChestBlock#newBlockEntity` hardcodes a `minecraft:chest` BE and ignores the
+  type supplier — placing one at a `lumenwilds:*_chest` block crashed with `IllegalStateException: Invalid block
+  entity`). `ModBlocks#GLOWWOOD_CHEST`/`#GLOWROOT_CHEST`.
 - [LumenChestBlockEntity.java](src/main/java/com/jus144tice/lumenwilds/block/LumenChestBlockEntity.java) — a
   thin `ChestBlockEntity` subclass (v1.1.3) carrying the `ModBlockEntities#LUMEN_CHEST` type so the glowing
-  Glowwood/Glowroot chests (vanilla `ChestBlock` + `client.LumenChestRenderer`) get per-species textures; all
+  Glowwood/Glowroot chests (`block.LumenChestBlock` + `client.LumenChestRenderer`) get per-species textures; all
   chest behaviour is inherited. Chest textures: `textures/entity/chest/{glowwood,glowroot}{,_left,_right}.png`
   on the vanilla chests atlas (+ an insurance `assets/lumenwilds/atlases/chests.json`); item = a flat icon.
 - [GlowberryBushBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GlowberryBushBlock.java) — the
@@ -1854,6 +1860,16 @@ as `File#member`.
   `BlockTags.NEEDS_STONE_TOOL` / `NEEDS_IRON_TOOL` (vanilla's `incorrect_for_*` tags reference these). The
   matching tool tiers reuse `INCORRECT_FOR_STONE_TOOL`/`INCORRECT_FOR_IRON_TOOL` so a Moonstone (stone) tool
   can't drop an iron-tier block and Luminite (iron) can.
+- **A plain vanilla `ChestBlock` IGNORES the block-entity-type supplier you pass it — `ChestBlock#newBlockEntity`
+  hardcodes `new ChestBlockEntity(pos, state)` (type `minecraft:chest`).** So registering a modded chest as
+  `new ChestBlock(props, () -> MY_CHEST_TYPE)` places a `minecraft:chest` BE at your block, and the chunk's
+  type↔block validation throws **`IllegalStateException: Invalid block entity minecraft:chest … got Block{modid:…}`**
+  on placement — a hard crash (the v1.4.6 chest bug; only surfaced when someone first *placed* one). The supplier
+  is used by `combine`/menu/`getTicker` but NOT by BE creation. Fix: subclass `ChestBlock` and override
+  `newBlockEntity` to create your own `ChestBlockEntity` subclass (`block.LumenChestBlock` → `LumenChestBlockEntity`).
+  Then BE creation, the renderer (keyed on the BE type), lid animation, and double-chest combine all line up.
+  (Same trap applies to any `BaseEntityBlock`/`*Block(…, Supplier<BlockEntityType>)` that has a hardcoded
+  `newBlockEntity` — verify the placed BE's type matches the block by *placing* it, not just registering.)
 - **A custom tool item's `Item.Properties` needs `.attributes(...)` or the tool has no attack damage/speed.**
   `new PickaxeItem(tier, props)` only wires the mining `Tool` component; the melee stats come from
   `props.attributes(DiggerItem.createAttributes(tier, dmg, speed))` (or `SwordItem.createAttributes` for

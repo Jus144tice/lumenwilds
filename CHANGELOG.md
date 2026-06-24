@@ -6,6 +6,16 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.6] - 2026-06-23
+**Crash fix: placing a glowing wood chest.**
+
+- **Glowwood/Glowroot chests no longer crash on placement.** They were registered as a plain vanilla
+  `ChestBlock`, whose `newBlockEntity` hardcodes a `minecraft:chest` block entity and ignores the type given to
+  it — so placing one put a `minecraft:chest` BE at a `lumenwilds:*_chest` block and the game threw
+  `IllegalStateException: Invalid block entity … got Block{…glowroot_chest}`. They now use a proper
+  `ChestBlock` subclass that creates the correct block entity (so they place safely, render with their glowing
+  per-species texture, and pair into double chests). Reproduced and verified fixed on a server.
+
 ## [1.4.5] - 2026-06-23
 **Worldgen plant placement fixes.**
 
