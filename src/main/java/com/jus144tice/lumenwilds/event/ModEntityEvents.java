@@ -20,7 +20,6 @@ import com.jus144tice.lumenwilds.entity.Sporeling;
 import com.jus144tice.lumenwilds.registry.ModEntities;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -72,14 +71,14 @@ public final class ModEntityEvents {
                 ModEntities.LUMEN_GRAZER.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Animal::checkAnimalSpawnRules,
+                Mob::checkMobSpawnRules, // light-agnostic + any ground: the native fauna populate the DIM biomes
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         // Lumen Silkworm: a passive ground bug, standard animal spawn rule.
         event.register(
                 ModEntities.LUMEN_SILKWORM.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Animal::checkAnimalSpawnRules,
+                Mob::checkMobSpawnRules, // light-agnostic + any ground: the native fauna populate the DIM biomes
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         // Shade Stalker: standard hostile darkness rule (spawns in low light), so living light keeps it away.
         event.register(
@@ -93,7 +92,7 @@ public final class ModEntityEvents {
                 ModEntities.LANTERN_BEETLE.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Animal::checkAnimalSpawnRules,
+                Mob::checkMobSpawnRules, // light-agnostic + any ground: the native fauna populate the DIM biomes
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         // Sporeling: native jungle/cave swarm — light-AGNOSTIC (checkAnyLight, not the darkness rule), so the
         // dim-but-not-dark Sporefall Jungle actually teems with them day and night (they're ambient fauna, not
@@ -102,7 +101,7 @@ public final class ModEntityEvents {
                 ModEntities.SPORELING.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkAnyLightMonsterSpawnRules,
+                Mob::checkMobSpawnRules, // neutral PathfinderMob now (not Monster); light-agnostic swarm
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         // Mirelurker: native Moonmire amphibian — also light-agnostic so the glowing swamp is actually populated
         // (the dim swamp rarely hit the darkness threshold, so it was nearly empty before).
@@ -131,28 +130,29 @@ public final class ModEntityEvents {
                 ModEntities.SKY_JELLY.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Animal::checkAnimalSpawnRules,
+                Mob::checkMobSpawnRules, // light-agnostic + any ground: the native fauna populate the DIM biomes
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         // Glowmoth: spawns on the surface (then flies up to circle flowers/lights).
         event.register(
                 ModEntities.GLOWMOTH.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Animal::checkAnimalSpawnRules,
+                Mob::checkMobSpawnRules, // light-agnostic + any ground: the native fauna populate the DIM biomes
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         // Rootback: a large ground creature.
         event.register(
                 ModEntities.ROOTBACK.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Animal::checkAnimalSpawnRules,
+                Mob::checkMobSpawnRules, // light-agnostic + any ground: the native fauna populate the DIM biomes
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        // Crag Wraith: hostile darkness rule; spawns on a crag ledge then takes to the air.
+        // Crag Wraith: the Crags' aerial threat — light-AGNOSTIC (v1.4.8) so it actually patrols the mineral-LIT
+        // Glasspetal Crags (the darkness rule made it almost never spawn there). Spawns on a ledge, then flies.
         event.register(
                 ModEntities.CRAG_WRAITH.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkMonsterSpawnRules,
+                Monster::checkAnyLightMonsterSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         // Echo Sentinel: a CONSTRUCT guardian — spawns regardless of light (checkAnyLight, not the darkness
         // rule), so the lit vault spawner + the crystal-lit Undercrown actually produce it.

@@ -378,7 +378,14 @@ slabs/walls, crafted + stonecut via `ModRecipeProvider#buildVeinstoneRecipes`, r
 helpers); and **Emberglow Torches** (`ModBlocks#EMBERGLOW_TORCH`/`#EMBERGLOW_WALL_TORCH`, a vanilla `TorchBlock`/
 `WallTorchBlock` pair with a greenish-blue flame [reusing vanilla `SOUL_FIRE_FLAME` — a custom particle can't be
 `.get()`-ed in a block factory, see gotcha], a `StandingAndWallBlockItem`, light 14, crafted Emberglow-over-stick).
-Roadmap:
+**v1.4.8 (mob map-color + spawn census):** the **Sporeling** is now a neutral `PathfinderMob` (not a `Monster`,
+so it doesn't implement `Enemy` — minimap/radar mods color the `Enemy` interface red; the neutral swarm was
+showing hostile), still `MobCategory.MONSTER` for swarm density; and the **native fauna actually spawn now** —
+the six animals (Grazer/Silkworm/Lantern Beetle/Sky Jelly/Glowmoth/Rootback) used `Animal::checkAnimalSpawnRules`
+(needs light > 8 + grass-like ground), which the *dim*, partly-stone dimension rarely satisfied, so they barely
+appeared (only beetles, which the Moonwake event boosts); all are now `Mob::checkMobSpawnRules` (light-agnostic,
+any ground), and the **Crag Wraith** went light-agnostic too (`checkAnyLightMonsterSpawnRules`) so it patrols the
+mineral-lit Crags. The Shade Stalker stays darkness-gated (its identity). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -915,11 +922,14 @@ as `File#member`.
   **reusable** flight goal: throttled scan of a small box for a block matching a `Predicate<BlockState>`
   (Moonblossom/Lumenbulb/Glowvine), then flies to hover above the nearest. Shared by the Lantern Beetle (and
   later the Glowmoth).
-- [Sporeling.java](src/main/java/com/jus144tice/lumenwilds/entity/Sporeling.java) — `Monster`, the
-  jungle/cave **swarm** (6d). **Neutral as of v1.2** — no `NearestAttackableTargetGoal` (doesn't aggro on
-  sight); only `HurtByTargetGoal#setAlertOthers` (fights back when hit + alerts the swarm). `#die` bursts a
-  **spore cloud** — an `AreaEffectCloud` (radius 2.5, 80t, spore particle) applying **`ModMobEffects.SPOREBLIND`**
-  (8a) + Darkness. Native low gravity. Render = bespoke `client.model.SporelingModel`.
+- [Sporeling.java](src/main/java/com/jus144tice/lumenwilds/entity/Sporeling.java) — **`PathfinderMob`** (v1.4.8;
+  was `Monster`), the jungle/cave **swarm** (6d). **Neutral as of v1.2** — no `NearestAttackableTargetGoal`
+  (doesn't aggro on sight); only `HurtByTargetGoal#setAlertOthers` (fights back when hit + alerts the swarm).
+  **Not a `Monster`/`Enemy`** (v1.4.8) so minimap/radar mods show it neutral, not hostile-red — still
+  `MobCategory.MONSTER` (EntityType) for swarm density; spawn rule is `Mob::checkMobSpawnRules` (the
+  `checkAnyLightMonsterSpawnRules` ref needs a `Monster` type). `#die` bursts a **spore cloud** — an
+  `AreaEffectCloud` (radius 2.5, 80t, spore particle) applying **`ModMobEffects.SPOREBLIND`** (8a) + Darkness.
+  Native low gravity. Render = bespoke `client.model.SporelingModel`.
 - [SporeTrader.java](src/main/java/com/jus144tice/lumenwilds/entity/SporeTrader.java) — `AbstractVillager`, the
   **Sporeman** (v1.2) — a rare "fully grown Sporeling" wandering merchant of the Sporefall Jungle. Neutral
   (`TradeWithPlayerGoal` + stroll/look; `MeleeAttackGoal` + `HurtByTargetGoal` so it retaliates if struck — no
@@ -1295,11 +1305,14 @@ as `File#member`.
 - [ModEntityEvents.java](src/main/java/com/jus144tice/lumenwilds/event/ModEntityEvents.java) — **mod-bus**
   (Phase 6); `#onAttributeCreation(EntityAttributeCreationEvent)` builds each native mob's `AttributeSupplier`
   (`event.put(...)`) and `#onRegisterSpawnPlacements(RegisterSpawnPlacementsEvent)` declares where on the
-  ground a type may spawn (`ON_GROUND` + `Animal::checkAnimalSpawnRules`). **Add each new mob in both.**
-  **Light gating:** the Shade Stalker + Crag Wraith use `Monster::checkMonsterSpawnRules` (darkness — design),
-  but the **Sporeling, Mirelurker, and Echo Sentinel use `checkAnyLightMonsterSpawnRules`** (light-agnostic) —
-  the dim-but-lit Lumenwilds biomes rarely hit the darkness threshold, so darkness-gated ambient fauna barely
-  spawned; light-agnostic makes the jungle/Moonmire/Undercrown actually populated.
+  ground a type may spawn. **Add each new mob in both.**
+  **Light gating (v1.4.8):** only the **Shade Stalker** stays `Monster::checkMonsterSpawnRules` (darkness — its
+  identity, so lighting wards it off). **Everything else native uses `Mob::checkMobSpawnRules`** (the six animals
+  — Grazer/Silkworm/Lantern Beetle/Sky Jelly/Glowmoth/Rootback + the neutral Sporeling) or
+  `checkAnyLightMonsterSpawnRules` (Mirelurker/Echo Sentinel/Crag Wraith) — i.e. **light-agnostic + any ground**.
+  Reason: the dim, partly-stone dimension rarely hit `Animal::checkAnimalSpawnRules`'s light-> 8 + grass-ground
+  gate, so the fauna barely spawned (only beetles, boosted by Moonwake). Don't use `Animal::checkAnimalSpawnRules`
+  for native fauna here — see the dim-dimension spawn gotcha.
 
 ### client/ — `@EventBusSubscriber(value = Dist.CLIENT, bus = MOD)`, client-only
 - [LumenwildsClient.java](src/main/java/com/jus144tice/lumenwilds/client/LumenwildsClient.java) —
@@ -1903,6 +1916,22 @@ as `File#member`.
   not `Animal`), so it uses `Mob::checkMobSpawnRules`. (Trader mobs reuse `WanderingTrader`'s pattern:
   `AbstractVillager` + `TradeWithPlayerGoal` + `updateTrades`/`rewardTradeXp`; open the screen with
   `openTradingScreen`.)
+- **`Animal::checkAnimalSpawnRules` needs light > 8 + grass-ground — wrong for a DIM dimension; use
+  `Mob::checkMobSpawnRules` for native fauna.** It checks `getRawBrightness(pos,0) > 8` AND the block below in
+  `#minecraft:animals_spawnable_on`. The Lumenwilds is perpetual dim twilight and several biomes are stone
+  (Crags/Undercrown), so animals almost never met both — only beetles showed (the Moonwake event force-spawns
+  them). Native fauna here should be **light-agnostic + any-ground** via `Mob::checkMobSpawnRules` (v1.4.8: all
+  six animals + the Sporeling). Keep `Monster::checkMonsterSpawnRules` (darkness) ONLY for the Shade Stalker
+  (its design); other ambient hostiles use `checkAnyLightMonsterSpawnRules`. Spawn density still needs to be
+  verified by playing — natural spawning is player-centric and can't be reproduced headlessly (summon-testing
+  only confirms the entity ticks without crashing).
+- **Minimap/radar mods color by the `Enemy` interface (the `Monster` marker), NOT by AI or `MobCategory`.** A
+  neutral mob that `extends Monster` (e.g. the old Sporeling) shows hostile-red on Xaero's/JourneyMap no matter
+  how peaceful its goals are. To present a neutral mob correctly, **don't extend `Monster`** — extend
+  `PathfinderMob` (so it isn't an `Enemy`); you can still register the EntityType with `MobCategory.MONSTER`
+  (category is independent of the class) to keep monster-style spawn density. Switching the class means its
+  spawn predicate can no longer be the `Monster::check*` refs (typed `<? extends Monster>`) — use
+  `Mob::checkMobSpawnRules`.
 
 ---
 

@@ -6,6 +6,21 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.8] - 2026-06-24
+**Sporeling map color + spawn census fixes.**
+
+- **Sporelings show as neutral on minimaps.** They're now a neutral mob type (not a `Monster`/`Enemy`
+  subclass), so Xaero's/JourneyMap-style radar no longer paints them hostile red — matching their
+  retaliate-only behavior. They still spawn as a dense swarm.
+- **The native fauna actually spawn now.** All six animals (Lumen Grazer, Lumen Silkworm, Lantern Beetle,
+  Sky Jelly, Glowmoth, Rootback) used the vanilla animal rule, which requires **light > 8** and grass-like
+  ground — but the Lumenwilds is a *dim* dimension and several biomes are stone, so they barely spawned (you'd
+  only reliably see beetles, which the Moonwake event boosts). They're now **light-agnostic and spawn on any
+  ground**, like the hostiles already were — so silkworms, sky jellies, and glowmoths appear across their
+  biomes day or night.
+- **Crag Wraiths patrol the Crags.** The Glasspetal Crags are lit by mineral glow, so the darkness-gated Crag
+  Wraith almost never spawned there; it's now light-agnostic, so the crags get their aerial threat.
+
 ## [1.4.7] - 2026-06-23
 **Playthrough fixes + Emberglow torches.**
 

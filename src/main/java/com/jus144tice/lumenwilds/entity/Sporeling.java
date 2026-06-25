@@ -11,6 +11,8 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -19,7 +21,6 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -32,8 +33,14 @@ import net.minecraft.world.level.Level;
  * <p>The death cloud is an {@link AreaEffectCloud} (the reusable pattern for later cloud-on-death mobs). A
  * dedicated, bespoke <em>Sporeblind</em> effect with its own screen overlay is a Phase 8 task; here it
  * stands in with vanilla Darkness + Slowness.</p>
+ *
+ * <p><b>Not a {@link net.minecraft.world.entity.monster.Monster}</b> (v1.4.8): since it's neutral, it extends
+ * {@link PathfinderMob} so it does <em>not</em> implement {@code Enemy} — minimap/radar mods (Xaero's,
+ * JourneyMap) color the {@code Enemy} interface red, so a Monster subclass always showed as hostile despite the
+ * neutral AI. It's still registered as {@code MobCategory.MONSTER} (the EntityType category is independent of
+ * the Java class) so it keeps monster-style swarm spawn density.</p>
  */
-public class Sporeling extends Monster {
+public class Sporeling extends PathfinderMob {
 
     public Sporeling(EntityType<? extends Sporeling> type, Level level) {
         super(type, level);
@@ -54,7 +61,7 @@ public class Sporeling extends Monster {
 
     /** Weak, quick swarm member with native low gravity. */
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMonsterAttributes()
+        return Mob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 6.0)
                 .add(Attributes.MOVEMENT_SPEED, 0.28)
                 .add(Attributes.ATTACK_DAMAGE, 2.0)
