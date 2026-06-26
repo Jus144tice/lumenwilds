@@ -6,6 +6,13 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.9] - 2026-06-25
+**Emberglow Torch render fix.**
+
+- **Fixed the black box around Emberglow Torches.** The torch models were missing their render type, so the
+  transparent parts of the torch texture rendered as opaque black (visible from the sides). They now declare
+  `render_type: cutout`, like vanilla torches — so they render cleanly from every angle.
+
 ## [1.4.8] - 2026-06-24
 **Sporeling map color + spawn census fixes.**
 

@@ -1778,6 +1778,14 @@ as `File#member`.
   parent (copy the vanilla model, add `neoforge_data` to every element) that the block model inherits. The
   glowing wood (v1.1.2) does both: emissive `_emissive_*` shape parents + a `lightLevel`. Set BOTH or the
   feedback "it doesn't glow" recurs (it was emitting faint light but not rendering emissive).
+- **A modded block with a partly-transparent model (torch, cross, cutout) MUST declare `"render_type"` in its
+  model JSON — vanilla sets it in CODE, not the model.** Vanilla `template_torch`/`cross`/etc. have NO
+  `render_type`; vanilla blocks call `ItemBlockRenderTypes.setRenderLayer(block, cutout())` in client code. A
+  modded block reusing those parents defaults to the `solid` render type, so the texture's transparent pixels
+  render as **opaque black** (the "black box around the torch", v1.4.9 — only the head-on face looked right).
+  Fix: add `"render_type": "minecraft:cutout"` to the block model JSON (1.21 reads it per-model) —
+  `emberglow_torch`/`emberglow_wall_torch` do. (The cross-plant flora avoid this because `ModBlockStateProvider`
+  emits cutout cross models; a hand-authored model must set it itself.)
 - **Patchouli (1.20+) books split across `data/` and `assets/`.** Only `book.json` stays in
   `data/<modid>/patchouli_books/<book>/` and it MUST set `use_resource_pack: true`; the categories/entries/
   templates live in `assets/<modid>/patchouli_books/<book>/<lang>/…` (client side). A book.json with
