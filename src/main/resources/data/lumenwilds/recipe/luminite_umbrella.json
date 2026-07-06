@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "SLS",
+    " L ",
+    " L "
+  ],
+  "key": {
+    "S": { "item": "lumenwilds:lumensilk" },
+    "L": { "item": "lumenwilds:luminite_ingot" }
+  },
+  "result": { "id": "lumenwilds:luminite_umbrella", "count": 1 }
+}

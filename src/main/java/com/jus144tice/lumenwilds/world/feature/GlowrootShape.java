@@ -5,6 +5,8 @@
 package com.jus144tice.lumenwilds.world.feature;
 
 import com.jus144tice.lumenwilds.registry.ModBlocks;
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.LeavesBlock;
@@ -108,6 +110,10 @@ public final class GlowrootShape {
             int rx = (int) Math.round(x);
             int ry = (int) Math.round(y);
             int rz = (int) Math.round(z);
+            // Track the discs on the arm's outstretched/descending span that hang over air, so we can prop
+            // them to the ground with real tendrils. Each entry: {x, y, z, localThickness}.
+            List<int[]> overAir = new ArrayList<>();
+            BlockPos.MutableBlockPos under = new BlockPos.MutableBlockPos();
             for (int i = 0; i < len; i++) {
                 double frac = i / (double) len;
                 double r = Math.max(1.2, p.rootThick() - frac * (p.rootThick() * 0.55));
@@ -115,6 +121,14 @@ public final class GlowrootShape {
                 ry = (int) Math.round(y);
                 rz = (int) Math.round(z);
                 fillDisc(placer, rx, ry, rz, r, log, false); // place at the current cell (first one is in the trunk)
+                // Near the trunk the ground is right there — it's the reaching, descending half of the arm whose
+                // tips dangle. Record where the cell below is open so those get a supporting tendril.
+                if (frac >= 0.45) {
+                    BlockState cellBelow = placer.getState(under.set(rx, ry - 1, rz));
+                    if (cellBelow.canBeReplaced() && !cellBelow.is(log.getBlock())) {
+                        overAir.add(new int[] {rx, ry, rz, (int) Math.ceil(r)});
+                    }
+                }
                 x += dirX;
                 z += dirZ;
                 if (frac < 0.4) {
@@ -126,21 +140,42 @@ public final class GlowrootShape {
                     break;
                 }
             }
-            // Anchor the LAST placed disc to the ground: from JUST BELOW it, grow a leg straight down — passing
-            // through our own root logs and any air/replaceable — until it reaches solid terrain, so roots never
-            // dangle in mid-air over cliffy/uneven ground. (Starting at the tip's own log stopped on block one.)
-            BlockPos.MutableBlockPos leg = new BlockPos.MutableBlockPos();
-            for (int ly = ry - 1; ly > placer.minY() && ly > ry - 48; ly--) {
-                leg.set(rx, ly, rz);
-                BlockState here = placer.getState(leg);
-                if (here.is(log.getBlock())) {
-                    continue; // pass through our own root logs
+            // Prop the outstretched root to the ground with thick, tapering tendrils that match the root's own
+            // footprint — the outermost tip always, plus periodic piers along the over-air span — so a colossal
+            // root reaching out over a gully reads as structurally sound instead of skewered on a 1-block spike.
+            for (int t = 0; t < overAir.size(); t++) {
+                boolean tip = t == overAir.size() - 1;
+                if (!tip && t % 4 != 0) {
+                    continue; // space the mid-span piers out
                 }
-                if (!here.canBeReplaced()) {
-                    break; // reached solid ground
-                }
-                placer.set(leg.immutable(), log);
+                int[] a = overAir.get(t);
+                double startR = Math.max(1.0, Math.min(p.rootThick(), a[3] * 0.9));
+                dropTendril(placer, a[0], a[1], a[2], startR, log);
             }
+        }
+    }
+
+    /**
+     * Drops a thick, gently tapering tendril of root logs straight down from {@code (rx, ry, rz)} until it
+     * reaches solid ground — passing through the tree's own logs, and filling only into replaceable space so it
+     * flows around terrain and hugs a cliff face rather than carving it. Used to prop up buttress roots that
+     * reach out over air so they look supported (like an aerial/banyan root reaching the floor), not skewered on
+     * a single-block spike. Capped drop so a root over a deep void doesn't spear the whole way down.
+     */
+    private static void dropTendril(Placer placer, int rx, int ry, int rz, double startR, BlockState log) {
+        int maxDrop = 56;
+        BlockPos.MutableBlockPos probe = new BlockPos.MutableBlockPos();
+        for (int step = 0; step < maxDrop; step++) {
+            int ly = ry - 1 - step;
+            if (ly <= placer.minY()) {
+                return;
+            }
+            BlockState here = placer.getState(probe.set(rx, ly, rz));
+            if (!here.canBeReplaced() && !here.is(log.getBlock())) {
+                return; // reached solid ground
+            }
+            double r = Math.max(1.0, startR * (1.0 - (step / (double) maxDrop) * 0.5));
+            fillDisc(placer, rx, ly, rz, r, log, true); // onlyReplaceable: flow around terrain, don't carve it
         }
     }
 

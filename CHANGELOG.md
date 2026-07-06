@@ -6,6 +6,28 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.11] - 2026-07-06
+**Glowvine sever, cobbled-stone stonecutting, the Luminite Umbrella, and rain/root polish.**
+
+- **Glowvine severs like a real vine.** Breaking a glowvine — or mining the ceiling it hangs from — now drops
+  the whole strand below it, instead of leaving the middle floating. Cut the top and the strand falls; cut the
+  middle and everything below drops while the part still anchored above stays. It's modelled on vanilla vines,
+  so embedded rock-veins and ruin ground/wall cover (which have solid support) are untouched — only free-hanging
+  strands sever.
+- **Cobbled Lumenwilds stone works in the stonecutter.** The *mined* cobbled forms — Cobbled Moonstone and
+  Cobbled Deep Moonstone — are now full stonecutter inputs (like vanilla cobbled deepslate), so you can cut
+  freshly-mined stone into the whole family without smelting it to the smooth form first. (Previously only the
+  smelted forms were accepted, so a stack of cobbled deep moonstone wouldn't even go in the stonecutter.)
+- **New: the Luminite Umbrella.** A craftable light stone-tier weapon (lumensilk + luminite) that doubles as a
+  rain shield — while you hold it in either hand, the rain doesn't wet you. Built for water-allergic race/class
+  mods: it wards off the **rain** specifically, not water in general (standing in water still counts).
+- **Lumenwater rain no longer looks like a rigid grid.** The rain texture was a barcode of dead-straight
+  vertical lines; it's now scattered dashes/droplets so the streaks read as falling rain while keeping the
+  glowing-teal alien look.
+- **Colossal Glowroot roots that reach out over air now drop thick, tapering support tendrils** to the ground
+  (matched to the root's footprint, with piers along the span) instead of a single-block spike, so they read as
+  structurally sound. *(Applies to newly-generated trees.)*
+
 ## [1.4.10] - 2026-07-05
 **Bookshelf enchanting fix.**
 

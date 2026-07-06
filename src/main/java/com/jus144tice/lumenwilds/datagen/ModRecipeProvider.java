@@ -71,6 +71,16 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_glow_ink_sac", has(Items.GLOW_INK_SAC))
                 .save(recipeOutput);
 
+        // --- Luminite Umbrella (rain shield + stone-tier weapon) ---
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.LUMINITE_UMBRELLA.get(), 1)
+                .pattern("SLS")
+                .pattern(" L ")
+                .pattern(" L ")
+                .define('S', ModItems.LUMENSILK.get())
+                .define('L', ModItems.LUMINITE_INGOT.get())
+                .unlockedBy("has_luminite_ingot", has(ModItems.LUMINITE_INGOT.get()))
+                .save(recipeOutput);
+
         buildGlowwoodRecipes(recipeOutput);
         buildGlowrootRecipes(recipeOutput);
         buildMoonstoneRecipes(recipeOutput);
@@ -843,6 +853,54 @@ public class ModRecipeProvider extends RecipeProvider {
                 ModBlocks.DEEP_MOONSTONE_BRICK_SLAB.get(),
                 ModBlocks.DEEP_MOONSTONE_TILE_SLAB.get())) {
             cut(out, d, v, 2);
+        }
+
+        // Stonecutter: the MINED cobbled forms are ALSO full inputs (like vanilla cobbled_deepslate/cobblestone),
+        // so a player can stonecut freshly-mined stone without smelting it to the smooth form first — the smooth
+        // moonstone finish stays smelt-only, as in vanilla. (Was the "cobbled deep moonstone won't cut" bug.)
+        Block cm = ModBlocks.COBBLED_MOONSTONE.get();
+        cut(out, cm, ModBlocks.MOONSTONE_BRICKS.get(), 1);
+        cut(out, cm, ModBlocks.CHISELED_MOONSTONE.get(), 1);
+        cut(out, cm, ModBlocks.MOONSTONE_TILES.get(), 1);
+        for (Block v : List.of(
+                ModBlocks.MOONSTONE_STAIRS.get(),
+                ModBlocks.MOONSTONE_WALL.get(),
+                ModBlocks.COBBLED_MOONSTONE_STAIRS.get(),
+                ModBlocks.COBBLED_MOONSTONE_WALL.get(),
+                ModBlocks.MOONSTONE_BRICK_STAIRS.get(),
+                ModBlocks.MOONSTONE_BRICK_WALL.get(),
+                ModBlocks.MOONSTONE_TILE_STAIRS.get(),
+                ModBlocks.MOONSTONE_TILE_WALL.get())) {
+            cut(out, cm, v, 1);
+        }
+        for (Block v : List.of(
+                ModBlocks.MOONSTONE_SLAB.get(),
+                ModBlocks.COBBLED_MOONSTONE_SLAB.get(),
+                ModBlocks.MOONSTONE_BRICK_SLAB.get(),
+                ModBlocks.MOONSTONE_TILE_SLAB.get())) {
+            cut(out, cm, v, 2);
+        }
+        Block cd = ModBlocks.COBBLED_DEEP_MOONSTONE.get();
+        cut(out, cd, ModBlocks.POLISHED_DEEP_MOONSTONE.get(), 1);
+        cut(out, cd, ModBlocks.DEEP_MOONSTONE_BRICKS.get(), 1);
+        cut(out, cd, ModBlocks.DEEP_MOONSTONE_TILES.get(), 1);
+        for (Block v : List.of(
+                ModBlocks.COBBLED_DEEP_MOONSTONE_STAIRS.get(),
+                ModBlocks.COBBLED_DEEP_MOONSTONE_WALL.get(),
+                ModBlocks.POLISHED_DEEP_MOONSTONE_STAIRS.get(),
+                ModBlocks.POLISHED_DEEP_MOONSTONE_WALL.get(),
+                ModBlocks.DEEP_MOONSTONE_BRICK_STAIRS.get(),
+                ModBlocks.DEEP_MOONSTONE_BRICK_WALL.get(),
+                ModBlocks.DEEP_MOONSTONE_TILE_STAIRS.get(),
+                ModBlocks.DEEP_MOONSTONE_TILE_WALL.get())) {
+            cut(out, cd, v, 1);
+        }
+        for (Block v : List.of(
+                ModBlocks.COBBLED_DEEP_MOONSTONE_SLAB.get(),
+                ModBlocks.POLISHED_DEEP_MOONSTONE_SLAB.get(),
+                ModBlocks.DEEP_MOONSTONE_BRICK_SLAB.get(),
+                ModBlocks.DEEP_MOONSTONE_TILE_SLAB.get())) {
+            cut(out, cd, v, 2);
         }
 
         // Crafting-table stairs/slab/wall for every building variant (a non-stonecutter path, like vanilla

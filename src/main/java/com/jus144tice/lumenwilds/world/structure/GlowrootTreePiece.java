@@ -28,7 +28,10 @@ public class GlowrootTreePiece extends StructurePiece {
 
     private static final int HORIZONTAL_REACH = 34; // must enclose the ~50-wide canopy + roots
     private static final int VERTICAL_TOP = GlowrootShape.MEGA.minHeight() + GlowrootShape.MEGA.extraHeight() + 12;
-    private static final int VERTICAL_BOTTOM = GlowrootShape.MEGA.rootDepth() + 2;
+    // Enclose the deepest geometry: taproots (rootDepth) OR a buttress tendril propping a root that reached out
+    // over a gully (GlowrootShape#dropTendril drops up to 56). writeBox isn't Y-clamped so tendrils render either
+    // way, but the declared box should honestly cover them.
+    private static final int VERTICAL_BOTTOM = Math.max(GlowrootShape.MEGA.rootDepth(), 56) + 2;
 
     private final BlockPos origin;
 

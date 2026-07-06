@@ -237,11 +237,12 @@ public final class ModBlocks {
                     .sound(SoundType.GRASS)
                     .pushReaction(PushReaction.DESTROY));
 
-    // Renders as a passable glowing cross (a hanging vine), not a solid cube. Still a plain Block so the
-    // Undercrown ore-feature can embed it in cave rock; the full climbable/growable GrowingPlantBlock is
-    // a deferred Phase 9 behaviour task (see IMPLEMENTATION_PLAN).
-    public static final DeferredBlock<Block> GLOWVINE = BLOCKS.registerSimpleBlock(
+    // Renders as a passable glowing cross (a hanging vine), not a solid cube. A block.GlowvineBlock so breaking
+    // one SEVERS the strand below it like a vanilla vine (see that class); it stays a simple block (no support
+    // rule) so the Undercrown ore-feature can still embed it in cave rock and structures can creep it over ruins.
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.GlowvineBlock> GLOWVINE = BLOCKS.registerBlock(
             "glowvine",
+            com.jus144tice.lumenwilds.block.GlowvineBlock::new,
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.COLOR_GREEN)
                     .strength(0.2F)

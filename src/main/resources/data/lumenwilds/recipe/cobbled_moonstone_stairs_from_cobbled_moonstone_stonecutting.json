@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "lumenwilds:cobbled_moonstone"
+  },
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:cobbled_moonstone_stairs"
+  }
+}

@@ -5,10 +5,12 @@
 package com.jus144tice.lumenwilds.mixin;
 
 import com.jus144tice.lumenwilds.registry.ModFluidTypes;
+import com.jus144tice.lumenwilds.registry.ModItems;
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.NeoForgeMod;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -62,6 +64,21 @@ public abstract class EntityMixin {
     private void lumenwilds$lumenwaterEyeIsWater(TagKey<Fluid> tag, CallbackInfoReturnable<Boolean> cir) {
         if (tag == FluidTags.WATER && forgeFluidTypeOnEyes == ModFluidTypes.LUMENWATER_TYPE.value()) {
             cir.setReturnValue(true);
+        }
+    }
+
+    /**
+     * Luminite Umbrella rain shield: while a living entity holds the umbrella in either hand, it is NOT counted
+     * as being in rain. {@code isInRain} is private but backs the public {@code isInWaterOrRain} /
+     * {@code isInWaterRainOrBubble} that water-allergy race/class mods read, so this shields the wielder from
+     * the rain specifically (real water is unaffected — that goes through the Lumenwater/water path above).
+     */
+    @Inject(method = "isInRain", at = @At("HEAD"), cancellable = true)
+    private void lumenwilds$umbrellaShieldsRain(CallbackInfoReturnable<Boolean> cir) {
+        if ((Object) this instanceof LivingEntity living
+                && (living.getMainHandItem().is(ModItems.LUMINITE_UMBRELLA.get())
+                        || living.getOffhandItem().is(ModItems.LUMINITE_UMBRELLA.get()))) {
+            cir.setReturnValue(false);
         }
     }
 }

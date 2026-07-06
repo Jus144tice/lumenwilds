@@ -593,6 +593,14 @@ public final class ModItems {
     public static final DeferredItem<HoeItem> RESONITE_HOE = hoe("resonite_hoe", ModToolTiers.RESONITE, -3.0F, 0.0F);
     public static final DeferredItem<SwordItem> RESONITE_SWORD = sword("resonite_sword", ModToolTiers.RESONITE);
 
+    // Luminite Umbrella (v1.4.11) — a stone-tier weapon that shields the wielder from rain (not water); see
+    // item.LuminiteUmbrellaItem + the isInRain hook in mixin.EntityMixin.
+    public static final DeferredItem<com.jus144tice.lumenwilds.item.LuminiteUmbrellaItem> LUMINITE_UMBRELLA =
+            ITEMS.registerItem(
+                    "luminite_umbrella",
+                    com.jus144tice.lumenwilds.item.LuminiteUmbrellaItem::new,
+                    new Item.Properties());
+
     // Luminite armor (v1.4.1) — the iron-equivalent set (matches the Luminite iron-tier tools).
     public static final DeferredItem<ArmorItem> LUMINITE_HELMET =
             armor("luminite_helmet", ArmorItem.Type.HELMET, ModArmorMaterials.LUMINITE, 15);

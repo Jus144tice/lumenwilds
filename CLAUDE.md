@@ -579,7 +579,8 @@ as `File#member`.
   `pickaxe/axe/shovel/hoe/sword` helpers — each wires the `ModToolTiers` tier + `.attributes(...)`). **Armor:**
   `#LUMINITE_HELMET`…`#LUMINITE_BOOTS` (iron-tier, v1.4.1) + `#RESONITE_HELMET`…`#RESONITE_BOOTS` (v1.3 D2) —
   `ArmorItem`s via the shared `armor(name, type, material, baseDurability)` helper over the `ModArmorMaterials`.
-  `#SPORE_TRADER_SPAWN_EGG`. A **static loop auto-registers a simple
+  `#LUMINITE_UMBRELLA` (v1.4.11 — `item.LuminiteUmbrellaItem`, a stone-tier `SwordItem` that shields the wielder
+  from rain via the `isInRain` hook in `mixin.EntityMixin`). `#SPORE_TRADER_SPAWN_EGG`. A **static loop auto-registers a simple
   `BlockItem` for every block except `LUMEN_PORTAL`, `LUMENWATER_BLOCK`, and the sign blocks** (runs after the
   standalone/sign items so the striker stays first in the tab) — new blocks get an item with no edits here.
 - [ModCreativeTabs.java](src/main/java/com/jus144tice/lumenwilds/registry/ModCreativeTabs.java) —
@@ -741,6 +742,15 @@ as `File#member`.
   `#useWithoutItem` harvests a mature bush (pops 1–2 Glowberries, reverts to age 1 — renewable), bone meal
   advances age. `ModBlocks#GLOWBERRY_BUSH`; planted by the `ModItems#GLOWBERRY` `ItemNameBlockItem`
   (no own BlockItem); age-conditioned berry loot is hand-authored.
+- [GlowvineBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GlowvineBlock.java) — Glowvine
+  (v1.4.11), the glowing/passable/climbable hanging strand, **with vanilla-vine sever** (`VineBlock`-style).
+  `#canSurvive`: supported by a glowvine directly **above** (the hanging chain) OR any **sturdy neighbouring
+  face** (ceiling/wall/floor); `#updateShape` returns air when unsupported, which cascades the sever down the
+  strand — cut or un-hook the top and the whole free-hanging strand falls, cut the middle and everything below
+  drops while the part still anchored above stays. The support rule is a **superset** of vanilla's (vanilla
+  vines can't rest on the ground) so every worldgen placement survives untouched: embedded rock veins
+  (`undercrown_glowvine` ore feature) and ground/wall creep (`world.structure.VestigeDecay`) always have a
+  solid neighbour; only an open-air strand (supported solely by the vine above) severs. `ModBlocks#GLOWVINE`.
 - [WoodPostBlock.java](src/main/java/com/jus144tice/lumenwilds/block/WoodPostBlock.java) — the wood **post**
   (v1.4.2, Quark parity), a `RotatedPillarBlock` + `SimpleWaterloggedBlock`: a thin 6×6 vertical column (per-axis
   `VoxelShape`), built from the stripped-log texture, emissive/glowing. `CODEC` typed `MapCodec<RotatedPillarBlock>`
@@ -889,6 +899,12 @@ as `File#member`.
 - [GlyphTabletItem.java](src/main/java/com/jus144tice/lumenwilds/item/GlyphTabletItem.java) — Ancient Glyph
   Tablet (10c). A lore item: `#use` displays its fragment (`displayClientMessage`) and `#appendHoverText`
   shows it as an italic tooltip. The line is passed at registration (one per tablet in `ModItems`).
+- [LuminiteUmbrellaItem.java](src/main/java/com/jus144tice/lumenwilds/item/LuminiteUmbrellaItem.java) — the
+  Luminite Umbrella (v1.4.11): a `SwordItem` on `Tiers.STONE` (a light stone-tier bludgeon — "no better than
+  stone") that doubles as a **rain shield**. The shield itself lives in `mixin.EntityMixin` (`isInRain` → false
+  while the umbrella is held in either hand), so it blocks the *rain* (and any water-allergy race/class mod that
+  reads `isInWaterOrRain`/`isInWaterRainOrBubble`) but NOT water in general. `#appendHoverText` adds the aqua
+  tooltip. `ModItems#LUMINITE_UMBRELLA`; crafted `S L S / _ L _ / _ L _` (lumensilk canopy + luminite shaft).
 
 ### entity/ — native fauna (Phase 6)
 - [LumenGrazer.java](src/main/java/com/jus144tice/lumenwilds/entity/LumenGrazer.java) — `Animal`; the
@@ -1040,9 +1056,14 @@ as `File#member`.
   every leaf blob is seated on a branch-log and capped at radius 3 (≤5.2 leaf-steps from a log → 0 gen-decay);
   lushness comes from MANY overlapping branch-blobs across tiers, not a trunk-centred dome (census-verified:
   28.6k leaves dead-flat incl. a MEGA tree). Needs the logs in `#minecraft:logs` (see the leaf-decay gotcha).
-  `#buildButtressRoots` anchors each arching root to the ground with a vertical log leg — the leg starts **one
-  below the root tip** and passes through its own logs to solid ground (starting *at* the tip stopped on the
-  tip's own log, so roots used to dangle in mid-air).
+  `#buildButtressRoots` anchors each arching root to the ground with **thick, tapering tendrils**
+  (`#dropTendril`), not a 1-block spike (v1.4.11): it records the discs on the arm's outstretched/descending
+  span (`frac ≥ 0.45`) whose cell-below is open, then drops a tendril from the outermost tip **plus periodic
+  piers** (every 4th over-air disc) — each a disc-per-level column starting at ~the root's local thickness,
+  tapering toward the ground, `onlyReplaceable` so it flows around terrain/hugs cliffs instead of carving them,
+  passing through its own logs, capped at 56 deep. So a colossal root reaching out over a gully reads as
+  structurally sound rather than skewered on a spike. (`GlowrootTreePiece#VERTICAL_BOTTOM` was widened to
+  enclose the 56-deep tendrils.)
 - [GlowrootTreeFeature.java](src/main/java/com/jus144tice/lumenwilds/world/feature/GlowrootTreeFeature.java)
   — `Feature<NoneFeatureConfiguration>` for the ordinary 2×2 Glowroot tree; `#place` runs
   `GlowrootShape.generate(..., MEDIUM)`. Bound to `ModFeatures#GLOWROOT_TREE_2X2`.
@@ -1203,7 +1224,11 @@ as `File#member`.
   `@Shadow`s the NeoForge `forgeFluidTypeHeight` map + `forgeFluidTypeOnEyes` field. The eye *type* stays
   `LUMENWATER_TYPE` so the teal fog/glow render is unchanged — this only bridges the gameplay checks. **This is
   the systemic replacement for per-interaction water patches** (the v1.4.2 `LumenFallEvents` was deleted). See
-  the FluidType-vs-water gotcha. Listed in `lumenwilds.mixins.json`.
+  the FluidType-vs-water gotcha. Also carries the **Luminite Umbrella rain shield** (v1.4.11): a third
+  HEAD-cancellable inject on `Entity#isInRain` (private, but backs the public `isInWaterOrRain`/
+  `isInWaterRainOrBubble`) returns false while a `LivingEntity` holds `ModItems#LUMINITE_UMBRELLA` in either
+  hand — so the umbrella blocks *rain* wetness (and water-allergy race mods) without touching real water. Listed
+  in `lumenwilds.mixins.json`.
 - [FishingHookMixin.java](src/main/java/com/jus144tice/lumenwilds/mixin/FishingHookMixin.java) — `@Redirect`s
   the `BlockState#is(Block)` water checks in `FishingHook#catchingFish` so the approaching-bubble + splash
   particles also fire over Lumenwater (vanilla hardcodes them to `Blocks.WATER`). Listed in `lumenwilds.mixins.json`.
@@ -1404,7 +1429,11 @@ as `File#member`.
   base-Shimmerstone craft `4 Moonstone + 1 Lumen Crystal Shard → 4` so the set isn't structure-gated;
   **v1.3.1** — Moonstone is now a full Stone analog: the smelt chain (Cobbled→Moonstone→Smooth,
   Cobbled Deep→Deep) plus crafting-table stairs/slab/wall for every variant via `#stoneShapes`, each sourced
-  from its own block),
+  from its own block; **v1.4.11** — the MINED cobbled forms (`cobbled_moonstone`/`cobbled_deep_moonstone`) are
+  now full stonecutter INPUTS too, like vanilla `cobbled_deepslate`/`cobblestone`, so freshly-mined stone cuts
+  without smelting first [was the "cobbled deep moonstone won't stonecut" bug]; smooth stays smelt-only) + the
+  **Luminite Umbrella** craft (`S L S / _ L _ / _ L _`, lumensilk + luminite ingot),
+  `#buildLuminiteRecipes` (10a — ore/raw → ingot smelt+blast, ingot ↔ block, the Glowbrick craft
   `#buildLuminiteRecipes` (10a — ore/raw → ingot smelt+blast, ingot ↔ block, the Glowbrick craft
   `L I L / I C I / L I L`, + Glowbrick family cuts/shapes), `#buildResonanceRecipes` (10e — Resonance Core
   from a fragment, Ancient Door from glowbrick, Gravity Lens from fragments + shimmerstone, Lumen Relay),

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "item": "lumenwilds:cobbled_deep_moonstone"
+  },
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:deep_moonstone_bricks"
+  }
+}
