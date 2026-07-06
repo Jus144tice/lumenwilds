@@ -745,7 +745,8 @@ as `File#member`.
   (v1.4.2, Quark parity), a `RotatedPillarBlock` + `SimpleWaterloggedBlock`: a thin 6×6 vertical column (per-axis
   `VoxelShape`), built from the stripped-log texture, emissive/glowing. `CODEC` typed `MapCodec<RotatedPillarBlock>`
   (the parent narrows `codec()`). `ModBlocks#GLOWWOOD_POST`/`#GLOWROOT_POST`. The species' **bookshelf** is a plain
-  glowing `Block` (`#GLOWWOOD_BOOKSHELF`/`#GLOWROOT_BOOKSHELF`, emissive cube_column model, side=books/end=planks)
+  glowing `Block` (`#GLOWWOOD_BOOKSHELF`/`#GLOWROOT_BOOKSHELF`, emissive cube_column model, side=books/end=planks;
+  in `#minecraft:enchantment_power_provider` so it boosts an enchanting table like a vanilla bookshelf — v1.4.10)
   and the **ladder** is a vanilla `LadderBlock` (`#GLOWWOOD_LADDER`/`#GLOWROOT_LADDER`, cutout model, in
   `#minecraft:climbable`); all three are hand-authored (skipped in `ModBlockStateProvider`), craftable via
   `ModRecipeProvider#buildWoodVariantRecipes` (bookshelf 6 planks+3 books, ladder 6 planks→3, post 3 stripped
@@ -1428,7 +1429,9 @@ as `File#member`.
   wood **block** tags (`PLANKS`, `WOODEN_SLABS|STAIRS|FENCES|DOORS|TRAPDOORS|BUTTONS|PRESSURE_PLATES`,
   `FENCE_GATES`, `STANDING_SIGNS`/`WALL_SIGNS`/`CEILING_HANGING_SIGNS`/`WALL_HANGING_SIGNS`, `LOGS_THAT_BURN`,
   `SAPLINGS`) — gated on the species name so the stone families/glowcap aren't included. **v1.3.2:** Glowvine →
-  `#minecraft:climbable` (also hand-authored in `data/minecraft/tags/block/climbable.json`).
+  `#minecraft:climbable` (also hand-authored in `data/minecraft/tags/block/climbable.json`). **v1.4.10:** the two
+  wood bookshelves → `#minecraft:enchantment_power_provider` (also hand-authored in
+  `data/minecraft/tags/block/enchantment_power_provider.json`) so they power an enchanting table.
 - [ModItemTagProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModItemTagProvider.java) — an
   `ItemTagsProvider` (v1.1.1; wired in `DataGenerators` with `ModTagProvider#contentsGetter`). Mirrors the wood
   block tags onto the matching **item** tags via `#copy` (`#minecraft:planks` etc. — what recipes read, so the

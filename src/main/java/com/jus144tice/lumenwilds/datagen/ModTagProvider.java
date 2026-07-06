@@ -52,6 +52,12 @@ public class ModTagProvider extends BlockTagsProvider {
                 .add(ModBlocks.GLOWWOOD_LADDER.get())
                 .add(ModBlocks.GLOWROOT_LADDER.get());
 
+        // Enchanting-table power: the wood bookshelves must be in #minecraft:enchantment_power_provider (what
+        // EnchantingTableBlock#isValidBookShelf reads) or they give no bonus, unlike a vanilla bookshelf.
+        tag(BlockTags.ENCHANTMENT_POWER_PROVIDER)
+                .add(ModBlocks.GLOWWOOD_BOOKSHELF.get())
+                .add(ModBlocks.GLOWROOT_BOOKSHELF.get());
+
         // Crops (v1.4 Farming): #minecraft:crops (some harvest/farm mods read it) + #maintains_farmland (so
         // farmland under an unattended crop doesn't revert to Moonloam when dry). Populated in the loop below.
         var crops = tag(BlockTags.CROPS);

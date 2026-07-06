@@ -6,6 +6,13 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.10] - 2026-07-05
+**Bookshelf enchanting fix.**
+
+- **Glowwood & Glowroot bookshelves now boost an enchanting table.** They were missing from the
+  `#minecraft:enchantment_power_provider` tag that the enchanting table reads, so — unlike vanilla bookshelves —
+  they contributed no enchantment power. They now provide the bonus like any other bookshelf.
+
 ## [1.4.9] - 2026-06-25
 **Emberglow Torch render fix.**
 
