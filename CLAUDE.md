@@ -600,7 +600,8 @@ as `File#member`.
   `ModBlocks.LUMENWATER_BLOCK`'s factory can call `LUMENWATER.get()`.
 - [ModEntities.java](src/main/java/com/jus144tice/lumenwilds/registry/ModEntities.java) — `#ENTITIES`; the
   native fauna (Phase 6). `#LUMEN_GRAZER` (`CREATURE`, 6a), `#SHADE_STALKER` (`MONSTER`, 6b), `#LANTERN_BEETLE`
-  (`CREATURE`, flying, 6c), `#SPORELING` (`MONSTER`, swarm, 6d), `#MIRELURKER` (`MONSTER`, amphibious, 6e),
+  (**`AMBIENT`** [like vanilla bats; v1.4.12 — its own spawn cap so the prolific flyer stops saturating the
+  shared CREATURE cap + starving the ground fauna], flying, 6c), `#SPORELING` (`MONSTER`, swarm, 6d), `#MIRELURKER` (`MONSTER`, amphibious, 6e),
   `#LUMEN_FISH` (`WATER_AMBIENT`, schooling fish, 6f), `#PRISMFIN` (`WATER_AMBIENT`, the catchable tropical
   aquarium fish, v1.4.2), `#SKY_JELLY` (`CREATURE`, floating, 6g), `#GLOWMOTH`
   (`CREATURE`, neutral flying guardian, 6h), `#ROOTBACK` (`CREATURE`, massive 3.0×2.2 turtle, 6i),
@@ -1972,6 +1973,15 @@ as `File#member`.
   (category is independent of the class) to keep monster-style spawn density. Switching the class means its
   spawn predicate can no longer be the `Monster::check*` refs (typed `<? extends Monster>`) — use
   `Mob::checkMobSpawnRules`.
+- **All mobs in one `MobCategory` share ONE spawn cap — a prolific/persistent flyer in `CREATURE` starves the
+  ground fauna.** Every category (`CREATURE` ≈ 10, `MONSTER`, `AMBIENT` ≈ 15, `WATER_AMBIENT`, …) has its own
+  per-area instance cap; natural spawning stops attempting a category once its count hits the cap. The Lantern
+  Beetle was `CREATURE` and, being flying (spreads wide, each counts), persistent, AND force-spawned by the
+  Moonwake event (bypassing the biome weights), it filled the shared creature cap so Grazers/Silkworms/Rootbacks
+  barely spawned (v1.4.12 symptom: "tons of beetles, almost nothing else"). Fix: put bat-like flyers in
+  `MobCategory.AMBIENT` (its own cap; also despawns-when-far so they don't accumulate map-wide) and move their
+  biome `spawners` entry from `creature` → `ambient` to match. The per-type `RegisterSpawnPlacementsEvent`
+  registration (placement/heightmap/predicate) is keyed by entity type and is unaffected by the category swap.
 
 ---
 

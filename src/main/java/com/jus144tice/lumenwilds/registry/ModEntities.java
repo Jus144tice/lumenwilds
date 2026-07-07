@@ -48,9 +48,13 @@ public final class ModEntities {
                     .clientTrackingRange(8)
                     .build("shade_stalker"));
 
-    /** Lantern Beetle — the small glowing flying ambience insect (Phase 6c). */
+    // Lantern Beetle — the small glowing flying ambience insect (Phase 6c). AMBIENT (like vanilla bats), NOT
+    // creature (v1.4.12): it gets its own spawn cap, so the prolific, Moonwake-boosted, persistent flyers stop
+    // saturating the shared CREATURE cap and starving the ground fauna (Grazer/Silkworm/Rootback). Ambient mobs
+    // also despawn when far, so beetles stay dense near the player and refresh instead of piling up map-wide.
+    // (Spawner entries moved creature->ambient in the biome JSONs; the ON_GROUND placement is unchanged.)
     public static final DeferredHolder<EntityType<?>, EntityType<LanternBeetle>> LANTERN_BEETLE =
-            ENTITIES.register("lantern_beetle", () -> EntityType.Builder.of(LanternBeetle::new, MobCategory.CREATURE)
+            ENTITIES.register("lantern_beetle", () -> EntityType.Builder.of(LanternBeetle::new, MobCategory.AMBIENT)
                     .sized(0.5F, 0.4F)
                     .clientTrackingRange(8)
                     .build("lantern_beetle"));

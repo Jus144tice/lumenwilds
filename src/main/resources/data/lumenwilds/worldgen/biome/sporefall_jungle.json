@@ -61,15 +61,16 @@
     []
   ],
   "spawners": {
-    "ambient": [],
-    "axolotls": [],
-    "creature": [
+    "ambient": [
       {
         "type": "lumenwilds:lantern_beetle",
         "weight": 12,
         "minCount": 3,
         "maxCount": 6
-      },
+      }
+    ],
+    "axolotls": [],
+    "creature": [
       {
         "type": "lumenwilds:glowmoth",
         "weight": 8,

@@ -56,7 +56,14 @@
     []
   ],
   "spawners": {
-    "ambient": [],
+    "ambient": [
+      {
+        "type": "lumenwilds:lantern_beetle",
+        "weight": 14,
+        "minCount": 4,
+        "maxCount": 6
+      }
+    ],
     "axolotls": [],
     "creature": [
       {
@@ -64,12 +71,6 @@
         "weight": 8,
         "minCount": 3,
         "maxCount": 5
-      },
-      {
-        "type": "lumenwilds:lantern_beetle",
-        "weight": 14,
-        "minCount": 4,
-        "maxCount": 6
       },
       {
         "type": "lumenwilds:sky_jelly",

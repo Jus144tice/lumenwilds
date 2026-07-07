@@ -6,6 +6,15 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.12] - 2026-07-06
+**Lantern Beetles stop crowding out the other fauna.**
+
+- **The ground fauna spawn properly again.** Lantern Beetles were in the same spawn-cap category as Lumen
+  Grazers, Silkworms, and Rootbacks — and being prolific flyers (boosted by the Moonwake event, and persistent),
+  they filled that shared cap so the ground animals barely spawned. Beetles are now in the **ambient** category
+  (like vanilla bats), which has its own separate cap: they stay dense around you and refresh, but they no longer
+  starve out Grazers, Silkworms, and Rootbacks. If you'd been struggling to find Silkworms, this is why.
+
 ## [1.4.11] - 2026-07-06
 **Glowvine sever, cobbled-stone stonecutting, the Luminite Umbrella, and rain/root polish.**
 
