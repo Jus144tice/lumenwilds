@@ -80,12 +80,14 @@ public final class ModEntityEvents {
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Mob::checkMobSpawnRules, // light-agnostic + any ground: the native fauna populate the DIM biomes
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
-        // Shade Stalker: standard hostile darkness rule (spawns in low light), so living light keeps it away.
+        // Shade Stalker: hostile darkness rule (living light keeps it away) PLUS a keep-away-from-players gate on
+        // NATURAL spawns, so it sets up on the periphery and ambushes you as you move (see
+        // ShadeStalker#checkShadeStalkerSpawnRules).
         event.register(
                 ModEntities.SHADE_STALKER.get(),
                 SpawnPlacementTypes.ON_GROUND,
                 Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                Monster::checkMonsterSpawnRules,
+                ShadeStalker::checkShadeStalkerSpawnRules,
                 RegisterSpawnPlacementsEvent.Operation.REPLACE);
         // Lantern Beetle: spawns on the ground (like bees/parrots), then takes flight.
         event.register(

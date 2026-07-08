@@ -6,6 +6,17 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.4.13] - 2026-07-07
+**Shade Stalkers ambush from the periphery instead of spawning in your lap.**
+
+- **Shade Stalkers no longer spawn right next to you.** They're meant to be patient, opportunistic ambush
+  predators — set up in the dark at the edge of your awareness and strike when you move into range. But vanilla
+  only keeps mobs 24 blocks away, which is exactly a Shade Stalker's follow range, so they'd appear close and
+  immediately charge. Natural Shade Stalker spawns now require **≥ 40 blocks** from any player, well beyond their
+  follow range — so a fresh one lurks in the shade and ambushes you as you approach, rather than materialising
+  beside you and attacking. (Their darkness requirement and light-fleeing are unchanged; the Undercrown Relics
+  Shade Stalker spawner and spawn eggs are unaffected.)
+
 ## [1.4.12] - 2026-07-06
 **Lantern Beetles stop crowding out the other fauna.**
 

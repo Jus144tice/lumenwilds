@@ -918,9 +918,14 @@ as `File#member`.
 - [ShadeStalker.java](src/main/java/com/jus144tice/lumenwilds/entity/ShadeStalker.java) — `Monster`; the
   core hostile (6b). Fast dark ambush predator (targets players: `NearestAttackableTargetGoal` + `HurtByTarget`,
   `MeleeAttackGoal`) that **flees bright light at top priority** (`FleeBrightLightGoal`, above attacking —
-  daylight/cores/lanterns ward it off). Native low gravity in `#createAttributes`. Spawns in low light
-  (`Monster::checkMonsterSpawnRules`) in Forest/Glade/Jungle — **surface only** (removed from the Undercrown in
-  v1.4.7; a surface predator underground made no sense). Placeholder render = vanilla spider.
+  daylight/cores/lanterns ward it off). Native low gravity in `#createAttributes`. Spawns in low light in
+  Forest/Glade/Jungle — **surface only** (removed from the Undercrown in v1.4.7; a surface predator underground
+  made no sense) — via `#checkShadeStalkerSpawnRules` (`Monster::checkMonsterSpawnRules` darkness PLUS, on
+  **NATURAL** spawns only, a **keep-away ≥ `MIN_NATURAL_PLAYER_DISTANCE` (40)** from any player, v1.4.13): it's a
+  *peripheral* ambush predator, so it sets up in the shade beyond its `FOLLOW_RANGE` (24) and strikes as YOU move
+  into range, instead of popping in next to you and attacking (vanilla's min is 24 = right at follow range =
+  instant aggro). Spawner (Undercrown Relics)/egg/command spawns bypass the keep-away. Placeholder render =
+  vanilla spider.
 - [entity/ai/FleeBrightLightGoal.java](src/main/java/com/jus144tice/lumenwilds/entity/ai/FleeBrightLightGoal.java)
   — the **reusable** "living light keeps danger away" `Goal`: when the mob's `getMaxLocalRawBrightness` (block
   + day-adjusted sky) ≥ a threshold, it bolts to a sampled darker spot. Covers both natural and Lumen light,

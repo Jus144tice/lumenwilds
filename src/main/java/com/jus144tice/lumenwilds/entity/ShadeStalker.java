@@ -5,7 +5,10 @@
 package com.jus144tice.lumenwilds.entity;
 
 import com.jus144tice.lumenwilds.entity.ai.FleeBrightLightGoal;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -17,6 +20,7 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 
 /**
  * Shade Stalker — the Lumenwilds' main hostile surface predator (a thin dark quadruped with glowing eyes).
@@ -30,8 +34,46 @@ import net.minecraft.world.level.Level;
  */
 public class ShadeStalker extends Monster {
 
+    /**
+     * A NATURAL Shade Stalker won't spawn within this many blocks of any player — it's a peripheral, patient
+     * ambush predator, not a jump-scare that pops into your lap. Set well beyond its {@code FOLLOW_RANGE} (24)
+     * so a fresh spawn does NOT instantly aggro: it sets up in the shade at the edge of your awareness and only
+     * strikes once YOU move into its range. (Vanilla's own minimum is just 24 = right at follow range = instant
+     * aggro, which is what made them feel like they spawned "next to you" and attacked.)
+     */
+    private static final double MIN_NATURAL_PLAYER_DISTANCE = 40.0;
+
     public ShadeStalker(EntityType<? extends ShadeStalker> type, Level level) {
         super(type, level);
+    }
+
+    /**
+     * Spawn gate: the normal hostile darkness rules, PLUS — for NATURAL spawns only — a keep-away from players
+     * so stalkers appear on the periphery and ambush you as you move, rather than materialising beside you.
+     * Spawner/egg/command spawns are unaffected (e.g. the Undercrown Relics Shade Stalker spawner still fires at
+     * close range, and spawn eggs work anywhere). Registered in {@code event.ModEntityEvents}.
+     */
+    public static boolean checkShadeStalkerSpawnRules(
+            EntityType<ShadeStalker> type,
+            ServerLevelAccessor level,
+            MobSpawnType spawnType,
+            BlockPos pos,
+            RandomSource random) {
+        if (!Monster.checkMonsterSpawnRules(type, level, spawnType, pos, random)) {
+            return false;
+        }
+        if (spawnType == MobSpawnType.NATURAL
+                && level.getLevel()
+                                .getNearestPlayer(
+                                        pos.getX() + 0.5,
+                                        pos.getY() + 0.5,
+                                        pos.getZ() + 0.5,
+                                        MIN_NATURAL_PLAYER_DISTANCE,
+                                        false)
+                        != null) {
+            return false; // a player is too close — hold off, spawn elsewhere on the periphery
+        }
+        return true;
     }
 
     @Override
