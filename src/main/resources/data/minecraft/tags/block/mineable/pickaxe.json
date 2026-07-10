@@ -86,6 +86,7 @@
     "lumenwilds:dormant_light_engine",
     "lumenwilds:active_light_engine",
     "lumenwilds:lumen_field_projector",
-    "lumenwilds:gravity_repeater"
+    "lumenwilds:gravity_repeater",
+    "lumenwilds:duskglass"
   ]
 }

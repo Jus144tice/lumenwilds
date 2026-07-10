@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "axis=x": { "model": "lumenwilds:block/dusk_portal" },
+    "axis=z": { "model": "lumenwilds:block/dusk_portal", "y": 90 }
+  }
+}

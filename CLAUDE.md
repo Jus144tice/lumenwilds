@@ -394,7 +394,14 @@ on Lumen Farmland** (new `block.LumenStemBlock`/`LumenAttachedStemBlock` — van
 farmland, so they vanished on hoed Lumenwilds soil); **Lumen Grass reverts promptly when buried**
 (`LumenGrassBlock#updateShape`/`#tick`, not just the slow random tick); **crop seed drops rebalanced to ≈1:1**
 (`ModLootTableProvider#lumenCropDrops` — 1 produce + 1 guaranteed seed + Fortune, vs vanilla binomial ~1.7); and
-**Lumen Fruit is renewable** as a rare Glowroot-leaves drop (`#lumenLeavesWithFruit`, the apple-analog). Roadmap:
+**Lumen Fruit is renewable** as a rare Glowroot-leaves drop (`#lumenLeavesWithFruit`, the apple-analog). **v1.6.0
+(Duskglass + the Dusk Portal to the Nether):** **Lumenwater now reacts with lava** (`event.ModFluidInteractions`
+on the vanilla `LAVA_TYPE`) — a lava **source** quenches to **`ModBlocks#DUSKGLASS`** (the dimension's dark,
+faintly-glowing, blast-resistant "obsidian"), **flowing** lava to **Cobbled Moonstone**; and Duskglass frames a
+new **Dusk Portal** (`portal.DuskPortalBlock`/`Shape`/`Manager`/`Teleporter` + `event.DuskPortalIgnitionEvents`)
+— a Nether-portal-shaped Duskglass frame lit with **flint & steel** links the **Lumenwilds ↔ the Nether** (8:1,
+Nether-safe placement), inert in other dims. New progression: Overworld → Lumenwilds → gather Duskglass → the
+Nether. Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -734,6 +741,22 @@ as `File#member`.
   (8c): scans a small box around the source portal for a linked `LumenAnchorBlockEntity` whose partner is in
   the destination dim; if found, `LumenPortalBlock#getPortalDestination` uses that exact `approx` instead of
   the 1:1-scaled position — so an anchored return lands precisely.
+- **Dusk portal (v1.6.0) — the Lumenwilds ↔ Nether link, a sibling set of the Lumen portal.** Built from a
+  **Duskglass** frame (`ModBlocks#DUSKGLASS`) lit with **flint & steel**, filling with `ModBlocks#DUSK_PORTAL`.
+  [DuskPortalBlock.java](src/main/java/com/jus144tice/lumenwilds/portal/DuskPortalBlock.java) mirrors
+  `LumenPortalBlock` but `#getPortalDestination` routes **Lumenwilds ↔ `minecraft:the_nether`** at Nether scale
+  (8:1 via `getTeleportationScale`) and is inert in any other dim; `#getLocalTransition` is `CONFUSION` (the
+  nether shimmer, vs the Lumen portal's calm `NONE`).
+  [DuskPortalShape.java](src/main/java/com/jus144tice/lumenwilds/portal/DuskPortalShape.java) is the same focused
+  `PortalShape` port as `LumenPortalShape`, keyed to Duskglass/Dusk Portal (2×3..21×21).
+  [DuskPortalManager.java](src/main/java/com/jus144tice/lumenwilds/portal/DuskPortalManager.java) ignites +
+  find-or-builds the return portal, **dimension-aware**: open dims anchor to the surface heightmap, the
+  **enclosed Nether** scans for a floored, lava-free air pocket capped at the **logical height** (128, NOT
+  `getMaxBuildHeight` 256 — else it builds on the bedrock roof; `#anchorY`) and carves the frame in.
+  [DuskPortalTeleporter.java](src/main/java/com/jus144tice/lumenwilds/portal/DuskPortalTeleporter.java) mirrors
+  the Lumen teleporter. Ignition is `event.DuskPortalIgnitionEvents` (flint & steel on a Duskglass frame, only in
+  the Lumenwilds/Nether). *(RCON-verified: teleport both ways + return-portal placement below the ceiling; the
+  flint-and-steel light itself is client-interaction, but the shape port is identical to the proven Lumen one.)*
 
 ### block/ — custom block behaviours
 - [LumenChestBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenChestBlock.java) — the glowing wood
@@ -1343,6 +1366,14 @@ as `File#member`.
   `#onRegisterBrewingRecipes(RegisterBrewingRecipesEvent)` (8h): `builder.addMix(awkward, ingredient, potion)`
   for the four `ModPotions` (Air Gel / Glow Pollen / Spore Sac / Living Fiber); + Glowcap Spores → Sporeblind
   (a second jungle-sourced mix, v1.1d).
+- [ModFluidInteractions.java](src/main/java/com/jus144tice/lumenwilds/event/ModFluidInteractions.java) —
+  **mod-bus** `#onCommonSetup(FMLCommonSetupEvent)` (v1.6.0): `enqueueWork` → `FluidInteractionRegistry.addInteraction`
+  on the vanilla `LAVA_TYPE` with `ModFluidTypes#LUMENWATER_TYPE` as the neighbour — a lava **source** quenches to
+  `ModBlocks#DUSKGLASS`, **flowing** lava to `ModBlocks#COBBLED_MOONSTONE` (the Lumenwilds' obsidian/cobblestone).
+- [DuskPortalIgnitionEvents.java](src/main/java/com/jus144tice/lumenwilds/event/DuskPortalIgnitionEvents.java) —
+  `#onRightClickBlock(PlayerInteractEvent.RightClickBlock)` (v1.6.0): flint & steel on a Duskglass frame, **only
+  in the Lumenwilds or the Nether**, ignites a Dusk portal (`portal.DuskPortalManager#tryActivatePortal`), spends
+  a durability, cancels the default fire; no valid frame → not cancelled (flint & steel behaves normally).
 - [GlowmothAggroEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowmothAggroEvents.java) —
   `#onBlockBreak(BlockEvent.BreakEvent)` (6h): when a player breaks a guarded bloom (Moonblossom / any
   Stillbloom part), every `Glowmoth` within ~12 blocks `setTarget`s the culprit — the flower-guardian aggro.

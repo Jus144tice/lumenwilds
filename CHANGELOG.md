@@ -6,6 +6,19 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-07-09
+**Duskglass + the Dusk Portal to the Nether.**
+
+- **Lumenwater now reacts with lava** — just like water, but into dimension-native stone: a lava **source** +
+  Lumenwater → **Duskglass** (the Lumenwilds' "obsidian" — a dark, glossy, faintly teal-glowing, blast-resistant
+  stone), and **flowing** lava + Lumenwater → **Cobbled Moonstone**. (Mostly a Lumenwilds affair — bring lava in
+  a bucket, like an Overworld obsidian farm.)
+- **New: the Dusk Portal.** Build a **Duskglass frame** (2×3 up to 21×21, like a Nether portal) and light it with
+  **flint & steel** to open a portal between the **Lumenwilds and the Nether** — in the Lumenwilds it goes to the
+  Nether, in the Nether it comes back. (It only lights in those two dimensions; elsewhere flint & steel behaves
+  normally.) A real new progression: Overworld → Lumenwilds → gather Duskglass from lava → build the portal → the
+  Nether, with the Nether ↔ Lumenwilds link running both ways.
+
 ## [1.5.0] - 2026-07-09
 **Farming overhaul pass — plant physics, gourds, seed balance, and the Glowberry → Lumenberry rename.**
 

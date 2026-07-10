@@ -168,6 +168,7 @@ public class ModTagProvider extends BlockTagsProvider {
                     || name.contains("emberglow")
                     || name.contains("pale_opal")
                     || name.contains("resonite")
+                    || name.equals("duskglass")
                     || name.contains("lumen_crystal")) { // incl. budding + buds + cluster (E1 geode)
                 pickaxe.add(block);
                 // Iron-tier = the dimension's valuable resources (its ores + crystal/metal storage blocks);
@@ -179,7 +180,8 @@ public class ModTagProvider extends BlockTagsProvider {
                         || name.equals("lumen_crystal_block")
                         || name.equals("luminite_block")
                         || name.equals("pale_opal_block")
-                        || name.equals("resonite_block")) {
+                        || name.equals("resonite_block")
+                        || name.equals("duskglass")) { // obsidian-analog: iron-tier, slow to mine
                     needsIron.add(block);
                 } else {
                     needsStone.add(block);

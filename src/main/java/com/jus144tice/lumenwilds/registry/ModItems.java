@@ -676,6 +676,7 @@ public final class ModItems {
     static {
         for (var block : ModBlocks.BLOCKS.getEntries()) {
             if (block == ModBlocks.LUMEN_PORTAL
+                    || block == ModBlocks.DUSK_PORTAL
                     || block == ModBlocks.LUMENWATER_BLOCK
                     || block == ModBlocks.ASCENSION_FIELD
                     || block == ModBlocks.DESCENT_FIELD

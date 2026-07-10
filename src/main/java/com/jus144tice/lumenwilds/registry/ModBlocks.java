@@ -108,6 +108,39 @@ public final class ModBlocks {
                     .lightLevel(state -> 11)
                     .pushReaction(PushReaction.BLOCK));
 
+    /**
+     * Duskglass (v1.6.0) — the Lumenwilds' "obsidian": a dark, glossy stone quenched from lava by Lumenwater
+     * (a lava <b>source</b> + Lumenwater → Duskglass; flowing lava → Cobbled Moonstone — see
+     * `event.ModFluidInteractions`). Obsidian-tough + blast-resistant, with a faint trapped teal glow (light 3,
+     * soft-emissive model). It's the frame for the **Dusk Portal** (`portal.DuskPortalBlock`) that links the
+     * Lumenwilds and the Nether. Iron-tier to mine (slow, like obsidian).
+     */
+    public static final DeferredBlock<Block> DUSKGLASS = BLOCKS.registerSimpleBlock(
+            "duskglass",
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.COLOR_BLACK)
+                    .strength(50.0F, 1200.0F)
+                    .lightLevel(state -> 3)
+                    .requiresCorrectToolForDrops()
+                    .sound(SoundType.STONE));
+
+    /**
+     * Dusk Portal interior (v1.6.0) — mirrors {@link ModBlocks#LUMEN_PORTAL} but links the **Lumenwilds ↔ the
+     * Nether** (`portal.DuskPortalBlock`). Non-solid, glowing, no BlockItem, `noLootTable`; a Duskglass frame lit
+     * with flint & steel fills it.
+     */
+    public static final DeferredBlock<com.jus144tice.lumenwilds.portal.DuskPortalBlock> DUSK_PORTAL =
+            BLOCKS.registerBlock(
+                    "dusk_portal",
+                    com.jus144tice.lumenwilds.portal.DuskPortalBlock::new,
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_PURPLE)
+                            .noCollission()
+                            .noLootTable()
+                            .strength(-1.0F)
+                            .lightLevel(state -> 11)
+                            .pushReaction(PushReaction.BLOCK));
+
     // --- Terrain & world blocks -----------------------------------------------------------------
 
     public static final DeferredBlock<Block> MOONLOAM = BLOCKS.registerSimpleBlock(
