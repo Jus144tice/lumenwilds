@@ -10,11 +10,11 @@
           "children": [
             {
               "type": "minecraft:item",
-              "name": "lumenwilds:glowberry",
+              "name": "lumenwilds:lumenberry",
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
-                  "block": "lumenwilds:glowberry_bush",
+                  "block": "lumenwilds:lumenberry_bush",
                   "properties": { "age": "3" }
                 }
               ],
@@ -25,11 +25,11 @@
             },
             {
               "type": "minecraft:item",
-              "name": "lumenwilds:glowberry",
+              "name": "lumenwilds:lumenberry",
               "conditions": [
                 {
                   "condition": "minecraft:block_state_property",
-                  "block": "lumenwilds:glowberry_bush",
+                  "block": "lumenwilds:lumenberry_bush",
                   "properties": { "age": "2" }
                 }
               ],
@@ -43,5 +43,5 @@
       ]
     }
   ],
-  "random_sequence": "lumenwilds:blocks/glowberry_bush"
+  "random_sequence": "lumenwilds:blocks/lumenberry_bush"
 }

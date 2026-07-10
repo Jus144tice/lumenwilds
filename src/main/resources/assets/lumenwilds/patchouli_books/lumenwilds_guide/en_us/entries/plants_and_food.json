@@ -9,8 +9,8 @@
     },
     {
       "type": "patchouli:spotlight",
-      "item": "lumenwilds:glowberry",
-      "text": "Right-click soil with a Glowberry to plant a bush. Bone-meal it to ripen; right-click a ripe bush to harvest — it regrows. Glowberries also breed $(l:native_fauna)Lumen Grazers$(/l)."
+      "item": "lumenwilds:lumenberry",
+      "text": "Right-click soil with a Lumenberry to plant a bush. Bone-meal it to ripen; right-click a ripe bush to harvest — it regrows. Lumenberries also breed $(l:native_fauna)Lumen Grazers$(/l)."
     },
     { "type": "patchouli:crafting", "recipe": "lumenwilds:glowcap_stew", "text": "Glowcap Stew — hearty, with night vision. Returns the bowl." }
   ]

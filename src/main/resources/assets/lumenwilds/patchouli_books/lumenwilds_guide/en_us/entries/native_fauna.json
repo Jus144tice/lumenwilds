@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Lumen Grazer — peaceful herd grazer (breed with Glowberries).$(br)Shade Stalker — fast dark predator that flees light.$(br)Lantern Beetle — glowing flyer; bottle it for a lamp.$(br)Sporeling — jungle/cave swarm; bursts a spore cloud.$(br)Mirelurker — $(l:moonmire)Moonmire$(/l) ambusher."
+      "text": "Lumen Grazer — peaceful herd grazer (breed with Lumenberries).$(br)Shade Stalker — fast dark predator that flees light.$(br)Lantern Beetle — glowing flyer; bottle it for a lamp.$(br)Sporeling — jungle/cave swarm; bursts a spore cloud.$(br)Mirelurker — $(l:moonmire)Moonmire$(/l) ambusher."
     },
     {
       "type": "patchouli:text",

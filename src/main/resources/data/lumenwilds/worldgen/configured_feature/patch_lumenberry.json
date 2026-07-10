@@ -1,5 +1,5 @@
 {
-  "__comment": "Glowberry Bush patches (Phase 9) — alien harvestable berries scattered across the green Lumenwilds surface.",
+  "__comment": "Lumenberry Bush patches (Phase 9) — alien harvestable berries scattered across the green Lumenwilds surface.",
   "type": "minecraft:random_patch",
   "config": {
     "tries": 24,
@@ -11,14 +11,14 @@
         "config": {
           "to_place": {
             "type": "minecraft:simple_state_provider",
-            "state": { "Name": "lumenwilds:glowberry_bush", "Properties": { "age": "3" } }
+            "state": { "Name": "lumenwilds:lumenberry_bush", "Properties": { "age": "3" } }
           }
         }
       },
       "placement": [
         {
           "type": "minecraft:block_predicate_filter",
-          "predicate": { "type": "minecraft:would_survive", "state": { "Name": "lumenwilds:glowberry_bush" } }
+          "predicate": { "type": "minecraft:would_survive", "state": { "Name": "lumenwilds:lumenberry_bush" } }
         }
       ]
     }

@@ -1,5 +1,5 @@
 {
-  "__comment": "Scatters Glowberry Bushes across the green surface biomes (Phase 9 harvestables). Not the Crags (rocky) or the Undercrown (cave).",
+  "__comment": "Scatters Lumenberry Bushes across the green surface biomes (Phase 9 harvestables). Not the Crags (rocky) or the Undercrown (cave).",
   "type": "neoforge:add_features",
   "biomes": [
     "lumenwilds:lumen_glade",
@@ -8,6 +8,6 @@
     "lumenwilds:moonmire",
     "lumenwilds:stillbloom_basin"
   ],
-  "features": "lumenwilds:patch_glowberry",
+  "features": "lumenwilds:patch_lumenberry",
   "step": "vegetal_decoration"
 }

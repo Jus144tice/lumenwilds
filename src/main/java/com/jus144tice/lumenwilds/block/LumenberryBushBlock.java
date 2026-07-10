@@ -29,25 +29,25 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * Glowberry Bush (v1.1c) — a renewable, plantable alien berry bush modelled on vanilla
+ * Lumenberry Bush (v1.1c) — a renewable, plantable alien berry bush modelled on vanilla
  * {@code SweetBerryBushBlock}: an {@code AGE 0..3} bush that ripens over time (and via bone meal), glows a
  * little brighter as it matures, and is harvested by right-clicking a mature bush (empty hand) — popping
- * 1–2 {@link ModItems#GLOWBERRY} and reverting to age 1, so it regrows without replanting. Planted by
- * right-clicking valid soil with a Glowberry (the item is an {@code ItemNameBlockItem} over this block).
+ * 1–2 {@link ModItems#LUMENBERRY} and reverting to age 1, so it regrows without replanting. Planted by
+ * right-clicking valid soil with a Lumenberry (the item is an {@code ItemNameBlockItem} over this block).
  *
  * <p>The previous Phase-9 incarnation was a plain {@code TallGrassBlock} with a right-click-harvest event
  * (now removed): you couldn't plant it and it had no growth. This block fixes both.</p>
  */
-public class GlowberryBushBlock extends BushBlock implements BonemealableBlock {
+public class LumenberryBushBlock extends BushBlock implements BonemealableBlock {
 
-    public static final MapCodec<GlowberryBushBlock> CODEC = simpleCodec(GlowberryBushBlock::new);
+    public static final MapCodec<LumenberryBushBlock> CODEC = simpleCodec(LumenberryBushBlock::new);
     public static final int MAX_AGE = 3;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_3;
 
     private static final VoxelShape SAPLING_SHAPE = Block.box(3.0, 0.0, 3.0, 13.0, 8.0, 13.0);
     private static final VoxelShape MID_SHAPE = Block.box(1.0, 0.0, 1.0, 15.0, 16.0, 15.0);
 
-    public GlowberryBushBlock(Properties props) {
+    public LumenberryBushBlock(Properties props) {
         super(props);
         registerDefaultState(stateDefinition.any().setValue(AGE, 0));
     }
@@ -92,7 +92,7 @@ public class GlowberryBushBlock extends BushBlock implements BonemealableBlock {
             return super.useWithoutItem(state, level, pos, player, hit);
         }
         int count = 1 + level.getRandom().nextInt(2);
-        Block.popResource(level, pos, new ItemStack(ModItems.GLOWBERRY.get(), count));
+        Block.popResource(level, pos, new ItemStack(ModItems.LUMENBERRY.get(), count));
         level.playSound(
                 null,
                 pos,

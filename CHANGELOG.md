@@ -6,6 +6,31 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-07-09
+**Farming overhaul pass — plant physics, gourds, seed balance, and the Glowberry → Lumenberry rename.**
+
+> ⚠️ **Breaking (world data):** the Glowberry item/bush was renamed to **Lumenberry** (registry ids changed).
+> Existing `lumenwilds:glowberry` items and planted glowberry bushes in a world made before this update will be
+> **removed on load** (they become invalid registry entries). Everything else is unaffected. This resolves the
+> name/recipe clash with vanilla's glow berries.
+
+- **Renamed Glowberry → Lumenberry** everywhere (item, bush, recipes, loot, tags, worldgen, book), so it no
+  longer collides with vanilla glow berries.
+- **Vegetation obeys surface-placement physics.** Moonblossom is now *replaceable* like the ferns — placing a
+  block where a flower is **replaces** it instead of stacking on top and burying it. And the native crops no
+  longer grow **under** a solid block (they break when capped), so nothing farms itself underground.
+- **Glowgourd/Moonmelon stems work on tilled Lumenwilds soil.** They were hard-coded to vanilla farmland only,
+  so on hoed **Lumen Farmland** they broke instantly (the "seeds vanish / show blank" bug). They now grow on
+  Lumen Farmland and Moonloam/Lumen Grass, like the other crops.
+- **Burying Lumen Grass reverts it to Moonloam promptly.** Capping a grass block now turns it back within a
+  moment instead of waiting on a slow random tick (which often never fired if you weren't standing there).
+- **Crop seeds are no longer over-generous.** Harvesting a mature crop now gives a clean **1 produce + 1 seed**
+  (plus a Fortune bonus), instead of the vanilla-style ~1.7 seeds that piled up 2:1. Farms stay replantable.
+- **Lumen Fruit is now farmable.** It drops occasionally from **Glowroot leaves** (the apple-analog), so the
+  night-vision food is renewable by growing Glowroot trees instead of being chest-loot only.
+- **Glimmerroot planting clarified:** the Glimmerroot *is* its own seed (like a carrot) — right-click tilled
+  soil with it to plant.
+
 ## [1.4.13] - 2026-07-07
 **Shade Stalkers ambush from the periphery instead of spawning in your lap.**
 

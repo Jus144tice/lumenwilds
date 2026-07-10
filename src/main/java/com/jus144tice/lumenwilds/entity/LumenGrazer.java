@@ -57,11 +57,11 @@ public class LumenGrazer extends Animal {
     }
 
     /**
-     * Grazer food / breeding item: a Glowberry (renewable — plant + harvest bushes) or a Lumen Fruit (rarer,
-     * from chests/Stillblooms). Glowberry is the practical breeding food now that the bush is farmable (v1.1.1).
+     * Grazer food / breeding item: a Lumenberry (renewable — plant + harvest bushes) or a Lumen Fruit (rarer,
+     * from chests/Stillblooms). Lumenberry is the practical breeding food now that the bush is farmable (v1.1.1).
      */
     public static boolean isGrazerFood(ItemStack stack) {
-        return stack.is(ModItems.GLOWBERRY.get()) || stack.is(ModItems.LUMEN_FRUIT.get());
+        return stack.is(ModItems.LUMENBERRY.get()) || stack.is(ModItems.LUMEN_FRUIT.get());
     }
 
     @Override

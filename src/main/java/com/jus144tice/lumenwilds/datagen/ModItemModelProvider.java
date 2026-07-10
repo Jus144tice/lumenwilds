@@ -55,7 +55,7 @@ public class ModItemModelProvider extends ItemModelProvider {
             }
 
             if (!(item instanceof BlockItem)
-                    // Seeds/plantable foods (ItemNameBlockItem, incl. glowberry + crop seeds) use a flat
+                    // Seeds/plantable foods (ItemNameBlockItem, incl. lumenberry + crop seeds) use a flat
                     // item/<name> icon, not their crop block's texture.
                     || item instanceof net.minecraft.world.item.ItemNameBlockItem
                     || name.endsWith("_door")

@@ -242,7 +242,7 @@ glowvine, and the spawn fixes all check out. **Post-playtest polish (this pass):
 ambient — **Sporeling** + **Mirelurker** — now spawn **light-agnostically** (`event.ModEntityEvents`,
 `checkAnyLightMonsterSpawnRules`) so the dim Sporefall Jungle / Moonmire actually teem (the Shade Stalker stays
 darkness-gated — fleeing light is its identity); the **Moonmire** gained Glowmoth + Sky Jelly ambient creatures;
-**Glowberry Bushes** are right-click-harvestable (now `block.GlowberryBushBlock`, v1.1c); **Undercrown Glowvine** now
+**Lumenberry Bushes** are right-click-harvestable (now `block.LumenberryBushBlock`, v1.1c); **Undercrown Glowvine** now
 hangs in tall strands from cave ceilings (`world.feature.UndercrownDecorFeature`); and **Glowroot tree roots**
 reliably reach the ground (`world.feature.GlowrootShape` buttress-leg fix — the drop started on the tip's own
 log and stopped instantly). **Playtest-confirmed (10a–10g):** the full
@@ -258,10 +258,10 @@ playthrough fixes (v1.1) are in progress** (see [the plan](.claude/plans/delegat
 **v1.1a** gave **Glowroot a full wood set** (the signature self-lit species — planks/wood/stairs/slab/fence/
 gate/door/trapdoor/button/plate/signs/boats, all faintly glowing, on `ModWoodTypes.GLOWROOT`), closing the
 "can't make planks from Glowroot logs" gap. **v1.1b** fixed **flora generating on top of bushes**
-(moonblossom + glow fern used `matching_blocks:air` with no survival check → floated above glowberry bushes;
-now `would_survive` like every other patch, on `WORLD_SURFACE_WG`). **v1.1c** made **Glowberries plantable +
-renewable** — `GLOWBERRY_BUSH` is now a sweet-berry-style `block.GlowberryBushBlock` (`AGE 0..3`,
-bone-mealable, glow 3→6, right-click-harvest), and the Glowberry item is an `ItemNameBlockItem` that plants it.
+(moonblossom + glow fern used `matching_blocks:air` with no survival check → floated above lumenberry bushes;
+now `would_survive` like every other patch, on `WORLD_SURFACE_WG`). **v1.1c** made **Lumenberries plantable +
+renewable** — `LUMENBERRY_BUSH` is now a sweet-berry-style `block.LumenberryBushBlock` (`AGE 0..3`,
+bone-mealable, glow 3→6, right-click-harvest), and the Lumenberry item is an `ItemNameBlockItem` that plants it.
 **v1.1d** gave **every orphan mob drop a use** (`ModRecipeProvider#buildOrphanDropRecipes` — hides→leather,
 glow sinew→string, lumen algae→green dye, wraith membrane→phantom membrane, mire tooth→bone meal, rootback
 plate→iron nuggets, glow scales→glow pollen, shade claw→echo dust, crystal dust→glasspetal block, moonloam
@@ -302,7 +302,7 @@ fuel; the **wood sets now glow** — both species are **emissive-rendered** (eve
 an `_emissive_*` parent with `neoforge_data block_light`, so they look luminous in any light incl. daylight)
 AND emit light (logs/wood 7, planks + derived 5); the **Glowroot
 buttress roots reliably join the trunk** (place-then-advance fix in `GlowrootShape#buildButtressRoots`); the
-**Lumen Grazer breeds with the renewable Glowberry** (not just the rare Lumen Fruit); and the **built/loot
+**Lumen Grazer breeds with the renewable Lumenberry** (not just the rare Lumen Fruit); and the **built/loot
 structures moved to the `top_layer_modification` step** so they generate *after* trees and overwrite them (no
 more tree-through-chest / tree-corrupted pieces). **v1.1.3 (Lumenwater fishing rework):** fishing in Lumenwater
 now yields **only native species** — a custom `loot.LumenwaterFishingModifier` (registered via
@@ -385,7 +385,16 @@ the six animals (Grazer/Silkworm/Lantern Beetle/Sky Jelly/Glowmoth/Rootback) use
 (needs light > 8 + grass-like ground), which the *dim*, partly-stone dimension rarely satisfied, so they barely
 appeared (only beetles, which the Moonwake event boosts); all are now `Mob::checkMobSpawnRules` (light-agnostic,
 any ground), and the **Crag Wraith** went light-agnostic too (`checkAnyLightMonsterSpawnRules`) so it patrols the
-mineral-lit Crags. The Shade Stalker stays darkness-gated (its identity). Roadmap:
+mineral-lit Crags. The Shade Stalker stays darkness-gated (its identity). **v1.5.0 (farming polish pass):**
+**Glowberry → Lumenberry** rename (item/bush/recipes/loot/tags/worldgen/book — clears the vanilla glow-berries
+name/recipe clash; a **breaking registry rename**, so pre-1.5.0 glowberry items/bushes drop on world load); native
+vegetation now obeys surface-placement physics (**Moonblossom is `.replaceable()`** like the ferns; **crops break
+when capped** by an opaque block, `LumenCropBlock#canSurvive` — no more growing underground); **gourd stems grow
+on Lumen Farmland** (new `block.LumenStemBlock`/`LumenAttachedStemBlock` — vanilla stems accept only vanilla
+farmland, so they vanished on hoed Lumenwilds soil); **Lumen Grass reverts promptly when buried**
+(`LumenGrassBlock#updateShape`/`#tick`, not just the slow random tick); **crop seed drops rebalanced to ≈1:1**
+(`ModLootTableProvider#lumenCropDrops` — 1 produce + 1 guaranteed seed + Fortune, vs vanilla binomial ~1.7); and
+**Lumen Fruit is renewable** as a rare Glowroot-leaves drop (`#lumenLeavesWithFruit`, the apple-analog). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -480,10 +489,10 @@ as `File#member`.
   instead of dead moonloam), `#LUMEN_CORAL_BLOCK` (solid bright coral, light 10 — reef mounds + building), and
   `#LUMEN_CORAL` (`block.LumenCoralBlock` — a waterlogged glowing cross frond, light 9), and `#LUMEN_KELP` (another
   `LumenCoralBlock`, teal-green sea plant); grown on the seabed by the `world.feature.LumenReefFeature` (reef fronds
-  are a coral/kelp mix). **Surface harvestables (Phase 9 / v1.1c):** `#GLOWBERRY_BUSH`
-  (`block.GlowberryBushBlock` — a bone-mealable `AGE 0..3` sweet-berry-style bush, glow 3→6, right-click-harvest;
-  **no own BlockItem** — planted by the `ModItems#GLOWBERRY` `ItemNameBlockItem`) scattered (at age 3) on the green
-  biomes via `patch_glowberry` + a `glowberry` biome modifier.
+  are a coral/kelp mix). **Surface harvestables (Phase 9 / v1.1c):** `#LUMENBERRY_BUSH`
+  (`block.LumenberryBushBlock` — a bone-mealable `AGE 0..3` sweet-berry-style bush, glow 3→6, right-click-harvest;
+  **no own BlockItem** — planted by the `ModItems#LUMENBERRY` `ItemNameBlockItem`) scattered (at age 3) on the green
+  biomes via `patch_lumenberry` + a `lumenberry` biome modifier.
   **Lumenwright materials (Phase 10a, `docs/ancient_cities.txt`):** `#LUMINITE_ORE` + `#DEEP_LUMINITE_ORE`
   (`DropExperienceBlock`, drop `ModItems#RAW_LUMINITE`, non-glowing metal — contrast with the self-lit crystal
   ore; injected dimension-wide via the `luminite_ore` biome modifier), `#LUMINITE_BLOCK` (ingot storage);
@@ -737,11 +746,11 @@ as `File#member`.
   Glowwood/Glowroot chests (`block.LumenChestBlock` + `client.LumenChestRenderer`) get per-species textures; all
   chest behaviour is inherited. Chest textures: `textures/entity/chest/{glowwood,glowroot}{,_left,_right}.png`
   on the vanilla chests atlas (+ an insurance `assets/lumenwilds/atlases/chests.json`); item = a flat icon.
-- [GlowberryBushBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GlowberryBushBlock.java) — the
-  Glowberry Bush (v1.1c), a `BushBlock` + `BonemealableBlock` modelled on vanilla `SweetBerryBushBlock`.
+- [LumenberryBushBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenberryBushBlock.java) — the
+  Lumenberry Bush (v1.1c), a `BushBlock` + `BonemealableBlock` modelled on vanilla `SweetBerryBushBlock`.
   `#AGE` (0..3, `AGE_3`), `#lightFor` (light 3→6, wired in `ModBlocks`), `#randomTick` ripens in light ≥9,
-  `#useWithoutItem` harvests a mature bush (pops 1–2 Glowberries, reverts to age 1 — renewable), bone meal
-  advances age. `ModBlocks#GLOWBERRY_BUSH`; planted by the `ModItems#GLOWBERRY` `ItemNameBlockItem`
+  `#useWithoutItem` harvests a mature bush (pops 1–2 Lumenberries, reverts to age 1 — renewable), bone meal
+  advances age. `ModBlocks#LUMENBERRY_BUSH`; planted by the `ModItems#LUMENBERRY` `ItemNameBlockItem`
   (no own BlockItem); age-conditioned berry loot is hand-authored.
 - [GlowvineBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GlowvineBlock.java) — Glowvine
   (v1.4.11), the glowing/passable/climbable hanging strand, **with vanilla-vine sever** (`VineBlock`-style).
@@ -772,22 +781,33 @@ as `File#member`.
   Moonloam; blockstate-provider skips `FarmBlock`/`DirtPathBlock`. `CODEC` typed to the parent (the parent
   narrowed `codec()` — target-typing still builds our subclass).
 - [LumenCropBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenCropBlock.java) — shared base for
-  the native crops (v1.4 F2), `extends CropBlock`. Two alien overrides: `#randomTick` grows at **any light**
+  the native crops (v1.4 F2), `extends CropBlock`. Alien overrides: `#randomTick` grows at **any light**
   (vanilla needs ≥9) keeping the moisture speed bonus, and `#canSurvive`/`#mayPlaceOn` accept **Moonloam +
   Lumen Grass + any FarmBlock** (so crops grow wild on native soil AND on tilled Lumen Farmland — but only
-  farmland gets the `getGrowthSpeed` bonus, so tilling+Lumenwater is far faster). Seed via a lazy `Supplier`.
-  Leaf subclasses: `LumengrainCropBlock`/`GlimmerrootCropBlock` (AGE_7) + `MoonbeetCropBlock` (AGE_3, mirrors
+  farmland gets the `getGrowthSpeed` bonus, so tilling+Lumenwater is far faster). **`#canSurvive` also requires
+  the space directly above to be non-opaque** (v1.5.0) — since these crops grow at any light, that stops them
+  growing *under* a placed solid block (a covered crop breaks); it's the "surface growth" the Overworld gets free
+  from its light gate. Seed via a lazy `Supplier`. Leaf subclasses:
+  `LumengrainCropBlock`/`GlimmerrootCropBlock` (AGE_7) + `MoonbeetCropBlock` (AGE_3, mirrors
   `BeetrootBlock`). `ModBlocks#LUMENGRAIN_CROP`/`#GLIMMERROOT_CROP`/`#MOONBEET_CROP` (no own BlockItem — planted
-  via the seed `ItemNameBlockItem`s; mature stages glow via `#cropGlow`); blockstate-provider has a `CropBlock`
-  age-stage branch; loot via `createCropDrops`; `#minecraft:crops` + `#maintains_farmland` tags.
+  via the seed `ItemNameBlockItem`s; Glimmerroot's own item IS the seed, carrot-style; mature stages glow via
+  `#cropGlow`); blockstate-provider has a `CropBlock` age-stage branch; loot via
+  `ModLootTableProvider#lumenCropDrops` (v1.5.0 — a gentler **1 produce + 1 guaranteed seed + Fortune** ≈ 1:1,
+  vs vanilla's binomial ~1.7); `#minecraft:crops` + `#maintains_farmland` tags.
 - [GlowgourdBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GlowgourdBlock.java) — the gourds
   (v1.4 F3). Glowgourd (pumpkin analog) `#useItemOn` shears-carves into `ModBlocks#CARVED_GLOWGOURD` (a vanilla
   `CarvedPumpkinBlock`, glowing/wearable) + drops seeds — a glowing jack-o'-lantern. `ModBlocks#MOONMELON` (the
-  melon analog, a glowing gourd → slices) + Glowgourd use vanilla `StemBlock`/`AttachedStemBlock`
+  melon analog, a glowing gourd → slices) + Glowgourd use **`block.LumenStemBlock`/`block.LumenAttachedStemBlock`**
   (`#MOONMELON_STEM`/`#GLOWGOURD_STEM` + attached) wired to fruit/seed by **ResourceKey** (`#bKey`/`#iKey`, lazy
-  — no registration-order issue); seeds = `ItemNameBlockItem`s over the stems. Gourds spawn on Moonloam / Lumen
-  Grass / farmland for free (`#minecraft:dirt`). Blockstate-provider has Stem/AttachedStem/CarvedPumpkin/gourd
-  branches; loot via `createStemDrops`/`createAttachedStemDrops` (Moonmelon → slices).
+  — no registration-order issue); seeds = `ItemNameBlockItem`s over the stems. Blockstate-provider has
+  Stem/AttachedStem/CarvedPumpkin/gourd branches; loot via `createStemDrops`/`createAttachedStemDrops`
+  (Moonmelon → slices).
+- [LumenStemBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenStemBlock.java) +
+  [LumenAttachedStemBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenAttachedStemBlock.java) — the
+  gourd stems (v1.5.0). Vanilla `StemBlock`/`AttachedStemBlock` `#mayPlaceOn` accept **only `minecraft:farmland`**,
+  so a Glowgourd/Moonmelon stem on **Lumen Farmland** (a different block) or Moonloam failed `canSurvive` and
+  broke instantly — the "glowgourd seeds vanish / show blank on hoed ground" bug. These override `#mayPlaceOn` to
+  accept any `FarmBlock` (Lumen Farmland) + Moonloam + Lumen Grass, matching `LumenCropBlock`'s soil leniency.
 - **Alien crops (v1.4 F4)** — the three twist crops: `ModBlocks#GLIMMERREED` (a plain vanilla `SugarCaneBlock`
   — grows on Moonloam beside **Lumenwater** for free, since Lumenwater is `#minecraft:water` + hydrates; glows;
   → Lumen Sugar), [DuskbeanCropBlock](src/main/java/com/jus144tice/lumenwilds/block/DuskbeanCropBlock.java)
@@ -802,7 +822,10 @@ as `File#member`.
   keyed to `ModBlocks#MOONLOAM` (the "dirt") + itself (the "grass"), extending `Block` directly (no `SNOWY`
   property — no snow here). `#randomTick` spreads onto adjacent Moonloam in light / reverts to Moonloam when
   capped by a light-blocking block; `#canBeGrass`/`#canPropagate` reimplement vanilla's private checks
-  (`LightEngine.getLightBlockInto`). **`#MIN_SPREAD_LIGHT` = 4** (vanilla grass = 9) so the dim dimension still
+  (`LightEngine.getLightBlockInto`). **Prompt burial revert (v1.5.0):** `#updateShape` (block placed directly
+  above) + `#tick` schedule an immediate revert to Moonloam when capped — mirroring vanilla `FarmBlock` — so
+  burying grass turns it back within a couple of ticks instead of waiting on a random tick (which often never
+  fired if no player was nearby, the reported "never reverts"). **`#MIN_SPREAD_LIGHT` = 4** (vanilla grass = 9) so the dim dimension still
   grows grass by sun, moon, OR nearby bioluminescence (`getMaxLocalRawBrightness` includes block light).
   `BonemealableBlock`: `#performBonemeal` scatters Glow Fern + ~1/10 Moonblossom on nearby grass. Mined → drops
   Moonloam, silk → grass (the `lumen_grass_block` loot special-case in `ModLootTableProvider`). Registered with
@@ -1299,8 +1322,8 @@ as `File#member`.
 - [StillbloomInteractEvents.java](src/main/java/com/jus144tice/lumenwilds/event/StillbloomInteractEvents.java)
   — `#onRightClickBlock(PlayerInteractEvent.RightClickBlock)` (8b): a glass bottle on a Stillbloom Core/Petal
   fills into `ModItems.LUMEN_NECTAR` (bloom not consumed — renewable, like honey).
-  *(Glowberry harvest moved into `block.GlowberryBushBlock#useWithoutItem` in v1.1c — the old
-  `GlowberryInteractEvents` was deleted.)*
+  *(Lumenberry harvest moved into `block.LumenberryBushBlock#useWithoutItem` in v1.1c — the old
+  `LumenberryInteractEvents` was deleted.)*
 - [LumenFarmingEvents.java](src/main/java/com/jus144tice/lumenwilds/event/LumenFarmingEvents.java) —
   `#onToolModify(BlockEvent.BlockToolModificationEvent)` (v1.4 F1): `HOE_TILL` on Moonloam/Lumen Grass (with
   air above — must be checked here, vanilla won't for modded blocks) → `LUMEN_FARMLAND`; `SHOVEL_FLATTEN` →
@@ -1450,7 +1473,7 @@ as `File#member`.
   1-input conversions, explicit recipe ids so same-result recipes don't collide).
 - [ModLootTableProvider](src/main/java/com/jus144tice/lumenwilds/datagen/ModLootTableProvider.java) —
   `#create` + inner `ModBlockLoot`: drop-self for all blocks except `LUMEN_PORTAL` + `LUMENWATER_BLOCK`
-  (both `noLootTable`) + the liftshaft fields + `GLOWBERRY_BUSH` (hand-authored age-conditioned berry loot),
+  (both `noLootTable`) + the liftshaft fields + `LUMENBERRY_BUSH` (hand-authored age-conditioned berry loot),
   with slab (drops 2) and door (drops 1) special-cased; `lumen_grass_block` →
   `createSingleItemTableWithSilkTouch`(MOONLOAM) (silk → grass, else Moonloam — the grass mechanic, v1.2.3);
   `moonstone`/`deep_moonstone` → `createSingleItemTableWithSilkTouch`(cobbled variant) (silk → self, else
@@ -1613,7 +1636,7 @@ as `File#member`.
   `location`+biome/+structure / `player_killed_entity`; direct-text titles (no lang keys). Hand-authored.
 - `data/lumenwilds/neoforge/biome_modifier/*` — `lumen_reef.json` (the project's **first NeoForge biome
   modifier**, `neoforge:add_features`: injects `lumen_reef` into the 6 surface biomes at `vegetal_decoration`,
-  avoiding each biome's feature list + the order topo-sort), `glowberry.json` (Glowberry Bush on green biomes),
+  avoiding each biome's feature list + the order topo-sort), `lumenberry.json` (Lumenberry Bush on green biomes),
   `luminite_ore.json` (10a — `luminite_ore` into all 7 biomes at `underground_ores`), and **v1.3 mining overhaul
   Phase A**: `deep_cave_decor.json` (injects `undercrown_decor` — wall crystals + hanging glowvine + glow ferns —
   into the 6 surface biomes at `underground_decoration` so their deep caves are alive like the Undercrown) +
@@ -1879,8 +1902,8 @@ as `File#member`.
   build TIMING, not `findGenerationPoint` placement — so Y/spacing are unaffected.)
 - **A `random_patch` flora feature must filter on `would_survive`, not `matching_blocks:air`.** The latter
   places the plant in ANY air cell within `y_spread` — including the air *directly above* another plant — so
-  moonblossoms/glow ferns generated floating on top of glowberry bushes (the v1.1b bug). `would_survive` (the
-  block's own `canSurvive`, what `patch_glowberry` already used) only places where the plant is actually
+  moonblossoms/glow ferns generated floating on top of lumenberry bushes (the v1.1b bug). `would_survive` (the
+  block's own `canSurvive`, what `patch_lumenberry` already used) only places where the plant is actually
   supported. Every flora `random_patch` here now uses `would_survive` + `WORLD_SURFACE_WG`.
   **But `would_survive` is NOT enough for a FULL-BLOCK "plant" (the gourds — Glowgourd/Moonmelon).** A solid
   block's `canSurvive` is `true` *everywhere* (no support check), so `would_survive` passes in mid-air — and

@@ -72,9 +72,18 @@ public abstract class LumenCropBlock extends CropBlock {
         }
     }
 
-    /** Survive on farmland WITHOUT the vanilla light ≥ 8 gate (dim world). Soil rules otherwise unchanged. */
+    /**
+     * Survive on valid soil WITHOUT the vanilla light ≥ 8 gate (dim world) — BUT not buried: because these crops
+     * grow at any light, they'd otherwise keep growing under a placed block. Require the space directly above to
+     * be non-opaque (air/glass/slab OK; a solid block on top kills the crop), so a covered crop breaks instead of
+     * growing underground — the "surface growth" the Overworld gets for free from its light requirement.
+     */
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        BlockPos above = pos.above();
+        if (level.getBlockState(above).isSolidRender(level, above)) {
+            return false;
+        }
         BlockPos below = pos.below();
         BlockState belowState = level.getBlockState(below);
         net.neoforged.neoforge.common.util.TriState soil =

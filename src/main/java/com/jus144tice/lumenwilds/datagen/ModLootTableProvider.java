@@ -77,7 +77,7 @@ public final class ModLootTableProvider {
                 } else if (name.equals("lumengrain_crop")) {
                     add(
                             block,
-                            createCropDrops(
+                            lumenCropDrops(
                                     block,
                                     ModItems.LUMENGRAIN.get(),
                                     ModItems.LUMENGRAIN_SEEDS.get(),
@@ -86,7 +86,7 @@ public final class ModLootTableProvider {
                     // Glimmerroot: the root is both produce and seed (like carrots).
                     add(
                             block,
-                            createCropDrops(
+                            lumenCropDrops(
                                     block,
                                     ModItems.GLIMMERROOT.get(),
                                     ModItems.GLIMMERROOT.get(),
@@ -94,7 +94,7 @@ public final class ModLootTableProvider {
                 } else if (name.equals("moonbeet_crop")) {
                     add(
                             block,
-                            createCropDrops(
+                            lumenCropDrops(
                                     block,
                                     ModItems.MOONBEET.get(),
                                     ModItems.MOONBEET_SEEDS.get(),
@@ -104,7 +104,7 @@ public final class ModLootTableProvider {
                 } else if (name.equals("duskbean_crop")) {
                     add(
                             block,
-                            createCropDrops(
+                            lumenCropDrops(
                                     block,
                                     ModItems.DUSKBEAN.get(),
                                     ModItems.DUSKBEAN.get(),
@@ -112,7 +112,7 @@ public final class ModLootTableProvider {
                 } else if (name.equals("cavecap_crop")) {
                     add(
                             block,
-                            createCropDrops(
+                            lumenCropDrops(
                                     block,
                                     ModItems.CAVECAP.get(),
                                     ModItems.CAVECAP.get(),
@@ -169,10 +169,18 @@ public final class ModLootTableProvider {
                 } else if (block instanceof net.minecraft.world.level.block.LeavesBlock) {
                     // Real leaves loot (NOT drop-self): shears/silk → block, else sapling/stick/mostly nothing.
                     // Drop-self on decaying leaves floods the world with leaf-block items (see CLAUDE.md).
-                    Block sapling = name.startsWith("glowwood")
-                            ? ModBlocks.GLOWWOOD_SAPLING.get()
-                            : ModBlocks.GLOWROOT_SAPLING.get();
-                    add(block, b -> createLeavesDrops(b, sapling, NORMAL_LEAVES_SAPLING_CHANCES));
+                    // Glowroot leaves also drop the occasional Lumen Fruit (apple-analog → renewable food).
+                    if (name.startsWith("glowroot")) {
+                        add(
+                                block,
+                                b -> lumenLeavesWithFruit(
+                                        b, ModBlocks.GLOWROOT_SAPLING.get(), ModItems.LUMEN_FRUIT.get()));
+                    } else {
+                        add(
+                                block,
+                                b -> createLeavesDrops(
+                                        b, ModBlocks.GLOWWOOD_SAPLING.get(), NORMAL_LEAVES_SAPLING_CHANCES));
+                    }
                 } else {
                     dropSelf(block); // standing/ceiling signs drop their own (Sign/HangingSign)Item
                 }
@@ -184,7 +192,61 @@ public final class ModLootTableProvider {
             return lootableBlocks();
         }
 
-        /** "Crop is at its max age" loot condition (for createCropDrops). */
+        /**
+         * A gentler crop drop than vanilla's {@code createCropDrops}: a mature harvest yields 1 produce + exactly
+         * ONE seed (guaranteed — a farm is always replantable) plus a Fortune bonus, i.e. a clean ~1:1
+         * seed:produce, instead of vanilla's binomial ~1.7 seeds that felt too prolific (v1.5.0). For self-seeding
+         * crops (produce == seed) it yields ~2 of the item, so you replant one and keep one.
+         */
+        private net.minecraft.world.level.storage.loot.LootTable.Builder lumenCropDrops(
+                Block crop,
+                net.minecraft.world.level.ItemLike produce,
+                net.minecraft.world.level.ItemLike seed,
+                net.minecraft.world.level.storage.loot.predicates.LootItemCondition.Builder mature) {
+            var fortune = this.registries
+                    .lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT)
+                    .getOrThrow(net.minecraft.world.item.enchantment.Enchantments.FORTUNE);
+            return this.applyExplosionDecay(
+                    crop,
+                    net.minecraft.world.level.storage.loot.LootTable.lootTable()
+                            .withPool(net.minecraft.world.level.storage.loot.LootPool.lootPool()
+                                    .add(net.minecraft.world.level.storage.loot.entries.LootItem.lootTableItem(produce)
+                                            .when(mature)
+                                            .otherwise(
+                                                    net.minecraft.world.level.storage.loot.entries.LootItem
+                                                            .lootTableItem(seed))))
+                            .withPool(net.minecraft.world.level.storage.loot.LootPool.lootPool()
+                                    .when(mature)
+                                    .add(net.minecraft.world.level.storage.loot.entries.LootItem.lootTableItem(seed)
+                                            .apply(net.minecraft.world.level.storage.loot.functions.ApplyBonusCount
+                                                    .addUniformBonusCount(fortune)))));
+        }
+
+        /**
+         * Glowroot leaves also drop the occasional <b>Lumen Fruit</b> — the apple-analog, so the night-vision food
+         * is renewable by growing Glowroot trees rather than chest-loot only (v1.5.0). Same rarity curve as oak
+         * apples; only when NOT shearing/silk-touching.
+         */
+        private net.minecraft.world.level.storage.loot.LootTable.Builder lumenLeavesWithFruit(
+                Block leaves, Block sapling, net.minecraft.world.level.ItemLike fruit) {
+            var fortune = this.registries
+                    .lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT)
+                    .getOrThrow(net.minecraft.world.item.enchantment.Enchantments.FORTUNE);
+            return this.createLeavesDrops(leaves, sapling, NORMAL_LEAVES_SAPLING_CHANCES)
+                    .withPool(net.minecraft.world.level.storage.loot.LootPool.lootPool()
+                            .setRolls(
+                                    net.minecraft.world.level.storage.loot.providers.number.ConstantValue.exactly(1.0F))
+                            .when(HAS_SHEARS.or(this.hasSilkTouch()).invert())
+                            .add(this.applyExplosionCondition(
+                                            leaves,
+                                            net.minecraft.world.level.storage.loot.entries.LootItem.lootTableItem(
+                                                    fruit))
+                                    .when(net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition
+                                            .bonusLevelFlatChance(
+                                                    fortune, 0.005F, 0.0055555557F, 0.00625F, 0.008333334F, 0.025F))));
+        }
+
+        /** "Crop is at its max age" loot condition (for lumenCropDrops). */
         private static net.minecraft.world.level.storage.loot.predicates.LootItemCondition.Builder matureCond(
                 Block crop, net.minecraft.world.level.block.state.properties.IntegerProperty age, int max) {
             return net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition
@@ -201,8 +263,8 @@ public final class ModLootTableProvider {
                     .filter(block -> block != ModBlocks.ASCENSION_FIELD.get())
                     .filter(block -> block != ModBlocks.DESCENT_FIELD.get()) // noLootTable liftshaft fields
                     .filter(block -> block != ModBlocks.BUDDING_LUMEN_CRYSTAL.get()) // noLootTable (un-harvestable)
-                    // Glowberry Bush has a hand-authored, age-conditioned berry loot table (v1.1c).
-                    .filter(block -> block != ModBlocks.GLOWBERRY_BUSH.get())
+                    // Lumenberry Bush has a hand-authored, age-conditioned berry loot table (v1.1c).
+                    .filter(block -> block != ModBlocks.LUMENBERRY_BUSH.get())
                     // Wall torch drops the standing torch via lootFrom (no own table), like vanilla (v1.4.7).
                     .filter(block -> block != ModBlocks.EMBERGLOW_WALL_TORCH.get())
                     .collect(Collectors.toList());

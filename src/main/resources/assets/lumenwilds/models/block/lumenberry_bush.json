@@ -1,6 +1,6 @@
 {
   "parent": "lumenwilds:block/_emissive_cross",
   "textures": {
-    "cross": "lumenwilds:block/glowberry_bush"
+    "cross": "lumenwilds:block/lumenberry_bush"
   }
 }

@@ -51,11 +51,10 @@
           "functions": [
             {
               "enchantment": "minecraft:fortune",
-              "formula": "minecraft:binomial_with_bonus_count",
+              "formula": "minecraft:uniform_bonus_count",
               "function": "minecraft:apply_bonus",
               "parameters": {
-                "extra": 3,
-                "probability": 0.5714286
+                "bonusMultiplier": 1
               }
             }
           ],

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "lumenwilds:item/glowberry"
+    "layer0": "lumenwilds:block/lumenberry_bush"
   }
 }

@@ -12,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
@@ -78,6 +79,34 @@ public class LumenGrassBlock extends Block implements BonemealableBlock {
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Revert PROMPTLY when a block is placed directly on top (capping the grass), rather than waiting for the
+     * next random tick — so burying Lumen Grass with Moonloam (or anything opaque) turns it back to Moonloam
+     * within a couple of ticks, matching the player expectation. Mirrors vanilla {@code FarmBlock}'s
+     * updateShape → scheduleTick → tick pattern. (The random-tick revert in {@link #randomTick} still covers the
+     * slow/ambient cases.)
+     */
+    @Override
+    protected BlockState updateShape(
+            BlockState state,
+            Direction direction,
+            BlockState neighborState,
+            LevelAccessor level,
+            BlockPos pos,
+            BlockPos neighborPos) {
+        if (direction == Direction.UP && !canBeGrass(state, level, pos)) {
+            level.scheduleTick(pos, this, 2);
+        }
+        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+    }
+
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        if (!canBeGrass(state, level, pos)) {
+            level.setBlockAndUpdate(pos, ModBlocks.MOONLOAM.get().defaultBlockState());
         }
     }
 

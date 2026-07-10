@@ -126,13 +126,13 @@ public final class ModItems {
                             .build()));
 
     /**
-     * Glowberries — a sweet alien berry; a quick snack with a little glow, and (like vanilla sweet berries) an
-     * {@code ItemNameBlockItem} so right-clicking valid soil <b>plants a Glowberry Bush</b> (v1.1c). The bush
+     * Lumenberries — a sweet alien berry; a quick snack with a little glow, and (like vanilla sweet berries) an
+     * {@code ItemNameBlockItem} so right-clicking valid soil <b>plants a Lumenberry Bush</b> (v1.1c). The bush
      * itself has no separate BlockItem (skipped in the loop below).
      */
-    public static final DeferredItem<ItemNameBlockItem> GLOWBERRY = ITEMS.registerItem(
-            "glowberry",
-            props -> new ItemNameBlockItem(ModBlocks.GLOWBERRY_BUSH.get(), props),
+    public static final DeferredItem<ItemNameBlockItem> LUMENBERRY = ITEMS.registerItem(
+            "lumenberry",
+            props -> new ItemNameBlockItem(ModBlocks.LUMENBERRY_BUSH.get(), props),
             new Item.Properties()
                     .food(new FoodProperties.Builder()
                             .nutrition(2)
@@ -681,7 +681,7 @@ public final class ModItems {
                     || block == ModBlocks.DESCENT_FIELD
                     || block
                             == ModBlocks
-                                    .GLOWBERRY_BUSH // planted by the Glowberry item (ItemNameBlockItem), no own item
+                                    .LUMENBERRY_BUSH // planted by the Lumenberry item (ItemNameBlockItem), no own item
                     || block == ModBlocks.LUMENGRAIN_CROP // crops planted via seed ItemNameBlockItems (v1.4)
                     || block == ModBlocks.GLIMMERROOT_CROP
                     || block == ModBlocks.MOONBEET_CROP

@@ -261,6 +261,7 @@ public final class ModBlocks {
                     .instabreak()
                     .lightLevel(state -> 9)
                     .sound(SoundType.GRASS)
+                    .replaceable() // like the ferns — placing a block replaces it (not buries it), v1.5.0
                     .pushReaction(PushReaction.DESTROY));
 
     /** Glow Fern — alien ground cover with a faint cyan glow. Cross-model, instabreak, replaceable. */
@@ -349,22 +350,22 @@ public final class ModBlocks {
     // --- Surface harvestables (Phase 9) — alien fruits/veggies scattered on the land ----------------
 
     /**
-     * Glowberry Bush (v1.1c) — a renewable, plantable, bone-mealable alien berry bush
-     * ({@link com.jus144tice.lumenwilds.block.GlowberryBushBlock}, sweet-berry-style): ripens through
+     * Lumenberry Bush (v1.1c) — a renewable, plantable, bone-mealable alien berry bush
+     * ({@link com.jus144tice.lumenwilds.block.LumenberryBushBlock}, sweet-berry-style): ripens through
      * {@code AGE 0..3}, glows brighter as it matures (light 3→6), harvested by right-click. Planted with the
-     * Glowberry item (an {@code ItemNameBlockItem} over this block). No standalone BlockItem (skipped in the
-     * {@code ModItems} loop); its loot is hand-authored to drop Glowberries.
+     * Lumenberry item (an {@code ItemNameBlockItem} over this block). No standalone BlockItem (skipped in the
+     * {@code ModItems} loop); its loot is hand-authored to drop Lumenberries.
      */
-    public static final DeferredBlock<com.jus144tice.lumenwilds.block.GlowberryBushBlock> GLOWBERRY_BUSH =
+    public static final DeferredBlock<com.jus144tice.lumenwilds.block.LumenberryBushBlock> LUMENBERRY_BUSH =
             BLOCKS.registerBlock(
-                    "glowberry_bush",
-                    com.jus144tice.lumenwilds.block.GlowberryBushBlock::new,
+                    "lumenberry_bush",
+                    com.jus144tice.lumenwilds.block.LumenberryBushBlock::new,
                     BlockBehaviour.Properties.of()
                             .mapColor(MapColor.COLOR_PINK)
                             .noCollission()
                             .randomTicks()
                             .instabreak()
-                            .lightLevel(com.jus144tice.lumenwilds.block.GlowberryBushBlock::lightFor)
+                            .lightLevel(com.jus144tice.lumenwilds.block.LumenberryBushBlock::lightFor)
                             .sound(SoundType.SWEET_BERRY_BUSH)
                             .pushReaction(PushReaction.DESTROY));
 
@@ -402,13 +403,17 @@ public final class ModBlocks {
                     .sound(SoundType.WOOD)
                     .pushReaction(PushReaction.DESTROY));
 
+    // Custom LumenStemBlock/LumenAttachedStemBlock so stems survive on Lumen Farmland + Moonloam (vanilla stems
+    // accept ONLY minecraft:farmland → they broke instantly on hoed Lumenwilds soil, v1.5.0).
     public static final DeferredBlock<StemBlock> MOONMELON_STEM = BLOCKS.registerBlock(
             "moonmelon_stem",
-            p -> new StemBlock(bKey("moonmelon"), bKey("attached_moonmelon_stem"), iKey("moonmelon_seeds"), p),
+            p -> new com.jus144tice.lumenwilds.block.LumenStemBlock(
+                    bKey("moonmelon"), bKey("attached_moonmelon_stem"), iKey("moonmelon_seeds"), p),
             stemProps());
     public static final DeferredBlock<AttachedStemBlock> ATTACHED_MOONMELON_STEM = BLOCKS.registerBlock(
             "attached_moonmelon_stem",
-            p -> new AttachedStemBlock(bKey("moonmelon_stem"), bKey("moonmelon"), iKey("moonmelon_seeds"), p),
+            p -> new com.jus144tice.lumenwilds.block.LumenAttachedStemBlock(
+                    bKey("moonmelon_stem"), bKey("moonmelon"), iKey("moonmelon_seeds"), p),
             attachedStemProps());
 
     /** Glowgourd — the pumpkin-analog gourd; shear it to carve a glowing Carved Glowgourd. */
@@ -434,11 +439,13 @@ public final class ModBlocks {
                             .pushReaction(PushReaction.DESTROY));
     public static final DeferredBlock<StemBlock> GLOWGOURD_STEM = BLOCKS.registerBlock(
             "glowgourd_stem",
-            p -> new StemBlock(bKey("glowgourd"), bKey("attached_glowgourd_stem"), iKey("glowgourd_seeds"), p),
+            p -> new com.jus144tice.lumenwilds.block.LumenStemBlock(
+                    bKey("glowgourd"), bKey("attached_glowgourd_stem"), iKey("glowgourd_seeds"), p),
             stemProps());
     public static final DeferredBlock<AttachedStemBlock> ATTACHED_GLOWGOURD_STEM = BLOCKS.registerBlock(
             "attached_glowgourd_stem",
-            p -> new AttachedStemBlock(bKey("glowgourd_stem"), bKey("glowgourd"), iKey("glowgourd_seeds"), p),
+            p -> new com.jus144tice.lumenwilds.block.LumenAttachedStemBlock(
+                    bKey("glowgourd_stem"), bKey("glowgourd"), iKey("glowgourd_seeds"), p),
             attachedStemProps());
 
     // --- Alien crops (v1.4 F4) ------------------------------------------------------------------
