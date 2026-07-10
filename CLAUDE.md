@@ -942,7 +942,10 @@ as `File#member`.
 - [LumenStrikerItem.java](src/main/java/com/jus144tice/lumenwilds/item/LumenStrikerItem.java) — `#useOn`:
   on a Lumenbound Stone frame, seeds detection from the air at the clicked face (fallback: block above),
   delegates to `LumenPortalManager#tryActivatePortal`; on success consumes 1 durability via
-  `hurtAndBreak`. Returns `PASS` on non-frame blocks. **Never checks lodestone.**
+  `hurtAndBreak`. Returns `PASS` on non-frame blocks. **Realm-gated (v1.6.1):** only ignites in the **Overworld
+  or the Lumenwilds** (a no-op elsewhere — e.g. the Nether — with a "stays dark" action-bar hint), so the Lumen
+  portal is strictly the Overworld↔Lumenwilds link; `LumenPortalBlock#getPortalDestination` mirrors the gate
+  (returns null outside those two). **Never checks lodestone.**
 - [GlyphTabletItem.java](src/main/java/com/jus144tice/lumenwilds/item/GlyphTabletItem.java) — Ancient Glyph
   Tablet (10c). A lore item: `#use` displays its fragment (`displayClientMessage`) and `#appendHoverText`
   shows it as an italic tooltip. The line is passed at registration (one per tablet in `ModItems`).
@@ -1374,6 +1377,12 @@ as `File#member`.
   `#onRightClickBlock(PlayerInteractEvent.RightClickBlock)` (v1.6.0): flint & steel on a Duskglass frame, **only
   in the Lumenwilds or the Nether**, ignites a Dusk portal (`portal.DuskPortalManager#tryActivatePortal`), spends
   a durability, cancels the default fire; no valid frame → not cancelled (flint & steel behaves normally).
+- [PortalRealmEvents.java](src/main/java/com/jus144tice/lumenwilds/event/PortalRealmEvents.java) —
+  `#onNetherPortalSpawn(BlockEvent.PortalSpawnEvent)` (v1.6.1): cancels **vanilla Nether portal** creation in the
+  **Lumenwilds**, so an obsidian frame there just makes fire (no portal) — the Overworld↔Nether pair is a no-op
+  in its alien realm. Only vanilla portals fire this event (the Lumen/Dusk portals build via their own shape
+  classes), so it's a clean, targeted block. Completes the "each portal binds exactly its two realms" rule
+  (Lumen gate in `LumenStrikerItem`/`LumenPortalBlock`, Dusk gate in `DuskPortalIgnitionEvents`/`DuskPortalBlock`).
 - [GlowmothAggroEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowmothAggroEvents.java) —
   `#onBlockBreak(BlockEvent.BreakEvent)` (6h): when a player breaks a guarded bloom (Moonblossom / any
   Stillbloom part), every `Glowmoth` within ~12 blocks `setTarget`s the culprit — the flower-guardian aggro.

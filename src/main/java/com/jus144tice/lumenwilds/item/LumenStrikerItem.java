@@ -7,7 +7,10 @@ package com.jus144tice.lumenwilds.item;
 import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.portal.LumenPortalManager;
 import com.jus144tice.lumenwilds.portal.LumenPortalShape;
+import com.jus144tice.lumenwilds.world.LumenDimensionConstants;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -40,6 +43,19 @@ public class LumenStrikerItem extends Item {
 
         if (!LumenPortalShape.isFrameBlock(clicked)) {
             // Not a frame block — do nothing (and don't swing as if something happened).
+            return InteractionResult.PASS;
+        }
+
+        // Lumen portals only bind the Overworld and the Lumenwilds — inert (a no-op) in any other realm (the
+        // Nether, the End, …). To reach the Nether from the Lumenwilds, use a Duskglass Dusk Portal instead.
+        if (level.dimension() != Level.OVERWORLD && level.dimension() != LumenDimensionConstants.LUMENWILDS_LEVEL) {
+            if (!level.isClientSide && context.getPlayer() != null) {
+                context.getPlayer()
+                        .displayClientMessage(
+                                Component.translatable("lumenwilds.portal.wrong_realm")
+                                        .withStyle(ChatFormatting.GRAY),
+                                true);
+            }
             return InteractionResult.PASS;
         }
 

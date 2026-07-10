@@ -6,6 +6,17 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-07-10
+**Portals are strictly targeted to their two realms.**
+
+Each portal type now only works between its two intended realms and is a no-op in the third ("alien") realm:
+
+- **Lumen portal** (Overworld ↔ Lumenwilds) no longer lights or teleports in the Nether (or any other
+  dimension) — a Lumenbound Stone frame there just stays dark.
+- **Obsidian / vanilla Nether portal** (Overworld ↔ Nether) no longer forms in the Lumenwilds — lighting an
+  obsidian frame there just makes fire, no portal. Use a **Dusk Portal** to reach the Nether from the Lumenwilds.
+- (The Dusk Portal was already Lumenwilds ↔ Nether only.)
+
 ## [1.6.0] - 2026-07-09
 **Duskglass + the Dusk Portal to the Nether.**
 

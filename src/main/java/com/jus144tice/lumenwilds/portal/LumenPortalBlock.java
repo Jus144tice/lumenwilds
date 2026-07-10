@@ -92,9 +92,14 @@ public class LumenPortalBlock extends Block implements Portal {
     @Nullable
     @Override
     public DimensionTransition getPortalDestination(ServerLevel level, Entity entity, BlockPos pos) {
-        ResourceKey<Level> targetKey = level.dimension() == LumenDimensionConstants.LUMENWILDS_LEVEL
-                ? Level.OVERWORLD
-                : LumenDimensionConstants.LUMENWILDS_LEVEL;
+        // Lumen portals only bind the Overworld and the Lumenwilds — a no-op in any other realm (they can't be
+        // lit elsewhere, but stay defensive in case a portal block exists somewhere unexpected).
+        boolean inLumenwilds = level.dimension() == LumenDimensionConstants.LUMENWILDS_LEVEL;
+        boolean inOverworld = level.dimension() == Level.OVERWORLD;
+        if (!inLumenwilds && !inOverworld) {
+            return null;
+        }
+        ResourceKey<Level> targetKey = inLumenwilds ? Level.OVERWORLD : LumenDimensionConstants.LUMENWILDS_LEVEL;
         ServerLevel target = level.getServer().getLevel(targetKey);
         if (target == null) {
             return null;

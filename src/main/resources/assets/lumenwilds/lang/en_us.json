@@ -321,6 +321,7 @@
   "itemGroup.lumenwilds": "The Lumenwilds",
   "lumenwilds.portal.entering": "Entering the Lumenwilds",
   "lumenwilds.portal.leaving": "Leaving the Lumenwilds",
+  "lumenwilds.portal.wrong_realm": "The Lumenbound frame stays dark — it binds only the Overworld and the Lumenwilds.",
   "block.lumenwilds.cracked_moonstone_bricks": "Cracked Moonstone Bricks",
   "block.lumenwilds.cracked_deep_moonstone_bricks": "Cracked Deep Moonstone Bricks",
   "block.lumenwilds.giant_glowcap_azure": "Azure Glowcap",
