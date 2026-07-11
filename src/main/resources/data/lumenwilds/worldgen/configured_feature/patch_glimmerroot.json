@@ -11,13 +11,39 @@
         "config": {
           "to_place": {
             "type": "minecraft:simple_state_provider",
-            "state": { "Name": "lumenwilds:glimmerroot_crop", "Properties": { "age": "7" } }
+            "state": {
+              "Name": "lumenwilds:glimmerroot_crop",
+              "Properties": {
+                "age": "7"
+              }
+            }
           }
         }
       },
       "placement": [
-        { "type": "minecraft:block_predicate_filter",
-          "predicate": { "type": "minecraft:would_survive", "state": { "Name": "lumenwilds:glimmerroot_crop", "Properties": { "age": "7" } } } }
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": [
+                  "minecraft:air"
+                ]
+              },
+              {
+                "type": "minecraft:would_survive",
+                "state": {
+                  "Name": "lumenwilds:glimmerroot_crop",
+                  "Properties": {
+                    "age": "7"
+                  }
+                }
+              }
+            ]
+          }
+        }
       ]
     }
   }

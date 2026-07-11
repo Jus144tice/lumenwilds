@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "lumenwilds:echo_dust_from_shade_claw"
+        "recipe": "lumenwilds:shade_dust_from_shade_claw"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +26,7 @@
   ],
   "rewards": {
     "recipes": [
-      "lumenwilds:echo_dust_from_shade_claw"
+      "lumenwilds:shade_dust_from_shade_claw"
     ]
   }
 }

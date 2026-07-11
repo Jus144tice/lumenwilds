@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "lumenwilds:item/echo_dust"
+    "layer0": "lumenwilds:item/shade_dust"
   }
 }

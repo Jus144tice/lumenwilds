@@ -1131,7 +1131,7 @@ Drops:
 
 Shade Claw
 Dark Hide
-Rarely Echo Dust
+Rarely Shade Dust
 
 Gameplay role:
 

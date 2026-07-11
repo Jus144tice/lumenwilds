@@ -156,12 +156,14 @@ public class ModBlockStateProvider extends BlockStateProvider {
                         .texture("upperstem", blockTex(name))
                         .renderType("minecraft:cutout");
                 getVariantBuilder(block).forAllStates(s -> {
+                    // Match vanilla attached_*_stem rotations so the bent stem points AT the fruit (FACING).
+                    // (Our old mapping was +90° off, which made the grown gourd look detached from the stem.)
                     int rot =
                             switch (s.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING)) {
-                                case WEST -> 90;
-                                case NORTH -> 180;
-                                case EAST -> 270;
-                                default -> 0;
+                                case NORTH -> 90;
+                                case EAST -> 180;
+                                case SOUTH -> 270;
+                                default -> 0; // WEST
                             };
                     return net.neoforged.neoforge.client.model.generators.ConfiguredModel.builder()
                             .modelFile(m)

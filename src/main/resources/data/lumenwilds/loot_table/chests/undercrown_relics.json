@@ -69,7 +69,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "lumenwilds:echo_dust",
+          "name": "lumenwilds:shade_dust",
           "weight": 9,
           "functions": [
             {

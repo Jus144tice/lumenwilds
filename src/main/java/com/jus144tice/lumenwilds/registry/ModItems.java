@@ -352,11 +352,13 @@ public final class ModItems {
             props -> new DeferredSpawnEggItem(ModEntities.LUMEN_GRAZER, 0x3A5A6E, 0x8FE0C8, props),
             new Item.Properties());
 
-    /** Shade Stalker drops (6b): claw, dark hide, rare echo dust. */
+    /** Shade Stalker drops (6b): claw, dark hide, rare shade dust. */
     public static final DeferredItem<Item> SHADE_CLAW = ITEMS.registerSimpleItem("shade_claw");
 
     public static final DeferredItem<Item> DARK_HIDE = ITEMS.registerSimpleItem("dark_hide");
-    public static final DeferredItem<Item> ECHO_DUST = ITEMS.registerSimpleItem("echo_dust");
+    // Shade Dust (v1.7.1 registry rename, was "echo_dust") — the Shade Stalker's rare crafting material for
+    // the Lumen Anchor. Renamed to decouple its name from the unrelated Echo Sentinel (a different species).
+    public static final DeferredItem<Item> SHADE_DUST = ITEMS.registerSimpleItem("shade_dust");
 
     public static final DeferredItem<DeferredSpawnEggItem> SHADE_STALKER_SPAWN_EGG = ITEMS.registerItem(
             "shade_stalker_spawn_egg",

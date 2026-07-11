@@ -111,7 +111,7 @@ bowl). **The Lumen Anchor is in (8c):** a portal-link device — `block.LumenAnc
 + `block.LumenAnchorBlockEntity` (stores a partner `GlobalPos`); right-click two anchors with the Lumen
 Striker to pair them, and a linked anchor near a portal makes return travel land **precisely** at its partner
 (`portal.LumenAnchorLinks` overrides the scaled find-or-build in `LumenPortalBlock#getPortalDestination`).
-Crafted from Shimmerstone + Lumen Crystal Block + Echo Dust + Lumenbound Stone; it's the first `ModBlockEntities`
+Crafted from Shimmerstone + Lumen Crystal Block + Shade Dust + Lumenbound Stone; it's the first `ModBlockEntities`
 content. **Structures are starting (8d):** the **Rootshrine** — a small early-reward shrine (a Moonstone floor
 under a cage of arching Glowroot-log roots + a loot chest), a procedural `world.structure.RootshrinePiece`
 like the mega tree, generating in the Glowroot Forest; and the **Lumenbound Ruins** (8e) — a ruined
@@ -264,7 +264,7 @@ renewable** — `LUMENBERRY_BUSH` is now a sweet-berry-style `block.LumenberryBu
 bone-mealable, glow 3→6, right-click-harvest), and the Lumenberry item is an `ItemNameBlockItem` that plants it.
 **v1.1d** gave **every orphan mob drop a use** (`ModRecipeProvider#buildOrphanDropRecipes` — hides→leather,
 glow sinew→string, lumen algae→green dye, wraith membrane→phantom membrane, mire tooth→bone meal, rootback
-plate→iron nuggets, glow scales→glow pollen, shade claw→echo dust, crystal dust→glasspetal block, moonloam
+plate→iron nuggets, glow scales→glow pollen, shade claw→shade dust, crystal dust→glasspetal block, moonloam
 clumps→moonloam; glowcap spores brew Sporeblind in `event.ModBrewing`; several also become Lumenwater fishing
 bait in v1.1f). *(This pass also surfaced + fixed a pre-existing gap: several craftable recipes —
 `ancient_door`, `resonance_core` — and many recipe-unlock advancements were defined in `ModRecipeProvider`
@@ -414,7 +414,21 @@ surface-heightmap placement for the open dims to a chunk-safe `getBaseColumn` ca
 Nether). **Each portal now has its own igniter:** the Dusk Portal is lit by the **Dusk Striker**
 (`item.DuskStrikerItem`, `ModItems#DUSK_STRIKER` — a durable striker forged from **Emberglow + Duskglass +
 Luminite**, `E/D/L`), **not flint & steel** (the `DuskPortalIgnitionEvents` flint-&-steel path was removed); the
-Duskglass Ruins chests drop the Dusk Striker and/or its materials. Roadmap:
+Duskglass Ruins chests drop the Dusk Striker and/or its materials. **v1.7.1 (playthrough fixes):**
+**Lumenwater now renders translucent** — an unregistered custom fluid defaults to the *solid* render pass
+(`ItemBlockRenderTypes#getRenderLayer`), so Lumenwater drew opaque and, rendering before entities, showed
+straight through boat hulls (the "boat full of water"); `client.LumenwildsClient#onClientSetup` now registers
+both Lumenwater fluids as `RenderType.translucent()`. **Wild plants no longer spawn in Lumenwater or stacked**
+— every flora `patch_*` now filters `all_of[matching_blocks:air, would_survive]` (see the flora gotcha), so
+nothing generates submerged / on another plant (which had littered the seas with rejected plant drops). The
+**Luminite Umbrella** now also shields **position-based** rain checks (`Level#isRainingAt`, via the new
+`mixin.LevelMixin`) so an Origins/Apoli water-allergic race (e.g. a feline) is protected under it, not just the
+entity-based checks. **Baby Lumen Silkworms render smaller** than adults (`client.LumenSilkwormRenderer#scale`);
+the **attached gourd stem** rotation was corrected so a ripe Glowgourd/Moonmelon reads as connected to its vine;
+young gourd stems show a **sprout nubbin** texture instead of bare Moonloam. And **"Echo Dust" was renamed to
+"Shade Dust"** (`ModItems#SHADE_DUST`, was `echo_dust`) — it's a Shade Stalker drop used in the Lumen Anchor,
+and the old name wrongly implied a tie to the unrelated Echo Sentinel (a breaking registry rename, so pre-1.7.1
+items drop on world load). Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -592,7 +606,7 @@ as `File#member`.
   a bowl via `usingConvertsTo`), `#LUMENWATER_BUCKET` (`BucketItem` over
   `ModFluids.LUMENWATER`, 5e); **mob drops + spawn eggs (Phase 6):** `#RAW_GRAZER_MEAT`/`#COOKED_GRAZER_MEAT`
   (foods), `#GRAZER_HIDE`, `#GLOW_SINEW`, `#LUMEN_GRAZER_SPAWN_EGG` (`DeferredSpawnEggItem`) — all 6a;
-  `#SHADE_CLAW`/`#DARK_HIDE`/`#ECHO_DUST` + `#SHADE_STALKER_SPAWN_EGG` (6b); `#LANTERN_BEETLE_SPAWN_EGG` (6c —
+  `#SHADE_CLAW`/`#DARK_HIDE`/`#SHADE_DUST` + `#SHADE_STALKER_SPAWN_EGG` (6b); `#LANTERN_BEETLE_SPAWN_EGG` (6c —
   the Bottled Lantern Beetle is a *block*, `ModBlocks#BOTTLED_LANTERN_BEETLE`); `#SPORE_SAC`/`#GLOWCAP_SPORES`
   + `#SPORELING_SPAWN_EGG` (6d); `#MIRE_TOOTH`/`#LUMEN_ALGAE`/`#RAW_MIREFISH`/`#COOKED_MIREFISH` (foods) +
   `#MIRELURKER_SPAWN_EGG` (6e); `#LUMEN_FISH_BUCKET` (`MobBucketItem`) + `#LUMEN_FISH_SPAWN_EGG` (6f);
@@ -983,10 +997,13 @@ as `File#member`.
   shows it as an italic tooltip. The line is passed at registration (one per tablet in `ModItems`).
 - [LuminiteUmbrellaItem.java](src/main/java/com/jus144tice/lumenwilds/item/LuminiteUmbrellaItem.java) — the
   Luminite Umbrella (v1.4.11): a `SwordItem` on `Tiers.STONE` (a light stone-tier bludgeon — "no better than
-  stone") that doubles as a **rain shield**. The shield itself lives in `mixin.EntityMixin` (`isInRain` → false
-  while the umbrella is held in either hand), so it blocks the *rain* (and any water-allergy race/class mod that
-  reads `isInWaterOrRain`/`isInWaterRainOrBubble`) but NOT water in general. `#appendHoverText` adds the aqua
-  tooltip. `ModItems#LUMINITE_UMBRELLA`; crafted `S L S / _ L _ / _ L _` (lumensilk canopy + luminite shaft).
+  stone") that doubles as a **rain shield**. The shield lives in **two** mixins: `mixin.EntityMixin` (`isInRain`
+  → false while the umbrella is held in either hand — covers the *entity* checks `isInWaterOrRain`/
+  `isInWaterRainOrBubble`) and `mixin.LevelMixin` (v1.7.1 — `Level#isRainingAt` → false for the column an
+  umbrella-holder occupies, covering mods that gate on **position** not entity, e.g. Origins/Apoli's
+  `apoli:in_rain`). Together they block the *rain* (and any water-allergy race/class mod) but NOT water in
+  general. `#appendHoverText` adds the aqua tooltip. `ModItems#LUMINITE_UMBRELLA`; crafted `S L S / _ L _ /
+  _ L _` (lumensilk canopy + luminite shaft).
 
 ### entity/ — native fauna (Phase 6)
 - [LumenGrazer.java](src/main/java/com/jus144tice/lumenwilds/entity/LumenGrazer.java) — `Animal`; the
@@ -1329,8 +1346,16 @@ as `File#member`.
   the FluidType-vs-water gotcha. Also carries the **Luminite Umbrella rain shield** (v1.4.11): a third
   HEAD-cancellable inject on `Entity#isInRain` (private, but backs the public `isInWaterOrRain`/
   `isInWaterRainOrBubble`) returns false while a `LivingEntity` holds `ModItems#LUMINITE_UMBRELLA` in either
-  hand — so the umbrella blocks *rain* wetness (and water-allergy race mods) without touching real water. Listed
-  in `lumenwilds.mixins.json`.
+  hand — so the umbrella blocks *rain* wetness (and water-allergy race mods) without touching real water; the
+  **position-based** half (mods that query `Level#isRainingAt` rather than the entity, e.g. Apoli) is in
+  `LevelMixin` (v1.7.1). Listed in `lumenwilds.mixins.json`.
+- [LevelMixin.java](src/main/java/com/jus144tice/lumenwilds/mixin/LevelMixin.java) — the **position-based**
+  half of the Luminite Umbrella rain shield (v1.7.1). `@Mixin(Level.class)`, a HEAD-cancellable inject on
+  `Level#isRainingAt(BlockPos)` returns false for the column an umbrella-holding player occupies. `EntityMixin`
+  covers the *entity* rain checks, but mods that gate on **position** — e.g. Origins/Apoli's `apoli:in_rain`
+  condition → `isRainingAt` — ignore the entity, so they need this. Server-only, gated on `isRaining()`, scans
+  only `Level#players()` (a tiny list, no AABB query) so it's free when dry / no umbrella. Listed in
+  `lumenwilds.mixins.json`.
 - [FishingHookMixin.java](src/main/java/com/jus144tice/lumenwilds/mixin/FishingHookMixin.java) — `@Redirect`s
   the `BlockState#is(Block)` water checks in `FishingHook#catchingFish` so the approaching-bubble + splash
   particles also fire over Lumenwater (vanilla hardcodes them to `Blocks.WATER`). Listed in `lumenwilds.mixins.json`.
@@ -1456,8 +1481,10 @@ as `File#member`.
 
 ### client/ — `@EventBusSubscriber(value = Dist.CLIENT, bus = MOD)`, client-only
 - [LumenwildsClient.java](src/main/java/com/jus144tice/lumenwilds/client/LumenwildsClient.java) —
-  `#onClientSetup` → `Sheets.addWoodType(ModWoodTypes.GLOWWOOD)` (sign atlas material);
-  `#onRegisterClientExtensions(RegisterClientExtensionsEvent)` → Lumenwater's `IClientFluidTypeExtensions`
+  `#onClientSetup` → `Sheets.addWoodType(ModWoodTypes.GLOWWOOD)` (sign atlas material) + registers both
+  Lumenwater fluids' **render layer** = `RenderType.translucent()` (v1.7.1 — an unregistered fluid defaults to
+  the *solid* pass, so Lumenwater rendered opaque and showed through boat hulls; see the fluid-render-layer
+  gotcha); `#onRegisterClientExtensions(RegisterClientExtensionsEvent)` → Lumenwater's `IClientFluidTypeExtensions`
   (reuses vanilla `water_still`/`water_flow` with a teal tint `0xFF36E0C0`);
   `#onRegisterRenderers(EntityRenderersEvent.RegisterRenderers)` → mob renderers (Phase 6); and
   `#onRegisterDimensionEffects(RegisterDimensionSpecialEffectsEvent)` → binds `LumenDimensionEffects` under
@@ -1595,7 +1622,7 @@ as `File#member`.
   `Boat.Type`); `[[mixins]] config = "lumenwilds.mixins.json"` (the 7d.1 day-clock mixins). `pack.mcmeta` →
   `pack_format` 48.
 - `lumenwilds.mixins.json` (resource root) — the Mixin config (`package` = `…lumenwilds.mixin`, JAVA_21, no
-  `refmap`); lists `ServerLevelMixin`, `DerivedLevelDataMixin`, `FishingHookMixin`, and `EntityMixin`.
+  `refmap`); lists `ServerLevelMixin`, `DerivedLevelDataMixin`, `FishingHookMixin`, `EntityMixin`, and `LevelMixin`.
 - `META-INF/enumextensions.json` — the Glowwood `Boat.Type` entry (constant name `lumenwilds_glowwood` is
   a Java identifier; the constructor's name string `lumenwilds:glowwood` drives textures). See `ModBoatTypes`.
 - `assets/lumenwilds/`: `blockstates/`, `models/block|item/`, `textures/block|item/` (**Phase 9 world-art pass:
@@ -1983,6 +2010,18 @@ as `File#member`.
   (NOT in `#minecraft:can_breathe_under_water`) summoned submerged in Lumenwater **survives** only if
   `isInWater()` is true — out of water it dries out and dies. (`getFluidTypeHeight` is `final` + `forgeFluidTypeHeight`/
   `forgeFluidTypeOnEyes` are NeoForge-added fields — all `@Shadow`-able since the runtime is mojmap-patched.)
+- **A custom fluid renders OPAQUE (and shows through boats) unless you register its render layer — the default
+  is `RenderType.solid()`, NOT translucent.** `ItemBlockRenderTypes#getRenderLayer(FluidState)` returns
+  `TYPE_BY_FLUID.get(fluid)` else **`RenderType.solid()`** (verified from the decompiled source); vanilla only
+  maps `Fluids.WATER`/`FLOWING_WATER` → translucent. An unregistered custom fluid (Lumenwater) therefore drew
+  as an opaque solid — and, because the *solid* terrain pass renders **before** entities, a boat's water-patch
+  depth-mask (`RenderType.waterMask()`, written in the entity pass) couldn't occlude it, so the sea rendered
+  straight through the hull ("boat full of water", the v1.7.1 report). Fix: register the layer during client
+  loading — `ItemBlockRenderTypes.setRenderLayer(fluid, RenderType.translucent())` for BOTH the source and
+  flowing fluids, in `FMLClientSetupEvent#enqueueWork` (`LumenwildsClient#onClientSetup`). This is separate
+  from the `IClientFluidTypeExtensions` texture/tint registration (that controls *how* it draws, not *which
+  pass*). Client-visual — verify via `runClient` (a boat over Lumenwater looks dry, and Lumenwater is now
+  see-through), not headlessly.
 - **1.21.1 data-driven enchantment schema (verified from source — easy to get wrong):** `supported_items`/
   `primary_items` use the `#minecraft:enchantable/<foot_armor|head_armor|chest_armor|sword|weapon|…>` tags (NOT
   `*_enchantable`). "While worn/held" = a `minecraft:tick` effect (`List<ConditionalEffect<EnchantmentEntityEffect>>`,
@@ -2004,7 +2043,12 @@ as `File#member`.
   places the plant in ANY air cell within `y_spread` — including the air *directly above* another plant — so
   moonblossoms/glow ferns generated floating on top of lumenberry bushes (the v1.1b bug). `would_survive` (the
   block's own `canSurvive`, what `patch_lumenberry` already used) only places where the plant is actually
-  supported. Every flora `random_patch` here now uses `would_survive` + `WORLD_SURFACE_WG`.
+  supported. Every flora `random_patch` here now uses **`all_of` [`matching_blocks:air`, `would_survive`]** +
+  `WORLD_SURFACE_WG` (v1.7.1) — the `matching_blocks:air` requires the target cell itself be air, so a try can't
+  fire **in a Lumenwater cell** (water isn't air) or **on top of another plant**; previously `would_survive`
+  alone (soil below passes) placed wild plants submerged/stacked, which were then rejected and dropped as
+  item litter floating in the seas. `matching_blocks:air` *alone* floats plants above others (the v1.1b bug) —
+  both together is vanilla's own flora pattern (`patch_grass` etc.).
   **But `would_survive` is NOT enough for a FULL-BLOCK "plant" (the gourds — Glowgourd/Moonmelon).** A solid
   block's `canSurvive` is `true` *everywhere* (no support check), so `would_survive` passes in mid-air — and
   because `random_patch` scatters its tries in a box around ONE surface-sampled center *without re-finding the

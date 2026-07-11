@@ -2,18 +2,18 @@
   "variants": {
     "facing=east": {
       "model": "lumenwilds:block/attached_moonmelon_stem",
-      "y": 270
+      "y": 180
     },
     "facing=north": {
       "model": "lumenwilds:block/attached_moonmelon_stem",
-      "y": 180
+      "y": 90
     },
     "facing=south": {
-      "model": "lumenwilds:block/attached_moonmelon_stem"
+      "model": "lumenwilds:block/attached_moonmelon_stem",
+      "y": 270
     },
     "facing=west": {
-      "model": "lumenwilds:block/attached_moonmelon_stem",
-      "y": 90
+      "model": "lumenwilds:block/attached_moonmelon_stem"
     }
   }
 }

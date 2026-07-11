@@ -8,11 +8,35 @@
       "feature": {
         "type": "minecraft:simple_block",
         "config": {
-          "to_place": { "type": "minecraft:simple_state_provider", "state": { "Name": "lumenwilds:glow_fern" } }
+          "to_place": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "lumenwilds:glow_fern"
+            }
+          }
         }
       },
       "placement": [
-        { "type": "minecraft:block_predicate_filter", "predicate": { "type": "minecraft:would_survive", "state": { "Name": "lumenwilds:glow_fern" } } }
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": [
+                  "minecraft:air"
+                ]
+              },
+              {
+                "type": "minecraft:would_survive",
+                "state": {
+                  "Name": "lumenwilds:glow_fern"
+                }
+              }
+            ]
+          }
+        }
       ]
     }
   }

@@ -7,6 +7,7 @@
     "DerivedLevelDataMixin",
     "EntityMixin",
     "FishingHookMixin",
+    "LevelMixin",
     "ServerLevelMixin"
   ],
   "injectors": {

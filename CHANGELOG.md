@@ -6,6 +6,35 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.7.1] - 2026-07-11
+**Playthrough fixes — water, plants, the boat, the umbrella, and a rename.**
+
+### Fixed
+- **Boats no longer look "full of water" over Lumenwater.** Lumenwater was rendering as an *opaque, solid-pass*
+  fluid — a custom fluid defaults to the solid render layer — which drew before boats and let the sea show
+  straight through the hull. Lumenwater now renders **translucent**: proper see-through water, and boats look
+  dry inside again.
+- **Wild plants no longer spawn in or over Lumenwater, underground, or stacked on each other.** Every wild-plant
+  patch (glow ferns, moonblossom, lumenberry bushes, all crops, and the gourds) now only generates where the
+  spot is **air** *and* the plant can actually survive there — so no more ferns/crops in the sea, no plants
+  growing on top of other plants, and no drifting plant-drop litter floating in the water.
+- **Baby Lumen Silkworms are now visibly smaller than adults** (they render small and grow to full size).
+- **Growing gourds now look attached to their vine.** The bent "attached stem" was rotated 90° wrong, so a ripe
+  Glowgourd/Moonmelon looked disconnected from the stem pointing at it.
+- **Freshly-planted gourd seeds now show a small stem sprout** instead of looking like bare Moonloam.
+
+### Changed
+- **"Echo Dust" is renamed to "Shade Dust."** It's a Shade Stalker drop (used to craft the Lumen Anchor), and
+  the old name wrongly implied a link to the unrelated Echo Sentinel. **Breaking rename:** existing *Echo Dust*
+  items are removed on world load — gather *Shade Dust* anew from Shade Stalkers (still an 8% drop, or 2 Shade
+  Claws → 1 Shade Dust).
+
+### Fixed (compatibility)
+- **The Luminite Umbrella now shields rain-allergic race mods (e.g. an Origins feline).** Mods like Origins/Apoli
+  check whether it's raining **at the player's position** rather than on the entity, which the umbrella's existing
+  entity-level shield didn't cover. Holding the umbrella now also suppresses that position check — so a cat-person
+  under an umbrella stops taking rain damage.
+
 ## [1.7.0] - 2026-07-10
 **Broken portals scattered through every realm — with reward chests.**
 

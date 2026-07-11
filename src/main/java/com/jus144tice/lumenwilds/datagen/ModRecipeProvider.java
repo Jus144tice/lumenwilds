@@ -457,11 +457,11 @@ public class ModRecipeProvider extends RecipeProvider {
                 .requires(ModItems.GLOW_SCALES.get(), 2)
                 .unlockedBy("has_glow_scales", has(ModItems.GLOW_SCALES.get()))
                 .save(out, id("glow_pollen_from_glow_scales"));
-        // Shade Claw (2) → Echo Dust (the rare, useful Shade Stalker drop used in the Lumen Anchor).
-        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.ECHO_DUST.get(), 1)
+        // Shade Claw (2) → Shade Dust (the rare, useful Shade Stalker drop used in the Lumen Anchor).
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, ModItems.SHADE_DUST.get(), 1)
                 .requires(ModItems.SHADE_CLAW.get(), 2)
                 .unlockedBy("has_shade_claw", has(ModItems.SHADE_CLAW.get()))
-                .save(out, id("echo_dust_from_shade_claw"));
+                .save(out, id("shade_dust_from_shade_claw"));
         // Crystal Dust (4) → Glasspetal Block (the Crags crystal — the Crag Wraith's own biome material).
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, ModBlocks.GLASSPETAL_BLOCK.get(), 1)
                 .pattern("##")

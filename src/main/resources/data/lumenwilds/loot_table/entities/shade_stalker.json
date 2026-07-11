@@ -38,7 +38,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "lumenwilds:echo_dust",
+          "name": "lumenwilds:shade_dust",
           "functions": [
             { "function": "minecraft:enchanted_count_increase", "enchantment": "minecraft:looting", "count": { "type": "minecraft:uniform", "min": 0.0, "max": 1.0 } }
           ]

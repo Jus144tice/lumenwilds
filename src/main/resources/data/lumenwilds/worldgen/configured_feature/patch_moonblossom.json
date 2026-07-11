@@ -8,11 +8,35 @@
       "feature": {
         "type": "minecraft:simple_block",
         "config": {
-          "to_place": { "type": "minecraft:simple_state_provider", "state": { "Name": "lumenwilds:moonblossom" } }
+          "to_place": {
+            "type": "minecraft:simple_state_provider",
+            "state": {
+              "Name": "lumenwilds:moonblossom"
+            }
+          }
         }
       },
       "placement": [
-        { "type": "minecraft:block_predicate_filter", "predicate": { "type": "minecraft:would_survive", "state": { "Name": "lumenwilds:moonblossom" } } }
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": [
+                  "minecraft:air"
+                ]
+              },
+              {
+                "type": "minecraft:would_survive",
+                "state": {
+                  "Name": "lumenwilds:moonblossom"
+                }
+              }
+            ]
+          }
+        }
       ]
     }
   }

@@ -8,6 +8,7 @@ import com.jus144tice.lumenwilds.Lumenwilds;
 import com.jus144tice.lumenwilds.client.layer.LumenEmissiveLayer;
 import com.jus144tice.lumenwilds.registry.ModEntities;
 import com.jus144tice.lumenwilds.registry.ModFluidTypes;
+import com.jus144tice.lumenwilds.registry.ModFluids;
 import com.jus144tice.lumenwilds.registry.ModParticles;
 import com.jus144tice.lumenwilds.registry.ModWoodTypes;
 import com.jus144tice.lumenwilds.util.ResourceLocationHelper;
@@ -15,6 +16,8 @@ import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.particle.EndRodParticle;
 import net.minecraft.client.particle.GlowParticle;
 import net.minecraft.client.particle.SuspendedTownParticle;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
@@ -54,6 +57,13 @@ public final class LumenwildsClient {
         event.enqueueWork(() -> {
             Sheets.addWoodType(ModWoodTypes.GLOWWOOD);
             Sheets.addWoodType(ModWoodTypes.GLOWROOT);
+            // Lumenwater renders TRANSLUCENT (v1.7.1). An unregistered fluid defaults to RenderType.solid()
+            // (ItemBlockRenderTypes#getRenderLayer), which draws in the solid terrain pass — BEFORE entities —
+            // so a boat's water-patch depth-mask (written in the entity pass) can't occlude it and the sea
+            // renders straight through the hull ("boat full of water"). Registering it as translucent both
+            // gives Lumenwater proper see-through water blending and lets the boat mask work.
+            ItemBlockRenderTypes.setRenderLayer(ModFluids.LUMENWATER.get(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(ModFluids.LUMENWATER_FLOWING.get(), RenderType.translucent());
         });
     }
 
