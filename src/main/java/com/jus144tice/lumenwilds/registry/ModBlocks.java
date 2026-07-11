@@ -449,12 +449,13 @@ public final class ModBlocks {
                     bKey("moonmelon_stem"), bKey("moonmelon"), iKey("moonmelon_seeds"), p),
             attachedStemProps());
 
-    /** Glowgourd — the pumpkin-analog gourd; shear it to carve a glowing Carved Glowgourd. */
+    /** Glowgourd — the pumpkin-analog gourd: a glowing teal bioluminescent gourd; shear it to carve a
+     * brighter Carved Glowgourd lantern. */
     public static final DeferredBlock<com.jus144tice.lumenwilds.block.GlowgourdBlock> GLOWGOURD = BLOCKS.registerBlock(
             "glowgourd",
             com.jus144tice.lumenwilds.block.GlowgourdBlock::new,
             BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.COLOR_ORANGE)
+                    .mapColor(MapColor.COLOR_CYAN)
                     .strength(1.0F)
                     .lightLevel(s -> 5)
                     .sound(SoundType.WOOD)
@@ -465,7 +466,7 @@ public final class ModBlocks {
                     "carved_glowgourd",
                     net.minecraft.world.level.block.CarvedPumpkinBlock::new,
                     BlockBehaviour.Properties.of()
-                            .mapColor(MapColor.COLOR_ORANGE)
+                            .mapColor(MapColor.COLOR_CYAN)
                             .strength(1.0F)
                             .lightLevel(s -> 11)
                             .sound(SoundType.WOOD)

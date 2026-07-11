@@ -5,6 +5,8 @@
 package com.jus144tice.lumenwilds.registry;
 
 import com.jus144tice.lumenwilds.Lumenwilds;
+import com.jus144tice.lumenwilds.world.structure.DuskglassRuinsPiece;
+import com.jus144tice.lumenwilds.world.structure.DuskglassRuinsStructure;
 import com.jus144tice.lumenwilds.world.structure.GlasspetalSpiresPiece;
 import com.jus144tice.lumenwilds.world.structure.GlasspetalSpiresStructure;
 import com.jus144tice.lumenwilds.world.structure.GlowrootTreePiece;
@@ -70,6 +72,14 @@ public final class ModStructures {
     public static final DeferredHolder<StructurePieceType, StructurePieceType> LUMENBOUND_RUINS_PIECE =
             STRUCTURE_PIECES.register(
                     "lumenbound_ruins", () -> (StructurePieceType.ContextlessType) LumenboundRuinsPiece::new);
+
+    // Duskglass Ruins (v1.7.0) — broken Dusk portal sites with small lava pools; in the Lumenwilds + the Nether.
+    public static final DeferredHolder<StructureType<?>, StructureType<DuskglassRuinsStructure>> DUSKGLASS_RUINS =
+            STRUCTURE_TYPES.register("duskglass_ruins", () -> () -> DuskglassRuinsStructure.CODEC);
+
+    public static final DeferredHolder<StructurePieceType, StructurePieceType> DUSKGLASS_RUINS_PIECE =
+            STRUCTURE_PIECES.register(
+                    "duskglass_ruins", () -> (StructurePieceType.ContextlessType) DuskglassRuinsPiece::new);
 
     public static final DeferredHolder<StructureType<?>, StructureType<GlasspetalSpiresStructure>> GLASSPETAL_SPIRES =
             STRUCTURE_TYPES.register("glasspetal_spires", () -> () -> GlasspetalSpiresStructure.CODEC);

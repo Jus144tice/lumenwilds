@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "E": {
+      "item": "lumenwilds:emberglow"
+    },
+    "D": {
+      "item": "lumenwilds:duskglass"
+    },
+    "L": {
+      "item": "lumenwilds:luminite_ingot"
+    }
+  },
+  "pattern": [
+    "E",
+    "D",
+    "L"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lumenwilds:dusk_striker"
+  }
+}

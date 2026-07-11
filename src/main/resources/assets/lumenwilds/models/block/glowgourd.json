@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:block/cube_column",
+  "parent": "lumenwilds:block/_emissive_cube_column",
   "textures": {
     "end": "lumenwilds:block/glowgourd_top",
     "side": "lumenwilds:block/glowgourd_side"

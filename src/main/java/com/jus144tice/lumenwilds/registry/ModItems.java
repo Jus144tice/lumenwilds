@@ -55,6 +55,12 @@ public final class ModItems {
             LumenStrikerItem::new,
             new Item.Properties().stacksTo(1).durability(64));
 
+    /** Dusk Striker — the Duskglass portal igniter (Lumenwilds ↔ Nether), forged from Lumenwilds materials. */
+    public static final DeferredItem<Item> DUSK_STRIKER = ITEMS.registerItem(
+            "dusk_striker",
+            com.jus144tice.lumenwilds.item.DuskStrikerItem::new,
+            new Item.Properties().stacksTo(1).durability(64));
+
     public static final DeferredItem<Item> LUMEN_CRYSTAL_SHARD = ITEMS.registerSimpleItem("lumen_crystal_shard");
     public static final DeferredItem<Item> GLOW_POLLEN = ITEMS.registerSimpleItem("glow_pollen");
     public static final DeferredItem<Item> LIVING_FIBER = ITEMS.registerSimpleItem("living_fiber");

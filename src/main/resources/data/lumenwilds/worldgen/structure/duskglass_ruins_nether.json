@@ -1,0 +1,8 @@
+{
+  "type": "lumenwilds:duskglass_ruins",
+  "biomes": "#lumenwilds:has_structure/duskglass_ruins_nether",
+  "step": "underground_structures",
+  "terrain_adaptation": "beard_thin",
+  "nether": true,
+  "spawn_overrides": {}
+}

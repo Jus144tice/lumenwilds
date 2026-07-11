@@ -33,8 +33,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
  * The Dusk Portal interior block ({@code lumenwilds:dusk_portal}) — a sibling of {@link LumenPortalBlock} that
- * links the <b>Lumenwilds ↔ the Nether</b> instead of the Overworld. A Duskglass frame lit with flint &amp; steel
- * fills with this block (see {@code event.DuskPortalIgnitionEvents}). It implements vanilla's {@link Portal}, so
+ * links the <b>Lumenwilds ↔ the Nether</b> instead of the Overworld. A Duskglass frame lit with the <b>Dusk
+ * Striker</b> fills with this block (see {@code item.DuskStrikerItem}). It implements vanilla's {@link Portal}, so
  * dwell/teleport/cooldown are engine-driven exactly like the Nether portal, but routed between
  * {@code lumenwilds:lumenwilds} and {@code minecraft:the_nether} at Nether-scale (8:1) coordinates.
  */

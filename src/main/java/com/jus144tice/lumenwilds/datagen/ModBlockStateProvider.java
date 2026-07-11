@@ -148,8 +148,12 @@ public class ModBlockStateProvider extends BlockStateProvider {
                                                         .AGE_7)])
                                 .build());
             } else if (block instanceof net.minecraft.world.level.block.AttachedStemBlock) {
+                // stem_fruit needs BOTH #stem (diagonal quads → the straight stem sprite) and #upperstem
+                // (the vertical quad → the bent/attached sprite). Omitting #upperstem renders it as the
+                // black/magenta missing texture on the grown gourd (the attached-stem artifact fix).
                 ModelFile m = models().withExistingParent(name, "minecraft:block/stem_fruit")
-                        .texture("stem", blockTex(name))
+                        .texture("stem", blockTex(name.replace("attached_", "")))
+                        .texture("upperstem", blockTex(name))
                         .renderType("minecraft:cutout");
                 getVariantBuilder(block).forAllStates(s -> {
                     int rot =

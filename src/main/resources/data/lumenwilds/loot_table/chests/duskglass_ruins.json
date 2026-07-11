@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "__comment": "Signature payoff — the ruined Dusk portal's native water, plus a way to re-light one (the Dusk Striker itself).",
+      "rolls": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 },
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "lumenwilds:lumenwater_bucket", "weight": 12, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:dusk_striker", "weight": 5 },
+        { "type": "minecraft:item", "name": "lumenwilds:duskglass", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 3.0, "max": 8.0 } } ] }
+      ]
+    },
+    {
+      "__comment": "Valuable salvage — incl. the Lumenwilds materials that forge a Dusk Striker (Emberglow + Luminite; Duskglass above).",
+      "rolls": { "type": "minecraft:uniform", "min": 2.0, "max": 4.0 },
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "lumenwilds:luminite_ingot", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:emberglow", "weight": 8, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 5.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_shard", "weight": 9, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2.0, "max": 6.0 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:gold_ingot", "weight": 6, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 4.0 } } ] },
+        { "type": "minecraft:item", "name": "lumenwilds:lumen_crystal_block", "weight": 4, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 } } ] }
+      ]
+    },
+    {
+      "__comment": "Rare treasure to reward the descent.",
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:book", "weight": 8, "functions": [ { "function": "minecraft:enchant_randomly" } ] },
+        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 4, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 } } ] },
+        { "type": "minecraft:empty", "weight": 4 }
+      ]
+    }
+  ],
+  "random_sequence": "lumenwilds:chests/duskglass_ruins"
+}

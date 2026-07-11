@@ -4,14 +4,13 @@
  */
 package com.jus144tice.lumenwilds.block;
 
-import com.jus144tice.lumenwilds.registry.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.AttachedStemBlock;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -32,8 +31,12 @@ public class LumenAttachedStemBlock extends AttachedStemBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
-        return state.getBlock() instanceof FarmBlock
-                || state.is(ModBlocks.MOONLOAM.get())
-                || state.is(ModBlocks.LUMEN_GRASS_BLOCK.get());
+        return LumenStemBlock.isNativeSoil(state);
+    }
+
+    /** Anchor survival to our native soils first — see {@link LumenStemBlock#canSurvive}. */
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return LumenStemBlock.isNativeSoil(level.getBlockState(pos.below())) || super.canSurvive(state, level, pos);
     }
 }

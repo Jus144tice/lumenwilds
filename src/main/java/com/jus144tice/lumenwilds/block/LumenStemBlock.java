@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.StemBlock;
@@ -34,6 +35,22 @@ public class LumenStemBlock extends StemBlock {
 
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
+        return isNativeSoil(state);
+    }
+
+    /**
+     * Our native soils always sustain the stem — decide that <b>before</b> the vanilla {@code BushBlock}
+     * path, which consults the NeoForge {@code canSustainPlant} soil hook first. On a heavy modpack that hook
+     * can return a non-default rejection for a modded stem on modded farmland, breaking a freshly-placed stem
+     * on the same tick — the "seed consumed but nothing planted on Lumen Farmland (sometimes)" bug. Anchoring
+     * survival to our own soil check makes that impossible; elsewhere we fall back to vanilla behaviour.
+     */
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return isNativeSoil(level.getBlockState(pos.below())) || super.canSurvive(state, level, pos);
+    }
+
+    static boolean isNativeSoil(BlockState state) {
         return state.getBlock() instanceof FarmBlock
                 || state.is(ModBlocks.MOONLOAM.get())
                 || state.is(ModBlocks.LUMEN_GRASS_BLOCK.get());

@@ -71,6 +71,17 @@ public class ModRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_glow_ink_sac", has(Items.GLOW_INK_SAC))
                 .save(recipeOutput);
 
+        // --- Dusk Striker (the Duskglass / Dusk Portal igniter, forged from Lumenwilds materials) ---
+        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.DUSK_STRIKER.get(), 1)
+                .pattern("E")
+                .pattern("D")
+                .pattern("L")
+                .define('E', ModItems.EMBERGLOW.get())
+                .define('D', ModBlocks.DUSKGLASS.get())
+                .define('L', ModItems.LUMINITE_INGOT.get())
+                .unlockedBy("has_duskglass", has(ModBlocks.DUSKGLASS.get()))
+                .save(recipeOutput);
+
         // --- Luminite Umbrella (rain shield + stone-tier weapon) ---
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, ModItems.LUMINITE_UMBRELLA.get(), 1)
                 .pattern("SLS")

@@ -398,10 +398,23 @@ farmland, so they vanished on hoed Lumenwilds soil); **Lumen Grass reverts promp
 (Duskglass + the Dusk Portal to the Nether):** **Lumenwater now reacts with lava** (`event.ModFluidInteractions`
 on the vanilla `LAVA_TYPE`) — a lava **source** quenches to **`ModBlocks#DUSKGLASS`** (the dimension's dark,
 faintly-glowing, blast-resistant "obsidian"), **flowing** lava to **Cobbled Moonstone**; and Duskglass frames a
-new **Dusk Portal** (`portal.DuskPortalBlock`/`Shape`/`Manager`/`Teleporter` + `event.DuskPortalIgnitionEvents`)
-— a Nether-portal-shaped Duskglass frame lit with **flint & steel** links the **Lumenwilds ↔ the Nether** (8:1,
+new **Dusk Portal** (`portal.DuskPortalBlock`/`Shape`/`Manager`/`Teleporter`, lit by the **Dusk Striker**)
+— a Nether-portal-shaped Duskglass frame links the **Lumenwilds ↔ the Nether** (8:1,
 Nether-safe placement), inert in other dims. New progression: Overworld → Lumenwilds → gather Duskglass → the
-Nether. Roadmap:
+Nether. **v1.6.1 (targeted portals):** each portal type is now a **specific two-realm link + a no-op in its alien
+realm** — the Lumen portal only ignites in the Overworld/Lumenwilds (`item.LumenStrikerItem`), the Dusk portal
+only in the Lumenwilds/Nether (`item.DuskStrikerItem`), and vanilla obsidian portals are cancelled in
+the Lumenwilds (`event.PortalRealmEvents`). **v1.7.0 (broken portals + the Dusk Striker):** ruined portal sites are
+scattered through each realm with reward chests. The existing **Lumenbound Ruins** (8e — broken Lumenbound Stone
+frame, no lava, striker + frame-material loot) now generate in the **Lumenwilds** surface biomes as well as the
+Overworld; and the new **Duskglass Ruins** (`world.structure.DuskglassRuinsStructure`/`Piece`) — a broken Duskglass
+frame with **a couple of small contained lava pools** and a chest of **Lumenwater buckets + Dusk-Striker loot**
+(`chests/duskglass_ruins`) — generate in the **Lumenwilds** and the **Nether** (a `nether` codec flag switches
+surface-heightmap placement for the open dims to a chunk-safe `getBaseColumn` cave-floor probe for the enclosed
+Nether). **Each portal now has its own igniter:** the Dusk Portal is lit by the **Dusk Striker**
+(`item.DuskStrikerItem`, `ModItems#DUSK_STRIKER` — a durable striker forged from **Emberglow + Duskglass +
+Luminite**, `E/D/L`), **not flint & steel** (the `DuskPortalIgnitionEvents` flint-&-steel path was removed); the
+Duskglass Ruins chests drop the Dusk Striker and/or its materials. Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -565,7 +578,8 @@ as `File#member`.
   the created types. Reuses vanilla `Boat`/`ChestBoat`/renderer — no custom entity.
 - [ModItems.java](src/main/java/com/jus144tice/lumenwilds/registry/ModItems.java) — `#ITEMS`
   (`DeferredRegister.Items`). Standalone: `#LUMEN_STRIKER` (`LumenStrikerItem`, **durable: `stacksTo(1)
-  .durability(64)`** — each ignition costs 1 use), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
+  .durability(64)`** — each ignition costs 1 use), `#DUSK_STRIKER` (`item.DuskStrikerItem`, the Dusk-Portal
+  igniter, same durable stats; v1.7.0), `#LUMEN_CRYSTAL_SHARD`, `#GLOW_POLLEN`,
   `#LIVING_FIBER`, `#RAW_LUMINITE`/`#LUMINITE_INGOT` (10a — ore → raw → smelt to ingot; ingot crafts Glowbrick),
   `#EMBERGLOW` (v1.3 Phase C — furnace fuel via the `furnace_fuels` data map), `#PALE_OPAL` (gem),
   `#RAW_RESONITE`/`#RESONITE_INGOT` (Phase C — ore → raw → smelt; ingot → the Phase-D gear tier),
@@ -701,7 +715,9 @@ as `File#member`.
   `#STRUCTURE_TYPES` + `#STRUCTURE_PIECES`; `#GLOWROOT_TREE` + `#GLOWROOT_TREE_PIECE` (the mega Glowroot
   tree), `#MEGA_GLOWCAP` + `#MEGA_GLOWCAP_PIECE` (the town-sized Giant Glowcap mushroom), `#ROOTSHRINE` +
   `#ROOTSHRINE_PIECE` (the small early-reward Rootshrine, 8d), `#LUMENBOUND_RUINS` + `#LUMENBOUND_RUINS_PIECE`
-  (the Overworld ruined-portal tutorial site, 8e), and `#GLASSPETAL_SPIRES` + `#GLASSPETAL_SPIRES_PIECE` (the
+  (the ruined Lumenbound-portal site — Overworld + Lumenwilds, 8e/v1.7.0), `#DUSKGLASS_RUINS` +
+  `#DUSKGLASS_RUINS_PIECE` (the ruined Dusk-portal site — Lumenwilds + Nether, with lava pools, v1.7.0), and
+  `#GLASSPETAL_SPIRES` + `#GLASSPETAL_SPIRES_PIECE` (the
   crystal towers, 8f), and `#UNDERCROWN_RELICS` + `#UNDERCROWN_RELICS_PIECE` (the buried dungeon, 8g — placed at
   a deep Y), and `#VESTIGE_OUTPOST` + `#VESTIGE_OUTPOST_PIECE` (the Small Vestige Outpost, 10b), and
   `#VESTIGE_CITY` + `#VESTIGE_CITY_PIECE` (the Medium/Grand Vestige City, 10d/10g), `#VESTIGE_VAULT_PIECE` (the
@@ -742,7 +758,8 @@ as `File#member`.
   the destination dim; if found, `LumenPortalBlock#getPortalDestination` uses that exact `approx` instead of
   the 1:1-scaled position — so an anchored return lands precisely.
 - **Dusk portal (v1.6.0) — the Lumenwilds ↔ Nether link, a sibling set of the Lumen portal.** Built from a
-  **Duskglass** frame (`ModBlocks#DUSKGLASS`) lit with **flint & steel**, filling with `ModBlocks#DUSK_PORTAL`.
+  **Duskglass** frame (`ModBlocks#DUSKGLASS`) lit with the **Dusk Striker** (`item.DuskStrikerItem`, v1.7.0 — was
+  flint & steel), filling with `ModBlocks#DUSK_PORTAL`.
   [DuskPortalBlock.java](src/main/java/com/jus144tice/lumenwilds/portal/DuskPortalBlock.java) mirrors
   `LumenPortalBlock` but `#getPortalDestination` routes **Lumenwilds ↔ `minecraft:the_nether`** at Nether scale
   (8:1 via `getTeleportationScale`) and is inert in any other dim; `#getLocalTransition` is `CONFUSION` (the
@@ -754,9 +771,10 @@ as `File#member`.
   **enclosed Nether** scans for a floored, lava-free air pocket capped at the **logical height** (128, NOT
   `getMaxBuildHeight` 256 — else it builds on the bedrock roof; `#anchorY`) and carves the frame in.
   [DuskPortalTeleporter.java](src/main/java/com/jus144tice/lumenwilds/portal/DuskPortalTeleporter.java) mirrors
-  the Lumen teleporter. Ignition is `event.DuskPortalIgnitionEvents` (flint & steel on a Duskglass frame, only in
-  the Lumenwilds/Nether). *(RCON-verified: teleport both ways + return-portal placement below the ceiling; the
-  flint-and-steel light itself is client-interaction, but the shape port is identical to the proven Lumen one.)*
+  the Lumen teleporter. Ignition is `item.DuskStrikerItem#useOn` (the **Dusk Striker** on a Duskglass frame, only in
+  the Lumenwilds/Nether — mirrors `LumenStrikerItem`; v1.7.0 replaced the old flint-&-steel `DuskPortalIgnitionEvents`).
+  *(RCON-verified: teleport both ways + return-portal placement below the ceiling; the shape port is identical to
+  the proven Lumen one.)*
 
 ### block/ — custom block behaviours
 - [LumenChestBlock.java](src/main/java/com/jus144tice/lumenwilds/block/LumenChestBlock.java) — the glowing wood
@@ -818,8 +836,10 @@ as `File#member`.
   `ModLootTableProvider#lumenCropDrops` (v1.5.0 — a gentler **1 produce + 1 guaranteed seed + Fortune** ≈ 1:1,
   vs vanilla's binomial ~1.7); `#minecraft:crops` + `#maintains_farmland` tags.
 - [GlowgourdBlock.java](src/main/java/com/jus144tice/lumenwilds/block/GlowgourdBlock.java) — the gourds
-  (v1.4 F3). Glowgourd (pumpkin analog) `#useItemOn` shears-carves into `ModBlocks#CARVED_GLOWGOURD` (a vanilla
-  `CarvedPumpkinBlock`, glowing/wearable) + drops seeds — a glowing jack-o'-lantern. `ModBlocks#MOONMELON` (the
+  (v1.4 F3). Glowgourd (pumpkin analog) — a **glowing teal bioluminescent gourd** (v1.7.0: recolored from
+  orange, `mapColor` `COLOR_CYAN`, emissive `_emissive_cube_column` model so it glows in any light) — `#useItemOn`
+  shears-carves into `ModBlocks#CARVED_GLOWGOURD` (a vanilla `CarvedPumpkinBlock`, glowing/wearable lantern, its
+  own `_emissive_orientable` model) + drops seeds. `ModBlocks#MOONMELON` (the
   melon analog, a glowing gourd → slices) + Glowgourd use **`block.LumenStemBlock`/`block.LumenAttachedStemBlock`**
   (`#MOONMELON_STEM`/`#GLOWGOURD_STEM` + attached) wired to fruit/seed by **ResourceKey** (`#bKey`/`#iKey`, lazy
   — no registration-order issue); seeds = `ItemNameBlockItem`s over the stems. Blockstate-provider has
@@ -830,7 +850,11 @@ as `File#member`.
   gourd stems (v1.5.0). Vanilla `StemBlock`/`AttachedStemBlock` `#mayPlaceOn` accept **only `minecraft:farmland`**,
   so a Glowgourd/Moonmelon stem on **Lumen Farmland** (a different block) or Moonloam failed `canSurvive` and
   broke instantly — the "glowgourd seeds vanish / show blank on hoed ground" bug. These override `#mayPlaceOn` to
-  accept any `FarmBlock` (Lumen Farmland) + Moonloam + Lumen Grass, matching `LumenCropBlock`'s soil leniency.
+  accept any `FarmBlock` (Lumen Farmland) + Moonloam + Lumen Grass (`#isNativeSoil`), matching `LumenCropBlock`'s
+  soil leniency. **v1.7.0** also overrides `#canSurvive` to anchor survival to `#isNativeSoil` **before** the
+  vanilla `BushBlock` path (which consults the NeoForge `canSustainPlant` soil hook first) — so a modpack
+  `canSustainPlant` override can't intermittently reject a freshly-placed stem on Lumen Farmland (the "seed
+  consumed but nothing planted, sometimes" bug).
 - **Alien crops (v1.4 F4)** — the three twist crops: `ModBlocks#GLIMMERREED` (a plain vanilla `SugarCaneBlock`
   — grows on Moonloam beside **Lumenwater** for free, since Lumenwater is `#minecraft:water` + hydrates; glows;
   → Lumen Sugar), [DuskbeanCropBlock](src/main/java/com/jus144tice/lumenwilds/block/DuskbeanCropBlock.java)
@@ -946,6 +970,14 @@ as `File#member`.
   or the Lumenwilds** (a no-op elsewhere — e.g. the Nether — with a "stays dark" action-bar hint), so the Lumen
   portal is strictly the Overworld↔Lumenwilds link; `LumenPortalBlock#getPortalDestination` mirrors the gate
   (returns null outside those two). **Never checks lodestone.**
+- [DuskStrikerItem.java](src/main/java/com/jus144tice/lumenwilds/item/DuskStrikerItem.java) — the **Dusk
+  Striker** (v1.7.0), the Duskglass/Dusk-Portal igniter and Duskglass sibling of the Lumen Striker (each portal
+  has its own key: obsidian = fire, Lumenbound Stone = Lumen Striker, Duskglass = Dusk Striker). `#useOn` mirrors
+  `LumenStrikerItem` but keyed to `DuskPortalShape`/`DuskPortalManager` and **realm-gated to the Lumenwilds or the
+  Nether** (a "stays dark" hint, `lumenwilds.portal.dusk_wrong_realm`, elsewhere); durable (`ModItems#DUSK_STRIKER`,
+  `stacksTo(1).durability(64)`). Crafted `E/D/L` = Emberglow / Duskglass / Luminite Ingot
+  (`ModRecipeProvider` + `recipe/dusk_striker.json`). **This replaced the old flint-&-steel ignition** — the
+  `event.DuskPortalIgnitionEvents` file was deleted; flint & steel no longer lights a Duskglass frame.
 - [GlyphTabletItem.java](src/main/java/com/jus144tice/lumenwilds/item/GlyphTabletItem.java) — Ancient Glyph
   Tablet (10c). A lore item: `#use` displays its fragment (`displayClientMessage`) and `#appendHoverText`
   shows it as an italic tooltip. The line is passed at registration (one per tablet in `ModItems`).
@@ -1160,11 +1192,26 @@ as `File#member`.
   in the Glowroot Forest.
 - [LumenboundRuinsStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/LumenboundRuinsStructure.java)
   / [LumenboundRuinsPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/LumenboundRuinsPiece.java)
-  — the **Lumenbound Ruins** (8e), a ruined portal site in the **Overworld** (not the Lumenwilds — it's the
-  discovery/tutorial). `#postProcess` builds a broken 4×5 Lumenbound Stone frame (random axis, ~30% missing,
+  — the **Lumenbound Ruins** (8e), a ruined portal site: originally the Overworld discovery/tutorial,
+  **now also in the Lumenwilds surface biomes (v1.7.0)** — a broken-portal reward site there too (no lava, striker +
+  frame-material loot). `#postProcess` builds a broken 4×5 Lumenbound Stone frame (random axis, ~30% missing,
   rest weathered into mossy/cracked stone) around a 2×3 hole, a ragged base, scattered rubble, and a
   half-buried **chest of striker + frame ingredients** (`chests/lumenbound_ruins`). Bound to
-  `ModStructures#LUMENBOUND_RUINS`.
+  `ModStructures#LUMENBOUND_RUINS`; biomes via `has_structure/lumenbound_ruins` (Overworld + the 6 Lumenwilds
+  surface biomes).
+- [DuskglassRuinsStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/DuskglassRuinsStructure.java)
+  / [DuskglassRuinsPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/DuskglassRuinsPiece.java)
+  — the **Duskglass Ruins** (v1.7.0), a ruined **Dusk-portal** site in the **Lumenwilds + the Nether** (the Dusk
+  portal's two realms). `Structure#findGenerationPoint` mode-splits on a **`nether` codec flag** (like vanilla
+  ruined_portal vs ruined_portal_nether): open dims anchor to `OCEAN_FLOOR_WG`; the enclosed Nether scans the
+  read-only `ChunkGenerator#getBaseColumn` (chunk-safe — see the getBaseColumn gotcha) for a floored air pocket
+  below the ceiling (`#netherFloor`, else skips the chunk). `Piece#postProcess` (position-seeded, box-clipped)
+  clears a pocket, then builds a ragged dark base, a broken Duskglass frame (~30% missing, rest weathered into
+  Blackstone / Cobbled Deep Moonstone), rubble, **1–2 small contained lava pools** (`#lavaPool` — a walled 2×2
+  basin so the lava can't escape; Duskglass is quenched lava), and a half-buried **chest of Lumenwater buckets +
+  treasure** (`chests/duskglass_ruins`). Bound to `ModStructures#DUSKGLASS_RUINS`; two structure instances
+  (`duskglass_ruins` nether=false in the Lumenwilds surface biomes at `top_layer_modification`,
+  `duskglass_ruins_nether` nether=true in `#minecraft:is_nether` at `underground_structures`).
 - [GlasspetalSpiresStructure.java](src/main/java/com/jus144tice/lumenwilds/world/structure/GlasspetalSpiresStructure.java)
   / [GlasspetalSpiresPiece.java](src/main/java/com/jus144tice/lumenwilds/world/structure/GlasspetalSpiresPiece.java)
   — the **Glasspetal Spires** (8f; reworked Phase 9). `#postProcess` grows a main spire + satellites — tapering
@@ -1373,16 +1420,14 @@ as `File#member`.
   **mod-bus** `#onCommonSetup(FMLCommonSetupEvent)` (v1.6.0): `enqueueWork` → `FluidInteractionRegistry.addInteraction`
   on the vanilla `LAVA_TYPE` with `ModFluidTypes#LUMENWATER_TYPE` as the neighbour — a lava **source** quenches to
   `ModBlocks#DUSKGLASS`, **flowing** lava to `ModBlocks#COBBLED_MOONSTONE` (the Lumenwilds' obsidian/cobblestone).
-- [DuskPortalIgnitionEvents.java](src/main/java/com/jus144tice/lumenwilds/event/DuskPortalIgnitionEvents.java) —
-  `#onRightClickBlock(PlayerInteractEvent.RightClickBlock)` (v1.6.0): flint & steel on a Duskglass frame, **only
-  in the Lumenwilds or the Nether**, ignites a Dusk portal (`portal.DuskPortalManager#tryActivatePortal`), spends
-  a durability, cancels the default fire; no valid frame → not cancelled (flint & steel behaves normally).
+  *(Dusk-portal ignition is the **Dusk Striker** — `item.DuskStrikerItem` — not an event; the v1.6.0 flint-&-steel
+  `DuskPortalIgnitionEvents` was deleted in v1.7.0.)*
 - [PortalRealmEvents.java](src/main/java/com/jus144tice/lumenwilds/event/PortalRealmEvents.java) —
   `#onNetherPortalSpawn(BlockEvent.PortalSpawnEvent)` (v1.6.1): cancels **vanilla Nether portal** creation in the
   **Lumenwilds**, so an obsidian frame there just makes fire (no portal) — the Overworld↔Nether pair is a no-op
   in its alien realm. Only vanilla portals fire this event (the Lumen/Dusk portals build via their own shape
   classes), so it's a clean, targeted block. Completes the "each portal binds exactly its two realms" rule
-  (Lumen gate in `LumenStrikerItem`/`LumenPortalBlock`, Dusk gate in `DuskPortalIgnitionEvents`/`DuskPortalBlock`).
+  (Lumen gate in `LumenStrikerItem`/`LumenPortalBlock`, Dusk gate in `DuskStrikerItem`/`DuskPortalBlock`).
 - [GlowmothAggroEvents.java](src/main/java/com/jus144tice/lumenwilds/event/GlowmothAggroEvents.java) —
   `#onBlockBreak(BlockEvent.BreakEvent)` (6h): when a player breaks a guarded bloom (Moonblossom / any
   Stillbloom part), every `Glowmoth` within ~12 blocks `setTarget`s the culprit — the flower-guardian aggro.
@@ -1642,9 +1687,15 @@ as `File#member`.
   + `structure_set/glowroot_tree.json` (spacing 20/sep 7, in `lumen_glade`) and `structure/mega_glowcap.json`
   + `structure_set/mega_glowcap.json` (spacing 20/sep 7, distinct salt, in `sporefall_jungle`), plus the
   **Rootshrine** (8d) — `structure/rootshrine.json` + `structure_set/rootshrine.json` (spacing 14/sep 5, in
-  `glowroot_forest`) with a `chests/rootshrine` loot table, and the **Lumenbound Ruins** (8e) —
-  `structure/lumenbound_ruins.json` + `structure_set` (spacing 28/sep 8) in the **Overworld**
-  (`has_structure/lumenbound_ruins` → `#minecraft:is_overworld`) with `chests/lumenbound_ruins` loot, and the
+  `glowroot_forest`) with a `chests/rootshrine` loot table, and the **Lumenbound Ruins** (8e / v1.7.0) —
+  `structure/lumenbound_ruins.json` + `structure_set` (spacing 28/sep 8) in the **Overworld + the 6 Lumenwilds
+  surface biomes** (`has_structure/lumenbound_ruins` → `#minecraft:is_overworld` + the Lumenwilds biomes) with
+  `chests/lumenbound_ruins` loot, and the **Duskglass Ruins** (v1.7.0) — two instances of the
+  `lumenwilds:duskglass_ruins` type: `structure/duskglass_ruins.json` (nether=false, `top_layer_modification`,
+  spacing 30/sep 9) in the Lumenwilds surface biomes + `structure/duskglass_ruins_nether.json` (nether=true,
+  `underground_structures`, spacing 27/sep 8) in `#minecraft:is_nether` (`has_structure/duskglass_ruins` +
+  `has_structure/duskglass_ruins_nether`), each with `chests/duskglass_ruins` (Lumenwater buckets + the **Dusk
+  Striker** and/or its Emberglow/Duskglass/Luminite makings + treasure — no flint & steel) loot, and the
   **Glasspetal Spires** (8f) — `structure/glasspetal_spires.json` (with a `spawn_overrides.monster` →
   `crag_wraith`) + `structure_set` (spacing 22/sep 7, in `glasspetal_crags`) + `chests/glasspetal_spires` loot,
   and the **Undercrown Relics** (8g) — `structure/undercrown_relics.json` (step `underground_structures`) +
@@ -1887,6 +1938,15 @@ as `File#member`.
   Fix: add `"render_type": "minecraft:cutout"` to the block model JSON (1.21 reads it per-model) —
   `emberglow_torch`/`emberglow_wall_torch` do. (The cross-plant flora avoid this because `ModBlockStateProvider`
   emits cutout cross models; a hand-authored model must set it itself.)
+- **The vanilla attached-stem parent `minecraft:block/stem_fruit` needs TWO textures — `#stem` AND
+  `#upperstem` — omitting either renders that quad as the black/magenta missing texture.** `stem_fruit` (the
+  parent of `attached_*_stem` models — the bent stem reaching a grown gourd) has the diagonal quads on `#stem`
+  and a full-height vertical quad on `#upperstem`; vanilla `attached_melon_stem` supplies `stem`=`melon_stem`
+  (straight sprite) + `upperstem`=`attached_melon_stem` (bent sprite). Our `attached_glowgourd_stem`/
+  `attached_moonmelon_stem` originally supplied only `stem`, so the `#upperstem` quad rendered as a flat
+  black/magenta panel on every grown gourd (the v1.7.0 attached-stem artifact). Fix: supply BOTH (hand-authored
+  models + the `ModBlockStateProvider` `AttachedStemBlock` branch — `stem`=the straight `<gourd>_stem` sprite,
+  `upperstem`=the `attached_<gourd>_stem` sprite). Any modded attached stem must map both vars.
 - **Patchouli (1.20+) books split across `data/` and `assets/`.** Only `book.json` stays in
   `data/<modid>/patchouli_books/<book>/` and it MUST set `use_resource_pack: true`; the categories/entries/
   templates live in `assets/<modid>/patchouli_books/<book>/<lang>/…` (client side). A book.json with

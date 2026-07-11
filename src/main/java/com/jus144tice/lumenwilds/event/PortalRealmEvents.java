@@ -20,7 +20,7 @@ import net.neoforged.neoforge.event.level.BlockEvent;
  * Nether from the Lumenwilds. (The event fires only for vanilla portals; the Lumen/Dusk portals build via their
  * own shape classes and are unaffected.) The Lumen portal's own Overworld↔Lumenwilds gating lives in
  * {@code item.LumenStrikerItem} + {@code portal.LumenPortalBlock}; the Dusk portal's Lumenwilds↔Nether gating in
- * {@code event.DuskPortalIgnitionEvents} + {@code portal.DuskPortalBlock}.</p>
+ * {@code item.DuskStrikerItem} + {@code portal.DuskPortalBlock}.</p>
  */
 @EventBusSubscriber(modid = Lumenwilds.MOD_ID)
 public final class PortalRealmEvents {

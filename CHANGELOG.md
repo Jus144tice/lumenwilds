@@ -6,6 +6,39 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-07-10
+**Broken portals scattered through every realm — with reward chests.**
+
+Ruined portal sites now generate across the dimensions, each with a loot chest to reward finding it:
+
+- **Broken Lumenbound (Lumen) portals** now also generate in the **Lumenwilds** (previously Overworld-only), in
+  addition to the existing Overworld ones. As before, there's **no lava/magma** near them — just the broken
+  frame, weathered stone, and rubble — and the chest has a **good chance of a Lumen Striker and/or the materials
+  to craft a striker and Lumenbound Stone** (Lumen Crystal Shards, Lumenbound Stone, iron, amethyst, glow ink…).
+- **New: broken Duskglass (Dusk) portals** generate in the **Lumenwilds** and the **Nether** — a broken Duskglass
+  frame with **a couple of small lava pools** beside it (fitting, since Duskglass is quenched lava). The chest has
+  a **high chance of Lumenwater buckets**, plus the new Dusk Striker and/or its materials, and valuable treasure
+  (Luminite, Lumen Crystal, gold, the odd enchanted book / diamond).
+- Vanilla's ruined obsidian portals already cover the Overworld and the Nether, so between all three there's a
+  ruined portal to stumble on wherever you are.
+
+### New: the Dusk Striker (each portal has its own igniter)
+- **Dusk Portals are now lit with a new Dusk Striker, not flint & steel.** Every portal now has its own key:
+  obsidian → fire, Lumenbound Stone → **Lumen Striker**, Duskglass → **Dusk Striker**.
+- The **Dusk Striker** is crafted from Lumenwilds materials — **Emberglow + Duskglass + Luminite Ingot** (stacked
+  top-to-bottom) — and, like the Lumen Striker, is a durable tool (each ignition costs one use). It only lights a
+  Duskglass frame in the Lumenwilds or the Nether.
+- The broken **Duskglass Ruins** chests now drop the **Dusk Striker and/or its crafting materials** instead of
+  flint & steel, so a ruined Dusk portal always points you toward re-lighting one.
+
+### Fixed / Changed (Glowgourds)
+- **Glowgourds are now glowing teal**, not orange — a proper bioluminescent gourd that glows in any light (both
+  the gourd and its Carved Glowgourd lantern).
+- **Fixed the black-and-pink artifact on a fully-grown Glowgourd/Moonmelon on the vine** — the attached stem's
+  model was missing a texture (`upperstem`), so one panel rendered as the missing-texture checkerboard.
+- **Fixed gourd seeds sometimes being consumed without planting on Lumen Farmland** — the stem now anchors its
+  survival to the Lumenwilds' own soils before the vanilla soil hook that a modpack could intermittently override.
+
 ## [1.6.1] - 2026-07-10
 **Portals are strictly targeted to their two realms.**
 
