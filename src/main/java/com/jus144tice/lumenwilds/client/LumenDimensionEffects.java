@@ -240,7 +240,10 @@ public class LumenDimensionEffects extends DimensionSpecialEffects {
                 pos.set(x, lightY, z);
                 int light = LightTexture.FULL_BRIGHT; // glow: drops render at max brightness
 
-                // Per-column radial billboard direction (gives the streak its width, like vanilla rainSizeX/Z).
+                // Per-column billboard width, oriented PERPENDICULAR to the camera→column ray so each quad
+                // faces the camera (vanilla rainSizeX/Z = (-zoff, xoff)/dist). Using the radial direction
+                // itself (the old bug) left columns dead-ahead edge-on and side columns wide, which revealed
+                // the block grid — the "grid-y rain". Rotating the offset 90° blends the columns into a sheet.
                 double rdx = x - camXi;
                 double rdz = z - camZi;
                 double rlen = Math.sqrt(rdx * rdx + rdz * rdz);
@@ -249,8 +252,8 @@ public class LumenDimensionEffects extends DimensionSpecialEffects {
                     rdz = 0.0;
                     rlen = 1.0;
                 }
-                double d0 = rdx / rlen * 0.5;
-                double d1 = rdz / rlen * 0.5;
+                double d0 = -rdz / rlen * 0.5;
+                double d1 = rdx / rlen * 0.5;
 
                 // glowing teal Lumenwater tint
                 float r = 0.34F;

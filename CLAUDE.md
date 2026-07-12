@@ -428,7 +428,13 @@ the **attached gourd stem** rotation was corrected so a ripe Glowgourd/Moonmelon
 young gourd stems show a **sprout nubbin** texture instead of bare Moonloam. And **"Echo Dust" was renamed to
 "Shade Dust"** (`ModItems#SHADE_DUST`, was `echo_dust`) — it's a Shade Stalker drop used in the Lumen Anchor,
 and the old name wrongly implied a tie to the unrelated Echo Sentinel (a breaking registry rename, so pre-1.7.1
-items drop on world load). Roadmap:
+items drop on world load). **v1.7.2 (visual follow-ups):** the **attached gourd stem** now truly connects — v1.7.1
+fixed the rotation but the `#upperstem` sprite was a *straight* stem, not vanilla's bent reaching-arm shape, so
+the arm never met the fruit (see the stem-sprite gotcha); the two `attached_*_stem` sprites are now vanilla's
+`attached_melon_stem` shape recolored teal. And the **glowing teal rain** (`client.LumenDimensionEffects#renderSnowAndRain`)
+no longer looks "grid-y" — its per-column billboard was oriented along the camera ray (radial) instead of
+**perpendicular** to it, so columns dead-ahead rendered edge-on and revealed the block grid; rotating the offset
+90° (matching vanilla `rainSizeX/Z`) blends the columns into a proper sheet. Roadmap:
 [docs/IMPLEMENTATION_PLAN.md](docs/IMPLEMENTATION_PLAN.md). Design source of truth: the world bible at
 [docs/world_description.txt](docs/world_description.txt), indexed by
 [docs/LUMENWILDS_WORLD_DEFINITION.md](docs/LUMENWILDS_WORLD_DEFINITION.md).
@@ -1973,7 +1979,15 @@ as `File#member`.
   `attached_moonmelon_stem` originally supplied only `stem`, so the `#upperstem` quad rendered as a flat
   black/magenta panel on every grown gourd (the v1.7.0 attached-stem artifact). Fix: supply BOTH (hand-authored
   models + the `ModBlockStateProvider` `AttachedStemBlock` branch — `stem`=the straight `<gourd>_stem` sprite,
-  `upperstem`=the `attached_<gourd>_stem` sprite). Any modded attached stem must map both vars.
+  `upperstem`=the `attached_<gourd>_stem` sprite). Any modded attached stem must map both vars. **And the
+  `#upperstem` sprite must have vanilla's BENT-ARM SHAPE, not a straight stem (v1.7.2).** `stem_fruit`'s
+  upperstem quad is the arm that reaches sideways to the fruit and samples only the sprite's left half
+  (`uv [0,0,8,16]`); if the sprite is a straight vertical stem (as our `attached_glowgourd_stem` was), that
+  arm renders as a thin central strip that never reaches the gourd — the gourd looks *detached from the vine
+  even with correct rotation + both textures present* (the v1.7.2 report). Our blockstate + model are
+  byte-for-byte vanilla `attached_melon_stem` (verified against client-extra: east 180 / north 90 / south 270
+  / west 0), so the fix was purely the sprite: recolor vanilla's `attached_melon_stem` (the proven bent-arm
+  shape) to the gourd's teal. Verify the connection **in-client** — it can't be seen headlessly.
 - **Patchouli (1.20+) books split across `data/` and `assets/`.** Only `book.json` stays in
   `data/<modid>/patchouli_books/<book>/` and it MUST set `use_resource_pack: true`; the categories/entries/
   templates live in `assets/<modid>/patchouli_books/<book>/<lang>/…` (client side). A book.json with

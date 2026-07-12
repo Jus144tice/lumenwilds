@@ -6,6 +6,17 @@ All notable changes to The Lumenwilds are documented here. The format is based o
 
 ## [Unreleased]
 
+## [1.7.2] - 2026-07-11
+**Visual follow-ups from playtesting.**
+
+### Fixed
+- **Ripe Glowgourds/Moonmelons now actually connect to their stem.** v1.7.1 corrected the stem's rotation, but
+  the stem's reaching-arm sprite was a straight stem instead of the proper bent "arm" shape, so it never met the
+  fruit. The attached-stem sprite is now the correct reaching-arm shape (recolored to the gourd's teal).
+- **The glowing teal rain no longer looks "grid-y."** Each rain column was oriented along the line from the
+  camera, so columns straight ahead rendered edge-on and side columns rendered wide — which revealed the block
+  grid. The rain now faces the camera like vanilla rain, blending into a smooth sheet.
+
 ## [1.7.1] - 2026-07-11
 **Playthrough fixes — water, plants, the boat, the umbrella, and a rename.**
 
